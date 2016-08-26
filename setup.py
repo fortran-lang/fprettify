@@ -7,9 +7,5 @@ setup(name='fprettify',
       author='Patrick Seewald, Ole Schuett, Mohamed Fawzi',
       license = 'GPL',
       entry_points={'console_scripts': ['fprettify = fprettify:main']},
-      py_modules=['fprettify',
-          'formatting.normalizeFortranFile',
-          'formatting.reformatFortranFile',
-          'formatting.replacer',
-          'formatting.selftest']
+      py_modules=['fprettify','fparse_utils']
      )

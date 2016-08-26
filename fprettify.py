@@ -1,372 +1,1023 @@
 #!/usr/bin/env python
+"""
+  Impose white space conventions and indentation based on scopes / subunits
 
-import sys
+  normalization of white spaces supported for following operators:
+  - relational operators:
+    .EQ. .NE. .LT. .LE. .GT. .GE.
+    ==   /=   <    <=    >   >=
+  - logical operators:
+    .AND. .OR. .EQV. .NEQV.
+    .NOT.
+  - bracket delimiters
+  - commas and semicolons:
+  - arithmetic operators:
+    *  /  **  +  -
+  - other operators:
+    %  - (sign)  = (function argument)
+    = (assignment)  => (pointer assignment)
+
+  supported criteria for alignment / indentation:
+   Fortran lines:
+   - if, else, endif
+   - do, enddo
+   - select case, case, end select
+   - subroutine, end subroutine
+   - function, end function
+   - module, end module
+   - program, end program
+   - interface, end interface
+   - type, end type
+   Actual lines (parts of Fortran lines separated by linebreaks):
+   - bracket delimiters (.), (/./), and [.]
+   - assignments by value = and pointer =>.
+
+  LIMITATIONS
+  - assumes that all subunits are explicitly ended within same file, no treatment of #include statements
+  - can not deal with f77 constructs (files are ignored)
+"""
+
 import re
-import tempfile
+import sys
 import os
-import os.path
 import tempfile
+from fparse_utils import USE_PARSE_RE, VAR_DECL_RE, InputStream, CharFilter, OMP_RE, OMP_DIR_RE
+#=========================================================================
+# constants, mostly regular expressions
 
-try:
-    from hashlib import md5
-except ImportError:
-    from md5 import new as md5
+RE_FLAGS = re.IGNORECASE  # all regex should be case insensitive
 
-from formatting import normalizeFortranFile
-from formatting import replacer
-from formatting import reformatFortranFile
-from formatting import selftest
+FORTRAN_DEFAULT_ERROR_MESSAGE = " Syntax error - this formatter can not handle invalid Fortran files."
+FORMATTER_ERROR_MESSAGE = " Wrong usage of formatting-specific directives '&', '!&', '!&<' or '!&>'."
+
+EOL_STR = r"\s*;?\s*$"  # end of fortran line
+EOL_SC = r"\s*;\s*$"  # whether line is ended with semicolon
+SOL_STR = r"^\s*"  # start of fortran line
+
+F77_STYLE = re.compile(r"^\s*\d", RE_FLAGS)
+
+# regular expressions for parsing statements that start, continue or end a
+# subunit:
+IF_RE = re.compile(
+    SOL_STR + r"(\w+\s*:)?\s*IF\s*\(.+\)\s*THEN" + EOL_STR, RE_FLAGS)
+ELSE_RE = re.compile(
+    SOL_STR + r"ELSE(\s*IF\s*\(.+\)\s*THEN)?" + EOL_STR, RE_FLAGS)
+ENDIF_RE = re.compile(SOL_STR + r"END\s*IF(\s+\w+)?" + EOL_STR, RE_FLAGS)
+
+DO_RE = re.compile(SOL_STR + r"(\w+\s*:)?\s*DO(" + EOL_STR + r"|\s)", RE_FLAGS)
+ENDDO_RE = re.compile(SOL_STR + r"END\s*DO(\s+\w+)?" + EOL_STR, RE_FLAGS)
+
+SELCASE_RE = re.compile(
+    SOL_STR + r"SELECT\s*CASE\s*\(.+\)" + EOL_STR, RE_FLAGS)
+CASE_RE = re.compile(SOL_STR + r"CASE\s*(\(.+\)|DEFAULT)" + EOL_STR, RE_FLAGS)
+ENDSEL_RE = re.compile(SOL_STR + r"END\s*SELECT" + EOL_STR, RE_FLAGS)
+
+SUBR_RE = re.compile(
+    r"^([^\"'!]* )?SUBROUTINE\s+\w+\s*(\(.*\))?" + EOL_STR, RE_FLAGS)
+ENDSUBR_RE = re.compile(
+    SOL_STR + r"END\s*SUBROUTINE(\s+\w+)?" + EOL_STR, RE_FLAGS)
+
+FCT_RE = re.compile(
+    r"^([^\"'!]* )?FUNCTION\s+\w+\s*(\(.*\))?(\s*RESULT\s*\(\w+\))?" + EOL_STR, RE_FLAGS)
+ENDFCT_RE = re.compile(
+    SOL_STR + r"END\s*FUNCTION(\s+\w+)?" + EOL_STR, RE_FLAGS)
+
+MOD_RE = re.compile(SOL_STR + r"MODULE\s+\w+" + EOL_STR, RE_FLAGS)
+ENDMOD_RE = re.compile(SOL_STR + r"END\s*MODULE(\s+\w+)?" + EOL_STR, RE_FLAGS)
+
+TYPE_RE = re.compile(
+    SOL_STR + r"TYPE(\s*,\s*BIND\s*\(\s*C\s*\))?(\s*::\s*|\s+)\w+" + EOL_STR, RE_FLAGS)
+ENDTYPE_RE = re.compile(SOL_STR + r"END\s*TYPE(\s+\w+)?" + EOL_STR, RE_FLAGS)
+
+PROG_RE = re.compile(SOL_STR + r"PROGRAM\s+\w+" + EOL_STR, RE_FLAGS)
+ENDPROG_RE = re.compile(
+    SOL_STR + r"END\s*PROGRAM(\s+\w+)?" + EOL_STR, RE_FLAGS)
+
+INTERFACE_RE = re.compile(
+    r"^([^\"'!]* )?INTERFACE(\s+\w+)?" + EOL_STR, RE_FLAGS)
+ENDINTERFACE_RE = re.compile(
+    SOL_STR + r"END\s*INTERFACE(\s+\w+)?" + EOL_STR, RE_FLAGS)
+
+CONTAINS_RE = re.compile(SOL_STR + r"CONTAINS" + EOL_STR, RE_FLAGS)
+
+PUBLIC_RE = re.compile(SOL_STR + r"PUBLIC\s*::", RE_FLAGS)
+
+# intrinsic statements with parenthesis notation that are not functions
+INTR_STMTS_PAR = "(ALLOCATE|DEALLOCATE|REWIND|BACKSPACE|INQUIRE|OPEN|CLOSE|WRITE|READ|FORALL|WHERE|NULLIFY)"
+
+# regular expressions for parsing linebreaks
+LINEBREAK_STR = r"(&)[\s]*(?:!.*)?$"
+
+# regular expressions for parsing operators
+# Note: +/- in real literals and sign operator is ignored
+PLUSMINUS_RE = re.compile(
+    r"(?<=[\w\)\]])(?<![\d\.]\w)\s*(\+|-)\s*", RE_FLAGS)
+REL_OP_RE = re.compile(
+    r"\s*(\.(?:EQ|NE|LT|LE|GT|GE)\.|(?:==|\/=|<(?!=)|<=|(?<!=)>(?!=)|>=))\s*", RE_FLAGS)
+LOG_OP_RE = re.compile(r"\s*(\.(?:AND|OR|EQV|NEQV)\.)\s*", RE_FLAGS)
+
+# regular expressions for parsing delimiters
+DEL_OPEN_STR = r"(\(\/?|\[)"
+DEL_OPEN_RE = re.compile(DEL_OPEN_STR, RE_FLAGS)
+DEL_CLOSE_STR = r"(\/?\)|\])"
+DEL_CLOSE_RE = re.compile(DEL_CLOSE_STR, RE_FLAGS)
+
+# empty line regex, treats omp statements as exception
+EMPTY_RE = re.compile(SOL_STR + r"(![^\$].*)?$", RE_FLAGS)
+
+# two-sided operators
+LR_OPS_RE = [REL_OP_RE, LOG_OP_RE, PLUSMINUS_RE]
+
+# markups to deactivate formatter
+NO_ALIGN_RE = re.compile(SOL_STR + r"&\s*[^\s*]+")
+
+# combine regex that define subunits
+NEW_SCOPE_RE = [IF_RE, DO_RE, SELCASE_RE, SUBR_RE,
+                FCT_RE, MOD_RE, PROG_RE, INTERFACE_RE, TYPE_RE]
+CONTINUE_SCOPE_RE = [ELSE_RE, None, CASE_RE, CONTAINS_RE,
+                     CONTAINS_RE, CONTAINS_RE, CONTAINS_RE, None, None]
+END_SCOPE_RE = [ENDIF_RE, ENDDO_RE, ENDSEL_RE, ENDSUBR_RE,
+                ENDFCT_RE, ENDMOD_RE, ENDPROG_RE, ENDINTERFACE_RE, ENDTYPE_RE]
+
+#=========================================================================
 
 
-operatorsStr = r"\.(?:and|eqv?|false|g[et]|l[et]|n(?:e(?:|qv)|ot)|or|true)\."
+class F90Indenter(object):
+    """
+    Parses encapsulation of subunits / scopes line by line and updates the indentation.
+    """
 
-keywordsStr = "(?:a(?:llocat(?:able|e)|ssign(?:|ment))|c(?:a(?:ll|se)|haracter|lose|o(?:m(?:mon|plex)|nt(?:ains|inue))|ycle)|d(?:ata|eallocate|imension|o(?:|uble))|e(?:lse(?:|if|where)|n(?:d(?:|do|file|if)|try)|quivalence|x(?:it|ternal))|f(?:or(?:all|mat)|unction)|goto|i(?:f|mplicit|n(?:clude|quire|t(?:e(?:ger|nt|rface)|rinsic)))|logical|module|n(?:amelist|one|ullify)|o(?:nly|p(?:en|erator|tional))|p(?:a(?:rameter|use)|ointer|r(?:ecision|i(?:nt|vate)|o(?:cedure|gram))|ublic)|re(?:a[dl]|cursive|sult|turn|wind)|s(?:ave|e(?:lect|quence)|top|ubroutine)|t(?:arget|hen|ype)|use|w(?:h(?:ere|ile)|rite))"
+    def __init__(self, filename):
+        self._scope_storage = []
+        self._indent_storage = [0]
+        self._filename = filename
+        self._line_indents = []
+        self._aligner = F90Aligner(filename)
 
-intrinsic_procStr = r"(?:a(?:bs|c(?:har|os)|djust[lr]|i(?:mag|nt)|ll(?:|ocated)|n(?:int|y)|s(?:in|sociated)|tan2?)|b(?:it_size|test)|c(?:eiling|har|mplx|o(?:njg|sh?|unt)|shift)|d(?:ate_and_time|ble|i(?:gits|m)|ot_product|prod)|e(?:oshift|psilon|xp(?:|onent))|f(?:loor|raction)|huge|i(?:a(?:char|nd)|b(?:clr|its|set)|char|eor|n(?:dex|t)|or|shftc?)|kind|l(?:bound|en(?:|_trim)|g[et]|l[et]|og(?:|10|ical))|m(?:a(?:tmul|x(?:|exponent|loc|val))|erge|in(?:|exponent|loc|val)|od(?:|ulo)|vbits)|n(?:earest|int|ot)|p(?:ack|r(?:e(?:cision|sent)|oduct))|r(?:a(?:dix|n(?:dom_(?:number|seed)|ge))|e(?:peat|shape)|rspacing)|s(?:ca(?:le|n)|e(?:lected_(?:int_kind|real_kind)|t_exponent)|hape|i(?:gn|nh?|ze)|p(?:acing|read)|qrt|um|ystem_clock)|t(?:anh?|iny|r(?:ans(?:fer|pose)|im))|u(?:bound|npack)|verify)(?= *\()"
+    def process_lines_of_fline(self, f_line, lines, rel_ind, rel_ind_con, line_nr, manual_lines_indent=None):
+        """
+        Process all lines that belong to a Fortran line `f_line`, impose a relative indent of `rel_ind` for
+        current Fortran line, and `rel_ind_con` for line continuation. By default line continuations are
+        auto-aligned by F90Aligner - manual offsets can be set by manual_lines_indents.
+        """
 
-ompDir = r"(?:atomic|barrier|c(?:apture|ritical)|do|end|flush|if|master|num_threads|ordered|parallel|read|s(?:ection(?:|s)|ingle)|t(?:ask(?:|wait|yield)|hreadprivate)|update|w(?:orkshare|rite)|!\$omp)"
+        self._line_indents = [0] * len(lines)
+        br_indent_list = [0] * len(lines)
+        line_indents = self._line_indents
+        scopes = self._scope_storage
+        indents = self._indent_storage
+        filename = self._filename
 
-ompClause = r"(?:a|co(?:llapse|py(?:in|private))|default|fi(?:nal|rstprivate)|i(?:and|eor|or)|lastprivate|m(?:ax|ergeable|in)|n(?:one|owait)|ordered|private|reduction|shared|untied|\.(?:and|eqv|neqv|or)\.)"
+        # check statements that start new scope
+        is_new = False
+        valid_new = False
 
-ompEnv = r"omp_(?:dynamic|max_active_levels|n(?:ested|um_threads)|proc_bind|s(?:tacksize|chedule)|thread_limit|wait_policy)"
+        debug = False
 
-# FIXME: does not correctly match operator '.op.' if it is not separated
-# by whitespaces.
-toUpcaseRe = re.compile("(?<![A-Za-z0-9_%#])(?<!% )(?P<toUpcase>" + operatorsStr +
-                        "|" + keywordsStr + "|" + intrinsic_procStr +
-                        ")(?![A-Za-z0-9_%])", flags=re.IGNORECASE)
-toUpcaseOMPRe = re.compile("(?<![A-Za-z0-9_%#])(?P<toUpcase>"
-                           + ompDir + "|" + ompClause + "|" + ompEnv +
-                           ")(?![A-Za-z0-9_%])", flags=re.IGNORECASE)
-linePartsRe = re.compile("(?P<commands>[^\"'!]*)(?P<comment>!.*)?" +
-                         "(?P<string>(?P<qchar>[\"']).*?(?P=qchar))?")
+        for new_n, newre in enumerate(NEW_SCOPE_RE):
+            if newre.search(f_line) and not END_SCOPE_RE[new_n].search(f_line):
+                what_new = new_n
+                is_new = True
+                valid_new = True
+                scopes.append(what_new)
+                if debug:
+                    sys.stderr.write(f_line + '\n')
+                break
+
+        # check statements that continue scope
+        is_con = False
+        valid_con = False
+        for con_n, conre in enumerate(CONTINUE_SCOPE_RE):
+            if conre is not None and conre.search(f_line):
+                what_con = con_n
+                is_con = True
+                if len(scopes) > 0:
+                    what = scopes[-1]
+                    if what == what_con:
+                        valid_con = True
+                        if debug:
+                            sys.stderr.write(f_line + '\n')
+                        break
+
+        # check statements that end scope
+        is_end = False
+        valid_end = False
+        for end_n, endre in enumerate(END_SCOPE_RE):
+            if endre.search(f_line):
+                what_end = end_n
+                is_end = True
+                if len(scopes) > 0:
+                    what = scopes.pop()
+                    if what == what_end:
+                        valid_end = True
+                        if debug:
+                            sys.stderr.write(f_line + '\n')
+                        break
+
+        # deal with line breaks
+        if not manual_lines_indent:
+            self._aligner.process_lines_of_fline(
+                f_line, lines, rel_ind_con, line_nr)
+            br_indent_list = self._aligner.get_lines_indent()
+        else:
+            br_indent_list = manual_lines_indent
+
+        for pos in range(0, len(lines) - 1):
+            line_indents[pos + 1] = br_indent_list[pos + 1]
+
+        if is_new:
+            if not valid_new:
+                raise SyntaxError(filename + ':' + str(line_nr) +
+                                  ':' + FORTRAN_DEFAULT_ERROR_MESSAGE)
+            else:
+                line_indents = [ind + indents[-1] for ind in line_indents]
+                old_ind = indents[-1]
+
+                rel_ind += old_ind  # prevent originally unindented do / if blocks from being indented
+                indents.append(rel_ind)
+
+        elif is_con:
+            if not valid_con:
+                raise SyntaxError(filename + ':' + str(line_nr) +
+                                  ':' + FORTRAN_DEFAULT_ERROR_MESSAGE)
+            else:
+                line_indents = [ind + indents[-2] for ind in line_indents]
+
+        elif is_end:
+            if not valid_end:
+                raise SyntaxError(filename + ':' + str(line_nr) +
+                                  ':' + FORTRAN_DEFAULT_ERROR_MESSAGE)
+            else:
+                line_indents = [ind + indents[-2] for ind in line_indents]
+                indents.pop()
+        else:
+            line_indents = [ind + indents[-1] for ind in line_indents]
+
+        self._line_indents = line_indents
+
+    def get_fline_indent(self):
+        """
+        after processing, retrieve the indentation of the full Fortran line.
+        """
+        return self._indent_storage[-1]
+
+    def get_lines_indent(self):
+        """
+        after processing, retrieve the indents of all line parts.
+        """
+        return self._line_indents
+
+#=========================================================================
 
 
-def upcaseStringKeywords(line):
-    """Upcases the fortran keywords, operators and intrinsic routines
-    in line"""
-    res = ""
-    start = 0
-    while start < len(line):
-        m = linePartsRe.match(line[start:])
-        if not m:
-            raise SyntaxError("Syntax error, open string")
-        res = res + toUpcaseRe.sub(lambda match: match.group("toUpcase").upper(),
-                                   m.group("commands"))
-        if m.group("comment"):
-            res = res + m.group("comment")
-        if m.group("string"):
-            res = res + m.group("string")
-        start = start + m.end()
-    return res
+class F90Aligner(object):
+    """
+    Alignment of continuations of a broken line, based on the following heuristics
+    if line break in brackets:     We are parsing the level of nesting and align to most inner bracket delimiter.
+    else if line is an assignment: alignment to '=' or '=>'.
+                                   note: assignment operator recognized as any '=' that is not
+                                   part of another operator and that is not enclosed in bracket
+    else if line is a declaration: alignment to '::'
+    else                           default indent
+    """
+
+    def __init__(self, filename):
+        self._filename = filename
+        self.__init_line(0)
+
+    def __init_line(self, line_nr):
+        self._line_nr = line_nr
+        self._line_indents = [0]
+        self._level = 0
+        self._br_indent_list = [0]
+
+    def process_lines_of_fline(self, f_line, lines, rel_ind, line_nr):
+        """
+        process all lines that belong to a Fortran line `f_line`, `rel_ind` is the relative indentation size.
+        """
+
+        self.__init_line(line_nr)
+
+        is_decl = VAR_DECL_RE.match(f_line) or PUBLIC_RE.match(f_line)
+        for pos, line in enumerate(lines):
+            self.__align_line_continuations(
+                line, is_decl, rel_ind, self._line_nr + pos)
+            if pos + 1 < len(lines):
+                self._line_indents.append(self._br_indent_list[-1])
+
+        if (len(self._br_indent_list) > 2 or self._level):
+            raise SyntaxError(self._filename + ':' + str(self._line_nr) +
+                              ':' + FORTRAN_DEFAULT_ERROR_MESSAGE)
+
+    def get_lines_indent(self):
+        """
+        after processing, retrieve the indents of all line parts.
+        """
+        return self._line_indents
+
+    def __align_line_continuations(self, line, is_decl, indent_size, line_nr):
+
+        indent_list = self._br_indent_list
+        level = self._level
+        filename = self._filename
+
+        pos_eq = 0
+        pos_ldelim = []
+        pos_rdelim = []
+        ldelim = []
+        rdelim = []
+
+        # find delimiters that are not ended on this line.
+        # find proper alignment to most inner delimiter
+        # or alignment to assignment operator
+        rel_ind = indent_list[-1]  # indentation of prev. line
+
+        instring = ''
+        end_of_delim = -1
+
+        for pos, char in CharFilter(enumerate(line)):
+
+            what_del_open = None
+            what_del_close = None
+            if not pos == end_of_delim:
+                what_del_open = DEL_OPEN_RE.match(line[pos:pos + 2])
+                what_del_close = DEL_CLOSE_RE.match(line[pos:pos + 2])
+
+            if not instring and what_del_open:
+                what_del_open = what_del_open.group()
+                end_of_delim = pos + len(what_del_open) - 1
+                level += 1
+                indent_list.append(pos + len(what_del_open) + rel_ind)
+                pos_ldelim.append(pos)
+                ldelim.append(what_del_open)
+            if not instring and what_del_close:
+                what_del_close = what_del_close.group()
+                end_of_delim = pos + len(what_del_close) - 1
+                level += -1
+                indent_list.pop()
+                if level < 0:
+                    raise SyntaxError(filename + ':' + str(line_nr) +
+                                      ':' + FORTRAN_DEFAULT_ERROR_MESSAGE)
+                if pos_ldelim:
+                    pos_ldelim.pop()
+                    what_del_open = ldelim.pop()
+                    valid = False
+                    if what_del_open == r"(":
+                        valid = what_del_close == r")"
+                    if what_del_open == r"(/":
+                        valid = what_del_close == r"/)"
+                    if what_del_open == r"[":
+                        valid = what_del_close == r"]"
+                    if not valid:
+                        raise SyntaxError(
+                            filename + ':' + str(line_nr) + ':' + FORTRAN_DEFAULT_ERROR_MESSAGE)
+                else:
+                    pos_rdelim.append(pos)
+                    rdelim.append(what_del_close)
+            if not instring and not level:
+                if not is_decl and char == '=':
+                    if not REL_OP_RE.match(line[max(0, pos - 1):min(pos + 2, len(line))]):
+                        if pos_eq > 0:
+                            raise SyntaxError(
+                                filename + ':' + str(line_nr) + ':' + FORTRAN_DEFAULT_ERROR_MESSAGE)
+                        is_pointer = line[pos + 1] == '>'
+                        pos_eq = pos + 1
+                        # don't align if assignment operator directly before
+                        # line break
+                        if not re.search(r"=>?\s*" + LINEBREAK_STR, line, RE_FLAGS):
+                            indent_list.append(
+                                pos_eq + 1 + is_pointer + indent_list[-1])
+                elif is_decl and line[pos:pos + 2] == '::':
+                    if not re.search(r"::\s*" + LINEBREAK_STR, line, RE_FLAGS):
+                        indent_list.append(pos + 3 + indent_list[-1])
+
+        # Don't align if delimiter opening directly before line break
+        if level and re.search(DEL_OPEN_STR + r"\s*" + LINEBREAK_STR, line, RE_FLAGS):
+            if len(indent_list) > 1:
+                indent_list[-1] = indent_list[-2]
+            else:
+                indent_list[-1] = 0
+
+        if not indent_list[-1]:
+            indent_list[-1] = indent_size
+
+        self._level = level
+
+#=========================================================================
 
 
-def upcaseOMP(line):
-    """Upcases OpenMP stuff."""
-    return toUpcaseOMPRe.sub(lambda match: match.group("toUpcase").upper(), line)
+def inspect_ffile_format(infile, indent_size):
+    """
+    Determine indentation by inspecting original Fortran file (mainly for finding
+    aligned blocks of DO/IF statements). Also check if
+    it has f77 constructs.
+    """
 
+    adopt = indent_size <= 0
 
-def upcaseKeywords(infile, outfile, upcase_omp, logFile=sys.stderr):
-    """Writes infile to outfile with all the fortran keywords upcased"""
+    is_f90 = True
+    indents = []
+    stream = InputStream(infile)
+    prev_offset = 0
+    first_indent = -1
     while 1:
-        line = infile.readline()
-        if not line:
+        f_line, _, lines = stream.nextFortranLine()
+        if not lines:
             break
-        line = upcaseStringKeywords(line)
-        if upcase_omp:
-            if normalizeFortranFile.ompDirRe.match(line):
-                line = upcaseOMP(line)
-        outfile.write(line)
+
+        offset = len(lines[0]) - len(lines[0].lstrip(' '))
+        if f_line.strip() and first_indent == -1:
+            first_indent = offset
+        indents.append(offset - prev_offset)
+        if not adopt:  # do not adopt indentations but impose fixed rel. ind.
+            # but don't impose indentation for blocked do/if constructs
+            if prev_offset != offset or (not IF_RE.search(f_line) and not DO_RE.search(f_line)):
+                indents[-1] = indent_size
+        prev_offset = offset
+
+        # can not handle f77 style constructs
+        if F77_STYLE.search(f_line):
+            is_f90 = False
+    return indents, first_indent, is_f90
+
+#=========================================================================
 
 
-def prettifyFile(infile, filename, normalize_use, decl_linelength, decl_offset,
-                 reformat, indent, whitespace, upcase_keywords,
-                 upcase_omp, replace, logFile):
-    """prettifyes the fortran source in infile into a temporary file that is
-    returned. It can be the same as infile.
-    if normalize_use normalizes the use statements (defaults to true)
-    if upcase_keywords upcases the keywords (defaults to true)
-    if replace does the replacements contained in replacer.py (defaults
-    to false)
+def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep, filename, line_nr, auto_format=True):
+    """
+    format a single Fortran line - imposes white space formatting
+    and inserts linebreaks.
+    Takes a logical Fortran line `f_line` as input as well as the positions
+    of the linebreaks (`linebreak_pos`), and the number of separating whitespace
+    characters before ampersand (`ampersand_sep`).
+    `filename` and `line_nr` just for error messages.
+    The higher `whitespace`, the more white space characters inserted -
+    whitespace = 0, 1, 2 are currently supported.
+    auto formatting can be turned off by setting `auto_format` to False.
+    """
 
-    does not close the input file"""
-    ifile = infile
-    orig_filename = filename
-    tmpfile = None
-    max_pretty_iter = 5
-    n_pretty_iter = 0
+    # define whether to put whitespaces around operators:
+    # 0: comma, semicolon
+    # 1: assignment operators
+    # 2: relational operators
+    # 3: logical operators
+    # 4: arithm. operators plus and minus
+    if whitespace == 0:
+        spacey = [0, 0, 0, 0, 0]
+    elif whitespace == 1:
+        spacey = [1, 1, 1, 1, 0]
+    elif whitespace == 2:
+        spacey = [1, 1, 1, 1, 1]
+    else:
+        raise NotImplementedError("unknown value for whitespace")
 
-    while True:
-        n_pretty_iter += 1
-        hash_prev = md5()
-        hash_prev.update(ifile.read().encode("utf8"))
-        ifile.seek(0)
-        try:
-            if replace:
-                tmpfile2 = tempfile.TemporaryFile(mode="w+")
-                replacer.replaceWords(ifile, tmpfile2, logFile=logFile)
-                tmpfile2.seek(0)
-                if tmpfile:
-                    tmpfile.close()
-                tmpfile = tmpfile2
-                ifile = tmpfile
-            if reformat:  # reformat needs to be done first
-                tmpfile2 = tempfile.TemporaryFile(mode="w+")
-                reformatFortranFile.reformat_ffile(ifile, tmpfile2, logFile=logFile,
-                                                   indent_size=indent, whitespace=whitespace,
-                                                   orig_filename=orig_filename)
-                tmpfile2.seek(0)
-                if tmpfile:
-                    tmpfile.close()
-                tmpfile = tmpfile2
-                ifile = tmpfile
-            if normalize_use:
-                tmpfile2 = tempfile.TemporaryFile(mode="w+")
-                normalizeFortranFile.rewriteFortranFile(ifile, tmpfile2, indent,
-                                                        decl_linelength, decl_offset,
-                                                        logFile, orig_filename=orig_filename)
-                tmpfile2.seek(0)
-                if tmpfile:
-                    tmpfile.close()
-                tmpfile = tmpfile2
-                ifile = tmpfile
-            if upcase_keywords:
-                tmpfile2 = tempfile.TemporaryFile(mode="w+")
-                upcaseKeywords(ifile, tmpfile2, upcase_omp, logFile)
-                tmpfile2.seek(0)
-                if tmpfile:
-                    tmpfile.close()
-                tmpfile = tmpfile2
-                ifile = tmpfile
-            hash_next = md5()
-            hash_next.update(ifile.read().encode("utf8"))
-            ifile.seek(0)
-            if hash_prev.digest() == hash_next.digest():
-                return ifile
-            elif n_pretty_iter >= max_pretty_iter:
-                raise RuntimeError(
-                    "Prettify did not converge in", max_pretty_iter, "steps.")
-        except:
-            logFile.write("error processing file '" + infile.name + "'\n")
-            raise
+    line = f_line
+    line_orig = line
+
+    # rm extraneous whitespace chars, except for declarations
+    line_ftd = ''
+    pos_prev = -1
+    for pos, char in CharFilter(enumerate(line)):
+        is_decl = line[pos:].lstrip().startswith('::') or line[
+            :pos].rstrip().endswith('::')
+        if char == ' ':
+            # remove double spaces
+            if line_ftd and (re.search(r'[\w"]', line_ftd[-1]) or is_decl):
+                line_ftd = line_ftd + char
+        else:
+            if line_ftd and line_ftd[-1] == ' ' and (not re.search(r'[\w"]', char) and not is_decl):
+                line_ftd = line_ftd[:-1]  # remove spaces except between words
+            line_ftd = line_ftd + line[pos_prev + 1:pos + 1]
+        pos_prev = pos
+    line = line_ftd
+
+    pos_eq = []
+    end_of_delim = -1
+    level = 0
+    for pos, char in CharFilter(enumerate(line)):
+        # offset w.r.t. unformatted line
+        offset = len(line_ftd) - len(line)
+
+        # format delimiters
+        what_del_open = None
+        what_del_close = None
+        if pos > end_of_delim:
+            what_del_open = DEL_OPEN_RE.match(
+                line[pos:pos + 2])  # opening delimiter token
+            what_del_close = DEL_CLOSE_RE.match(
+                line[pos:pos + 2])  # closing delimiter token
+
+        if what_del_open or what_del_close:
+            sep1 = 0
+            sep2 = 0
+
+            if what_del_open:
+                delim = what_del_open.group()
+            else:
+                delim = what_del_close.group()
+
+            lhs = line_ftd[:pos + offset]
+            rhs = line_ftd[pos + len(delim) + offset:]
+
+            # format opening delimiters
+            if what_del_open:
+                level += 1  # new scope
+                # add separating whitespace before opening delimiter
+                # with some exceptions:
+                if (not re.search(r"(" + DEL_OPEN_STR + r"|[\w\*/=\+\-:])\s*$", line[:pos], RE_FLAGS) and
+                        not EMPTY_RE.search(line[:pos])) or \
+                        re.search(SOL_STR + r"(\w+\s*:)?(ELSE)?\s*IF\s*$", line[:pos], RE_FLAGS) or \
+                        re.search(SOL_STR + r"(\w+\s*:)?\s*DO\s+WHILE\s*$", line[:pos], RE_FLAGS) or \
+                        re.search(SOL_STR + r"(SELECT)?\s*CASE\s*", line[:pos], RE_FLAGS) or \
+                        re.search(r"\b" + INTR_STMTS_PAR + r"\s*$", line[:pos], RE_FLAGS):
+                    sep1 = 1
+
+            # format closing delimiters
+            else:
+                level += -1  # close scope
+                # add separating whitespace after closing delimiter
+                # with some exceptions:
+                if not re.search(r"^\s*(" + DEL_CLOSE_STR + r"|[,%:/\*])", line[pos + 1:], RE_FLAGS):
+                    sep2 = 1
+                elif re.search(r"^\s*::", line[pos + 1:], RE_FLAGS):
+                    sep2 = len(rhs) - len(rhs.lstrip(' '))
+
+            # where delimiter token ends
+            end_of_delim = pos + len(delim) - 1
+
+            line_ftd = lhs.rstrip(' ') + ' ' * sep1 + \
+                delim + ' ' * sep2 + rhs.lstrip(' ')
+
+        # format commas and semicolons
+        if char == ',' or char == ';':
+            lhs = line_ftd[:pos + offset]
+            rhs = line_ftd[pos + 1 + offset:]
+            line_ftd = lhs.rstrip(' ') + char + ' ' * \
+                spacey[0] + rhs.lstrip(' ')
+            line_ftd = line_ftd.rstrip(' ')
+
+        # format .NOT.
+        if re.match(r"\.NOT\.", line[pos:pos + 5], RE_FLAGS):
+            lhs = line_ftd[:pos + offset]
+            rhs = line_ftd[pos + 5 + offset:]
+            line_ftd = lhs.rstrip(
+                ' ') + line[pos:pos + 5] + ' ' * spacey[3] + rhs.lstrip(' ')
+
+        # strip whitespaces from '=' and prepare assignment operator
+        # formatting
+        if char == '=':
+            if not REL_OP_RE.search(line[pos - 1:pos + 2]):
+                lhs = line_ftd[:pos + offset]
+                rhs = line_ftd[pos + 1 + offset:]
+                line_ftd = lhs.rstrip(' ') + '=' + rhs.lstrip(' ')
+                if not level:  # remember position of assignment operator
+                    pos_eq.append(len(lhs.rstrip(' ')))
+
+    line = line_ftd
+
+    # format assignments
+    for pos in pos_eq:
+        offset = len(line_ftd) - len(line)
+        is_pointer = line[pos + 1] == '>'
+        lhs = line_ftd[:pos + offset]
+        rhs = line_ftd[pos + 1 + is_pointer + offset:]
+        if is_pointer:
+            assign_op = '=>'  # pointer assignment
+        else:
+            assign_op = '='  # assignment
+        line_ftd = lhs.rstrip(
+            ' ') + ' ' * spacey[1] + assign_op + ' ' * spacey[1] + rhs.lstrip(' ')
+        # offset w.r.t. unformatted line
+
+    line = line_ftd
+
+    # for more advanced replacements we separate comments and strings
+    line_parts = []
+    str_end = -1
+    instring = ''
+    for pos, char in enumerate(line):
+        if char == '"' or char == "'":  # skip string
+            if not instring:
+                str_start = pos
+                line_parts.append(line[str_end + 1:str_start])
+                instring = char
+            elif instring == char:
+                str_end = pos
+                line_parts.append(line[str_start:str_end + 1])
+                instring = ''
+        if pos == len(line) - 1:
+            line_parts.append(line[str_end + 1:])
+
+    # Two-sided operators
+    for n_op, lr_re in enumerate(LR_OPS_RE):
+        for pos, part in enumerate(line_parts):
+            if not re.match(r"['\"!]", part, RE_FLAGS):  # exclude comments, strings
+                partsplit = lr_re.split(part)
+                line_parts[pos] = (' ' * spacey[n_op + 2]).join(partsplit)
+
+    line = ''.join(line_parts)
+
+    # format ':' for labels
+    for newre in NEW_SCOPE_RE[0:2]:
+        if newre.search(line) and re.search(SOL_STR + r"\w+\s*:", line):
+            line = ': '.join(_.strip() for _ in line.split(':', 1))
+
+    if not auto_format:
+        line = line_orig
+
+    # Now it gets messy - we need to shift line break positions from original
+    # to reformatted line
+    pos_new = 0
+    pos_old = 0
+    linebreak_pos.sort(reverse=True)
+    linebreak_pos_ftd = []
+    while 1:
+        if pos_new == len(line) or pos_old == len(line_orig):
+            break
+        assert line[pos_new] is line_orig[pos_old]
+        if linebreak_pos and pos_old > linebreak_pos[-1]:
+            linebreak_pos.pop()
+            linebreak_pos_ftd.append(pos_new)
+            continue
+        if line[pos_new] is line_orig[pos_old]:
+            pos_new += 1
+            while pos_new < len(line) and line[pos_new] is ' ':
+                pos_new += 1
+            pos_old += 1
+            while pos_old < len(line_orig) and line_orig[pos_old] is ' ':
+                pos_old += 1
+        elif line[pos_new] is ' ':
+            pos_new += 1
+        elif line_orig[pos_old] is ' ':
+            pos_old += 1
+        else:
+            assert False
+
+    linebreak_pos_ftd.insert(0, 0)
+
+    # We do not insert ampersands in empty lines and comments lines
+    lines_out = [line[l:r].rstrip(' ') + ' ' * ampersand_sep[pos] + '&' * min(1, r - l)
+                 for pos, (l, r) in enumerate(zip(linebreak_pos_ftd[0:-1], linebreak_pos_ftd[1:]))]
+
+    lines_out.append(line[linebreak_pos_ftd[-1]:])
+
+    if level != 0:
+        raise SyntaxError(filename + ':' + str(line_nr) +
+                          ':' + FORTRAN_DEFAULT_ERROR_MESSAGE)
+
+    return lines_out
+
+#=========================================================================
 
 
-def prettfyInplace(fileName, bkDir=None, stdout=False, **kwargs):
-    """Same as prettify, but inplace, replaces only if needed"""
-
-    if fileName == 'stdin':
-        infile = os.tmpfile()
+def reformat_inplace(filename, stdout=False, **kwargs):
+    if filename == 'stdin':
+        infile = tempfile.TemporaryFile(mode='r+')
         infile.write(sys.stdin.read())
     else:
-        infile = open(fileName, 'r')
+        infile = open(filename, 'r')
 
     if stdout:
-        outfile = prettifyFile(infile=infile, filename=fileName, **kwargs)
+        newfile = tempfile.TemporaryFile(mode='r+')
+        reformat_ffile(infile=infile, outfile=newfile, **kwargs)
+        newfile.seek(0)
+        sys.stdout.write(newfile.read())
+        return
+    else:
+        outfile = tempfile.TemporaryFile(mode='r+')
+        reformat_ffile(infile=infile, outfile=outfile, **kwargs)
+        infile.close()
         outfile.seek(0)
-        sys.stdout.write(outfile.read())
-        outfile.close()
-        return
+        newfile = open(filename, 'w')
+        newfile.write(outfile.read())
 
-    if bkDir and not os.path.exists(bkDir):
-        os.mkdir(bkDir)
-    if bkDir and not os.path.isdir(bkDir):
-        raise Error("bk-dir must be a directory, was " + bkDir)
 
-    outfile = prettifyFile(infile=infile, filename=fileName, **kwargs)
-    if (infile == outfile):
-        return
+def reformat_ffile(infile, outfile, logFile=sys.stderr, indent_size=3, whitespace=2, orig_filename=None):
+    """
+    main method to be invoked for formatting a Fortran file.
+    """
+    debug = False
+
+    # don't change original indentation if rel-indents set to 0
+    adopt_indents = indent_size <= 0
+
+    if not orig_filename:
+        orig_filename = infile.name
+
+    indenter = F90Indenter(orig_filename)
+
     infile.seek(0)
-    outfile.seek(0)
-    same = 1
+    req_indents, first_indent, is_f90 = inspect_ffile_format(
+        infile, indent_size)
+    infile.seek(0)
+
+    if not is_f90:
+        logFile.write("*** " + orig_filename +
+                      ": formatter can not handle f77 constructs. ***\n")
+        outfile.write(infile.read())  # does not handle f77 constructs
+        return
+
+    nfl = 0  # fortran line counter
+
+    do_indent = True
+    use_same_line = False
+    stream = InputStream(infile)
+    skip_blank = False
+    in_manual_block = False
 
     while 1:
-        l1 = outfile.readline()
-        l2 = infile.readline()
-        if (l1 != l2):
-            same = 0
+        f_line, comments, lines = stream.nextFortranLine()
+        if not lines:
             break
-        if not l1:
-            break
-    if (not same):
-        bkFile = None
-        if bkDir:
-            bkName = os.path.join(bkDir, os.path.basename(fileName))
-            bName = bkName
-            i = 0
-            while os.path.exists(bkName):
-                i += 1
-                bkName = bName + "." + str(i)
-            bkFile = file(bkName, "w")
-        infile.seek(0)
-        if bkFile:
-            bkFile.write(infile.read())
-            bkFile.close()
-        outfile.seek(0)
-        newFile = file(fileName, 'w')
-        newFile.write(outfile.read())
-        newFile.close()
-    infile.close()
-    outfile.close()
+
+        comment_lines = []
+        for line, comment in zip(lines, comments):
+            has_comment = bool(comment.strip())
+            sep = has_comment and not comment.strip() == line.strip()
+            if line.strip():  # empty lines between linebreaks are ignored
+                comment_lines.append(' ' * sep + comment.strip())
+
+        orig_lines = lines
+        nfl += 1
+
+        auto_align = not any(NO_ALIGN_RE.search(_) for _ in lines)
+        auto_format = not (in_manual_block or any(
+            _.lstrip().startswith('!&') for _ in comment_lines))
+        if not auto_format:
+            auto_align = False
+        if (len(lines)) == 1:
+            valid_directive = True
+            if lines[0].strip().startswith('!&<'):
+                if in_manual_block:
+                    valid_directive = False
+                else:
+                    in_manual_block = True
+            if lines[0].strip().startswith('!&>'):
+                if not in_manual_block:
+                    valid_directive = False
+                else:
+                    in_manual_block = False
+            if not valid_directive:
+                raise SyntaxError(orig_filename + ':' + str(stream.line_nr) +
+                                  ':' + FORMATTER_ERROR_MESSAGE)
+
+        indent = [0] * len(lines)
+
+        is_omp_conditional = False
+
+        if OMP_RE.match(f_line) and not OMP_DIR_RE.match(f_line):
+            # convert OMP-conditional fortran statements into normal fortran statements
+            # but remember to convert them back
+            f_line = OMP_RE.sub('  ', f_line, count=1)
+            lines = [OMP_RE.sub('  ', l, count=1) for l in lines]
+            is_omp_conditional = True
+
+        is_empty = EMPTY_RE.search(f_line)  # blank line or comment only line
+
+        if USE_PARSE_RE.match(f_line):
+            do_indent = False
+        elif OMP_DIR_RE.match(f_line):
+            # move '!$OMP' to line start, otherwise don't format omp directives
+            lines = ['!$OMP' + (len(l) - len(l.lstrip())) *
+                     ' ' + OMP_DIR_RE.sub('', l, count=1) for l in lines]
+            do_indent = False
+        elif lines[0].startswith('#'):  # preprocessor macros
+            assert len(lines) == 1
+            do_indent = False
+        elif EMPTY_RE.search(f_line):  # empty lines including comment lines
+            assert len(lines) == 1
+            if any(comments):
+                if lines[0].startswith('!'):
+                    # don't indent unindented comments
+                    do_indent = False
+                else:
+                    indent[0] = indenter.get_fline_indent()
+            elif skip_blank:
+                continue
+            else:
+                do_indent = False
+
+            lines = [l.strip(' ') for l in lines]
+        else:
+
+            manual_lines_indent = []
+            if not auto_align:
+                manual_lines_indent = [
+                    len(l) - len(l.lstrip(' ').lstrip('&')) for l in lines]
+                manual_lines_indent = [ind - manual_lines_indent[0]
+                                       for ind in manual_lines_indent]
+
+            # ampersands at line starts are remembered (pre_ampersand) and recovered later;
+            # define the desired number of separating whitespaces before ampersand at line end (ampersand_sep):
+            # - insert one whitespace character before ampersand as default formatting
+            # - don't do this if next line starts with an ampersand but remember the original formatting
+            # this "special rule" is necessary since ampersands starting a line can be used to break literals,
+            # so inserting a whitespace in this case leads to invalid syntax.
+
+            pre_ampersand = []
+            ampersand_sep = []
+            sep_next = None
+            for pos, line in enumerate(lines):
+                m = re.search(SOL_STR + r'(&\s*)', line)
+                if m:
+                    pre_ampersand.append(m.group(1))
+                    sep = len(
+                        re.search(r'(\s*)&[\s]*(?:!.*)?$', lines[pos - 1]).group(1))
+                    ampersand_sep.append(sep)
+                else:
+                    pre_ampersand.append('')
+                    if pos > 0:
+                        ampersand_sep.append(1)
+
+            lines = [l.strip(' ').strip('&') for l in lines]
+            f_line = f_line.strip(' ')
+
+            # find linebreak positions
+            linebreak_pos = []
+            for pos, line in enumerate(lines):
+                found = None
+                for char_pos, char in CharFilter(enumerate(line)):
+                    if char == "&":
+                        found = char_pos
+                if found:
+                    linebreak_pos.append(found)
+                elif line.lstrip(' ').startswith('!'):
+                    linebreak_pos.append(0)
+
+            linebreak_pos = [sum(linebreak_pos[0:_ + 1]) -
+                             1 for _ in range(0, len(linebreak_pos))]
+
+            lines = format_single_fline(
+                f_line, whitespace, linebreak_pos, ampersand_sep, orig_filename, stream.line_nr, auto_format)
+
+            # we need to insert comments in formatted lines
+            for pos, (line, comment) in enumerate(zip(lines, comment_lines)):
+                if pos < len(lines) - 1:
+                    has_nl = True
+                else:
+                    has_nl = not re.search(EOL_SC, line)
+                lines[pos] = lines[pos].rstrip(' ') + comment + '\n' * has_nl
+
+            try:
+                rel_indent = req_indents[nfl]
+            except IndexError:
+                rel_indent = 0
+
+            indenter.process_lines_of_fline(
+                f_line, lines, rel_indent, indent_size, stream.line_nr, manual_lines_indent)
+            indent = indenter.get_lines_indent()
+
+            # recover ampersands at line start
+            for pos, line in enumerate(lines):
+                amp_insert = pre_ampersand[pos]
+                if amp_insert:
+                    indent[pos] += -1
+                    lines[pos] = amp_insert + line
+
+        lines = [re.sub(r"\s+$", '\n', l, RE_FLAGS)
+                 for l in lines]  # deleting trailing whitespaces
+
+        for ind, line, orig_line in zip(indent, lines, orig_lines):
+            # get actual line length excluding comment:
+            line_length = 0
+            for line_length, _ in CharFilter(enumerate(line)):
+                pass
+            line_length += 1
+
+            if do_indent:
+                ind_use = ind + first_indent
+            else:
+                if use_same_line:
+                    ind_use = 1
+                else:
+                    ind_use = 0
+            if ind_use + line_length <= 133:  # 132 plus 1 newline char
+                outfile.write('!$' * is_omp_conditional + ' ' *
+                              (ind_use - 2 * is_omp_conditional +
+                               len(line) - len(line.lstrip(' '))) + line.lstrip(' '))
+            elif line_length <= 133:
+                outfile.write('!$' * is_omp_conditional + ' ' *
+                              (133 - 2 * is_omp_conditional -
+                               len(line.lstrip(' '))) + line.lstrip(' '))
+                logFile.write("*** " + orig_filename + ":" + str(stream.line_nr) +
+                              ": auto indentation failed due to 132 chars limit, line should be splitted. ***\n")
+            else:
+                outfile.write(orig_line)
+                logFile.write("*** " + orig_filename + ":" + str(stream.line_nr) +
+                              (": auto indentation and whitespace formatting failed due to 132 chars limit, line should be splitted. ***\n"))
+            if debug:
+                sys.stderr.write(' ' * ind_use + line + '\n')
+
+        # no indentation of semicolon separated lines
+        if re.search(r";\s*$", f_line, RE_FLAGS):
+            do_indent = False
+            use_same_line = True
+        else:
+            do_indent = True
+            use_same_line = False
+
+        # rm subsequent blank lines
+        skip_blank = is_empty and not any(comments)
 
 
 def main(argv=None):
     if argv is None:
         argv = sys.argv
-    defaultsDict = {'upcase': 1, 'normalize-use': 1, 'omp-upcase': 1,
-                    'decl-linelength': 100, 'decl-offset': 50,
-                    'reformat': 1, 'indent': 3, 'whitespace': 1,
-                    'replace': 1,
-                    'stdout': 0,
-                    'do-backup': 0,
-                    'backup-dir': 'preprettify',
-                    'report-errors': 1}
+    defaultsDict = {'indent': 3, 'whitespace': 2,
+                    'stdout': 0, 'report-errors': 1}
 
-    usageDesc = ("usage:\nfprettify" +"""
-    [--[no-]upcase] [--[no-]normalize-use] [--[no-]omp-upcase] [--[no-]replace]
-    [--[no-]reformat] [--indent=3] [--whitespace=1] [--help]
-    [--[no-]stdout] [--[no-]do-backup] [--backup-dir=bk_dir] [--[no-]report-errors] file1 [file2 ...]
+    usageDesc = ("usage:\n" + argv[0] + """
+    [--indent=3] [--whitespace=2]
+    [--[no-]stdout] [--[no-]report-errors] file1 [file2 ...]
+    [--help]
 
     Auto-format F90 source file1, file2, ...:
     If no files are given, stdin is used.
-    --normalize-use
-             Sorting and alignment of variable declarations and USE statements, removal of unused list entries.
-             The line length of declarations is controlled by --decl-linelength=n, the offset of the variable list
-             is controlled by --decl-offset=n.
-    --reformat
              Auto-indentation, auto-alignment and whitespace formatting.
-             Amount of whitespace controlled by --whitespace = 0, 1, 2.
+             Amount of whitespace controlled by --whitespace=0,1,2.
              For indenting with a relative width of n columns specify --indent=n.
              For manual formatting of specific lines:
              - disable auto-alignment by starting line continuation with an ampersand '&'.
              - completely disable reformatting by adding a comment '!&'.
              For manual formatting of a code block, use:
              - start a manually formatted block with a '!&<' comment and close it with a '!&>' comment.
-    --upcase
-             Upcasing fortran keywords.
-    --omp-upcase
-             Upcasing OMP directives.
-    --replace
-             If requested the replacements performed by the replacer.py script are also performed. Note: these replacements are specific to CP2K.
     --stdout
              write output to stdout
-    --[no-]do-backup
-             store backups of original files in backup-dir (--backup-dir option)
     --[no-]report-errors
              report warnings and errors
-
-    Note: for editor integration, use options --no-normalize-use --no-report-errors
 
     Defaults:
     """ + str(defaultsDict))
 
-    replace = None
     if "--help" in argv:
         sys.stderr.write(usageDesc + '\n')
         return(0)
     args = []
     for arg in argv[1:]:
         m = re.match(
-            r"--(no-)?(normalize-use|upcase|omp-upcase|replace|reformat|stdout|do-backup|report-errors)", arg)
+            r"--(no-)?(stdout|report-errors)", arg)
         if m:
             defaultsDict[m.groups()[1]] = not m.groups()[0]
         else:
             m = re.match(
-                r"--(indent|whitespace|decl-linelength|decl-offset)=(.*)", arg)
+                r"--(indent|whitespace)=(.*)", arg)
             if m:
                 defaultsDict[m.groups()[0]] = int(m.groups()[1])
             else:
-                m = re.match(r"--(backup-dir)=(.*)", arg)
-                if m:
-                    path = os.path.abspath(os.path.expanduser(m.groups()[1]))
-                    defaultsDict[m.groups()[0]] = path
+                if arg.startswith('--'):
+                    sys.stderr.write('unknown option ' + arg + '\n')
                 else:
-                    if arg.startswith('--'):
-                        sys.stderr.write('unknown option ' + arg + '\n')
-                    else:
-                        args.append(arg)
-    bkDir = ''
-    if defaultsDict['do-backup']:
-        bkDir = defaultsDict['backup-dir']
-    if bkDir and not os.path.exists(bkDir):
-        # Another parallel running instance might just have created the
-        # dir.
-        try:
-            os.mkdir(bkDir)
-        except:
-            assert(os.path.exists(bkDir))
-    if bkDir and not os.path.isdir(bkDir):
-        sys.stderr.write("bk-dir must be a directory" + '\n')
-        sys.stderr.write(usageDesc + '\n')
-    else:
-        failure = 0
-        if not args:
-            args = ['stdin']
-        for fileName in args:
-            if not os.path.isfile(fileName) and not fileName == 'stdin':
-                sys.stderr.write("file " + fileName + " does not exists!\n")
-            else:
-                stdout = defaultsDict['stdout'] or fileName == 'stdin'
-                try:
-                    logFile = sys.stderr if defaultsDict[
-                        'report-errors'] else open(os.devnull, "w")
-                    prettfyInplace(fileName, bkDir=bkDir,
-                                   stdout=stdout,
-                                   logFile=logFile,
-                                   normalize_use=defaultsDict[
-                                       'normalize-use'],
-                                   decl_linelength=defaultsDict[
-                                       'decl-linelength'],
-                                   decl_offset=defaultsDict[
-                                       'decl-offset'],
-                                   reformat=defaultsDict['reformat'],
-                                   indent=defaultsDict['indent'],
-                                   whitespace=defaultsDict[
-                                       'whitespace'],
-                                   upcase_keywords=defaultsDict[
-                                       'upcase'],
-                                   upcase_omp=defaultsDict[
-                                       'omp-upcase'],
-                                   replace=defaultsDict['replace'])
-                except:
-                    failure += 1
-                    import traceback
-                    sys.stderr.write('-' * 60 + "\n")
-                    traceback.print_exc(file=sys.stderr)
-                    sys.stderr.write('-' * 60 + "\n")
-                    sys.stderr.write(
-                        "Processing file '" + fileName + "'\n")
-        return(failure > 0)
-
-#=========================================================================
+                    args.append(arg)
+    failure = 0
+    if not args:
+        args = ['stdin']
+    for filename in args:
+        if not os.path.isfile(filename) and not filename == 'stdin':
+            sys.stderr.write("file " + filename + " does not exists!\n")
+        else:
+            stdout = defaultsDict['stdout'] or filename == 'stdin'
+            try:
+                logFile = sys.stderr if defaultsDict[
+                    'report-errors'] else open(os.devnull, "w")
+                reformat_inplace(filename,
+                                 stdout=stdout,
+                                 logFile=logFile,
+                                 indent_size=defaultsDict['indent'],
+                                 whitespace=defaultsDict['whitespace'])
+            except:
+                failure += 1
+                import traceback
+                sys.stderr.write('-' * 60 + "\n")
+                traceback.print_exc(file=sys.stderr)
+                sys.stderr.write('-' * 60 + "\n")
+                sys.stderr.write(
+                    "Processing file '" + filename + "'\n")
+    return(failure > 0)
 
 
 def run_selftest():
-    # create temporary file with example code
-    fn = os.path.join(tempfile.gettempdir(), "prettify_selftest.F")
-    ref = selftest.content
-    f = open(fn, "w")
-    f.write(ref)
-    f.close()
+    infile = open('examples/fortran_before.f90', mode='r')
+    outfile = tempfile.NamedTemporaryFile(mode='r+')
+    outfile.write(infile.read())
+    outfile.seek(0)
 
-    # call prettify
-    rtn = main([sys.argv[0], fn])
+    rtn = main([sys.argv[0], outfile.name])
     assert(rtn == 0)
 
-    # check if file was altered
-    result = open(fn).read()
-    for i, (l1, l2) in enumerate(zip(result.split("\n"), ref.split("\n"))):
+    ref = open('examples/fortran_after.f90', 'r').read()
+    result = outfile.read()
+    for i, (l1, l2) in enumerate(zip(result.split('\n'), ref.split('\n'))):
         if(l1 != l2):
             print("Error: Line %d is not invariant." % i)
             print("before: " + l1)
             print("after : " + l2)
-            os.remove(fn)
             return(1)
 
-    os.remove(fn)
     print("Prettify selftest passed.")
     return(0)
 
 #=========================================================================
+
 if(__name__ == '__main__'):
     if(len(sys.argv) == 2 and sys.argv[-1] == "--selftest"):
         rtn = run_selftest()
@@ -374,4 +1025,14 @@ if(__name__ == '__main__'):
         rtn = main()
 
     sys.exit(rtn)
+
+try:
+    any
+except NameError:
+    def any(iterable):
+        for element in iterable:
+            if element:
+                return True
+        return False
+
 # EOF
