@@ -174,8 +174,6 @@ class F90Indenter(object):
         is_new = False
         valid_new = False
 
-        debug = False
-
         for new_n, newre in enumerate(NEW_SCOPE_RE):
             if newre.search(f_line) and not END_SCOPE_RE[new_n].search(f_line):
                 what_new = new_n
@@ -692,7 +690,6 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2, orig_filename=N
     """
     main method to be invoked for formatting a Fortran file.
     """
-    debug = False
 
     # don't change original indentation if rel-indents set to 0
     adopt_indents = indent_size <= 0
@@ -944,7 +941,6 @@ def main(argv=None):
     Defaults:
     """ + str(defaultsDict))
 
-    debug = False
     if "--help" in argv:
         sys.stderr.write(usageDesc + '\n')
         return(0)
