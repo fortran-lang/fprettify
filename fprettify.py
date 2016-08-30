@@ -42,6 +42,8 @@ import sys
 import os
 import tempfile
 from fparse_utils import USE_PARSE_RE, VAR_DECL_RE, InputStream, CharFilter, OMP_RE, OMP_DIR_RE
+import logging
+
 #=========================================================================
 # constants, mostly regular expressions
 
@@ -180,9 +182,7 @@ class F90Indenter(object):
                 is_new = True
                 valid_new = True
                 scopes.append(what_new)
-                if debug:
-                    sys.stderr.write(f_line + '\n')
-                break
+                logging.debug(f_line + '\n')
 
         # check statements that continue scope
         is_con = False
@@ -195,9 +195,7 @@ class F90Indenter(object):
                     what = scopes[-1]
                     if what == what_con:
                         valid_con = True
-                        if debug:
-                            sys.stderr.write(f_line + '\n')
-                        break
+                        logging.debug(f_line + '\n')
 
         # check statements that end scope
         is_end = False
@@ -210,9 +208,7 @@ class F90Indenter(object):
                     what = scopes.pop()
                     if what == what_end:
                         valid_end = True
-                        if debug:
-                            sys.stderr.write(f_line + '\n')
-                        break
+                        logging.debug(f_line + '\n')
 
         # deal with line breaks
         if not manual_lines_indent:
@@ -692,7 +688,7 @@ def reformat_inplace(filename, stdout=False, **kwargs):
         newfile.write(outfile.read())
 
 
-def reformat_ffile(infile, outfile, logFile=sys.stderr, indent_size=3, whitespace=2, orig_filename=None):
+def reformat_ffile(infile, outfile, indent_size=3, whitespace=2, orig_filename=None):
     """
     main method to be invoked for formatting a Fortran file.
     """
@@ -712,9 +708,9 @@ def reformat_ffile(infile, outfile, logFile=sys.stderr, indent_size=3, whitespac
     infile.seek(0)
 
     if not is_f90:
-        logFile.write("*** " + orig_filename +
+        logging.error("*** " + orig_filename +
                       ": formatter can not handle f77 constructs. ***\n")
-        outfile.write(infile.read())  # does not handle f77 constructs
+        outfile.write(infile.read())
         return
 
     nfl = 0  # fortran line counter
@@ -899,14 +895,13 @@ def reformat_ffile(infile, outfile, logFile=sys.stderr, indent_size=3, whitespac
                 outfile.write('!$' * is_omp_conditional + ' ' *
                               (133 - 2 * is_omp_conditional -
                                len(line.lstrip(' '))) + line.lstrip(' '))
-                logFile.write("*** " + orig_filename + ":" + str(stream.line_nr) +
+                logging.warning("*** " + orig_filename + ":" + str(stream.line_nr) +
                               ": auto indentation failed due to 132 chars limit, line should be splitted. ***\n")
             else:
                 outfile.write(orig_line)
-                logFile.write("*** " + orig_filename + ":" + str(stream.line_nr) +
+                logging.warning("*** " + orig_filename + ":" + str(stream.line_nr) +
                               (": auto indentation and whitespace formatting failed due to 132 chars limit, line should be splitted. ***\n"))
-            if debug:
-                sys.stderr.write(' ' * ind_use + line + '\n')
+                logging.debug(' ' * ind_use + line + '\n')
 
         # no indentation of semicolon separated lines
         if re.search(r";\s*$", f_line, RE_FLAGS):
@@ -949,6 +944,7 @@ def main(argv=None):
     Defaults:
     """ + str(defaultsDict))
 
+    debug = False
     if "--help" in argv:
         sys.stderr.write(usageDesc + '\n')
         return(0)
@@ -976,12 +972,21 @@ def main(argv=None):
             sys.stderr.write("file " + filename + " does not exists!\n")
         else:
             stdout = defaultsDict['stdout'] or filename == 'stdin'
+
+            if defaultsDict['report-errors']:
+                if debug:
+                    level=logging.DEBUG
+                else:
+                    level=logging.INFO
+
+            else:
+                level=logging.CRITICAL
+
+            logging.basicConfig(stream=sys.stderr, level=level)
+
             try:
-                logFile = sys.stderr if defaultsDict[
-                    'report-errors'] else open(os.devnull, "w")
                 reformat_inplace(filename,
                                  stdout=stdout,
-                                 logFile=logFile,
                                  indent_size=defaultsDict['indent'],
                                  whitespace=defaultsDict['whitespace'])
             except:
