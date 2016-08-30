@@ -307,8 +307,10 @@ def main(argv=None):
             else:
                 stdout = defaultsDict['stdout'] or fileName == 'stdin'
                 try:
-                    logFile = sys.stderr if defaultsDict[
-                        'report-errors'] else open(os.devnull, "w")
+                    if defaultsDict['report-errors']:
+                        logFile = sys.stderr
+                    else:
+                        logFile = open(os.devnull, "w")
                     prettfyInplace(fileName, bkDir=bkDir,
                                    stdout=stdout,
                                    logFile=logFile,
