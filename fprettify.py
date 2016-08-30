@@ -996,36 +996,10 @@ def main(argv=None):
     return(failure > 0)
 
 
-def run_selftest():
-    infile = open('examples/fortran_before.f90', mode='r')
-    outfile = tempfile.NamedTemporaryFile(mode='r+')
-    outfile.write(infile.read())
-    outfile.seek(0)
-
-    rtn = main([sys.argv[0], outfile.name])
-    assert(rtn == 0)
-
-    ref = open('examples/fortran_after.f90', 'r').read()
-    result = outfile.read()
-    for i, (l1, l2) in enumerate(zip(result.split('\n'), ref.split('\n'))):
-        if(l1 != l2):
-            print("Error: Line %d is not invariant." % i)
-            print("before: " + l1)
-            print("after : " + l2)
-            return(1)
-
-    print("Prettify selftest passed.")
-    return(0)
-
 #=========================================================================
 
-if(__name__ == '__main__'):
-    if(len(sys.argv) == 2 and sys.argv[-1] == "--selftest"):
-        rtn = run_selftest()
-    else:
-        rtn = main()
-
-    sys.exit(rtn)
+if __name__ == '__main__' :
+    sys.exit(main())
 
 try:
     any
