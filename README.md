@@ -24,6 +24,7 @@ Have a look at examples/fortran_after.f90 to see reformatted Fortran code.
 
 ## Installation
 
+Requires Python Setuptools.
 ```
 ./setup.py install
 ```
