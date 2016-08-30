@@ -675,13 +675,13 @@ def reformat_inplace(filename, stdout=False, **kwargs):
 
     if stdout:
         newfile = tempfile.TemporaryFile(mode='r+')
-        reformat_ffile(infile=infile, outfile=newfile, **kwargs)
+        reformat_ffile(infile=infile, outfile=newfile, orig_filename=filename, **kwargs)
         newfile.seek(0)
         sys.stdout.write(newfile.read())
         return
     else:
         outfile = tempfile.TemporaryFile(mode='r+')
-        reformat_ffile(infile=infile, outfile=outfile, **kwargs)
+        reformat_ffile(infile=infile, outfile=outfile, orig_filename=filename, **kwargs)
         infile.close()
         outfile.seek(0)
         newfile = open(filename, 'w')
