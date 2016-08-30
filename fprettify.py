@@ -162,6 +162,7 @@ class F90Indenter(object):
         current Fortran line, and `rel_ind_con` for line continuation. By default line continuations are
         auto-aligned by F90Aligner - manual offsets can be set by manual_lines_indents.
         """
+        logger = logging.getLogger('prettify-logger')
 
         self._line_indents = [0] * len(lines)
         br_indent_list = [0] * len(lines)
@@ -180,7 +181,7 @@ class F90Indenter(object):
                 is_new = True
                 valid_new = True
                 scopes.append(what_new)
-                logging.debug(f_line + '\n')
+                logger.debug(f_line + '\n')
 
         # check statements that continue scope
         is_con = False
@@ -193,7 +194,7 @@ class F90Indenter(object):
                     what = scopes[-1]
                     if what == what_con:
                         valid_con = True
-                        logging.debug(f_line + '\n')
+                        logger.debug(f_line + '\n')
 
         # check statements that end scope
         is_end = False
@@ -206,7 +207,7 @@ class F90Indenter(object):
                     what = scopes.pop()
                     if what == what_end:
                         valid_end = True
-                        logging.debug(f_line + '\n')
+                        logger.debug(f_line + '\n')
 
         # deal with line breaks
         if not manual_lines_indent:
@@ -673,13 +674,15 @@ def reformat_inplace(filename, stdout=False, **kwargs):
 
     if stdout:
         newfile = tempfile.TemporaryFile(mode='r+')
-        reformat_ffile(infile=infile, outfile=newfile, orig_filename=filename, **kwargs)
+        reformat_ffile(infile=infile, outfile=newfile,
+                       orig_filename=filename, **kwargs)
         newfile.seek(0)
         sys.stdout.write(newfile.read())
         return
     else:
         outfile = tempfile.TemporaryFile(mode='r+')
-        reformat_ffile(infile=infile, outfile=outfile, orig_filename=filename, **kwargs)
+        reformat_ffile(infile=infile, outfile=outfile,
+                       orig_filename=filename, **kwargs)
         infile.close()
         outfile.seek(0)
         newfile = open(filename, 'w')
@@ -690,6 +693,7 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2, orig_filename=N
     """
     main method to be invoked for formatting a Fortran file.
     """
+    logger = logging.getLogger('prettify-logger')
 
     # don't change original indentation if rel-indents set to 0
     adopt_indents = indent_size <= 0
@@ -705,8 +709,8 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2, orig_filename=N
     infile.seek(0)
 
     if not is_f90:
-        logging.error("*** " + orig_filename +
-                      ": formatter can not handle f77 constructs. ***\n")
+        logger.error(orig_filename +
+                     ": formatter can not handle f77 constructs.\n")
         outfile.write(infile.read())
         return
 
@@ -892,13 +896,13 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2, orig_filename=N
                 outfile.write('!$' * is_omp_conditional + ' ' *
                               (133 - 2 * is_omp_conditional -
                                len(line.lstrip(' '))) + line.lstrip(' '))
-                logging.warning("*** " + orig_filename + ":" + str(stream.line_nr) +
-                              ": auto indentation failed due to 132 chars limit, line should be splitted. ***\n")
+                logger.warning(orig_filename + ":" + str(stream.line_nr) +
+                               ": auto indentation failed due to 132 chars limit, line should be splitted.\n")
             else:
                 outfile.write(orig_line)
-                logging.warning("*** " + orig_filename + ":" + str(stream.line_nr) +
-                              (": auto indentation and whitespace formatting failed due to 132 chars limit, line should be splitted. ***\n"))
-                logging.debug(' ' * ind_use + line + '\n')
+                logger.warning(orig_filename + ":" + str(stream.line_nr) +
+                               (": auto indentation and whitespace formatting failed due to 132 chars limit, line should be splitted.\n"))
+                logger.debug(' ' * ind_use + line + '\n')
 
         # no indentation of semicolon separated lines
         if re.search(r";\s*$", f_line, RE_FLAGS):
@@ -916,12 +920,14 @@ def main(argv=None):
     if argv is None:
         argv = sys.argv
     defaultsDict = {'indent': 3, 'whitespace': 2,
-                    'stdout': 0, 'report-errors': 1}
+                    'stdout': 0, 'report-errors': 1,
+                    'debug': 0}
 
     usageDesc = ("usage:\n" + argv[0] + """
     [--indent=3] [--whitespace=2]
     [--[no-]stdout] [--[no-]report-errors] file1 [file2 ...]
     [--help]
+    [--[no-]debug]
 
     Auto-format F90 source file1, file2, ...:
     If no files are given, stdin is used.
@@ -947,7 +953,7 @@ def main(argv=None):
     args = []
     for arg in argv[1:]:
         m = re.match(
-            r"--(no-)?(stdout|report-errors)", arg)
+            r"--(no-)?(stdout|report-errors|debug)", arg)
         if m:
             defaultsDict[m.groups()[1]] = not m.groups()[0]
         else:
@@ -970,15 +976,21 @@ def main(argv=None):
             stdout = defaultsDict['stdout'] or filename == 'stdin'
 
             if defaultsDict['report-errors']:
-                if debug:
-                    level=logging.DEBUG
+                if defaultsDict['debug']:
+                    level = logging.DEBUG
                 else:
-                    level=logging.INFO
+                    level = logging.INFO
 
             else:
-                level=logging.CRITICAL
+                level = logging.CRITICAL
 
-            logging.basicConfig(stream=sys.stderr, level=level)
+            logger = logging.getLogger('prettify-logger')
+            logger.setLevel(level)
+            sh = logging.StreamHandler()
+            sh.setLevel(level)
+            formatter = logging.Formatter('%(levelname)s - %(message)s')
+            sh.setFormatter(formatter)
+            logger.addHandler(sh)
 
             try:
                 reformat_inplace(filename,
@@ -998,7 +1010,7 @@ def main(argv=None):
 
 #=========================================================================
 
-if __name__ == '__main__' :
+if __name__ == '__main__':
     sys.exit(main())
 
 try:
