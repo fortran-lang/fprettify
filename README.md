@@ -25,7 +25,7 @@ Have a look at examples/fortran_after.f90 to see reformatted Fortran code.
 ## Installation
 
 ```
-./setup install
+./setup.py install
 ```
 
 For local installation, use `--user` option.
