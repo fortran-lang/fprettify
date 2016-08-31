@@ -557,7 +557,7 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
                 if ((not re.search((r"(" + DEL_OPEN_STR +
                                     r"|[\w\*/=\+\-:])\s*$"),
                                    line[:pos], RE_FLAGS) and
-                        not EMPTY_RE.search(line[:pos])) or
+                     not EMPTY_RE.search(line[:pos])) or
                         re.search(SOL_STR + r"(\w+\s*:)?(ELSE)?\s*IF\s*$",
                                   line[:pos], RE_FLAGS) or
                         re.search(SOL_STR + r"(\w+\s*:)?\s*DO\s+WHILE\s*$",
@@ -1010,7 +1010,7 @@ def main(argv=None):
 
     if "--help" in argv:
         sys.stderr.write(usageDesc + '\n')
-        return(0)
+        return 0
     args = []
     for arg in argv[1:]:
         m = re.match(
@@ -1032,7 +1032,7 @@ def main(argv=None):
         args = ['stdin']
 
     for filename in args:
-        if not os.path.isfile(filename) and not filename == 'stdin':
+        if not os.path.isfile(filename) and filename != 'stdin':
             sys.stderr.write("file " + filename + " does not exists!\n")
         else:
             stdout = defaultsDict['stdout'] or filename == 'stdin'
@@ -1065,9 +1065,8 @@ def main(argv=None):
                 sys.stderr.write('-' * 60 + "\n")
                 traceback.print_exc(file=sys.stderr)
                 sys.stderr.write('-' * 60 + "\n")
-                sys.stderr.write(
-                    "Processing file '" + filename + "'\n")
-    return(failure > 0)
+                sys.stderr.write("Processing file '" + filename + "'\n")
+    return failure > 0
 
 
 if __name__ == '__main__':
