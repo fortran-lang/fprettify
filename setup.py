@@ -3,7 +3,7 @@
 from setuptools import setup
 
 setup(name='fprettify',
-      version='v0.1',
+      version='0.1',
       description='auto-formatter for modern fortran source code',
       author='Patrick Seewald, Ole Schuett, Mohamed Fawzi',
       license='GPL',
