@@ -1,4 +1,4 @@
-# fprettify
+# fprettify [![Build Status](https://travis-ci.org/pseewald/fprettify.svg?branch=master)](https://travis-ci.org/pseewald/fprettify)
 
 fprettify is an auto-formatter for modern Fortran code that imposes strict whitespace formatting.
 
