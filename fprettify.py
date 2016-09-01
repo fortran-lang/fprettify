@@ -42,13 +42,12 @@ import re
 import sys
 import os
 import tempfile
+import logging
 from fparse_utils import (USE_PARSE_RE, VAR_DECL_RE, InputStream,
                           CharFilter, OMP_RE, OMP_DIR_RE)
-import logging
 
 
 # PY2/PY3 compat wrappers:
-
 try:
     any
 except NameError:
@@ -162,6 +161,7 @@ END_SCOPE_RE = [ENDIF_RE, ENDDO_RE, ENDSEL_RE, ENDSUBR_RE,
 
 class FortranSyntaxError(Exception):
     """Exception for unparseable Fortran code"""
+
     def __init__(self, filename, line_nr,
                  msg=("Syntax error - "
                       "this formatter can not handle invalid Fortran files.")):
@@ -450,7 +450,7 @@ def inspect_ffile_format(infile, indent_size):
     prev_offset = 0
     first_indent = -1
     while 1:
-        f_line, _, lines = stream.nextFortranLine()
+        f_line, _, lines = stream.next_fortran_line()
         if not lines:
             break
 
@@ -515,7 +515,7 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
                 line_ftd = line_ftd + char
         else:
             if (line_ftd and line_ftd[-1] == ' ' and
-               (not re.search(r'[\w"]', char) and not is_decl)):
+                    (not re.search(r'[\w"]', char) and not is_decl)):
                 line_ftd = line_ftd[:-1]  # remove spaces except between words
             line_ftd = line_ftd + line[pos_prev + 1:pos + 1]
         pos_prev = pos
@@ -710,6 +710,9 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
 
 
 def reformat_inplace(filename, stdout=False, **kwargs):
+    """
+    reformat a file in place.
+    """
     if filename == 'stdin':
         infile = tempfile.TemporaryFile(mode='r+')
         infile.write(sys.stdin.read())
@@ -765,7 +768,7 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
     in_manual_block = False
 
     while 1:
-        f_line, comments, lines = stream.nextFortranLine()
+        f_line, comments, lines = stream.next_fortran_line()
         if not lines:
             break
 
@@ -861,9 +864,9 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
             pre_ampersand = []
             ampersand_sep = []
             for pos, line in enumerate(lines):
-                m = re.search(SOL_STR + r'(&\s*)', line)
-                if m:
-                    pre_ampersand.append(m.group(1))
+                match = re.search(SOL_STR + r'(&\s*)', line)
+                if match:
+                    pre_ampersand.append(match.group(1))
                     sep = len(re.search(r'(\s*)&[\s]*(?:!.*)?$',
                                         lines[pos - 1]).group(1))
                     ampersand_sep.append(sep)
@@ -972,11 +975,11 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
 def main(argv=None):
     if argv is None:
         argv = sys.argv
-    defaultsDict = {'indent': 3, 'whitespace': 2,
-                    'stdout': 0, 'report-errors': 1,
-                    'debug': 0}
+    defaults_dict = {'indent': 3, 'whitespace': 2,
+                     'stdout': 0, 'report-errors': 1,
+                     'debug': 0}
 
-    usageDesc = ("usage:\n" + argv[0] + """
+    usage_desc = ("usage:\n" + argv[0] + """
     [--indent=3] [--whitespace=2]
     [--[no-]stdout] [--[no-]report-errors] file1 [file2 ...]
     [--help]
@@ -1006,22 +1009,22 @@ def main(argv=None):
              report warnings and errors
 
     Defaults:
-    """ + str(defaultsDict))
+    """ + str(defaults_dict))
 
     if "--help" in argv:
-        sys.stderr.write(usageDesc + '\n')
+        sys.stderr.write(usage_desc + '\n')
         return 0
     args = []
     for arg in argv[1:]:
-        m = re.match(
+        match = re.match(
             r"--(no-)?(stdout|report-errors|debug)", arg)
-        if m:
-            defaultsDict[m.groups()[1]] = not m.groups()[0]
+        if match:
+            defaults_dict[match.groups()[1]] = not match.groups()[0]
         else:
-            m = re.match(
+            match = re.match(
                 r"--(indent|whitespace)=(.*)", arg)
-            if m:
-                defaultsDict[m.groups()[0]] = int(m.groups()[1])
+            if match:
+                defaults_dict[match.groups()[0]] = int(match.groups()[1])
             else:
                 if arg.startswith('--'):
                     sys.stderr.write('unknown option ' + arg + '\n')
@@ -1035,10 +1038,10 @@ def main(argv=None):
         if not os.path.isfile(filename) and filename != 'stdin':
             sys.stderr.write("file " + filename + " does not exists!\n")
         else:
-            stdout = defaultsDict['stdout'] or filename == 'stdin'
+            stdout = defaults_dict['stdout'] or filename == 'stdin'
 
-            if defaultsDict['report-errors']:
-                if defaultsDict['debug']:
+            if defaults_dict['report-errors']:
+                if defaults_dict['debug']:
                     level = logging.DEBUG
                 else:
                     level = logging.INFO
@@ -1048,17 +1051,17 @@ def main(argv=None):
 
             logger = logging.getLogger('prettify-logger')
             logger.setLevel(level)
-            sh = logging.StreamHandler()
-            sh.setLevel(level)
+            stream_handler = logging.StreamHandler()
+            stream_handler.setLevel(level)
             formatter = logging.Formatter('%(levelname)s - %(message)s')
-            sh.setFormatter(formatter)
-            logger.addHandler(sh)
+            stream_handler.setFormatter(formatter)
+            logger.addHandler(stream_handler)
 
             try:
                 reformat_inplace(filename,
                                  stdout=stdout,
-                                 indent_size=defaultsDict['indent'],
-                                 whitespace=defaultsDict['whitespace'])
+                                 indent_size=defaults_dict['indent'],
+                                 whitespace=defaults_dict['whitespace'])
             except:
                 failure += 1
                 import traceback
