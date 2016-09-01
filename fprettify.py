@@ -241,25 +241,23 @@ class F90Indenter(object):
 
         if is_new:
             if not valid_new:
-                raise FPrettifyParseError(filename, line_nr)
-            else:
-                line_indents = [ind + indents[-1] for ind in line_indents]
-                old_ind = indents[-1]
+                logger.debug('%s:%d invalid new statement', filename, line_nr)
+            line_indents = [ind + indents[-1] for ind in line_indents]
+            old_ind = indents[-1]
 
-                # prevent originally unindented do/if blocks
-                # from being indented:
-                rel_ind += old_ind
-                indents.append(rel_ind)
+            # prevent originally unindented do/if blocks
+            # from being indented:
+            rel_ind += old_ind
+            indents.append(rel_ind)
 
         elif is_con:
             if not valid_con:
-                raise FPrettifyParseError(filename, line_nr)
-            else:
-                line_indents = [ind + indents[-2] for ind in line_indents]
+                logger.debug('%s:%d invalid continue statement', filename, line_nr)
+            line_indents = [ind + indents[-2] for ind in line_indents]
 
         elif is_end:
             if not valid_end:
-                raise FPrettifyParseError(filename, line_nr)
+                logger.debug('%s:%d invalid end statement', filename, line_nr)
             else:
                 line_indents = [ind + indents[-2] for ind in line_indents]
                 indents.pop()
@@ -327,7 +325,8 @@ class F90Aligner(object):
                 self._line_indents.append(self._br_indent_list[-1])
 
         if len(self._br_indent_list) > 2 or self._level:
-            raise FPrettifyParseError(self._filename, self._line_nr)
+            logger = logging.getLogger('prettify-logger')
+            logger.debug('%s:%d unpaired bracket delimiters', self._filename, self._line_nr)
 
     def get_lines_indent(self):
         """
@@ -336,6 +335,8 @@ class F90Aligner(object):
         return self._line_indents
 
     def __align_line_continuations(self, line, is_decl, indent_size, line_nr):
+
+        logger = logging.getLogger('prettify-logger')
 
         indent_list = self._br_indent_list
         level = self._level
@@ -373,10 +374,11 @@ class F90Aligner(object):
             if not instring and what_del_close:
                 what_del_close = what_del_close.group()
                 end_of_delim = pos + len(what_del_close) - 1
-                level += -1
-                indent_list.pop()
-                if level < 0:
-                    raise FPrettifyParseError(filename, line_nr)
+                if level > 0:
+                    level += -1
+                    indent_list.pop()
+                else:
+                    logger.debug('%s:%d unpaired bracket delimiters', filename, line_nr)
 
                 if pos_ldelim:
                     pos_ldelim.pop()
@@ -389,7 +391,7 @@ class F90Aligner(object):
                     if what_del_open == r"[":
                         valid = what_del_close == r"]"
                     if not valid:
-                        raise FPrettifyParseError(filename, line_nr)
+                        logger.debug('%s:%d unpaired bracket delimiters', filename, line_nr)
                 else:
                     pos_rdelim.append(pos)
                     rdelim.append(what_del_close)
@@ -483,6 +485,9 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
     # 2: relational operators
     # 3: logical operators
     # 4: arithm. operators plus and minus
+
+    logger = logging.getLogger('prettify-logger')
+
     if whitespace == 0:
         spacey = [0, 0, 0, 0, 0]
     elif whitespace == 1:
@@ -546,6 +551,7 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
                 level += 1  # new scope
                 # add separating whitespace before opening delimiter
                 # with some exceptions:
+                # FIXME: duplication of regex
                 if ((not re.search((r"(" + DEL_OPEN_STR +
                                     r"|[\w\*/=\+\-:])\s*$"),
                                    line[:pos], RE_FLAGS) and
@@ -562,7 +568,10 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
 
             # format closing delimiters
             else:
-                level += -1  # close scope
+                if level > 0:
+                    level += -1  # close scope
+                else:
+                    logger.debug('%s:%d unpaired bracket delimiters', filename, line_nr)
                 # add separating whitespace after closing delimiter
                 # with some exceptions:
                 if not re.search(r"^\s*(" + DEL_CLOSE_STR + r"|[,%:/\*])",
@@ -696,7 +705,7 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
     lines_out.append(line[linebreak_pos_ftd[-1]:])
 
     if level != 0:
-        raise FPrettifyParseError(filename, line_nr)
+        logger.debug('%s:%d unpaired bracket delimiters', filename, line_nr)
 
     return lines_out
 
