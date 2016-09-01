@@ -101,7 +101,8 @@ MOD_RE = re.compile(SOL_STR + r"MODULE\s+\w+" + EOL_STR, RE_FLAGS)
 ENDMOD_RE = re.compile(SOL_STR + r"END\s*MODULE(\s+\w+)?" + EOL_STR, RE_FLAGS)
 
 TYPE_RE = re.compile(
-    SOL_STR + r"TYPE(\s*,\s*BIND\s*\(\s*C\s*\))?(\s*::\s*|\s+)\w+" + EOL_STR,
+    SOL_STR +
+    r"TYPE(\s*,\s*(BIND\s*\(\s*C\s*\)|EXTENDS\s*\(.*\)))?(\s*::\s*|\s+)\w+" + EOL_STR,
     RE_FLAGS)
 ENDTYPE_RE = re.compile(SOL_STR + r"END\s*TYPE(\s+\w+)?" + EOL_STR, RE_FLAGS)
 
@@ -115,6 +116,11 @@ ENDINTERFACE_RE = re.compile(
     SOL_STR + r"END\s*INTERFACE(\s+\w+)?" + EOL_STR, RE_FLAGS)
 
 CONTAINS_RE = re.compile(SOL_STR + r"CONTAINS" + EOL_STR, RE_FLAGS)
+
+ENUM_RE = re.compile(
+    SOL_STR + r"ENUM(\s*,\s*(BIND\s*\(\s*C\s*\)))?(\s*::\s*|\s+)\w+" + EOL_STR,
+    RE_FLAGS)
+ENDENUM_RE = re.compile(SOL_STR + r"END\s*ENUM(\s+\w+)?" + EOL_STR, RE_FLAGS)
 
 PUBLIC_RE = re.compile(SOL_STR + r"PUBLIC\s*::", RE_FLAGS)
 
@@ -152,11 +158,11 @@ NO_ALIGN_RE = re.compile(SOL_STR + r"&\s*[^\s*]+")
 
 # combine regex that define subunits
 NEW_SCOPE_RE = [IF_RE, DO_RE, SELCASE_RE, SUBR_RE,
-                FCT_RE, MOD_RE, PROG_RE, INTERFACE_RE, TYPE_RE]
+                FCT_RE, MOD_RE, PROG_RE, INTERFACE_RE, TYPE_RE, ENUM_RE]
 CONTINUE_SCOPE_RE = [ELSE_RE, None, CASE_RE, CONTAINS_RE,
-                     CONTAINS_RE, CONTAINS_RE, CONTAINS_RE, None, None]
+                     CONTAINS_RE, CONTAINS_RE, CONTAINS_RE, None, CONTAINS_RE, None]
 END_SCOPE_RE = [ENDIF_RE, ENDDO_RE, ENDSEL_RE, ENDSUBR_RE,
-                ENDFCT_RE, ENDMOD_RE, ENDPROG_RE, ENDINTERFACE_RE, ENDTYPE_RE]
+                ENDFCT_RE, ENDMOD_RE, ENDPROG_RE, ENDINTERFACE_RE, ENDTYPE_RE, ENDENUM_RE]
 
 
 class F90Indenter(object):
@@ -252,7 +258,8 @@ class F90Indenter(object):
 
         elif is_con:
             if not valid_con:
-                logger.debug('%s:%d invalid continue statement', filename, line_nr)
+                logger.debug('%s:%d invalid continue statement',
+                             filename, line_nr)
             line_indents = [ind + indents[-2] for ind in line_indents]
 
         elif is_end:
@@ -326,7 +333,8 @@ class F90Aligner(object):
 
         if len(self._br_indent_list) > 2 or self._level:
             logger = logging.getLogger('prettify-logger')
-            logger.debug('%s:%d unpaired bracket delimiters', self._filename, self._line_nr)
+            logger.debug('%s:%d unpaired bracket delimiters',
+                         self._filename, self._line_nr)
 
     def get_lines_indent(self):
         """
@@ -378,7 +386,8 @@ class F90Aligner(object):
                     level += -1
                     indent_list.pop()
                 else:
-                    logger.debug('%s:%d unpaired bracket delimiters', filename, line_nr)
+                    logger.debug(
+                        '%s:%d unpaired bracket delimiters', filename, line_nr)
 
                 if pos_ldelim:
                     pos_ldelim.pop()
@@ -391,7 +400,8 @@ class F90Aligner(object):
                     if what_del_open == r"[":
                         valid = what_del_close == r"]"
                     if not valid:
-                        logger.debug('%s:%d unpaired bracket delimiters', filename, line_nr)
+                        logger.debug(
+                            '%s:%d unpaired bracket delimiters', filename, line_nr)
                 else:
                     pos_rdelim.append(pos)
                     rdelim.append(what_del_close)
@@ -571,7 +581,8 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
                 if level > 0:
                     level += -1  # close scope
                 else:
-                    logger.debug('%s:%d unpaired bracket delimiters', filename, line_nr)
+                    logger.debug(
+                        '%s:%d unpaired bracket delimiters', filename, line_nr)
                 # add separating whitespace after closing delimiter
                 # with some exceptions:
                 if not re.search(r"^\s*(" + DEL_CLOSE_STR + r"|[,%:/\*])",
