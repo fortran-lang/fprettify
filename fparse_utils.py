@@ -9,10 +9,21 @@ USE_PARSE_RE = re.compile(
     flags=re.IGNORECASE)
 
 # FIXME bad ass regex!
-VAR_DECL_RE = re.compile(r" *(?P<type>integer(?: *\* *[0-9]+)?|logical|character(?: *\* *[0-9]+)?|real(?: *\* *[0-9]+)?|complex(?: *\* *[0-9]+)?|type) *(?P<parameters>\((?:[^()]+|\((?:[^()]+|\([^()]*\))*\))*\))? *(?P<attributes>(?: *, *[a-zA-Z_0-9]+(?: *\((?:[^()]+|\((?:[^()]+|\([^()]*\))*\))*\))?)+)? *(?P<dpnt>::)?(?P<vars>[^\n]+)\n?", re.IGNORECASE)
+VAR_DECL_RE = re.compile(
+    r" *(?P<type>integer(?: *\* *[0-9]+)?|logical|character(?: *\* *[0-9]+)?|real(?: *\* *[0-9]+)?|complex(?: *\* *[0-9]+)?|type) *(?P<parameters>\((?:[^()]+|\((?:[^()]+|\([^()]*\))*\))*\))? *(?P<attributes>(?: *, *[a-zA-Z_0-9]+(?: *\((?:[^()]+|\((?:[^()]+|\([^()]*\))*\))*\))?)+)? *(?P<dpnt>::)?(?P<vars>[^\n]+)\n?", re.IGNORECASE)
 
 OMP_DIR_RE = re.compile(r"^\s*(!\$omp)", re.IGNORECASE)
 OMP_RE = re.compile(r"^\s*(!\$)", re.IGNORECASE)
+
+
+class FPrettifyParseError(Exception):
+    """Exception for unparseable Fortran code"""
+
+    def __init__(self, filename, line_nr,
+                 msg=("Parser error - "
+                      "possibly due to incorrect Fortran syntax.")):
+        super(FPrettifyParseError, self).__init__('{}:{}:{}'.format(
+            filename, line_nr, msg))
 
 
 class CharFilter(object):
@@ -70,10 +81,13 @@ class InputStream(object):
     Class to read logical Fortran lines from a Fortran file.
     """
 
-    def __init__(self, infile):
+    def __init__(self, infile, orig_filename=None):
+        if not orig_filename:
+            orig_filename = infile.name
         self.line_buffer = deque([])
         self.infile = infile
         self.line_nr = 0
+        self.filename = orig_filename
 
     def next_fortran_line(self):
         """Reads a group of connected lines (connected with &, separated by newline or semicolon)
@@ -126,11 +140,12 @@ class InputStream(object):
                 # FIXME: does not handle line continuation of
                 # omp conditional fortran statements
                 # starting with an ampersand.
-                raise SyntaxError("unexpected line format:" + repr(line))
+                raise FPrettifyParseError(
+                    self.filename, self.line_nr, "unexpected line format:")
             if match.group("preprocessor"):
                 if len(lines) > 1:
-                    raise SyntaxError(
-                        "continuation to a preprocessor line not supported " + repr(line))
+                    raise FPrettifyParseError(self.filename, self.line_nr,
+                                              "continuation to a preprocessor line not supported")
                 comments.append(line)
                 break
             core_att = match.group("core")
@@ -151,5 +166,3 @@ class InputStream(object):
             if not continuation:
                 break
         return (joined_line, comments, lines)
-
-

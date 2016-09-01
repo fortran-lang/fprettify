@@ -43,8 +43,8 @@ import sys
 import os
 import tempfile
 import logging
-from fparse_utils import (USE_PARSE_RE, VAR_DECL_RE, InputStream,
-                          CharFilter, OMP_RE, OMP_DIR_RE)
+from fparse_utils import (USE_PARSE_RE, VAR_DECL_RE, OMP_RE, OMP_DIR_RE,
+                          InputStream, CharFilter, FPrettifyParseError)
 
 
 # PY2/PY3 compat wrappers:
@@ -159,16 +159,6 @@ END_SCOPE_RE = [ENDIF_RE, ENDDO_RE, ENDSEL_RE, ENDSUBR_RE,
                 ENDFCT_RE, ENDMOD_RE, ENDPROG_RE, ENDINTERFACE_RE, ENDTYPE_RE]
 
 
-class FortranSyntaxError(Exception):
-    """Exception for unparseable Fortran code"""
-
-    def __init__(self, filename, line_nr,
-                 msg=("Syntax error - "
-                      "this formatter can not handle invalid Fortran files.")):
-        super(FortranSyntaxError, self).__init__('{}:{}:{}'.format(
-            filename, line_nr, msg))
-
-
 class F90Indenter(object):
     """
     Parses encapsulation of subunits / scopes line by line
@@ -251,7 +241,7 @@ class F90Indenter(object):
 
         if is_new:
             if not valid_new:
-                raise FortranSyntaxError(filename, line_nr)
+                raise FPrettifyParseError(filename, line_nr)
             else:
                 line_indents = [ind + indents[-1] for ind in line_indents]
                 old_ind = indents[-1]
@@ -263,13 +253,13 @@ class F90Indenter(object):
 
         elif is_con:
             if not valid_con:
-                raise FortranSyntaxError(filename, line_nr)
+                raise FPrettifyParseError(filename, line_nr)
             else:
                 line_indents = [ind + indents[-2] for ind in line_indents]
 
         elif is_end:
             if not valid_end:
-                raise FortranSyntaxError(filename, line_nr)
+                raise FPrettifyParseError(filename, line_nr)
             else:
                 line_indents = [ind + indents[-2] for ind in line_indents]
                 indents.pop()
@@ -337,7 +327,7 @@ class F90Aligner(object):
                 self._line_indents.append(self._br_indent_list[-1])
 
         if len(self._br_indent_list) > 2 or self._level:
-            raise SyntaxError(self._filename, self._line_nr)
+            raise FPrettifyParseError(self._filename, self._line_nr)
 
     def get_lines_indent(self):
         """
@@ -386,7 +376,7 @@ class F90Aligner(object):
                 level += -1
                 indent_list.pop()
                 if level < 0:
-                    raise FortranSyntaxError(filename, line_nr)
+                    raise FPrettifyParseError(filename, line_nr)
 
                 if pos_ldelim:
                     pos_ldelim.pop()
@@ -399,7 +389,7 @@ class F90Aligner(object):
                     if what_del_open == r"[":
                         valid = what_del_close == r"]"
                     if not valid:
-                        raise FortranSyntaxError(filename, line_nr)
+                        raise FPrettifyParseError(filename, line_nr)
                 else:
                     pos_rdelim.append(pos)
                     rdelim.append(what_del_close)
@@ -408,7 +398,7 @@ class F90Aligner(object):
                     if not REL_OP_RE.match(
                             line[max(0, pos - 1):min(pos + 2, len(line))]):
                         if pos_eq > 0:
-                            raise FortranSyntaxError(filename, line_nr)
+                            raise FPrettifyParseError(filename, line_nr)
                         is_pointer = line[pos + 1] == '>'
                         pos_eq = pos + 1
                         # don't align if assignment operator directly before
@@ -435,18 +425,20 @@ class F90Aligner(object):
         self._level = level
 
 
-def inspect_ffile_format(infile, indent_size):
+def inspect_ffile_format(infile, indent_size, orig_filename=None):
     """
     Determine indentation by inspecting original Fortran file
     (mainly for finding aligned blocks of DO/IF statements).
     Also check if it has f77 constructs.
     """
+    if not orig_filename:
+        orig_filename = infile.name
 
     adopt = indent_size <= 0
 
     is_f90 = True
     indents = []
-    stream = InputStream(infile)
+    stream = InputStream(infile, orig_filename)
     prev_offset = 0
     first_indent = -1
     while 1:
@@ -704,7 +696,7 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
     lines_out.append(line[linebreak_pos_ftd[-1]:])
 
     if level != 0:
-        raise FortranSyntaxError(filename, line_nr)
+        raise FPrettifyParseError(filename, line_nr)
 
     return lines_out
 
@@ -750,7 +742,7 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
 
     infile.seek(0)
     req_indents, first_indent, is_f90 = inspect_ffile_format(
-        infile, indent_size)
+        infile, indent_size, orig_filename)
     infile.seek(0)
 
     if not is_f90:
@@ -763,7 +755,7 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
 
     do_indent = True
     use_same_line = False
-    stream = InputStream(infile)
+    stream = InputStream(infile, orig_filename)
     skip_blank = False
     in_manual_block = False
 
@@ -800,8 +792,8 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
                 else:
                     in_manual_block = False
             if not valid_directive:
-                raise FortranSyntaxError(orig_filename, stream.line_nr,
-                                         FORMATTER_ERROR_MESSAGE)
+                raise FPrettifyParseError(orig_filename, stream.line_nr,
+                                          FORMATTER_ERROR_MESSAGE)
 
         indent = [0] * len(lines)
 
