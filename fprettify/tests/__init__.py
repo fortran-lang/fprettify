@@ -1,35 +1,68 @@
+from __future__ import print_function
 import sys
+import os
 import unittest
-
-try:
-    # Use the old Python 2's StringIO if available since
-    # the converter does not yield unicode strings (yet)
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
+import hashlib
 
 import fprettify
 
-
 class FPrettifyTestCase(unittest.TestCase):
     def setUp(self):
-        # we have large files to compare, raise the limit
-        self.maxDiff = None
+        self.orig_dir = r'examples/before/'
+        self.fpr_dir = r'examples/after/'
+        self.hashdir = r'examples/test_checksums/'
+        self.hashfile = os.path.join(self.hashdir, 'sha256_hash')
+        self.fortran_extension = [".f90", ".F"]
 
-    def test_example(self):
-        """Test the conversion for the example input/output"""
+        if not os.path.exists(self.orig_dir):
+            os.makedirs(self.orig_dir)
+        if not os.path.exists(self.fpr_dir):
+            os.makedirs(self.fpr_dir)
+        if not os.path.exists(self.hashdir):
+            os.makedirs(self.hashdir)
+        open(self.hashfile, 'a')
 
-        with open('examples/fortran_after.f90', 'r') as fh:
-            expected_output = fh.read()
+    def test_examples(self):
+        """test fprettify output for all fortran files in examples directory against tabulated checksums.
+        """
 
-        with open('examples/fortran_before.f90', 'r') as infile:
-            outfile = StringIO()
+        print('')
+        sep_str = ' : '
 
-            fprettify.reformat_ffile(infile, outfile)
+        for dirpath, dirnames, filenames in os.walk(self.orig_dir):
+            for example in [f for f in filenames if any([f.endswith(_) for _ in self.fortran_extension])]:
+                print(os.path.join(dirpath, example), end=" ")
+                sys.stdout.flush()
 
-            self.assertMultiLineEqual(expected_output, outfile.getvalue())
+                dirpath_fpr = dirpath.replace(self.orig_dir, self.fpr_dir, 1)
+                if not os.path.exists(dirpath_fpr):
+                    os.makedirs(dirpath_fpr)
+
+                with open(os.path.join(dirpath, example), 'r') as infile:
+
+                    with open(os.path.join(dirpath_fpr, example), 'w') as outfile:
+                        fprettify.reformat_ffile(infile, outfile)
+
+                    m = hashlib.sha256()
+                    with open(os.path.join(dirpath_fpr, example), 'r') as outfile:
+                        m.update(outfile.read().encode('utf-8'))
+                    test_line = os.path.join(dirpath, example).replace(self.orig_dir,"") + sep_str + m.hexdigest()
+                    test_content = test_line.strip().split(sep_str)
+
+                with open(self.hashfile, 'r') as fpr_hash:
+                    found = False
+                    for line in fpr_hash:
+                        line_content = line.strip().split(sep_str)
+                        if line_content[0] == test_content[0]:
+                            found = True
+                            self.assertEqual(line_content[1], test_content[1])
+                            print("ok")
+                            break
+
+                if not found:
+                    print("new")
+                    with open(self.hashfile, 'a') as fpr_hash:
+                        fpr_hash.write(test_line+'\n')
 
 if __name__ == '__main__':
     unittest.main(argv=sys.argv)
-
-#  vim: set ts=4 sw=4 tw=0 :

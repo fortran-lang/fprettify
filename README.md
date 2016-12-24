@@ -19,7 +19,7 @@ Python 2.7 or Python 3.x
 
 ## Examples
 
-Have a look at examples/fortran_after.f90 to see reformatted Fortran code.
+Compare examples/before with examples/after to see fprettify in action.
 
 
 ## Installation

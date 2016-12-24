@@ -1,4 +1,4 @@
-module prettify_selftest
+module fprettify_example
     implicit none
    private
      public :: dp, test_routine, &
