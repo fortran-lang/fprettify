@@ -20,7 +20,8 @@ class FPrettifyTestCase(unittest.TestCase):
             os.makedirs(self.fpr_dir)
         if not os.path.exists(self.hashdir):
             os.makedirs(self.hashdir)
-        open(self.hashfile, 'a')
+        if not os.path.exists(self.hashfile):
+            open(self.hashfile, 'w').close()
 
     def test_examples(self):
         """test fprettify output for all fortran files in examples directory against tabulated checksums.
