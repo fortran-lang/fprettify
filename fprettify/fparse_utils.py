@@ -129,7 +129,7 @@ class InputStream(object):
             lines.append(line)
             match = line_re.match(line)
 
-            logger_d = {'filename': self.filename, 'line': self.line_nr}
+            logger_d = {'ffilename': self.filename, 'fline': self.line_nr}
             if not match or match.span()[1] != len(line):
                 # FIXME: does not handle line continuation of
                 # omp conditional fortran statements

@@ -194,7 +194,7 @@ class F90Indenter(object):
         indents = self._indent_storage
         filename = self._filename
 
-        logger_d = {'filename': filename, 'line': line_nr}
+        logger_d = {'ffilename': filename, 'fline': line_nr}
 
         # check statements that start new scope
         is_new = False
@@ -332,7 +332,7 @@ class F90Aligner(object):
 
         if len(self._br_indent_list) > 2 or self._level:
             logger = logging.getLogger('fprettify-logger')
-            logger_d = {'filename': self._filename, 'line': self._line_nr}
+            logger_d = {'ffilename': self._filename, 'fline': self._line_nr}
             logger.info('unpaired bracket delimiters', extra=logger_d)
 
     def get_lines_indent(self):
@@ -349,7 +349,7 @@ class F90Aligner(object):
         level = self._level
         filename = self._filename
 
-        logger_d = {'filename': filename, 'line': line_nr}
+        logger_d = {'ffilename': filename, 'fline': line_nr}
 
         pos_eq = 0
         pos_ldelim = []
@@ -496,7 +496,7 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
     # 4: arithm. operators plus and minus
 
     logger = logging.getLogger('fprettify-logger')
-    logger_d = {'filename': filename, 'line': line_nr}
+    logger_d = {'ffilename': filename, 'fline': line_nr}
 
     if whitespace == 0:
         spacey = [0, 0, 0, 0, 0]
@@ -765,7 +765,7 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
     infile.seek(0)
 
     if not is_f90:
-        logger_d_noline = {'filename': orig_filename, 'line': 0}
+        logger_d_noline = {'ffilename': orig_filename, 'fline': 0}
         logger.error('formatter can not handle f77 constructs', extra=logger_d_noline)
         outfile.write(infile.read())
         return
@@ -780,7 +780,7 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
 
     while 1:
         f_line, comments, lines = stream.next_fortran_line()
-        logger_d = {'filename': orig_filename, 'line': stream.line_nr}
+        logger_d = {'ffilename': orig_filename, 'fline': stream.line_nr}
 
         if not lines:
             break
@@ -962,13 +962,13 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
                               (133 - 2 * is_omp_conditional -
                                len(line.lstrip(' '))) + line.lstrip(' '))
 
-                logger.warning(("auto indentation failed"
+                logger.warning(("auto indentation failed "
                                 "due to 132 chars limit"
                                 ", line should be splitted"),
                                extra=logger_d)
             else:
                 outfile.write(orig_line)
-                logger.warning(("auto indentation failed"
+                logger.warning(("auto indentation failed "
                                 "due to 132 chars limit"
                                 ", line should be splitted"),
                                 extra=logger_d)
@@ -990,7 +990,7 @@ def set_fprettify_logger(level):
      logger.setLevel(level)
      stream_handler = logging.StreamHandler()
      stream_handler.setLevel(level)
-     formatter = logging.Formatter('%(levelname)s: File %(filename)s, line %(line)s\n %(message)s')
+     formatter = logging.Formatter('%(levelname)s: File %(ffilename)s, line %(fline)s\n    %(message)s')
      stream_handler.setFormatter(formatter)
      logger.addHandler(stream_handler)
 

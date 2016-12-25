@@ -32,26 +32,29 @@ class FPrettifyTestCase(unittest.TestCase):
         """
 
         print('')
+        sys.stdout.flush()
+
         sep_str = ' : '
 
         for dirpath, dirnames, filenames in os.walk(self.orig_dir):
             for example in [f for f in filenames if any([f.endswith(_) for _ in self.fortran_extension])]:
-                print(os.path.join(dirpath, example), end=" ")
-                sys.stdout.flush()
 
                 dirpath_fpr = dirpath.replace(self.orig_dir, self.fpr_dir, 1)
+                example_before = os.path.join(dirpath, example)
+                example_after = os.path.join(dirpath_fpr, example)
+
                 if not os.path.exists(dirpath_fpr):
                     os.makedirs(dirpath_fpr)
 
-                with open(os.path.join(dirpath, example), 'r') as infile:
+                with open(example_before, 'r') as infile:
 
-                    with open(os.path.join(dirpath_fpr, example), 'w') as outfile:
+                    with open(example_after, 'w') as outfile:
                         fprettify.reformat_ffile(infile, outfile)
 
                     m = hashlib.sha256()
-                    with open(os.path.join(dirpath_fpr, example), 'r') as outfile:
+                    with open(example_after, 'r') as outfile:
                         m.update(outfile.read().encode('utf-8'))
-                    test_line = os.path.join(dirpath, example).replace(self.orig_dir,"") + sep_str + m.hexdigest()
+                    test_line = example_before.replace(self.orig_dir,"") + sep_str + m.hexdigest()
                     test_content = test_line.strip().split(sep_str)
 
                 with open(self.hashfile, 'r') as fpr_hash:
@@ -60,12 +63,13 @@ class FPrettifyTestCase(unittest.TestCase):
                         line_content = line.strip().split(sep_str)
                         if line_content[0] == test_content[0]:
                             found = True
+                            print(example_before, end=" ")
                             self.assertEqual(line_content[1], test_content[1])
                             print("ok")
                             break
 
                 if not found:
-                    print("new")
+                    print(example_after+" new")
                     with open(self.hashfile, 'a') as fpr_hash:
                         fpr_hash.write(test_line+'\n')
 
