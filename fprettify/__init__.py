@@ -408,8 +408,7 @@ class F90Aligner(object):
                 if not is_decl and char == '=':
                     if not REL_OP_RE.match(
                             line[max(0, pos - 1):min(pos + 2, len(line))]):
-                        if pos_eq > 0:
-                            raise FPrettifyParseError(filename, line_nr)
+                        assert pos_eq <= 0
                         is_pointer = line[pos + 1] == '>'
                         pos_eq = pos + 1
                         # don't align if assignment operator directly before
@@ -813,8 +812,7 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
                 else:
                     in_manual_block = False
             if not valid_directive:
-                raise FPrettifyParseError(orig_filename, stream.line_nr,
-                                          FORMATTER_ERROR_MESSAGE)
+                logger.critical(FORMATTER_ERROR_MESSAGE, extra=logger_d)
 
         indent = [0] * len(lines)
 
