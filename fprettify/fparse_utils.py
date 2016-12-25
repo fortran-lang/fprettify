@@ -3,6 +3,7 @@
 """
 import re
 from collections import deque
+import logging
 
 USE_PARSE_RE = re.compile(
     r" *use +(?P<module>[a-zA-Z_][a-zA-Z_0-9]*)(?P<only> *, *only *:)? *(?P<imports>.*)$",
@@ -14,17 +15,6 @@ VAR_DECL_RE = re.compile(
 
 OMP_DIR_RE = re.compile(r"^\s*(!\$omp)", re.IGNORECASE)
 OMP_RE = re.compile(r"^\s*(!\$)", re.IGNORECASE)
-
-
-class FPrettifyParseError(Exception):
-    """Exception for unparseable Fortran code"""
-
-    def __init__(self, filename, line_nr,
-                 msg=("Parser error - "
-                      "possibly due to incorrect Fortran syntax.")):
-        super(FPrettifyParseError, self).__init__('{}:{}:{}'.format(
-            filename, line_nr, msg))
-
 
 class CharFilter(object):
     """
@@ -103,6 +93,8 @@ class InputStream(object):
         lines = []
         continuation = 0
 
+        logger = logging.getLogger('fprettify-logger')
+
         while 1:
             if not self.line_buffer:
                 line = self.infile.readline().replace("\t", 8 * " ")
@@ -136,16 +128,16 @@ class InputStream(object):
 
             lines.append(line)
             match = line_re.match(line)
+
+            logger_d = {'filename': self.filename, 'line': self.line_nr}
             if not match or match.span()[1] != len(line):
                 # FIXME: does not handle line continuation of
                 # omp conditional fortran statements
                 # starting with an ampersand.
-                raise FPrettifyParseError(
-                    self.filename, self.line_nr, "unexpected line format:")
+                logger.critical("unexpected line format", extra=logger_d)
             if match.group("preprocessor"):
                 if len(lines) > 1:
-                    raise FPrettifyParseError(self.filename, self.line_nr,
-                                              "continuation to a preprocessor line not supported")
+                    logger.critical("continuation to a preprocessor line not supported", extra=logger_d)
                 comments.append(line)
                 break
             core_att = match.group("core")

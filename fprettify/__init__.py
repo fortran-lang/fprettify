@@ -43,8 +43,7 @@ import logging
 import os
 
 from .fparse_utils import (USE_PARSE_RE, VAR_DECL_RE, OMP_RE, OMP_DIR_RE,
-                          InputStream, CharFilter, FPrettifyParseError)
-
+                          InputStream, CharFilter)
 
 # PY2/PY3 compat wrappers:
 try:
@@ -186,7 +185,7 @@ class F90Indenter(object):
         By default line continuations are auto-aligned by F90Aligner
         - manual offsets can be set by manual_lines_indents.
         """
-        logger = logging.getLogger('prettify-logger')
+        logger = logging.getLogger('fprettify-logger')
 
         self._line_indents = [0] * len(lines)
         br_indent_list = [0] * len(lines)
@@ -194,6 +193,8 @@ class F90Indenter(object):
         scopes = self._scope_storage
         indents = self._indent_storage
         filename = self._filename
+
+        logger_d = {'filename': filename, 'line': line_nr}
 
         # check statements that start new scope
         is_new = False
@@ -205,7 +206,7 @@ class F90Indenter(object):
                 is_new = True
                 valid_new = True
                 scopes.append(what_new)
-                logger.debug(f_line + '\n')
+                logger.debug(f_line, extra=logger_d)
 
         # check statements that continue scope
         is_con = False
@@ -218,7 +219,7 @@ class F90Indenter(object):
                     what = scopes[-1]
                     if what == what_con:
                         valid_con = True
-                        logger.debug(f_line + '\n')
+                        logger.debug(f_line, extra=logger_d)
 
         # check statements that end scope
         is_end = False
@@ -231,7 +232,7 @@ class F90Indenter(object):
                     what = scopes.pop()
                     if what == what_end:
                         valid_end = True
-                        logger.debug(f_line + '\n')
+                        logger.debug(f_line, extra=logger_d)
 
         # deal with line breaks
         if not manual_lines_indent:
@@ -246,7 +247,7 @@ class F90Indenter(object):
 
         if is_new:
             if not valid_new:
-                logger.debug('%s:%d invalid new statement', filename, line_nr)
+                logger.info('invalid new statement', extra=logger_d)
             line_indents = [ind + indents[-1] for ind in line_indents]
             old_ind = indents[-1]
 
@@ -257,13 +258,12 @@ class F90Indenter(object):
 
         elif is_con:
             if not valid_con:
-                logger.debug('%s:%d invalid continue statement',
-                             filename, line_nr)
+                logger.info('invalid continue statement', extra=logger_d)
             line_indents = [ind + indents[-2] for ind in line_indents]
 
         elif is_end:
             if not valid_end:
-                logger.debug('%s:%d invalid end statement', filename, line_nr)
+                logger.info('invalid end statement', extra=logger_d)
             else:
                 line_indents = [ind + indents[-2] for ind in line_indents]
                 indents.pop()
@@ -331,9 +331,9 @@ class F90Aligner(object):
                 self._line_indents.append(self._br_indent_list[-1])
 
         if len(self._br_indent_list) > 2 or self._level:
-            logger = logging.getLogger('prettify-logger')
-            logger.debug('%s:%d unpaired bracket delimiters',
-                         self._filename, self._line_nr)
+            logger = logging.getLogger('fprettify-logger')
+            logger_d = {'filename': self._filename, 'line': self._line_nr}
+            logger.info('unpaired bracket delimiters', extra=logger_d)
 
     def get_lines_indent(self):
         """
@@ -343,11 +343,13 @@ class F90Aligner(object):
 
     def __align_line_continuations(self, line, is_decl, indent_size, line_nr):
 
-        logger = logging.getLogger('prettify-logger')
+        logger = logging.getLogger('fprettify-logger')
 
         indent_list = self._br_indent_list
         level = self._level
         filename = self._filename
+
+        logger_d = {'filename': filename, 'line': line_nr}
 
         pos_eq = 0
         pos_ldelim = []
@@ -385,8 +387,7 @@ class F90Aligner(object):
                     level += -1
                     indent_list.pop()
                 else:
-                    logger.debug(
-                        '%s:%d unpaired bracket delimiters', filename, line_nr)
+                    logger.info('unpaired bracket delimiters', extra=logger_d)
 
                 if pos_ldelim:
                     pos_ldelim.pop()
@@ -399,8 +400,7 @@ class F90Aligner(object):
                     if what_del_open == r"[":
                         valid = what_del_close == r"]"
                     if not valid:
-                        logger.debug(
-                            '%s:%d unpaired bracket delimiters', filename, line_nr)
+                        logger.info('unpaired bracket delimiters', extra=logger_d)
                 else:
                     pos_rdelim.append(pos)
                     rdelim.append(what_del_close)
@@ -495,7 +495,8 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
     # 3: logical operators
     # 4: arithm. operators plus and minus
 
-    logger = logging.getLogger('prettify-logger')
+    logger = logging.getLogger('fprettify-logger')
+    logger_d = {'filename': filename, 'line': line_nr}
 
     if whitespace == 0:
         spacey = [0, 0, 0, 0, 0]
@@ -580,8 +581,7 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
                 if level > 0:
                     level += -1  # close scope
                 else:
-                    logger.debug(
-                        '%s:%d unpaired bracket delimiters', filename, line_nr)
+                    logger.info('unpaired bracket delimiters', extra=logger_d)
                 # add separating whitespace after closing delimiter
                 # with some exceptions:
                 if not re.search(r"^\s*(" + DEL_CLOSE_STR + r"|[,%:/\*])",
@@ -715,7 +715,7 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
     lines_out.append(line[linebreak_pos_ftd[-1]:])
 
     if level != 0:
-        logger.debug('%s:%d unpaired bracket delimiters', filename, line_nr)
+        logger.info('unpaired bracket delimiters', extra=logger_d)
 
     return lines_out
 
@@ -752,7 +752,7 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
     """
     main method to be invoked for formatting a Fortran file.
     """
-    logger = logging.getLogger('prettify-logger')
+    logger = logging.getLogger('fprettify-logger')
 
     if not orig_filename:
         orig_filename = infile.name
@@ -765,8 +765,8 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
     infile.seek(0)
 
     if not is_f90:
-        logger.error(orig_filename +
-                     ": formatter can not handle f77 constructs.\n")
+        logger_d_noline = {'filename': orig_filename, 'line': 0}
+        logger.error('formatter can not handle f77 constructs', extra=logger_d_noline)
         outfile.write(infile.read())
         return
 
@@ -780,6 +780,8 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
 
     while 1:
         f_line, comments, lines = stream.next_fortran_line()
+        logger_d = {'filename': orig_filename, 'line': stream.line_nr}
+
         if not lines:
             break
 
@@ -959,17 +961,18 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
                 outfile.write('!$' * is_omp_conditional + ' ' *
                               (133 - 2 * is_omp_conditional -
                                len(line.lstrip(' '))) + line.lstrip(' '))
-                logger.warning(("%s:%d: auto indentation failed"
+
+                logger.warning(("auto indentation failed"
                                 "due to 132 chars limit"
                                 ", line should be splitted"),
-                               orig_filename, stream.line_nr)
+                               extra=logger_d)
             else:
                 outfile.write(orig_line)
-                logger.warning(("%s:%d: auto indentation failed"
+                logger.warning(("auto indentation failed"
                                 "due to 132 chars limit"
                                 ", line should be splitted"),
-                               orig_filename, stream.line_nr)
-                logger.debug(' ' * ind_use + line + '\n')
+                                extra=logger_d)
+                logger.debug(' ' * ind_use + line, extra=logger_d)
 
         # no indentation of semicolon separated lines
         if re.search(r";\s*$", f_line, RE_FLAGS):
@@ -982,6 +985,14 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
         # rm subsequent blank lines
         skip_blank = is_empty and not any(comments)
 
+def set_fprettify_logger(level):
+     logger = logging.getLogger('fprettify-logger')
+     logger.setLevel(level)
+     stream_handler = logging.StreamHandler()
+     stream_handler.setLevel(level)
+     formatter = logging.Formatter('%(levelname)s: File %(filename)s, line %(line)s\n %(message)s')
+     stream_handler.setFormatter(formatter)
+     logger.addHandler(stream_handler)
 
 def run(argv=None):
     """
@@ -1058,24 +1069,18 @@ def run(argv=None):
                 if defaults_dict['debug']:
                     level = logging.DEBUG
                 else:
-                    level = logging.INFO
+                    level = logging.WARNING
 
             else:
                 level = logging.CRITICAL
 
-            logger = logging.getLogger('prettify-logger')
-            logger.setLevel(level)
-            stream_handler = logging.StreamHandler()
-            stream_handler.setLevel(level)
-            formatter = logging.Formatter('%(levelname)s - %(message)s')
-            stream_handler.setFormatter(formatter)
-            logger.addHandler(stream_handler)
+            set_fprettify_logger(level)
 
             try:
                 reformat_inplace(filename,
-                                           stdout=stdout,
-                                           indent_size=defaults_dict['indent'],
-                                           whitespace=defaults_dict['whitespace'])
+                                 stdout=stdout,
+                                 indent_size=defaults_dict['indent'],
+                                 whitespace=defaults_dict['whitespace'])
             except:
                 failure += 1
                 import traceback

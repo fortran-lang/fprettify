@@ -3,6 +3,7 @@ import sys
 import os
 import unittest
 import hashlib
+import logging
 
 import fprettify
 
@@ -12,7 +13,10 @@ class FPrettifyTestCase(unittest.TestCase):
         self.fpr_dir = r'examples/after/'
         self.hashdir = r'examples/test_checksums/'
         self.hashfile = os.path.join(self.hashdir, 'sha256_hash')
-        self.fortran_extension = [".f90", ".F"]
+        self.fortran_extension = [".f90", ".F", ".f"]
+
+        fprettify.set_fprettify_logger(logging.INFO)
+
 
         if not os.path.exists(self.orig_dir):
             os.makedirs(self.orig_dir)
