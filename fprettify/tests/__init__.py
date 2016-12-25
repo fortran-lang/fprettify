@@ -1,3 +1,7 @@
+"""
+Dynamically create tests based on examples in examples/before.
+"""
+
 from __future__ import print_function
 import sys
 import os
@@ -7,71 +11,73 @@ import logging
 
 import fprettify
 
+BEFORE_DIR = r'examples/before/'
+AFTER_DIR = r'examples/after/'
+HASHDIR = r'examples/test_checksums/'
+HASHFILE = os.path.join(HASHDIR, 'sha256_hash')
+FORTRAN_EXTENSIONS = [".f90", ".F", ".f"]
+
 class FPrettifyTestCase(unittest.TestCase):
     def setUp(self):
-        self.orig_dir = r'examples/before/'
-        self.fpr_dir = r'examples/after/'
-        self.hashdir = r'examples/test_checksums/'
-        self.hashfile = os.path.join(self.hashdir, 'sha256_hash')
-        self.fortran_extension = [".f90", ".F", ".f"]
-
         fprettify.set_fprettify_logger(logging.INFO)
 
+def addtestmethod(testcase, fpath, ffile):
+    def testmethod(testcase):
 
-        if not os.path.exists(self.orig_dir):
-            os.makedirs(self.orig_dir)
-        if not os.path.exists(self.fpr_dir):
-            os.makedirs(self.fpr_dir)
-        if not os.path.exists(self.hashdir):
-            os.makedirs(self.hashdir)
-        if not os.path.exists(self.hashfile):
-            open(self.hashfile, 'w').close()
+        dirpath_before = os.path.join(BEFORE_DIR, fpath)
+        dirpath_after = os.path.join(AFTER_DIR, fpath)
+        if not os.path.exists(dirpath_after):
+            os.makedirs(dirpath_after)
 
-    def test_examples(self):
-        """test fprettify output for all fortran files in examples directory against tabulated checksums.
-        """
-
-        print('')
-        sys.stdout.flush()
+        example_before = os.path.join(dirpath_before, ffile)
+        example_after = os.path.join(dirpath_after, ffile)
 
         sep_str = ' : '
 
-        for dirpath, dirnames, filenames in os.walk(self.orig_dir):
-            for example in [f for f in filenames if any([f.endswith(_) for _ in self.fortran_extension])]:
+        with open(example_before, 'r') as infile:
 
-                dirpath_fpr = dirpath.replace(self.orig_dir, self.fpr_dir, 1)
-                example_before = os.path.join(dirpath, example)
-                example_after = os.path.join(dirpath_fpr, example)
+            with open(example_after, 'w') as outfile:
+                fprettify.reformat_ffile(infile, outfile)
 
-                if not os.path.exists(dirpath_fpr):
-                    os.makedirs(dirpath_fpr)
+            m = hashlib.sha256()
+            with open(example_after, 'r') as outfile:
+                m.update(outfile.read().encode('utf-8'))
+            test_line = example_before.replace(BEFORE_DIR,"") + sep_str + m.hexdigest()
+            test_content = test_line.strip().split(sep_str)
 
-                with open(example_before, 'r') as infile:
+        with open(HASHFILE, 'r') as fpr_hash:
+            found = False
+            for line in fpr_hash:
+                line_content = line.strip().split(sep_str)
+                if line_content[0] == test_content[0]:
+                    found = True
+                    print("checksum", end=" ")
+                    sys.stdout.flush()
+                    testcase.assertEqual(line_content[1], test_content[1])
+                    break
 
-                    with open(example_after, 'w') as outfile:
-                        fprettify.reformat_ffile(infile, outfile)
+        if not found:
+            print("new", end=" ")
+            sys.stdout.flush()
+            with open(HASHFILE, 'a') as fpr_hash:
+                fpr_hash.write(test_line+'\n')
 
-                    m = hashlib.sha256()
-                    with open(example_after, 'r') as outfile:
-                        m.update(outfile.read().encode('utf-8'))
-                    test_line = example_before.replace(self.orig_dir,"") + sep_str + m.hexdigest()
-                    test_content = test_line.strip().split(sep_str)
+    testmethod.__name__ = "test_" + ffile
+    setattr(testcase, testmethod.__name__, testmethod)
 
-                with open(self.hashfile, 'r') as fpr_hash:
-                    found = False
-                    for line in fpr_hash:
-                        line_content = line.strip().split(sep_str)
-                        if line_content[0] == test_content[0]:
-                            found = True
-                            print(example_before, end=" ")
-                            self.assertEqual(line_content[1], test_content[1])
-                            print("ok")
-                            break
 
-                if not found:
-                    print(example_after+" new")
-                    with open(self.hashfile, 'a') as fpr_hash:
-                        fpr_hash.write(test_line+'\n')
+if not os.path.exists(BEFORE_DIR):
+    os.makedirs(BEFORE_DIR)
+if not os.path.exists(AFTER_DIR):
+    os.makedirs(AFTER_DIR)
+if not os.path.exists(HASHDIR):
+    os.makedirs(HASHDIR)
+if not os.path.exists(HASHFILE):
+    open(HASHFILE, 'w').close()
+
+for dirpath, dirnames, filenames in os.walk(BEFORE_DIR):
+    for example in [f for f in filenames if any([f.endswith(_) for _ in FORTRAN_EXTENSIONS])]:
+        addtestmethod(FPrettifyTestCase, dirpath.replace(BEFORE_DIR,""), example)
 
 if __name__ == '__main__':
     unittest.main(argv=sys.argv)
