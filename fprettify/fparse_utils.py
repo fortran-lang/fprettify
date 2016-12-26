@@ -16,6 +16,26 @@ VAR_DECL_RE = re.compile(
 OMP_DIR_RE = re.compile(r"^\s*(!\$omp)", re.IGNORECASE)
 OMP_RE = re.compile(r"^\s*(!\$)", re.IGNORECASE)
 
+
+class fprettifyException(Exception):
+    """Base class for all custom exceptions"""
+
+    def __init__(self, msg, filename, line_nr):
+        super(fprettifyException, self).__init__(msg)
+        self.filename = filename
+        self.line_nr = line_nr
+
+
+class fprettifyParseException(fprettifyException):
+    """Exception for unparseable Fortran code (user's fault)."""
+    pass
+
+
+class fprettifyInternalException(fprettifyException):
+    """Exception for potential internal errors (fixme's)."""
+    pass
+
+
 class CharFilter(object):
     """
     An iterator to wrap the iterator returned by `enumerate`
@@ -134,10 +154,12 @@ class InputStream(object):
                 # FIXME: does not handle line continuation of
                 # omp conditional fortran statements
                 # starting with an ampersand.
-                logger.critical("unexpected line format", extra=logger_d)
+                raise fprettifyInternalException(
+                    "unexpected line format", self.filename, self.line_nr)
             if match.group("preprocessor"):
                 if len(lines) > 1:
-                    logger.critical("continuation to a preprocessor line not supported", extra=logger_d)
+                    raise fprettifyParseException(
+                        "continuation to a preprocessor line not supported", self.filename, self.line_nr)
                 comments.append(line)
                 break
             core_att = match.group("core")

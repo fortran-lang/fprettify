@@ -10,4 +10,4 @@ setup(name='fprettify',
       entry_points={'console_scripts': ['fprettify = fprettify:run']},
       packages=['fprettify'],
       test_suite='fprettify.tests',
-     )
+      )

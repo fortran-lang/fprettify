@@ -35,6 +35,10 @@
   - assumes that all subunits are explicitly ended within same file,
     no treatment of #include statements
   - can not deal with f77 constructs (files are ignored)
+
+  FIXME's
+  - replace temp files by StringIO
+  - internal errors should not happen
 """
 import re
 import sys
@@ -43,7 +47,8 @@ import logging
 import os
 
 from .fparse_utils import (USE_PARSE_RE, VAR_DECL_RE, OMP_RE, OMP_DIR_RE,
-                          InputStream, CharFilter)
+                           InputStream, CharFilter,
+                           fprettifyException, fprettifyParseException, fprettifyInternalException)
 
 # PY2/PY3 compat wrappers:
 try:
@@ -400,7 +405,8 @@ class F90Aligner(object):
                     if what_del_open == r"[":
                         valid = what_del_close == r"]"
                     if not valid:
-                        logger.info('unpaired bracket delimiters', extra=logger_d)
+                        logger.info('unpaired bracket delimiters',
+                                    extra=logger_d)
                 else:
                     pos_rdelim.append(pos)
                     rdelim.append(what_del_close)
@@ -408,7 +414,10 @@ class F90Aligner(object):
                 if not is_decl and char == '=':
                     if not REL_OP_RE.match(
                             line[max(0, pos - 1):min(pos + 2, len(line))]):
-                        assert pos_eq <= 0
+                        # should only have one assignment per line!
+                        if pos_eq > 0:
+                            raise fprettifyInternalException(
+                                "found more than one assignment in the same Fortran line", filename, line_nr)
                         is_pointer = line[pos + 1] == '>'
                         pos_eq = pos + 1
                         # don't align if assignment operator directly before
@@ -446,11 +455,12 @@ def inspect_ffile_format(infile, indent_size, orig_filename=None):
 
     adopt = indent_size <= 0
 
-    is_f90 = True
+    num_labels = False
     indents = []
     stream = InputStream(infile, orig_filename)
     prev_offset = 0
     first_indent = -1
+
     while 1:
         f_line, _, lines = stream.next_fortran_line()
         if not lines:
@@ -467,10 +477,12 @@ def inspect_ffile_format(infile, indent_size, orig_filename=None):
                 indents[-1] = indent_size
         prev_offset = offset
 
-        # can not handle f77 style constructs
         if F77_STYLE.search(f_line):
-            is_f90 = False
-    return indents, first_indent, is_f90
+            num_labels = True
+
+    modern_fortran = not num_labels
+
+    return indents, first_indent, modern_fortran
 
 
 def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
@@ -683,7 +695,10 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
     while 1:
         if pos_new == len(line) or pos_old == len(line_orig):
             break
-        assert line[pos_new] is line_orig[pos_old]
+
+        if line[pos_new] != line_orig[pos_old]:
+            raise fprettifyInternalException(
+                "failed at finding line break position", filename, line_nr)
         if linebreak_pos and pos_old > linebreak_pos[-1]:
             linebreak_pos.pop()
             linebreak_pos_ftd.append(pos_new)
@@ -700,8 +715,8 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
         elif line_orig[pos_old] is ' ':
             pos_old += 1
         else:
-            assert False
-
+            raise fprettifyInternalException(
+                "failed at finding line break position", filename, line_nr)
     linebreak_pos_ftd.insert(0, 0)
 
     # We do not insert ampersands in empty lines and comments lines
@@ -735,7 +750,6 @@ def reformat_inplace(filename, stdout=False, **kwargs):
                        orig_filename=filename, **kwargs)
         newfile.seek(0)
         sys.stdout.write(newfile.read())
-        return
     else:
         outfile = tempfile.TemporaryFile(mode='r+')
         reformat_ffile(infile=infile, outfile=outfile,
@@ -759,15 +773,13 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
     indenter = F90Indenter(orig_filename)
 
     infile.seek(0)
-    req_indents, first_indent, is_f90 = inspect_ffile_format(
+    req_indents, first_indent, modern = inspect_ffile_format(
         infile, indent_size, orig_filename)
     infile.seek(0)
 
-    if not is_f90:
-        logger_d_noline = {'ffilename': orig_filename, 'fline': 0}
-        logger.error('formatter can not handle f77 constructs', extra=logger_d_noline)
-        outfile.write(infile.read())
-        return
+    if not modern:
+        raise fprettifyParseException(
+            "fprettify can not format fixed format or f77 constructs", orig_filename, 0)
 
     nfl = 0  # fortran line counter
 
@@ -812,7 +824,8 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
                 else:
                     in_manual_block = False
             if not valid_directive:
-                logger.critical(FORMATTER_ERROR_MESSAGE, extra=logger_d)
+                raise fprettifyParseException(
+                    FORMATTER_ERROR_MESSAGE, orig_filename, stream.line_nr)
 
         indent = [0] * len(lines)
 
@@ -835,10 +848,14 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
                      ' ' + OMP_DIR_RE.sub('', l, count=1) for l in lines]
             do_indent = False
         elif lines[0].startswith('#'):  # preprocessor macros
-            assert len(lines) == 1
+            if len(lines) != 1:
+                raise fprettifyInternalException(
+                    "Continuation lines for preprocessor statement", orig_filename, stream.line_nr)
             do_indent = False
         elif EMPTY_RE.search(f_line):  # empty lines including comment lines
-            assert len(lines) == 1
+            if len(lines) != 1:
+                raise fprettifyInternalException(
+                    "Continuation lines for comment lines", orig_filename, stream.line_nr)
             if any(comments):
                 if lines[0].startswith('!'):
                     # don't indent unindented comments
@@ -852,7 +869,6 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
 
             lines = [l.strip(' ') for l in lines]
         else:
-
             manual_lines_indent = []
             if not auto_align:
                 manual_lines_indent = [
@@ -878,8 +894,13 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
                 match = re.search(SOL_STR + r'(&\s*)', line)
                 if match:
                     pre_ampersand.append(match.group(1))
-                    sep = len(re.search(r'(\s*)&[\s]*(?:!.*)?$',
-                                        lines[pos - 1]).group(1))
+                    try:
+                        sep = len(re.search(r'(\s*)&[\s]*(?:!.*)?$',
+                                            lines[pos - 1]).group(1))
+                    except AttributeError:
+                        raise fprettifyParseException(
+                            "Bad continuation line format", orig_filename, stream.line_nr)
+
                     ampersand_sep.append(sep)
                 else:
                     pre_ampersand.append('')
@@ -969,7 +990,7 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
                 logger.warning(("auto indentation failed "
                                 "due to 132 chars limit"
                                 ", line should be splitted"),
-                                extra=logger_d)
+                               extra=logger_d)
                 logger.debug(' ' * ind_use + line, extra=logger_d)
 
         # no indentation of semicolon separated lines
@@ -983,14 +1004,17 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
         # rm subsequent blank lines
         skip_blank = is_empty and not any(comments)
 
+
 def set_fprettify_logger(level):
-     logger = logging.getLogger('fprettify-logger')
-     logger.setLevel(level)
-     stream_handler = logging.StreamHandler()
-     stream_handler.setLevel(level)
-     formatter = logging.Formatter('%(levelname)s: File %(ffilename)s, line %(fline)s\n    %(message)s')
-     stream_handler.setFormatter(formatter)
-     logger.addHandler(stream_handler)
+    logger = logging.getLogger('fprettify-logger')
+    logger.setLevel(level)
+    stream_handler = logging.StreamHandler()
+    stream_handler.setLevel(level)
+    formatter = logging.Formatter(
+        '%(levelname)s: File %(ffilename)s, line %(fline)s\n    %(message)s')
+    stream_handler.setFormatter(formatter)
+    logger.addHandler(stream_handler)
+
 
 def run(argv=None):
     """
@@ -1074,16 +1098,12 @@ def run(argv=None):
 
             set_fprettify_logger(level)
 
+            logger = logging.getLogger('fprettify-logger')
             try:
                 reformat_inplace(filename,
                                  stdout=stdout,
                                  indent_size=defaults_dict['indent'],
                                  whitespace=defaults_dict['whitespace'])
-            except:
-                failure += 1
-                import traceback
-                sys.stderr.write('-' * 60 + "\n")
-                traceback.print_exc(file=sys.stderr)
-                sys.stderr.write('-' * 60 + "\n")
-                sys.stderr.write("Processing file '" + filename + "'\n")
-    return failure > 0
+            except fprettifyException as e:
+                logger_d = {'ffilename': e.filename, 'fline': e.line_nr}
+                logger.exception("Fatal error occured", extra=logger_d)
