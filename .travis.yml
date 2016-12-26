@@ -1,6 +1,9 @@
 language: python
 python:
-  - "2.7"
-  - "3.4"
-  - "3.5"
+ - "2.7"
+ - "3.4"
+ - "3.5"
 script: python setup.py test
+before_script:
+ - wget https://github.com/acmeism/RosettaCodeData/archive/bba7b.tar.gz
+ - mkdir fortran_tests/before/RosettaCodeData && tar -xvf bba7b.tar.gz -C fortran_tests/before/RosettaCodeData --strip-components=1
