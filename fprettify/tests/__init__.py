@@ -134,8 +134,7 @@ def addtestmethod(testcase, fpath, ffile):
 
     # not sure why this even works, using "test something" (with a space) as function name...
     # however it gives optimal test output
-    testmethod.__name__ = (
-        u"test " + os.path.join(fpath, ffile)).encode('utf-8')
+    testmethod.__name__ = str("test " + os.path.join(fpath, ffile))
     setattr(testcase, testmethod.__name__, testmethod)
 
 if not os.path.exists(BEFORE_DIR):
