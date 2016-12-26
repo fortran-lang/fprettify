@@ -19,7 +19,7 @@ Python 2.7 or Python 3.x
 
 ## Examples
 
-Compare examples/before with examples/after to see fprettify in action.
+Compare examples/\*before.f90 (original Fortran files) with examples/\*after.f90 (reformatted Fortran files) to see what fprettify does.
 
 
 ## Installation

@@ -19,9 +19,9 @@ try:
 except ImportError:
     from io import StringIO
 
-BEFORE_DIR = r'examples/before/'
-AFTER_DIR = r'examples/after/'
-RESULT_DIR = r'examples/test_results/'
+BEFORE_DIR = r'fortran_tests/before/'
+AFTER_DIR = r'fortran_tests/after/'
+RESULT_DIR = r'fortran_tests/test_results/'
 RESULT_FILE = os.path.join(RESULT_DIR, 'expected_results')
 
 # recognize fortran files by extension
