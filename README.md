@@ -19,7 +19,7 @@ Python 2.7 or Python 3.x
 
 ## Examples
 
-Compare examples/\*before.f90 (original Fortran files) with examples/\*after.f90 (reformatted Fortran files) to see what fprettify does.
+Compare `examples/*before.f90` (original Fortran files) with `examples/*after.f90` (reformatted Fortran files) to see what fprettify does.
 
 
 ## Installation
@@ -50,17 +50,6 @@ fprettify --help
 ```
 
 
-## Contributing
+## Testing
 
-Even though fprettify is tested on a large code base ([CP2K](https://www.cp2k.org/)), there may be cases where it fails. If you find such a case, please let me know by creating an `issue`.
-Any contributions are very welcome. Specifically there is more work to be done on experimental features in `cp2k` branch (see below for more details). These features are useful but not yet stable enough to be integrated into `master`.
-
-
-## cp2k branch
-
-Compared with CP2K's internal version of fprettify (`cp2k` branch), this version (`master` branch) is reduced in functionality. It contains only stable and general features that don't rely on specific coding conventions. The `cp2k` specific features not yet integrated into `master` are:
-
-* Sorting and alignment of variable declarations and `use` statements lists, removal of unused list entries
-* All Fortran keywords in upper case
-
-Feel free to try these features by `git checkout cp2k` and read `./fprettify.py --help` for further instructions.
+The testing mechanism allows you to easily test fprettify with any Fortran project of your choice. Simply clone or copy your entire project into `fortran_tests/before` and run `python setup.py test`. The directory `fortran_tests/after` contains the test output (reformatted Fortran files). If testing fails, please submit an issue!
