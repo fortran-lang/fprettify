@@ -45,10 +45,11 @@ import sys
 import tempfile
 import logging
 import os
+import io
 
 from .fparse_utils import (USE_PARSE_RE, VAR_DECL_RE, OMP_RE, OMP_DIR_RE,
                            InputStream, CharFilter,
-                           fprettifyException, fprettifyParseException, fprettifyInternalException)
+                           fprettifyException, fprettifyParseException, fprettifyInternalException, RE_FLAGS)
 
 # PY2/PY3 compat wrappers:
 try:
@@ -60,11 +61,17 @@ except NameError:
                 return True
         return False
 
-# constants, mostly regular expressions:
-RE_FLAGS = re.IGNORECASE  # all regex should be case insensitive
+# temporary solution for unicode conversion
+try:
+    unicode
+except NameError:
+    def unicode(object):
+        return str(object)
 
-FORMATTER_ERROR_MESSAGE = (" Wrong usage of formatting-specific directives"
-                           " '&', '!&', '!&<' or '!&>'.")
+# constants, mostly regular expressions:
+
+FORMATTER_ERROR_MESSAGE = (u" Wrong usage of formatting-specific directives"
+                           u" '&', '!&', '!&<' or '!&>'.")
 
 EOL_STR = r"\s*;?\s*$"  # end of fortran line
 EOL_SC = r"\s*;\s*$"  # whether line is ended with semicolon
@@ -127,9 +134,9 @@ ENDENUM_RE = re.compile(SOL_STR + r"END\s*ENUM(\s+\w+)?" + EOL_STR, RE_FLAGS)
 PUBLIC_RE = re.compile(SOL_STR + r"PUBLIC\s*::", RE_FLAGS)
 
 # intrinsic statements with parenthesis notation that are not functions
-INTR_STMTS_PAR = ("(ALLOCATE|DEALLOCATE|REWIND|BACKSPACE|INQUIRE|"
-                  "OPEN|CLOSE|READ|WRITE|"
-                  "FORALL|WHERE|NULLIFY)")
+INTR_STMTS_PAR = (r"(ALLOCATE|DEALLOCATE|REWIND|BACKSPACE|INQUIRE|"
+                  r"OPEN|CLOSE|READ|WRITE|"
+                  r"FORALL|WHERE|NULLIFY)")
 
 # regular expressions for parsing linebreaks
 LINEBREAK_STR = r"(&)[\s]*(?:!.*)?$"
@@ -189,7 +196,7 @@ class F90Indenter(object):
         By default line continuations are auto-aligned by F90Aligner
         - manual offsets can be set by manual_lines_indents.
         """
-        logger = logging.getLogger('fprettify-logger')
+        logger = logging.getLogger(u'fprettify-logger')
 
         self._line_indents = [0] * len(lines)
         br_indent_list = [0] * len(lines)
@@ -198,7 +205,7 @@ class F90Indenter(object):
         indents = self._indent_storage
         filename = self._filename
 
-        logger_d = {'ffilename': filename, 'fline': line_nr}
+        logger_d = {u'ffilename': filename, u'fline': line_nr}
 
         # check statements that start new scope
         is_new = False
@@ -210,7 +217,8 @@ class F90Indenter(object):
                 is_new = True
                 valid_new = True
                 scopes.append(what_new)
-                logger.debug("{}: {}".format(what_new, f_line), extra=logger_d)
+                logger.debug(u"{}: {}".format(
+                    what_new, f_line), extra=logger_d)
 
         # check statements that continue scope
         is_con = False
@@ -223,7 +231,8 @@ class F90Indenter(object):
                     what = scopes[-1]
                     if what == what_con:
                         valid_con = True
-                        logger.debug("{}: {}".format(what_con, f_line), extra=logger_d)
+                        logger.debug(u"{}: {}".format(
+                            what_con, f_line), extra=logger_d)
 
         # check statements that end scope
         is_end = False
@@ -236,7 +245,8 @@ class F90Indenter(object):
                     what = scopes.pop()
                     if what == what_end:
                         valid_end = True
-                        logger.debug("{}: {}".format(what_end, f_line), extra=logger_d)
+                        logger.debug(u"{}: {}".format(
+                            what_end, f_line), extra=logger_d)
 
         # deal with line breaks
         if not manual_lines_indent:
@@ -251,7 +261,7 @@ class F90Indenter(object):
 
         if is_new:
             if not valid_new:
-                logger.info('invalid new statement', extra=logger_d)
+                logger.info(u'invalid new statement', extra=logger_d)
             line_indents = [ind + indents[-1] for ind in line_indents]
             old_ind = indents[-1]
 
@@ -262,13 +272,13 @@ class F90Indenter(object):
 
         elif is_con:
             if not valid_con:
-                logger.info('invalid continue statement', extra=logger_d)
+                logger.info(u'invalid continue statement', extra=logger_d)
             else:
                 line_indents = [ind + indents[-2] for ind in line_indents]
 
         elif is_end:
             if not valid_end:
-                logger.info('invalid end statement', extra=logger_d)
+                logger.info(u'invalid end statement', extra=logger_d)
             else:
                 line_indents = [ind + indents[-2] for ind in line_indents]
                 indents.pop()
@@ -291,7 +301,8 @@ class F90Indenter(object):
 
 
 class F90Aligner(object):
-    """Alignment of continuations of a broken line,
+    """
+    Alignment of continuations of a broken line,
     based on the following heuristics:
 
     if line break in brackets
@@ -336,9 +347,9 @@ class F90Aligner(object):
                 self._line_indents.append(self._br_indent_list[-1])
 
         if len(self._br_indent_list) > 2 or self._level:
-            logger = logging.getLogger('fprettify-logger')
-            logger_d = {'ffilename': self._filename, 'fline': self._line_nr}
-            logger.info('unpaired bracket delimiters', extra=logger_d)
+            logger = logging.getLogger(u'fprettify-logger')
+            logger_d = {u'ffilename': self._filename, u'fline': self._line_nr}
+            logger.info(u'unpaired bracket delimiters', extra=logger_d)
 
     def get_lines_indent(self):
         """
@@ -348,13 +359,13 @@ class F90Aligner(object):
 
     def __align_line_continuations(self, line, is_decl, indent_size, line_nr):
 
-        logger = logging.getLogger('fprettify-logger')
+        logger = logging.getLogger(u'fprettify-logger')
 
         indent_list = self._br_indent_list
         level = self._level
         filename = self._filename
 
-        logger_d = {'ffilename': filename, 'fline': line_nr}
+        logger_d = {u'ffilename': filename, u'fline': line_nr}
 
         pos_eq = 0
         pos_ldelim = []
@@ -367,7 +378,7 @@ class F90Aligner(object):
         # or alignment to assignment operator
         rel_ind = indent_list[-1]  # indentation of prev. line
 
-        instring = ''
+        instring = u''
         end_of_delim = -1
 
         for pos, char in CharFilter(enumerate(line)):
@@ -392,7 +403,7 @@ class F90Aligner(object):
                     level += -1
                     indent_list.pop()
                 else:
-                    logger.info('unpaired bracket delimiters', extra=logger_d)
+                    logger.info(u'unpaired bracket delimiters', extra=logger_d)
 
                 if pos_ldelim:
                     pos_ldelim.pop()
@@ -405,20 +416,20 @@ class F90Aligner(object):
                     if what_del_open == r"[":
                         valid = what_del_close == r"]"
                     if not valid:
-                        logger.info('unpaired bracket delimiters',
+                        logger.info(u'unpaired bracket delimiters',
                                     extra=logger_d)
                 else:
                     pos_rdelim.append(pos)
                     rdelim.append(what_del_close)
             if not instring and not level:
-                if not is_decl and char == '=':
+                if not is_decl and char == u'=':
                     if not REL_OP_RE.match(
                             line[max(0, pos - 1):min(pos + 2, len(line))]):
                         # should only have one assignment per line!
                         if pos_eq > 0:
                             raise fprettifyInternalException(
-                                "found more than one assignment in the same Fortran line", filename, line_nr)
-                        is_pointer = line[pos + 1] == '>'
+                                u"found more than one assignment in the same Fortran line", filename, line_nr)
+                        is_pointer = line[pos + 1] == u'>'
                         pos_eq = pos + 1
                         # don't align if assignment operator directly before
                         # line break
@@ -426,7 +437,7 @@ class F90Aligner(object):
                                          RE_FLAGS):
                             indent_list.append(
                                 pos_eq + 1 + is_pointer + indent_list[-1])
-                elif is_decl and line[pos:pos + 2] == '::':
+                elif is_decl and line[pos:pos + 2] == u'::':
                     if not re.search(r"::\s*" + LINEBREAK_STR, line, RE_FLAGS):
                         indent_list.append(pos + 3 + indent_list[-1])
 
@@ -466,7 +477,7 @@ def inspect_ffile_format(infile, indent_size, orig_filename=None):
         if not lines:
             break
 
-        offset = len(lines[0]) - len(lines[0].lstrip(' '))
+        offset = len(lines[0]) - len(lines[0].lstrip(u' '))
         if f_line.strip() and first_indent == -1:
             first_indent = offset
         indents.append(offset - prev_offset)
@@ -506,8 +517,8 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
     # 3: logical operators
     # 4: arithm. operators plus and minus
 
-    logger = logging.getLogger('fprettify-logger')
-    logger_d = {'ffilename': filename, 'fline': line_nr}
+    logger = logging.getLogger(u'fprettify-logger')
+    logger_d = {u'ffilename': filename, u'fline': line_nr}
 
     if whitespace == 0:
         spacey = [0, 0, 0, 0, 0]
@@ -516,23 +527,23 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
     elif whitespace == 2:
         spacey = [1, 1, 1, 1, 1]
     else:
-        raise NotImplementedError("unknown value for whitespace")
+        raise NotImplementedError(u"unknown value for whitespace")
 
     line = f_line
     line_orig = line
 
     # rm extraneous whitespace chars, except for declarations
-    line_ftd = ''
+    line_ftd = u''
     pos_prev = -1
     for pos, char in CharFilter(enumerate(line)):
-        is_decl = line[pos:].lstrip().startswith('::') or line[
-            :pos].rstrip().endswith('::')
-        if char == ' ':
+        is_decl = line[pos:].lstrip().startswith(u'::') or line[
+            :pos].rstrip().endswith(u'::')
+        if char == u' ':
             # remove double spaces
             if line_ftd and (re.search(r'[\w"]', line_ftd[-1]) or is_decl):
                 line_ftd = line_ftd + char
         else:
-            if (line_ftd and line_ftd[-1] == ' ' and
+            if (line_ftd and line_ftd[-1] == u' ' and
                     (not re.search(r'[\w"]', char) and not is_decl)):
                 line_ftd = line_ftd[:-1]  # remove spaces except between words
             line_ftd = line_ftd + line[pos_prev + 1:pos + 1]
@@ -592,61 +603,61 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
                 if level > 0:
                     level += -1  # close scope
                 else:
-                    logger.info('unpaired bracket delimiters', extra=logger_d)
+                    logger.info(u'unpaired bracket delimiters', extra=logger_d)
                 # add separating whitespace after closing delimiter
                 # with some exceptions:
                 if not re.search(r"^\s*(" + DEL_CLOSE_STR + r"|[,%:/\*])",
                                  line[pos + 1:], RE_FLAGS):
                     sep2 = 1
                 elif re.search(r"^\s*::", line[pos + 1:], RE_FLAGS):
-                    sep2 = len(rhs) - len(rhs.lstrip(' '))
+                    sep2 = len(rhs) - len(rhs.lstrip(u' '))
 
             # where delimiter token ends
             end_of_delim = pos + len(delim) - 1
 
-            line_ftd = lhs.rstrip(' ') + ' ' * sep1 + \
-                delim + ' ' * sep2 + rhs.lstrip(' ')
+            line_ftd = lhs.rstrip(u' ') + u' ' * sep1 + \
+                delim + u' ' * sep2 + rhs.lstrip(u' ')
 
         # format commas and semicolons
-        if char == ',' or char == ';':
+        if char == u',' or char == u';':
             lhs = line_ftd[:pos + offset]
             rhs = line_ftd[pos + 1 + offset:]
-            line_ftd = lhs.rstrip(' ') + char + ' ' * \
-                spacey[0] + rhs.lstrip(' ')
-            line_ftd = line_ftd.rstrip(' ')
+            line_ftd = lhs.rstrip(u' ') + char + u' ' * \
+                spacey[0] + rhs.lstrip(u' ')
+            line_ftd = line_ftd.rstrip(u' ')
 
         # format .NOT.
         if re.match(r"\.NOT\.", line[pos:pos + 5], RE_FLAGS):
             lhs = line_ftd[:pos + offset]
             rhs = line_ftd[pos + 5 + offset:]
             line_ftd = lhs.rstrip(
-                ' ') + line[pos:pos + 5] + ' ' * spacey[3] + rhs.lstrip(' ')
+                u' ') + line[pos:pos + 5] + u' ' * spacey[3] + rhs.lstrip(u' ')
 
         # strip whitespaces from '=' and prepare assignment operator
         # formatting
-        if char == '=':
+        if char == u'=':
             if not REL_OP_RE.search(line[pos - 1:pos + 2]):
                 lhs = line_ftd[:pos + offset]
                 rhs = line_ftd[pos + 1 + offset:]
-                line_ftd = lhs.rstrip(' ') + '=' + rhs.lstrip(' ')
+                line_ftd = lhs.rstrip(u' ') + u'=' + rhs.lstrip(u' ')
                 if not level:  # remember position of assignment operator
-                    pos_eq.append(len(lhs.rstrip(' ')))
+                    pos_eq.append(len(lhs.rstrip(u' ')))
 
     line = line_ftd
 
     # format assignments
     for pos in pos_eq:
         offset = len(line_ftd) - len(line)
-        is_pointer = line[pos + 1] == '>'
+        is_pointer = line[pos + 1] == u'>'
         lhs = line_ftd[:pos + offset]
         rhs = line_ftd[pos + 1 + is_pointer + offset:]
         if is_pointer:
-            assign_op = '=>'  # pointer assignment
+            assign_op = u'=>'  # pointer assignment
         else:
-            assign_op = '='  # assignment
-        line_ftd = (lhs.rstrip(' ') +
-                    ' ' * spacey[1] + assign_op +
-                    ' ' * spacey[1] + rhs.lstrip(' '))
+            assign_op = u'='  # assignment
+        line_ftd = (lhs.rstrip(u' ') +
+                    u' ' * spacey[1] + assign_op +
+                    u' ' * spacey[1] + rhs.lstrip(u' '))
         # offset w.r.t. unformatted line
 
     line = line_ftd
@@ -654,9 +665,9 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
     # for more advanced replacements we separate comments and strings
     line_parts = []
     str_end = -1
-    instring = ''
+    instring = u''
     for pos, char in enumerate(line):
-        if char == '"' or char == "'":  # skip string
+        if char == u'"' or char == u"'":  # skip string
             if not instring:
                 str_start = pos
                 line_parts.append(line[str_end + 1:str_start])
@@ -664,7 +675,7 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
             elif instring == char:
                 str_end = pos
                 line_parts.append(line[str_start:str_end + 1])
-                instring = ''
+                instring = u''
         if pos == len(line) - 1:
             line_parts.append(line[str_end + 1:])
 
@@ -674,14 +685,14 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
             # exclude comments, strings:
             if not re.match(r"['\"!]", part, RE_FLAGS):
                 partsplit = lr_re.split(part)
-                line_parts[pos] = (' ' * spacey[n_op + 2]).join(partsplit)
+                line_parts[pos] = (u' ' * spacey[n_op + 2]).join(partsplit)
 
-    line = ''.join(line_parts)
+    line = u''.join(line_parts)
 
     # format ':' for labels
     for newre in NEW_SCOPE_RE[0:2]:
         if newre.search(line) and re.search(SOL_STR + r"\w+\s*:", line):
-            line = ': '.join(_.strip() for _ in line.split(':', 1))
+            line = u': '.join(_.strip() for _ in line.split(u':', 1))
 
     if not auto_format:
         line = line_orig
@@ -698,38 +709,38 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
 
         if line[pos_new] != line_orig[pos_old]:
             raise fprettifyInternalException(
-                "failed at finding line break position", filename, line_nr)
+                u"failed at finding line break position", filename, line_nr)
         if linebreak_pos and pos_old > linebreak_pos[-1]:
             linebreak_pos.pop()
             linebreak_pos_ftd.append(pos_new)
             continue
         if line[pos_new] is line_orig[pos_old]:
             pos_new += 1
-            while pos_new < len(line) and line[pos_new] is ' ':
+            while pos_new < len(line) and line[pos_new] == u' ':
                 pos_new += 1
             pos_old += 1
-            while pos_old < len(line_orig) and line_orig[pos_old] is ' ':
+            while pos_old < len(line_orig) and line_orig[pos_old] == u' ':
                 pos_old += 1
-        elif line[pos_new] is ' ':
+        elif line[pos_new] == u' ':
             pos_new += 1
-        elif line_orig[pos_old] is ' ':
+        elif line_orig[pos_old] == u' ':
             pos_old += 1
         else:
             raise fprettifyInternalException(
-                "failed at finding line break position", filename, line_nr)
+                u"failed at finding line break position", filename, line_nr)
     linebreak_pos_ftd.insert(0, 0)
 
     # We do not insert ampersands in empty lines and comments lines
-    lines_out = [(line[l:r].rstrip(' ') +
-                  ' ' * ampersand_sep[pos] +
-                  '&' * min(1, r - l))
+    lines_out = [(line[l:r].rstrip(u' ') +
+                  u' ' * ampersand_sep[pos] +
+                  u'&' * min(1, r - l))
                  for pos, (l, r) in enumerate(zip(linebreak_pos_ftd[0:-1],
                                                   linebreak_pos_ftd[1:]))]
 
     lines_out.append(line[linebreak_pos_ftd[-1]:])
 
     if level != 0:
-        logger.info('unpaired bracket delimiters', extra=logger_d)
+        logger.info(u'unpaired bracket delimiters', extra=logger_d)
 
     return lines_out
 
@@ -738,11 +749,11 @@ def reformat_inplace(filename, stdout=False, **kwargs):
     """
     reformat a file in place.
     """
-    if filename == 'stdin':
+    if filename == u'stdin':
         infile = tempfile.TemporaryFile(mode='r+')
         infile.write(sys.stdin.read())
     else:
-        infile = open(filename, 'r')
+        infile = io.open(filename, 'r', encoding='utf-8')
 
     if stdout:
         newfile = tempfile.TemporaryFile(mode='r+')
@@ -756,8 +767,8 @@ def reformat_inplace(filename, stdout=False, **kwargs):
                        orig_filename=filename, **kwargs)
         infile.close()
         outfile.seek(0)
-        newfile = open(filename, 'w')
-        newfile.write(outfile.read())
+        newfile = io.open(filename, 'w', encoding='utf-8')
+        newfile.write(unicode(outfile.read()))
 
 
 def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
@@ -779,7 +790,7 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
 
     if not modern:
         raise fprettifyParseException(
-            "fprettify can not format fixed format or f77 constructs", orig_filename, 0)
+            u"fprettify can not format fixed format or f77 constructs", orig_filename, 0)
 
     nfl = 0  # fortran line counter
 
@@ -791,7 +802,7 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
 
     while 1:
         f_line, comments, lines = stream.next_fortran_line()
-        logger_d = {'ffilename': orig_filename, 'fline': stream.line_nr}
+        logger_d = {u'ffilename': orig_filename, u'fline': stream.line_nr}
 
         if not lines:
             break
@@ -801,24 +812,24 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
             has_comment = bool(comment.strip())
             sep = has_comment and not comment.strip() == line.strip()
             if line.strip():  # empty lines between linebreaks are ignored
-                comment_lines.append(' ' * sep + comment.strip())
+                comment_lines.append(u' ' * sep + comment.strip())
 
         orig_lines = lines
         nfl += 1
 
         auto_align = not any(NO_ALIGN_RE.search(_) for _ in lines)
         auto_format = not (in_manual_block or any(
-            _.lstrip().startswith('!&') for _ in comment_lines))
+            _.lstrip().startswith(u'!&') for _ in comment_lines))
         if not auto_format:
             auto_align = False
         if (len(lines)) == 1:
             valid_directive = True
-            if lines[0].strip().startswith('!&<'):
+            if lines[0].strip().startswith(u'!&<'):
                 if in_manual_block:
                     valid_directive = False
                 else:
                     in_manual_block = True
-            if lines[0].strip().startswith('!&>'):
+            if lines[0].strip().startswith(u'!&>'):
                 if not in_manual_block:
                     valid_directive = False
                 else:
@@ -834,8 +845,8 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
         if OMP_RE.match(f_line) and not OMP_DIR_RE.match(f_line):
             # convert OMP-conditional fortran statements into normal
             # fortran statements but remember to convert them back
-            f_line = OMP_RE.sub('  ', f_line, count=1)
-            lines = [OMP_RE.sub('  ', l, count=1) for l in lines]
+            f_line = OMP_RE.sub(u'  ', f_line, count=1)
+            lines = [OMP_RE.sub(u'  ', l, count=1) for l in lines]
             is_omp_conditional = True
 
         is_empty = EMPTY_RE.search(f_line)  # blank line or comment only line
@@ -844,20 +855,20 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
             do_indent = False
         elif OMP_DIR_RE.match(f_line):
             # move '!$OMP' to line start, otherwise don't format omp directives
-            lines = ['!$OMP' + (len(l) - len(l.lstrip())) *
-                     ' ' + OMP_DIR_RE.sub('', l, count=1) for l in lines]
+            lines = [u'!$OMP' + (len(l) - len(l.lstrip())) *
+                     u' ' + OMP_DIR_RE.sub(u'', l, count=1) for l in lines]
             do_indent = False
-        elif lines[0].startswith('#'):  # preprocessor macros
+        elif lines[0].startswith(u'#'):  # preprocessor macros
             if len(lines) != 1:
                 raise fprettifyInternalException(
-                    "Continuation lines for preprocessor statement", orig_filename, stream.line_nr)
+                    u"Continuation lines for preprocessor statement", orig_filename, stream.line_nr)
             do_indent = False
         elif EMPTY_RE.search(f_line):  # empty lines including comment lines
             if len(lines) != 1:
                 raise fprettifyInternalException(
-                    "Continuation lines for comment lines", orig_filename, stream.line_nr)
+                    u"Continuation lines for comment lines", orig_filename, stream.line_nr)
             if any(comments):
-                if lines[0].startswith('!'):
+                if lines[0].startswith(u'!'):
                     # don't indent unindented comments
                     do_indent = False
                 else:
@@ -867,12 +878,12 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
             else:
                 do_indent = False
 
-            lines = [l.strip(' ') for l in lines]
+            lines = [l.strip(u' ') for l in lines]
         else:
             manual_lines_indent = []
             if not auto_align:
                 manual_lines_indent = [
-                    len(l) - len(l.lstrip(' ').lstrip('&')) for l in lines]
+                    len(l) - len(l.lstrip(u' ').lstrip(u'&')) for l in lines]
                 manual_lines_indent = [ind - manual_lines_indent[0]
                                        for ind in manual_lines_indent]
 
@@ -899,27 +910,27 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
                                             lines[pos - 1]).group(1))
                     except AttributeError:
                         raise fprettifyParseException(
-                            "Bad continuation line format", orig_filename, stream.line_nr)
+                            u"Bad continuation line format", orig_filename, stream.line_nr)
 
                     ampersand_sep.append(sep)
                 else:
-                    pre_ampersand.append('')
+                    pre_ampersand.append(u'')
                     if pos > 0:
                         ampersand_sep.append(1)
 
-            lines = [l.strip(' ').strip('&') for l in lines]
-            f_line = f_line.strip(' ')
+            lines = [l.strip(u' ').strip(u'&') for l in lines]
+            f_line = f_line.strip(u' ')
 
             # find linebreak positions
             linebreak_pos = []
             for pos, line in enumerate(lines):
                 found = None
                 for char_pos, char in CharFilter(enumerate(line)):
-                    if char == "&":
+                    if char == u"&":
                         found = char_pos
                 if found:
                     linebreak_pos.append(found)
-                elif line.lstrip(' ').startswith('!'):
+                elif line.lstrip(u' ').startswith(u'!'):
                     linebreak_pos.append(0)
 
             linebreak_pos = [sum(linebreak_pos[0:_ + 1]) -
@@ -935,7 +946,7 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
                     has_nl = True
                 else:
                     has_nl = not re.search(EOL_SC, line)
-                lines[pos] = lines[pos].rstrip(' ') + comment + '\n' * has_nl
+                lines[pos] = lines[pos].rstrip(u' ') + comment + u'\n' * has_nl
 
             try:
                 rel_indent = req_indents[nfl]
@@ -954,7 +965,7 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
                     indent[pos] += -1
                     lines[pos] = amp_insert + line
 
-        lines = [re.sub(r"\s+$", '\n', l, RE_FLAGS)
+        lines = [re.sub(r"\s+$", u'\n', l, RE_FLAGS)
                  for l in lines]  # deleting trailing whitespaces
 
         for ind, line, orig_line in zip(indent, lines, orig_lines):
@@ -972,24 +983,24 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
                 else:
                     ind_use = 0
             if ind_use + line_length <= 133:  # 132 plus 1 newline char
-                outfile.write('!$' * is_omp_conditional +
-                              ' ' * (ind_use - 2 * is_omp_conditional +
-                                     len(line) - len(line.lstrip(' '))) +
-                              line.lstrip(' '))
+                outfile.write(u'!$' * is_omp_conditional +
+                              u' ' * (ind_use - 2 * is_omp_conditional +
+                                      len(line) - len(line.lstrip(u' '))) +
+                              line.lstrip(u' '))
             elif line_length <= 133:
-                outfile.write('!$' * is_omp_conditional + ' ' *
+                outfile.write(u'!$' * is_omp_conditional + u' ' *
                               (133 - 2 * is_omp_conditional -
-                               len(line.lstrip(' '))) + line.lstrip(' '))
+                               len(line.lstrip(u' '))) + line.lstrip(u' '))
 
-                logger.warning(("auto indentation failed "
-                                "due to 132 chars limit"
-                                ", line should be splitted"),
+                logger.warning((u"auto indentation failed "
+                                u"due to 132 chars limit"
+                                u", line should be splitted"),
                                extra=logger_d)
             else:
                 outfile.write(orig_line)
-                logger.warning(("auto indentation failed "
-                                "due to 132 chars limit"
-                                ", line should be splitted"),
+                logger.warning((u"auto indentation failed "
+                                u"due to 132 chars limit"
+                                u", line should be splitted"),
                                extra=logger_d)
 
         # no indentation of semicolon separated lines
@@ -1010,7 +1021,7 @@ def set_fprettify_logger(level):
     stream_handler = logging.StreamHandler()
     stream_handler.setLevel(level)
     formatter = logging.Formatter(
-        '%(levelname)s: File %(ffilename)s, line %(fline)s\n    %(message)s')
+        u'%(levelname)s: File %(ffilename)s, line %(fline)s\n    %(message)s')
     stream_handler.setFormatter(formatter)
     logger.addHandler(stream_handler)
 
@@ -1021,11 +1032,11 @@ def run(argv=None):
     """
     if argv is None:
         argv = sys.argv
-    defaults_dict = {'indent': 3, 'whitespace': 2,
-                     'stdout': 0, 'report-errors': 1,
-                     'debug': 0}
+    defaults_dict = {u'indent': 3, u'whitespace': 2,
+                     u'stdout': 0, u'report-errors': 1,
+                     u'debug': 0}
 
-    usage_desc = ("usage:\n" + argv[0] + """
+    usage_desc = (u"usage:\n" + argv[0] + u"""
     [--indent=3] [--whitespace=2]
     [--[no-]stdout] [--[no-]report-errors] file1 [file2 ...]
     [--help]
@@ -1057,8 +1068,8 @@ def run(argv=None):
     Defaults:
     """ + str(defaults_dict))
 
-    if "--help" in argv:
-        sys.stderr.write(usage_desc + '\n')
+    if u"--help" in argv:
+        sys.stderr.write(usage_desc + u'\n')
         return 0
     args = []
     for arg in argv[1:]:
@@ -1072,23 +1083,23 @@ def run(argv=None):
             if match:
                 defaults_dict[match.groups()[0]] = int(match.groups()[1])
             else:
-                if arg.startswith('--'):
-                    sys.stderr.write('unknown option ' + arg + '\n')
+                if arg.startswith(u'--'):
+                    sys.stderr.write(u'unknown option ' + arg + u'\n')
                     return 0
                 else:
                     args.append(arg)
     failure = 0
     if not args:
-        args = ['stdin']
+        args = [u'stdin']
 
     for filename in args:
-        if not os.path.isfile(filename) and filename != 'stdin':
-            sys.stderr.write("file " + filename + " does not exists!\n")
+        if not os.path.isfile(filename) and filename != u'stdin':
+            sys.stderr.write(u"file " + filename + u" does not exists!\n")
         else:
-            stdout = defaults_dict['stdout'] or filename == 'stdin'
+            stdout = defaults_dict[u'stdout'] or filename == u'stdin'
 
-            if defaults_dict['report-errors']:
-                if defaults_dict['debug']:
+            if defaults_dict[u'report-errors']:
+                if defaults_dict[u'debug']:
                     level = logging.DEBUG
                 else:
                     level = logging.WARNING
@@ -1102,8 +1113,8 @@ def run(argv=None):
             try:
                 reformat_inplace(filename,
                                  stdout=stdout,
-                                 indent_size=defaults_dict['indent'],
-                                 whitespace=defaults_dict['whitespace'])
+                                 indent_size=defaults_dict[u'indent'],
+                                 whitespace=defaults_dict[u'whitespace'])
             except fprettifyException as e:
-                logger_d = {'ffilename': e.filename, 'fline': e.line_nr}
-                logger.exception("Fatal error occured", extra=logger_d)
+                logger_d = {u'ffilename': e.filename, u'fline': e.line_nr}
+                logger.exception(u"Fatal error occured", extra=logger_d)

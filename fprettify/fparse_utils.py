@@ -5,16 +5,18 @@ import re
 from collections import deque
 import logging
 
+RE_FLAGS = re.IGNORECASE | re.UNICODE
+
 USE_PARSE_RE = re.compile(
     r" *use +(?P<module>[a-zA-Z_][a-zA-Z_0-9]*)(?P<only> *, *only *:)? *(?P<imports>.*)$",
-    flags=re.IGNORECASE)
+    RE_FLAGS)
 
 # FIXME bad ass regex!
 VAR_DECL_RE = re.compile(
-    r" *(?P<type>integer(?: *\* *[0-9]+)?|logical|character(?: *\* *[0-9]+)?|real(?: *\* *[0-9]+)?|complex(?: *\* *[0-9]+)?|type) *(?P<parameters>\((?:[^()]+|\((?:[^()]+|\([^()]*\))*\))*\))? *(?P<attributes>(?: *, *[a-zA-Z_0-9]+(?: *\((?:[^()]+|\((?:[^()]+|\([^()]*\))*\))*\))?)+)? *(?P<dpnt>::)?(?P<vars>[^\n]+)\n?", re.IGNORECASE)
+    r" *(?P<type>integer(?: *\* *[0-9]+)?|logical|character(?: *\* *[0-9]+)?|real(?: *\* *[0-9]+)?|complex(?: *\* *[0-9]+)?|type) *(?P<parameters>\((?:[^()]+|\((?:[^()]+|\([^()]*\))*\))*\))? *(?P<attributes>(?: *, *[a-zA-Z_0-9]+(?: *\((?:[^()]+|\((?:[^()]+|\([^()]*\))*\))*\))?)+)? *(?P<dpnt>::)?(?P<vars>[^\n]+)\n?", RE_FLAGS)
 
-OMP_DIR_RE = re.compile(r"^\s*(!\$omp)", re.IGNORECASE)
-OMP_RE = re.compile(r"^\s*(!\$)", re.IGNORECASE)
+OMP_DIR_RE = re.compile(r"^\s*(!\$omp)", RE_FLAGS)
+OMP_RE = re.compile(r"^\s*(!\$)", RE_FLAGS)
 
 
 class fprettifyException(Exception):
@@ -44,7 +46,7 @@ class CharFilter(object):
 
     def __init__(self, it):
         self._it = it
-        self._instring = ''
+        self._instring = u''
 
     def __iter__(self):
         return self
@@ -52,13 +54,13 @@ class CharFilter(object):
     def __next__(self):
         """ python 3 version"""
         pos, char = next(self._it)
-        if not self._instring and char == '!':
+        if not self._instring and char == u'!':
             raise StopIteration
 
         # detect start/end of a string
-        if char == '"' or char == "'":
+        if char == u'"' or char == u"'":
             if self._instring == char:
-                self._instring = ''
+                self._instring = u''
             elif not self._instring:
                 self._instring = char
 
@@ -70,13 +72,13 @@ class CharFilter(object):
     def next(self):
         """ python 2 version"""
         pos, char = self._it.next()
-        if not self._instring and char == '!':
+        if not self._instring and char == u'!':
             raise StopIteration
 
         # detect start/end of a string
-        if char == '"' or char == "'":
+        if char == u'"' or char == u"'":
             if self._instring == char:
-                self._instring = ''
+                self._instring = u''
             elif not self._instring:
                 self._instring = char
 
@@ -107,8 +109,8 @@ class InputStream(object):
         # FIXME regex
         line_re = re.compile(
             r"(?:(?P<preprocessor>#.*\n?)| *(&)?(?P<core>(?:!\$|[^&!\"']+|\"[^\"]*\"|'[^']*')*)(?P<continue>&)? *(?P<comment>!.*)?\n?)",
-            re.IGNORECASE)
-        joined_line = ""
+            RE_FLAGS)
+        joined_line = u""
         comments = []
         lines = []
         continuation = 0
@@ -117,27 +119,27 @@ class InputStream(object):
 
         while 1:
             if not self.line_buffer:
-                line = self.infile.readline().replace("\t", 8 * " ")
+                line = self.infile.readline().replace(u"\t", 8 * u" ")
                 self.line_nr += 1
                 # convert OMP-conditional fortran statements into normal fortran statements
                 # but remember to convert them back
                 is_omp_conditional = False
                 omp_indent = 0
                 if OMP_RE.match(line):
-                    omp_indent = len(line) - len(line.lstrip(' '))
-                    line = OMP_RE.sub('', line, count=1)
+                    omp_indent = len(line) - len(line.lstrip(u' '))
+                    line = OMP_RE.sub(u'', line, count=1)
                     is_omp_conditional = True
                 line_start = 0
                 for pos, char in CharFilter(enumerate(line)):
-                    if char == ';' or pos + 1 == len(line):
-                        self.line_buffer.append(omp_indent * ' ' + '!$' * is_omp_conditional +
+                    if char == u';' or pos + 1 == len(line):
+                        self.line_buffer.append(omp_indent * u' ' + u'!$' * is_omp_conditional +
                                                 line[line_start:pos + 1])
                         omp_indent = 0
                         is_omp_conditional = False
                         line_start = pos + 1
                 if line_start < len(line):
                     # line + comment
-                    self.line_buffer.append('!$' * is_omp_conditional +
+                    self.line_buffer.append(u'!$' * is_omp_conditional +
                                             line[line_start:])
 
             if self.line_buffer:
@@ -149,34 +151,34 @@ class InputStream(object):
             lines.append(line)
             match = line_re.match(line)
 
-            logger_d = {'ffilename': self.filename, 'fline': self.line_nr}
+            logger_d = {u'ffilename': self.filename, u'fline': self.line_nr}
             if not match or match.span()[1] != len(line):
                 # FIXME: does not handle line continuation of
                 # omp conditional fortran statements
                 # starting with an ampersand.
                 raise fprettifyInternalException(
-                    "unexpected line format", self.filename, self.line_nr)
-            if match.group("preprocessor"):
+                    u"unexpected line format", self.filename, self.line_nr)
+            if match.group(u"preprocessor"):
                 if len(lines) > 1:
                     raise fprettifyParseException(
-                        "continuation to a preprocessor line not supported", self.filename, self.line_nr)
+                        u"continuation to a preprocessor line not supported", self.filename, self.line_nr)
                 comments.append(line)
                 break
-            core_att = match.group("core")
+            core_att = match.group(u"core")
             if OMP_RE.match(core_att) and joined_line.strip():
                 # remove omp '!$' for line continuation
-                core_att = OMP_RE.sub('', core_att, count=1).lstrip()
-            joined_line = joined_line.rstrip("\n") + core_att
+                core_att = OMP_RE.sub(u'', core_att, count=1).lstrip()
+            joined_line = joined_line.rstrip(u"\n") + core_att
             if core_att and not core_att.isspace():
                 continuation = 0
-            if match.group("continue"):
+            if match.group(u"continue"):
                 continuation = 1
-            if line.lstrip().startswith('!') and not OMP_RE.search(line):
-                comments.append(line.rstrip('\n'))
-            elif match.group("comment"):
-                comments.append(match.group("comment"))
+            if line.lstrip().startswith(u'!') and not OMP_RE.search(line):
+                comments.append(line.rstrip(u'\n'))
+            elif match.group(u"comment"):
+                comments.append(match.group(u"comment"))
             else:
-                comments.append('')
+                comments.append(u'')
             if not continuation:
                 break
         return (joined_line, comments, lines)
