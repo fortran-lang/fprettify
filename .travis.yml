@@ -3,7 +3,11 @@ python:
  - "2.7"
  - "3.4"
  - "3.5"
-script: python setup.py test
+script: coverage run --source=fprettify setup.py test
+install:
+ - pip install coveralls
 before_script:
  - wget https://github.com/acmeism/RosettaCodeData/archive/bba7b.tar.gz
  - mkdir fortran_tests/before/RosettaCodeData && tar -xf bba7b.tar.gz -C fortran_tests/before/RosettaCodeData --strip-components=1
+after_success:
+ - coveralls
