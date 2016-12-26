@@ -9,9 +9,10 @@ import unittest
 import hashlib
 import logging
 import io
+import re
 
 import fprettify
-from fprettify.fparse_utils import fprettifyParseException, fprettifyInternalException
+from fprettify.fparse_utils import fprettifyParseException, fprettifyInternalException, RE_FLAGS
 
 try:
     # Use the old Python 2's StringIO if available since
@@ -34,6 +35,10 @@ fprettify.set_fprettify_logger(logging.ERROR)
 
 
 class FPrettifyTestCase(unittest.TestCase):
+
+    def setUp(self):
+        # we have large files to compare, raise the limit
+        self.maxDiff = None
 
     @classmethod
     def setUpClass(cls):
@@ -114,6 +119,15 @@ def addtestmethod(testcase, fpath, ffile):
             except:
                 FPrettifyTestCase.n_unexpectedfail += 1
                 raise
+
+        if os.path.isfile(example_after):
+            with io.open(example_before, 'r', encoding='utf-8') as infile:
+                before_nosp=re.sub(r'\n{3,}',r'\n\n', infile.read().lower().replace(' ', '').replace('\t',''))
+
+            with io.open(example_after, 'r', encoding='utf-8') as outfile:
+                after_nosp=outfile.read().lower().replace(' ', '')
+
+            testcase.assertMultiLineEqual(before_nosp, after_nosp)
 
         with io.open(RESULT_FILE, 'r', encoding='utf-8') as fpr_hash:
             found = False

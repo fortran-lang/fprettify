@@ -567,7 +567,6 @@ RosettaCodeData/Task/Return-multiple-values/Fortran/return-multiple-values.f : 5
 RosettaCodeData/Task/Reverse-a-string/Fortran/reverse-a-string-1.f : 066ed2e8bd2a95b4f3858490544b0b3c6a7e8dca4aa9798768898d4d911cbc53
 RosettaCodeData/Task/Reverse-a-string/Fortran/reverse-a-string-2.f : 47ab77afb618b5a72fd168d94dfad7db7ff58122b67a9f04975e9ae2c349b725
 RosettaCodeData/Task/Reverse-words-in-a-string/Fortran/reverse-words-in-a-string.f : 190e5fa3d434f45274a9cf5afa8bccebc02261654affa64225d6c0f9ada401e9
-RosettaCodeData/Task/Rock-paper-scissors/Fortran/rock-paper-scissors-1.f : bf408347196e5c9c2a6cce0d815867d78948b36980caea712c6320ed397221b1
 RosettaCodeData/Task/Rock-paper-scissors/Fortran/rock-paper-scissors-2.f : internal error
 RosettaCodeData/Task/Roman-numerals-Decode/Fortran/roman-numerals-decode.f : 79763c7857ad072455b8b88ccd7f04449e183bb4e742e5294a72841a6451d1a2
 RosettaCodeData/Task/Roman-numerals-Encode/Fortran/roman-numerals-encode.f : b957ffef80a2c6c573098eab2477f54e18a27e4dce0f3d4d31c6269ee14182b3
@@ -717,3 +716,5 @@ RosettaCodeData/Task/XML-Input/Fortran/xml-input-1.f : df51697639b2cdfba11266c05
 RosettaCodeData/Task/XML-Input/Fortran/xml-input-2.f : 3250b7be528be17553321b7b04786fa4147760109fd3dc2262198a88334b04a2
 RosettaCodeData/Task/Zero-to-the-zero-power/Fortran/zero-to-the-zero-power.f : 9a7e4de9b75d5871e5fb9c69861055b60d394787b6387d863a7f1f392e4bc6ab
 RosettaCodeData/Task/Zig-zag-matrix/Fortran/zig-zag-matrix.f : 40be9bab9ec902b8991c6ba4edad09c189a046e3efda3e66528a698181dc4677
+RosettaCodeData/Task/Gamma-function/Fortran/gamma-function.f : fc4ebbaf4297f6a41a1fa65f8a2132008d19d8e95fdfb736b4077a521129824e
+RosettaCodeData/Task/Rock-paper-scissors/Fortran/rock-paper-scissors-1.f : 7efefbae8b58416536535d4a56634105c13150d791b3f588495ec92f9bbe336c

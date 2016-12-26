@@ -155,8 +155,8 @@ DEL_OPEN_RE = re.compile(DEL_OPEN_STR, RE_FLAGS)
 DEL_CLOSE_STR = r"(\/?\)|\])"
 DEL_CLOSE_RE = re.compile(DEL_CLOSE_STR, RE_FLAGS)
 
-# empty line regex, treats omp statements as exception
-EMPTY_RE = re.compile(SOL_STR + r"(![^\$].*)?$", RE_FLAGS)
+# empty line regex
+EMPTY_RE = re.compile(SOL_STR + r"(!.*)?$", RE_FLAGS)
 
 # two-sided operators
 LR_OPS_RE = [REL_OP_RE, LOG_OP_RE, PLUSMINUS_RE]
@@ -838,7 +838,8 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
 
         is_omp_conditional = False
 
-        if OMP_RE.match(f_line) and not OMP_DIR_RE.match(f_line):
+        is_omp = OMP_RE.match(f_line)
+        if is_omp and not OMP_DIR_RE.match(f_line):
             # convert OMP-conditional fortran statements into normal
             # fortran statements but remember to convert them back
             f_line = OMP_RE.sub(u'  ', f_line, count=1)
@@ -1008,7 +1009,7 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
             use_same_line = False
 
         # rm subsequent blank lines
-        skip_blank = is_empty and not any(comments)
+        skip_blank = is_empty and not any(comments) and not is_omp
 
 
 def set_fprettify_logger(level):
