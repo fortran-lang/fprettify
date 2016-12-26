@@ -42,10 +42,16 @@
 """
 import re
 import sys
-import tempfile
 import logging
 import os
 import io
+
+try:
+    # Use the old Python 2's StringIO if available since
+    # the converter does not yield unicode strings (yet)
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 from .fparse_utils import (USE_PARSE_RE, VAR_DECL_RE, OMP_RE, OMP_DIR_RE,
                            InputStream, CharFilter,
@@ -60,13 +66,6 @@ except NameError:
             if element:
                 return True
         return False
-
-# temporary solution for unicode conversion
-try:
-    unicode
-except NameError:
-    def unicode(object):
-        return str(object)
 
 # constants, mostly regular expressions:
 
@@ -750,25 +749,22 @@ def reformat_inplace(filename, stdout=False, **kwargs):
     reformat a file in place.
     """
     if filename == u'stdin':
-        infile = tempfile.TemporaryFile(mode='r+')
+        infile = StringIO()
         infile.write(sys.stdin.read())
     else:
         infile = io.open(filename, 'r', encoding='utf-8')
 
     if stdout:
-        newfile = tempfile.TemporaryFile(mode='r+')
+        newfile = StringIO()
         reformat_ffile(infile=infile, outfile=newfile,
                        orig_filename=filename, **kwargs)
-        newfile.seek(0)
-        sys.stdout.write(newfile.read())
+        sys.stdout.write(newfile.getvalue())
     else:
-        outfile = tempfile.TemporaryFile(mode='r+')
+        outfile = StringIO()
         reformat_ffile(infile=infile, outfile=outfile,
                        orig_filename=filename, **kwargs)
-        infile.close()
-        outfile.seek(0)
         newfile = io.open(filename, 'w', encoding='utf-8')
-        newfile.write(unicode(outfile.read()))
+        newfile.write(outfile.getvalue())
 
 
 def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
