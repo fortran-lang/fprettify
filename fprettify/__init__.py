@@ -61,7 +61,6 @@ except NameError:
         return False
 
 # constants, mostly regular expressions:
-
 RE_FLAGS = re.IGNORECASE  # all regex should be case insensitive
 
 FORMATTER_ERROR_MESSAGE = (" Wrong usage of formatting-specific directives"
@@ -211,7 +210,7 @@ class F90Indenter(object):
                 is_new = True
                 valid_new = True
                 scopes.append(what_new)
-                logger.debug(f_line, extra=logger_d)
+                logger.debug("{}: {}".format(what_new, f_line), extra=logger_d)
 
         # check statements that continue scope
         is_con = False
@@ -224,7 +223,7 @@ class F90Indenter(object):
                     what = scopes[-1]
                     if what == what_con:
                         valid_con = True
-                        logger.debug(f_line, extra=logger_d)
+                        logger.debug("{}: {}".format(what_con, f_line), extra=logger_d)
 
         # check statements that end scope
         is_end = False
@@ -237,7 +236,7 @@ class F90Indenter(object):
                     what = scopes.pop()
                     if what == what_end:
                         valid_end = True
-                        logger.debug(f_line, extra=logger_d)
+                        logger.debug("{}: {}".format(what_end, f_line), extra=logger_d)
 
         # deal with line breaks
         if not manual_lines_indent:
@@ -264,7 +263,8 @@ class F90Indenter(object):
         elif is_con:
             if not valid_con:
                 logger.info('invalid continue statement', extra=logger_d)
-            line_indents = [ind + indents[-2] for ind in line_indents]
+            else:
+                line_indents = [ind + indents[-2] for ind in line_indents]
 
         elif is_end:
             if not valid_end:
@@ -991,7 +991,6 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
                                 "due to 132 chars limit"
                                 ", line should be splitted"),
                                extra=logger_d)
-                logger.debug(' ' * ind_use + line, extra=logger_d)
 
         # no indentation of semicolon separated lines
         if re.search(r";\s*$", f_line, RE_FLAGS):
@@ -1075,6 +1074,7 @@ def run(argv=None):
             else:
                 if arg.startswith('--'):
                     sys.stderr.write('unknown option ' + arg + '\n')
+                    return 0
                 else:
                     args.append(arg)
     failure = 0
