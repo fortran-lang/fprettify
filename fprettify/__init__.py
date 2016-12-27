@@ -55,7 +55,7 @@ except ImportError:
 
 from .fparse_utils import (USE_PARSE_RE, VAR_DECL_RE, OMP_RE, OMP_DIR_RE,
                            InputStream, CharFilter,
-                           fprettifyException, fprettifyParseException, fprettifyInternalException, RE_FLAGS)
+                           FprettifyException, FprettifyParseException, FprettifyInternalException, RE_FLAGS)
 
 # constants, mostly regular expressions:
 
@@ -407,7 +407,7 @@ class F90Aligner(object):
                             line[max(0, pos - 1):min(pos + 2, len(line))]):
                         # should only have one assignment per line!
                         if pos_eq > 0:
-                            raise fprettifyInternalException(
+                            raise FprettifyInternalException(
                                 u"found more than one assignment in the same Fortran line", filename, line_nr)
                         is_pointer = line[pos + 1] == u'>'
                         pos_eq = pos + 1
@@ -687,7 +687,7 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
             break
 
         if line[pos_new] != line_orig[pos_old]:
-            raise fprettifyInternalException(
+            raise FprettifyInternalException(
                 u"failed at finding line break position", filename, line_nr)
 
         if linebreak_pos and pos_old > linebreak_pos[-1]:
@@ -760,7 +760,7 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
     infile.seek(0)
 
     if not modern:
-        raise fprettifyParseException(
+        raise FprettifyParseException(
             u"fprettify can not format fixed format or f77 constructs", orig_filename, 0)
 
     nfl = 0  # fortran line counter
@@ -805,7 +805,7 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
                 else:
                     in_manual_block = False
             if not valid_directive:
-                raise fprettifyParseException(
+                raise FprettifyParseException(
                     FORMATTER_ERROR_MESSAGE, orig_filename, stream.line_nr)
 
         indent = [0] * len(lines)
@@ -831,12 +831,12 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
             do_indent = False
         elif lines[0].startswith(u'#'):  # preprocessor macros
             if len(lines) != 1:
-                raise fprettifyInternalException(
+                raise FprettifyInternalException(
                     u"Continuation lines for preprocessor statement", orig_filename, stream.line_nr)
             do_indent = False
         elif EMPTY_RE.search(f_line):  # empty lines including comment lines
             if len(lines) != 1:
-                raise fprettifyInternalException(
+                raise FprettifyInternalException(
                     u"Continuation lines for comment lines", orig_filename, stream.line_nr)
             if any(comments):
                 if lines[0].startswith(u'!'):
@@ -880,7 +880,7 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
                         sep = len(re.search(r'(\s*)&[\s]*(?:!.*)?$',
                                             lines[pos - 1]).group(1))
                     except AttributeError:
-                        raise fprettifyParseException(
+                        raise FprettifyParseException(
                             u"Bad continuation line format", orig_filename, stream.line_nr)
 
                     ampersand_sep.append(sep)
@@ -1097,5 +1097,5 @@ def run(argv=None):
                                  stdout=stdout,
                                  indent_size=defaults_dict[u'indent'],
                                  whitespace=defaults_dict[u'whitespace'])
-            except fprettifyException as e:
+            except FprettifyException as e:
                 log_exception(e, u"Fatal error occured")

@@ -12,7 +12,7 @@ import io
 import re
 
 import fprettify
-from fprettify.fparse_utils import fprettifyParseException, fprettifyInternalException
+from fprettify.fparse_utils import FprettifyParseException, FprettifyInternalException
 
 try:
     # Use the old Python 2's StringIO if available since
@@ -117,12 +117,12 @@ def addtestmethod(testcase, fpath, ffile):
                 with io.open(example_after, 'w', encoding='utf-8') as outfile:
                     outfile.write(outstring.getvalue())
                 FPrettifyTestCase.n_success += 1
-            except fprettifyParseException as e:
+            except FprettifyParseException as e:
                 test_info = u"parse error"
                 fprettify.log_exception(e, test_info)
                 test_content = test_result(example_before, test_info)
                 FPrettifyTestCase.n_parsefail += 1
-            except fprettifyInternalException as e:
+            except FprettifyInternalException as e:
                 test_info = u"internal error"
                 fprettify.log_exception(e, test_info)
                 test_content = test_result(example_before, test_info)
