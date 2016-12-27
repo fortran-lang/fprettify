@@ -6,7 +6,7 @@ python:
 before_install:
  - if [[ $TRAVIS_PYTHON_VERSION == "2.7" ]] || [[ $TRAVIS_PYTHON_VERSION == "3.5" ]]; then export DO_COVERAGE=1; fi
 install:
- - if [[ $DO_COVERAGE ]]; then pip install coveralls; fi
+ - if [[ $DO_COVERAGE ]]; then pip install codecov; fi
 before_script:
  - wget https://github.com/acmeism/RosettaCodeData/archive/bba7b.tar.gz
  - mkdir fortran_tests/before/RosettaCodeData && tar -xf bba7b.tar.gz -C fortran_tests/before/RosettaCodeData --strip-components=1
@@ -16,4 +16,4 @@ script:
  - if ! [[ $DO_COVERAGE ]]; then python setup.py test; fi
  - if [[ $DO_COVERAGE ]]; then coverage run --source=fprettify setup.py test; fi
 after_success:
- - if [[ $DO_COVERAGE ]]; then coveralls; fi
+ - if [[ $DO_COVERAGE ]]; then codecov; fi
