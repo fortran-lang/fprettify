@@ -1,10 +1,12 @@
 """
   This is a collection of Fortran parsing utilities.
 """
+from __future__ import (absolute_import, division,
+                        print_function, unicode_literals)
+from builtins import *
+
 import re
 from collections import deque
-# this is needed for compatibility of python 3 __next__ in python 2:
-from builtins import object
 
 RE_FLAGS = re.IGNORECASE | re.UNICODE
 

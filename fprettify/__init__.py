@@ -40,6 +40,10 @@
   - replace temp files by StringIO
   - internal errors should not happen
 """
+from __future__ import (absolute_import, division,
+                        print_function, unicode_literals)
+from builtins import *
+
 import re
 import sys
 import logging

@@ -1,8 +1,10 @@
 """
 Dynamically create tests based on examples in examples/before.
 """
+from __future__ import (absolute_import, division,
+                        print_function, unicode_literals)
+from builtins import *
 
-from __future__ import print_function
 import sys
 import os
 import unittest
@@ -160,7 +162,12 @@ def addtestmethod(testcase, fpath, ffile):
 
     # not sure why this even works, using "test something" (with a space) as function name...
     # however it gives optimal test output
-    testmethod.__name__ = str("test " + os.path.join(fpath, ffile))
+    try:
+        testmethod.__name__ = ("test " + os.path.join(fpath, ffile))
+    except TypeError:
+        # need to encode in python 2 since we are using unicode strings
+        testmethod.__name__ = ("test " + os.path.join(fpath, ffile)).encode('utf-8')
+
     setattr(testcase, testmethod.__name__, testmethod)
 
 # make sure all directories exist
