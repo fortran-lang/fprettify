@@ -11,6 +11,7 @@ fprettify is an auto-formatter for modern Fortran code that imposes strict white
 * All operators are surrounded by exactly one whitespace character, except for arithmetic operators.
 * Removal of extraneous whitespace and consecutive blank lines.
 * Works only for modern Fortran (Fortran 90 upwards).
+* By default, fprettify causes changes in the amount of whitespace only and thus preserves revision history.
 
 
 ## Requirements
@@ -51,6 +52,6 @@ fprettify --help
 ```
 
 
-## Testing
+## Contributing / Testing
 
 The testing mechanism allows you to easily test fprettify with any Fortran project of your choice. Simply clone or copy your entire project into `fortran_tests/before` and run `python setup.py test`. The directory `fortran_tests/after` contains the test output (reformatted Fortran files). If testing fails, please submit an issue!
