@@ -175,6 +175,6 @@ if not os.path.exists(RESULT_FILE):
 
 # this prepares FPrettifyTestCase class when module is loaded by unittest
 for dirpath, dirnames, filenames in os.walk(BEFORE_DIR):
-    for example in [f for f in filenames if any([f.endswith(_) for _ in FORTRAN_EXTENSIONS])]:
+    for example in [f for f in filenames if any( f.endswith(_) for _ in FORTRAN_EXTENSIONS)]:
         addtestmethod(FPrettifyTestCase, dirpath.replace(
             BEFORE_DIR, u""), example)
