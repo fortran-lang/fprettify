@@ -3,6 +3,7 @@
 """
 import re
 from collections import deque
+from builtins import object
 
 RE_FLAGS = re.IGNORECASE | re.UNICODE
 
@@ -47,7 +48,6 @@ class CharFilter(object):
         return self
 
     def __next__(self):
-        """ python 3 version"""
         pos, char = next(self._it)
         if not self._instring and char == u'!':
             raise StopIteration
@@ -63,25 +63,6 @@ class CharFilter(object):
             return self.__next__()
 
         return (pos, char)
-
-    def next(self):
-        """ python 2 version"""
-        pos, char = self._it.next()
-        if not self._instring and char == u'!':
-            raise StopIteration
-
-        # detect start/end of a string
-        if char == u'"' or char == u"'":
-            if self._instring == char:
-                self._instring = u''
-            elif not self._instring:
-                self._instring = char
-
-        if self._instring:
-            return self.next()
-
-        return (pos, char)
-
 
 class InputStream(object):
     """
