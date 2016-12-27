@@ -6,6 +6,7 @@ python:
 before_install:
  - if [[ $TRAVIS_PYTHON_VERSION == "2.7" ]] || [[ $TRAVIS_PYTHON_VERSION == "3.5" ]]; then export DO_COVERAGE=1; fi
 install:
+ - pip install -U -r requirements.txt
  - if [[ $DO_COVERAGE ]]; then pip install coveralls; fi
 before_script:
  - wget https://github.com/acmeism/RosettaCodeData/archive/bba7b.tar.gz
