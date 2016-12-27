@@ -12,7 +12,7 @@ import io
 import re
 
 import fprettify
-from fprettify.fparse_utils import fprettifyParseException, fprettifyInternalException, RE_FLAGS
+from fprettify.fparse_utils import fprettifyParseException, fprettifyInternalException
 
 try:
     # Use the old Python 2's StringIO if available since
@@ -88,7 +88,6 @@ def addtestmethod(testcase, fpath, ffile):
 
             outstring = StringIO()
 
-            logger = logging.getLogger('fprettify-logger')
             try:
                 fprettify.reformat_ffile(infile, outstring)
                 m = hashlib.sha256()
@@ -102,14 +101,12 @@ def addtestmethod(testcase, fpath, ffile):
                 FPrettifyTestCase.n_success += 1
             except fprettifyParseException as e:
                 test_info = u"parse error"
-                logger_d = {u'ffilename': e.filename, u'fline': e.line_nr}
-                logger.exception(test_info, extra=logger_d)
+                fprettify.log_exception(e, test_info)
                 test_content = test_result(example_before, test_info)
                 FPrettifyTestCase.n_parsefail += 1
             except fprettifyInternalException as e:
                 test_info = u"internal error"
-                logger_d = {u'ffilename': e.filename, u'fline': e.line_nr}
-                logger.exception(test_info, extra=logger_d)
+                fprettify.log_exception(e, test_info)
                 test_content = test_result(example_before, test_info)
                 FPrettifyTestCase.n_internalfail += 1
             except:

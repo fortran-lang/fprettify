@@ -3,7 +3,6 @@
 """
 import re
 from collections import deque
-import logging
 
 RE_FLAGS = re.IGNORECASE | re.UNICODE
 
@@ -27,16 +26,13 @@ class fprettifyException(Exception):
         self.filename = filename
         self.line_nr = line_nr
 
-
 class fprettifyParseException(fprettifyException):
     """Exception for unparseable Fortran code (user's fault)."""
     pass
 
-
 class fprettifyInternalException(fprettifyException):
     """Exception for potential internal errors (fixme's)."""
     pass
-
 
 class CharFilter(object):
     """
@@ -115,8 +111,6 @@ class InputStream(object):
         lines = []
         continuation = 0
 
-        logger = logging.getLogger('fprettify-logger')
-
         while 1:
             if not self.line_buffer:
                 line = self.infile.readline().replace(u"\t", 8 * u" ")
@@ -151,7 +145,6 @@ class InputStream(object):
             lines.append(line)
             match = line_re.match(line)
 
-            logger_d = {u'ffilename': self.filename, u'fline': self.line_nr}
             if not match or match.span()[1] != len(line):
                 # FIXME: does not handle line continuation of
                 # omp conditional fortran statements
