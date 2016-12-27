@@ -35,13 +35,23 @@ fprettify.set_fprettify_logger(logging.ERROR)
 
 
 class FPrettifyTestCase(unittest.TestCase):
+    """
+    test class to be recognized by unittest.
+    """
 
     def setUp(self):
-        # we have large files to compare, raise the limit
+        """
+        setUp to be recognized by unittest.
+        We have large files to compare, raise the limit
+        """
         self.maxDiff = None
 
     @classmethod
     def setUpClass(cls):
+        """
+        setUpClass to be recognized by unittest.
+        """
+
         cls.n_success = 0
         cls.n_parsefail = 0
         cls.n_internalfail = 0
@@ -61,6 +71,10 @@ class FPrettifyTestCase(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
+        """
+        tearDownClass to be recognized by unittest.
+        """
+
         format = u"{:<20}{:<6}"
         print(u"-" * 70)
         print(format.format(u"successful:", cls.n_success))
@@ -72,7 +86,10 @@ class FPrettifyTestCase(unittest.TestCase):
 
 
 def addtestmethod(testcase, fpath, ffile):
+    """ add a test method for each example. """
+
     def testmethod(testcase):
+        """ this is the test method invoked for each example. """
 
         dirpath_before = os.path.join(BEFORE_DIR, fpath)
         dirpath_after = os.path.join(AFTER_DIR, fpath)
@@ -82,7 +99,8 @@ def addtestmethod(testcase, fpath, ffile):
         example_before = os.path.join(dirpath_before, ffile)
         example_after = os.path.join(dirpath_after, ffile)
 
-        test_result = lambda path, info: [path.replace(BEFORE_DIR, u""), info]
+        def test_result(path, info):
+            return [path.replace(BEFORE_DIR, u""), info]
 
         with io.open(example_before, 'r', encoding='utf-8') as infile:
 
@@ -145,6 +163,7 @@ def addtestmethod(testcase, fpath, ffile):
     testmethod.__name__ = str("test " + os.path.join(fpath, ffile))
     setattr(testcase, testmethod.__name__, testmethod)
 
+# make sure all directories exist
 if not os.path.exists(BEFORE_DIR):
     os.makedirs(BEFORE_DIR)
 if not os.path.exists(AFTER_DIR):
@@ -154,6 +173,7 @@ if not os.path.exists(RESULT_DIR):
 if not os.path.exists(RESULT_FILE):
     io.open(RESULT_FILE, 'w', encoding='utf-8').close()
 
+# this prepares FPrettifyTestCase class when module is loaded by unittest
 for dirpath, dirnames, filenames in os.walk(BEFORE_DIR):
     for example in [f for f in filenames if any([f.endswith(_) for _ in FORTRAN_EXTENSIONS])]:
         addtestmethod(FPrettifyTestCase, dirpath.replace(

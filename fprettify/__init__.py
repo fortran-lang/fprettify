@@ -981,6 +981,9 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
 
 
 def set_fprettify_logger(level):
+    """
+    setup custom logger
+    """
     logger = logging.getLogger('fprettify-logger')
     logger.setLevel(level)
     stream_handler = logging.StreamHandler()
@@ -991,9 +994,16 @@ def set_fprettify_logger(level):
     logger.addHandler(stream_handler)
 
 def log_exception(e, message):
+    """
+    log an exception and a message
+    """
     log_message(message, "exception", e.filename, e.line_nr)
 
 def log_message(message, level, filename, line_nr):
+    """
+    log a message
+    """
+
     logger = logging.getLogger('fprettify-logger')
     logger_d = {u'ffilename': filename, u'fline': line_nr}
     logger_to_use = getattr(logger, level)

@@ -17,7 +17,6 @@ VAR_DECL_RE = re.compile(
 OMP_DIR_RE = re.compile(r"^\s*(!\$omp)", RE_FLAGS)
 OMP_RE = re.compile(r"^\s*(!\$)", RE_FLAGS)
 
-
 class fprettifyException(Exception):
     """Base class for all custom exceptions"""
 
