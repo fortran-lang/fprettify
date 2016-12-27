@@ -3,6 +3,7 @@
 """
 import re
 from collections import deque
+# this is needed for compatibility of python 3 __next__ in python 2:
 from builtins import object
 
 RE_FLAGS = re.IGNORECASE | re.UNICODE

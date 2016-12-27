@@ -317,6 +317,13 @@ class F90Aligner(object):
         self._level = 0
         self._br_indent_list = [0]
 
+    @staticmethod
+    def get_curr_delim(line, pos):
+        """ get delimiter token in line starting at pos, if it exists """
+        what_del_open = DEL_OPEN_RE.match(line[pos:pos + 2])
+        what_del_close = DEL_CLOSE_RE.match(line[pos:pos + 2])
+        return [what_del_open, what_del_close]
+
     def process_lines_of_fline(self, f_line, lines, rel_ind, line_nr):
         """
         process all lines that belong to a Fortran line `f_line`,
@@ -365,9 +372,8 @@ class F90Aligner(object):
 
             what_del_open = None
             what_del_close = None
-            if not pos == end_of_delim:
-                what_del_open = DEL_OPEN_RE.match(line[pos:pos + 2])
-                what_del_close = DEL_CLOSE_RE.match(line[pos:pos + 2])
+            if pos > end_of_delim:
+                [what_del_open, what_del_close] = F90Aligner.get_curr_delim(line, pos)
 
             if not instring and what_del_open:
                 what_del_open = what_del_open.group()
@@ -538,10 +544,7 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
         what_del_open = None
         what_del_close = None
         if pos > end_of_delim:
-            what_del_open = DEL_OPEN_RE.match(
-                line[pos:pos + 2])  # opening delimiter token
-            what_del_close = DEL_CLOSE_RE.match(
-                line[pos:pos + 2])  # closing delimiter token
+            [what_del_open, what_del_close] = F90Aligner.get_curr_delim(line, pos)
 
         if what_del_open or what_del_close:
             sep1 = 0
