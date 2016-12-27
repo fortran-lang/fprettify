@@ -693,30 +693,27 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
     linebreak_pos.sort(reverse=True)
     linebreak_pos_ftd = []
     while 1:
+
         if pos_new == len(line) or pos_old == len(line_orig):
             break
 
         if line[pos_new] != line_orig[pos_old]:
             raise fprettifyInternalException(
                 u"failed at finding line break position", filename, line_nr)
+
         if linebreak_pos and pos_old > linebreak_pos[-1]:
             linebreak_pos.pop()
             linebreak_pos_ftd.append(pos_new)
             continue
-        if line[pos_new] is line_orig[pos_old]:
+
+        pos_new += 1
+        while pos_new < len(line) and line[pos_new] == u' ':
             pos_new += 1
-            while pos_new < len(line) and line[pos_new] == u' ':
-                pos_new += 1
+
+        pos_old += 1
+        while pos_old < len(line_orig) and line_orig[pos_old] == u' ':
             pos_old += 1
-            while pos_old < len(line_orig) and line_orig[pos_old] == u' ':
-                pos_old += 1
-        elif line[pos_new] == u' ':
-            pos_new += 1
-        elif line_orig[pos_old] == u' ':
-            pos_old += 1
-        else:
-            raise fprettifyInternalException(
-                u"failed at finding line break position", filename, line_nr)
+
     linebreak_pos_ftd.insert(0, 0)
 
     # We do not insert ampersands in empty lines and comments lines
