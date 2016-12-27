@@ -82,7 +82,7 @@ def addtestmethod(testcase, fpath, ffile):
         example_before = os.path.join(dirpath_before, ffile)
         example_after = os.path.join(dirpath_after, ffile)
 
-        sep_str = u' : '
+        test_result = lambda path, info: [path.replace(BEFORE_DIR, u""), info]
 
         with io.open(example_before, 'r', encoding='utf-8') as infile:
 
@@ -93,28 +93,24 @@ def addtestmethod(testcase, fpath, ffile):
                 fprettify.reformat_ffile(infile, outstring)
                 m = hashlib.sha256()
                 m.update(outstring.getvalue().encode('utf-8'))
+
                 test_info = u"checksum"
-                test_line = example_before.replace(
-                    BEFORE_DIR, u"") + sep_str + m.hexdigest()
-                test_content = test_line.strip().split(sep_str)
+                test_content = test_result(example_before, m.hexdigest())
+
                 with io.open(example_after, 'w', encoding='utf-8') as outfile:
                     outfile.write(outstring.getvalue())
                 FPrettifyTestCase.n_success += 1
             except fprettifyParseException as e:
-                logger_d = {u'ffilename': e.filename, u'fline': e.line_nr}
                 test_info = u"parse error"
+                logger_d = {u'ffilename': e.filename, u'fline': e.line_nr}
                 logger.exception(test_info, extra=logger_d)
-                test_line = example_before.replace(
-                    BEFORE_DIR, u"") + sep_str + test_info
-                test_content = test_line.strip().split(sep_str)
+                test_content = test_result(example_before, test_info)
                 FPrettifyTestCase.n_parsefail += 1
             except fprettifyInternalException as e:
-                logger_d = {u'ffilename': e.filename, u'fline': e.line_nr}
                 test_info = u"internal error"
+                logger_d = {u'ffilename': e.filename, u'fline': e.line_nr}
                 logger.exception(test_info, extra=logger_d)
-                test_line = example_before.replace(
-                    BEFORE_DIR, u"") + sep_str + test_info
-                test_content = test_line.strip().split(sep_str)
+                test_content = test_result(example_before, test_info)
                 FPrettifyTestCase.n_internalfail += 1
             except:
                 FPrettifyTestCase.n_unexpectedfail += 1
@@ -129,6 +125,7 @@ def addtestmethod(testcase, fpath, ffile):
 
             testcase.assertMultiLineEqual(before_nosp, after_nosp)
 
+        sep_str = u' : '
         with io.open(RESULT_FILE, 'r', encoding='utf-8') as fpr_hash:
             found = False
             for line in fpr_hash:
@@ -144,7 +141,7 @@ def addtestmethod(testcase, fpath, ffile):
             print(test_info + u" new", end=u" ")
             sys.stdout.flush()
             with io.open(RESULT_FILE, 'a', encoding='utf-8') as fpr_hash:
-                fpr_hash.write(test_line + u'\n')
+                fpr_hash.write(sep_str.join(test_content) + u'\n')
 
     # not sure why this even works, using "test something" (with a space) as function name...
     # however it gives optimal test output
