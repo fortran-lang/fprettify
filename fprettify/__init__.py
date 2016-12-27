@@ -57,16 +57,6 @@ from .fparse_utils import (USE_PARSE_RE, VAR_DECL_RE, OMP_RE, OMP_DIR_RE,
                            InputStream, CharFilter,
                            fprettifyException, fprettifyParseException, fprettifyInternalException, RE_FLAGS)
 
-# PY2/PY3 compat wrappers:
-try:
-    any
-except NameError:
-    def any(iterable):
-        for element in iterable:
-            if element:
-                return True
-        return False
-
 # constants, mostly regular expressions:
 
 FORMATTER_ERROR_MESSAGE = (u" Wrong usage of formatting-specific directives"
