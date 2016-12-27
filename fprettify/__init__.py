@@ -63,10 +63,10 @@ from .fparse_utils import (USE_PARSE_RE, VAR_DECL_RE, OMP_RE, OMP_DIR_RE,
 
 # constants, mostly regular expressions:
 
-FORMATTER_ERROR_MESSAGE = (u" Wrong usage of formatting-specific directives"
-                           u" '&', '!&', '!&<' or '!&>'.")
-LINESPLIT_MESSAGE = (u"auto indentation faile due to 132 chars limit, "
-                     u"line should be splitted")
+FORMATTER_ERROR_MESSAGE = (" Wrong usage of formatting-specific directives"
+                           " '&', '!&', '!&<' or '!&>'.")
+LINESPLIT_MESSAGE = ("auto indentation faile due to 132 chars limit, "
+                     "line should be splitted")
 
 EOL_STR = r"\s*;?\s*$"  # end of fortran line
 EOL_SC = r"\s*;\s*$"  # whether line is ended with semicolon
@@ -209,7 +209,7 @@ class F90Indenter(object):
                 is_new = True
                 valid_new = True
                 scopes.append(what_new)
-                log_message(u"{}: {}".format(what_new, f_line),
+                log_message("{}: {}".format(what_new, f_line),
                             "debug", filename, line_nr)
 
         # check statements that continue scope
@@ -223,7 +223,7 @@ class F90Indenter(object):
                     what = scopes[-1]
                     if what == what_con:
                         valid_con = True
-                        log_message(u"{}: {}".format(
+                        log_message("{}: {}".format(
                             what_con, f_line), "debug", filename, line_nr)
 
         # check statements that end scope
@@ -237,7 +237,7 @@ class F90Indenter(object):
                     what = scopes.pop()
                     if what == what_end:
                         valid_end = True
-                        log_message(u"{}: {}".format(
+                        log_message("{}: {}".format(
                             what_end, f_line), "debug", filename, line_nr)
 
         # deal with line breaks
@@ -428,7 +428,7 @@ class F90Aligner(object):
                         # should only have one assignment per line!
                         if pos_eq > 0:
                             raise FprettifyInternalException(
-                                u"found more than one assignment in the same Fortran line", filename, line_nr)
+                                "found more than one assignment in the same Fortran line", filename, line_nr)
                         is_pointer = line[pos + 1] == u'>'
                         pos_eq = pos + 1
                         # don't align if assignment operator directly before
@@ -524,7 +524,7 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
     elif whitespace == 2:
         spacey = [1, 1, 1, 1, 1]
     else:
-        raise NotImplementedError(u"unknown value for whitespace")
+        raise NotImplementedError("unknown value for whitespace")
 
     line = f_line
     line_orig = line
@@ -664,7 +664,7 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
     str_end = -1
     instring = u''
     for pos, char in enumerate(line):
-        if char == u'"' or char == u"'":  # skip string
+        if char == u'"' or char == "'":  # skip string
             if not instring:
                 str_start = pos
                 line_parts.append(line[str_end + 1:str_start])
@@ -707,7 +707,7 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
 
         if line[pos_new] != line_orig[pos_old]:
             raise FprettifyInternalException(
-                u"failed at finding line break position", filename, line_nr)
+                "failed at finding line break position", filename, line_nr)
 
         if linebreak_pos and pos_old > linebreak_pos[-1]:
             linebreak_pos.pop()
@@ -780,7 +780,7 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
 
     if not modern:
         raise FprettifyParseException(
-            u"fprettify can not format fixed format or f77 constructs", orig_filename, 0)
+            "fprettify can not format fixed format or f77 constructs", orig_filename, 0)
 
     nfl = 0  # fortran line counter
 
@@ -851,12 +851,12 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
         elif lines[0].startswith(u'#'):  # preprocessor macros
             if len(lines) != 1:
                 raise FprettifyInternalException(
-                    u"Continuation lines for preprocessor statement", orig_filename, stream.line_nr)
+                    "Continuation lines for preprocessor statement", orig_filename, stream.line_nr)
             do_indent = False
         elif EMPTY_RE.search(f_line):  # empty lines including comment lines
             if len(lines) != 1:
                 raise FprettifyInternalException(
-                    u"Continuation lines for comment lines", orig_filename, stream.line_nr)
+                    "Continuation lines for comment lines", orig_filename, stream.line_nr)
             if any(comments):
                 if lines[0].startswith(u'!'):
                     # don't indent unindented comments
@@ -900,7 +900,7 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
                                             lines[pos - 1]).group(1))
                     except AttributeError:
                         raise FprettifyParseException(
-                            u"Bad continuation line format", orig_filename, stream.line_nr)
+                            "Bad continuation line format", orig_filename, stream.line_nr)
 
                     ampersand_sep.append(sep)
                 else:
@@ -916,7 +916,7 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
             for pos, line in enumerate(lines):
                 found = None
                 for char_pos, char in CharFilter(enumerate(line)):
-                    if char == u"&":
+                    if char == "&":
                         found = char_pos
                 if found:
                     linebreak_pos.append(found)
@@ -1043,7 +1043,7 @@ def run(argv=None):
                      u'stdout': 0, u'report-errors': 1,
                      u'debug': 0}
 
-    usage_desc = (u"usage:\n" + argv[0] + u"""
+    usage_desc = ("usage:\n" + argv[0] + """
     [--indent=3] [--whitespace=2]
     [--[no-]stdout] [--[no-]report-errors] file1 [file2 ...]
     [--help]
@@ -1075,7 +1075,7 @@ def run(argv=None):
     Defaults:
     """ + str(defaults_dict))
 
-    if u"--help" in argv:
+    if "--help" in argv:
         sys.stderr.write(usage_desc + u'\n')
         return 0
     args = []
@@ -1101,7 +1101,7 @@ def run(argv=None):
 
     for filename in args:
         if not os.path.isfile(filename) and filename != u'stdin':
-            sys.stderr.write(u"file " + filename + u" does not exists!\n")
+            sys.stderr.write("file " + filename + " does not exists!\n")
         else:
             stdout = defaults_dict[u'stdout'] or filename == u'stdin'
 
@@ -1122,4 +1122,4 @@ def run(argv=None):
                                  indent_size=defaults_dict[u'indent'],
                                  whitespace=defaults_dict[u'whitespace'])
             except FprettifyException as e:
-                log_exception(e, u"Fatal error occured")
+                log_exception(e, "Fatal error occured")

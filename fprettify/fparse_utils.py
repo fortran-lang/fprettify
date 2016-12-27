@@ -60,7 +60,7 @@ class CharFilter(object):
             raise StopIteration
 
         # detect start/end of a string
-        if char == u'"' or char == u"'":
+        if char == u'"' or char == "'":
             if self._instring == char:
                 self._instring = u''
             elif not self._instring:
@@ -94,14 +94,14 @@ class InputStream(object):
         line_re = re.compile(
             r"(?:(?P<preprocessor>#.*\n?)| *(&)?(?P<core>(?:!\$|[^&!\"']+|\"[^\"]*\"|'[^']*')*)(?P<continue>&)? *(?P<comment>!.*)?\n?)",
             RE_FLAGS)
-        joined_line = u""
+        joined_line = ""
         comments = []
         lines = []
         continuation = 0
 
         while 1:
             if not self.line_buffer:
-                line = self.infile.readline().replace(u"\t", 8 * u" ")
+                line = self.infile.readline().replace("\t", 8 * " ")
                 self.line_nr += 1
                 # convert OMP-conditional fortran statements into normal fortran statements
                 # but remember to convert them back
@@ -138,26 +138,26 @@ class InputStream(object):
                 # omp conditional fortran statements
                 # starting with an ampersand.
                 raise FprettifyInternalException(
-                    u"unexpected line format", self.filename, self.line_nr)
-            if match.group(u"preprocessor"):
+                    "unexpected line format", self.filename, self.line_nr)
+            if match.group("preprocessor"):
                 if len(lines) > 1:
                     raise FprettifyParseException(
-                        u"continuation to a preprocessor line not supported", self.filename, self.line_nr)
+                        "continuation to a preprocessor line not supported", self.filename, self.line_nr)
                 comments.append(line)
                 break
-            core_att = match.group(u"core")
+            core_att = match.group("core")
             if OMP_RE.match(core_att) and joined_line.strip():
                 # remove omp '!$' for line continuation
                 core_att = OMP_RE.sub(u'', core_att, count=1).lstrip()
-            joined_line = joined_line.rstrip(u"\n") + core_att
+            joined_line = joined_line.rstrip("\n") + core_att
             if core_att and not core_att.isspace():
                 continuation = 0
-            if match.group(u"continue"):
+            if match.group("continue"):
                 continuation = 1
             if line.lstrip().startswith(u'!') and not OMP_RE.search(line):
                 comments.append(line.rstrip(u'\n'))
-            elif match.group(u"comment"):
-                comments.append(match.group(u"comment"))
+            elif match.group("comment"):
+                comments.append(match.group("comment"))
             else:
                 comments.append(u'')
             if not continuation:

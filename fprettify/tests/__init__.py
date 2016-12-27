@@ -29,8 +29,8 @@ RESULT_DIR = r'fortran_tests/test_results/'
 RESULT_FILE = os.path.join(RESULT_DIR, u'expected_results')
 
 # recognize fortran files by extension
-FORTRAN_EXTENSIONS = [u".f", u".for", u".ftn",
-                      u".f90", u".f95", u".f03", u".fpp"]
+FORTRAN_EXTENSIONS = [".f", ".for", ".ftn",
+                      ".f90", ".f95", ".f03", ".fpp"]
 FORTRAN_EXTENSIONS += [_.upper() for _ in FORTRAN_EXTENSIONS]
 
 fprettify.set_fprettify_logger(logging.ERROR)
@@ -62,17 +62,17 @@ class FPrettifyTestCase(unittest.TestCase):
         cls.n_parsefail = 0
         cls.n_internalfail = 0
         cls.n_unexpectedfail = 0
-        print(u"-" * 70)
-        print(u"recognized Fortran files")
-        print(u", ".join(FORTRAN_EXTENSIONS))
-        print(u"-" * 70)
-        print(u"Testing with Fortran files in " + BEFORE_DIR)
-        print(u"Writing formatted Fortran files to " + AFTER_DIR)
-        print(u"Storing expected results in " + RESULT_FILE)
-        print(u"-" * 70)
+        print("-" * 70)
+        print("recognized Fortran files")
+        print(", ".join(FORTRAN_EXTENSIONS))
+        print("-" * 70)
+        print("Testing with Fortran files in " + BEFORE_DIR)
+        print("Writing formatted Fortran files to " + AFTER_DIR)
+        print("Storing expected results in " + RESULT_FILE)
+        print("-" * 70)
         print(
-            u"NOTE: internal error or parse error can happen if file is not 'modern' Fortran")
-        print(u"-" * 70)
+            "NOTE: internal error or parse error can happen if file is not 'modern' Fortran")
+        print("-" * 70)
         sys.stdout.flush()
 
     @classmethod
@@ -81,13 +81,13 @@ class FPrettifyTestCase(unittest.TestCase):
         tearDownClass to be recognized by unittest.
         """
 
-        format = u"{:<20}{:<6}"
-        print(u"-" * 70)
-        print(format.format(u"successful:", cls.n_success))
-        print(format.format(u"parse errors: ", cls.n_parsefail))
-        print(format.format(u"internal errors: ", cls.n_internalfail))
-        print(format.format(u"unexpected errors: ", cls.n_unexpectedfail))
-        print(u"-" * 70)
+        format = "{:<20}{:<6}"
+        print("-" * 70)
+        print(format.format("successful:", cls.n_success))
+        print(format.format("parse errors: ", cls.n_parsefail))
+        print(format.format("internal errors: ", cls.n_internalfail))
+        print(format.format("unexpected errors: ", cls.n_unexpectedfail))
+        print("-" * 70)
         sys.stdout.flush()
 
 
@@ -106,7 +106,7 @@ def addtestmethod(testcase, fpath, ffile):
         example_after = os.path.join(dirpath_after, ffile)
 
         def test_result(path, info):
-            return [path.replace(BEFORE_DIR, u""), info]
+            return [path.replace(BEFORE_DIR, ""), info]
 
         with io.open(example_before, 'r', encoding='utf-8') as infile:
 
@@ -117,19 +117,19 @@ def addtestmethod(testcase, fpath, ffile):
                 m = hashlib.sha256()
                 m.update(outstring.getvalue().encode('utf-8'))
 
-                test_info = u"checksum"
+                test_info = "checksum"
                 test_content = test_result(example_before, m.hexdigest())
 
                 with io.open(example_after, 'w', encoding='utf-8') as outfile:
                     outfile.write(outstring.getvalue())
                 FPrettifyTestCase.n_success += 1
             except FprettifyParseException as e:
-                test_info = u"parse error"
+                test_info = "parse error"
                 fprettify.log_exception(e, test_info)
                 test_content = test_result(example_before, test_info)
                 FPrettifyTestCase.n_parsefail += 1
             except FprettifyInternalException as e:
-                test_info = u"internal error"
+                test_info = "internal error"
                 fprettify.log_exception(e, test_info)
                 test_content = test_result(example_before, test_info)
                 FPrettifyTestCase.n_internalfail += 1
@@ -154,13 +154,13 @@ def addtestmethod(testcase, fpath, ffile):
                 line_content = line.strip().split(sep_str)
                 if line_content[0] == test_content[0]:
                     found = True
-                    print(test_info, end=u" ")
+                    print(test_info, end=" ")
                     sys.stdout.flush()
                     testcase.assertEqual(line_content[1], test_content[1])
                     break
 
         if not found:
-            print(test_info + u" new", end=u" ")
+            print(test_info + " new", end=" ")
             sys.stdout.flush()
             with io.open(RESULT_FILE, 'a', encoding='utf-8') as fpr_hash:
                 fpr_hash.write(sep_str.join(test_content) + u'\n')
@@ -190,4 +190,4 @@ if not os.path.exists(RESULT_FILE):
 for dirpath, dirnames, filenames in os.walk(BEFORE_DIR):
     for example in [f for f in filenames if any(f.endswith(_) for _ in FORTRAN_EXTENSIONS)]:
         addtestmethod(FPrettifyTestCase, dirpath.replace(
-            BEFORE_DIR, u""), example)
+            BEFORE_DIR, ""), example)
