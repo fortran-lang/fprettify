@@ -1,5 +1,5 @@
 # fprettify
-[![Build Status](https://travis-ci.org/pseewald/fprettify.svg?branch=master)](https://travis-ci.org/pseewald/fprettify) [![Coverage Status](https://coveralls.io/repos/github/pseewald/fprettify/badge.svg?branch=master)](https://coveralls.io/github/pseewald/fprettify?branch=master)
+[![Build Status](https://travis-ci.org/pseewald/fprettify.svg?branch=master)](https://travis-ci.org/pseewald/fprettify) [![Coverage Status](https://coveralls.io/repos/github/pseewald/fprettify/badge.svg?branch=master)](https://coveralls.io/github/pseewald/fprettify?branch=master) [![Code Health](https://landscape.io/github/pseewald/fprettify/master/landscape.svg?style=flat)](https://landscape.io/github/pseewald/fprettify/master)
 
 fprettify is an auto-formatter for modern Fortran code that imposes strict whitespace formatting.
 
