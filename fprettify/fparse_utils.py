@@ -21,6 +21,7 @@ VAR_DECL_RE = re.compile(
 OMP_DIR_RE = re.compile(r"^\s*(!\$omp)", RE_FLAGS)
 OMP_RE = re.compile(r"^\s*(!\$)", RE_FLAGS)
 
+
 class FprettifyException(Exception):
     """Base class for all custom exceptions"""
 
@@ -29,13 +30,16 @@ class FprettifyException(Exception):
         self.filename = filename
         self.line_nr = line_nr
 
+
 class FprettifyParseException(FprettifyException):
     """Exception for unparseable Fortran code (user's fault)."""
     pass
 
+
 class FprettifyInternalException(FprettifyException):
     """Exception for potential internal errors (fixme's)."""
     pass
+
 
 class CharFilter(object):
     """
@@ -66,6 +70,7 @@ class CharFilter(object):
             return self.__next__()
 
         return (pos, char)
+
 
 class InputStream(object):
     """

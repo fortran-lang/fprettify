@@ -41,6 +41,10 @@ class FPrettifyTestCase(unittest.TestCase):
     test class to be recognized by unittest.
     """
 
+    def shortDescription(self):
+        """ don't print doc string of testmethod """
+        return None
+
     def setUp(self):
         """
         setUp to be recognized by unittest.
@@ -135,10 +139,11 @@ def addtestmethod(testcase, fpath, ffile):
 
         if os.path.isfile(example_after):
             with io.open(example_before, 'r', encoding='utf-8') as infile:
-                before_nosp=re.sub(r'\n{3,}',r'\n\n', infile.read().lower().replace(' ', '').replace('\t',''))
+                before_nosp = re.sub(r'\n{3,}', r'\n\n', infile.read(
+                ).lower().replace(' ', '').replace('\t', ''))
 
             with io.open(example_after, 'r', encoding='utf-8') as outfile:
-                after_nosp=outfile.read().lower().replace(' ', '')
+                after_nosp = outfile.read().lower().replace(' ', '')
 
             testcase.assertMultiLineEqual(before_nosp, after_nosp)
 
@@ -166,7 +171,8 @@ def addtestmethod(testcase, fpath, ffile):
         testmethod.__name__ = ("test " + os.path.join(fpath, ffile))
     except TypeError:
         # need to encode in python 2 since we are using unicode strings
-        testmethod.__name__ = ("test " + os.path.join(fpath, ffile)).encode('utf-8')
+        testmethod.__name__ = (
+            "test " + os.path.join(fpath, ffile)).encode('utf-8')
 
     setattr(testcase, testmethod.__name__, testmethod)
 
@@ -182,6 +188,6 @@ if not os.path.exists(RESULT_FILE):
 
 # this prepares FPrettifyTestCase class when module is loaded by unittest
 for dirpath, dirnames, filenames in os.walk(BEFORE_DIR):
-    for example in [f for f in filenames if any( f.endswith(_) for _ in FORTRAN_EXTENSIONS)]:
+    for example in [f for f in filenames if any(f.endswith(_) for _ in FORTRAN_EXTENSIONS)]:
         addtestmethod(FPrettifyTestCase, dirpath.replace(
             BEFORE_DIR, u""), example)

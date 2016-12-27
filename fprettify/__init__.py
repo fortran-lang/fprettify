@@ -209,7 +209,8 @@ class F90Indenter(object):
                 is_new = True
                 valid_new = True
                 scopes.append(what_new)
-                log_message(u"{}: {}".format(what_new, f_line), "debug", filename, line_nr)
+                log_message(u"{}: {}".format(what_new, f_line),
+                            "debug", filename, line_nr)
 
         # check statements that continue scope
         is_con = False
@@ -222,7 +223,8 @@ class F90Indenter(object):
                     what = scopes[-1]
                     if what == what_con:
                         valid_con = True
-                        log_message(u"{}: {}".format(what_con, f_line), "debug", filename, line_nr)
+                        log_message(u"{}: {}".format(
+                            what_con, f_line), "debug", filename, line_nr)
 
         # check statements that end scope
         is_end = False
@@ -235,7 +237,8 @@ class F90Indenter(object):
                     what = scopes.pop()
                     if what == what_end:
                         valid_end = True
-                        log_message(u"{}: {}".format(what_end, f_line), "debug", filename, line_nr)
+                        log_message(u"{}: {}".format(
+                            what_end, f_line), "debug", filename, line_nr)
 
         # deal with line breaks
         if not manual_lines_indent:
@@ -250,7 +253,8 @@ class F90Indenter(object):
 
         if is_new:
             if not valid_new:
-                log_message(u'invalid new statement', "info", filename, line_nr)
+                log_message(u'invalid new statement',
+                            "info", filename, line_nr)
 
             line_indents = [ind + indents[-1] for ind in line_indents]
             old_ind = indents[-1]
@@ -262,13 +266,15 @@ class F90Indenter(object):
 
         elif is_con:
             if not valid_con:
-                log_message(u'invalid continue statement', "info", filename, line_nr)
+                log_message(u'invalid continue statement',
+                            "info", filename, line_nr)
             else:
                 line_indents = [ind + indents[-2] for ind in line_indents]
 
         elif is_end:
             if not valid_end:
-                log_message(u'invalid end statement', "info", filename, line_nr)
+                log_message(u'invalid end statement',
+                            "info", filename, line_nr)
             else:
                 line_indents = [ind + indents[-2] for ind in line_indents]
                 indents.pop()
@@ -344,7 +350,8 @@ class F90Aligner(object):
                 self._line_indents.append(self._br_indent_list[-1])
 
         if len(self._br_indent_list) > 2 or self._level:
-            log_message(u'unpaired bracket delimiters', "info", self._filename, self._line_nr)
+            log_message(u'unpaired bracket delimiters',
+                        "info", self._filename, self._line_nr)
 
     def get_lines_indent(self):
         """
@@ -377,7 +384,8 @@ class F90Aligner(object):
             what_del_open = None
             what_del_close = None
             if pos > end_of_delim:
-                [what_del_open, what_del_close] = F90Aligner.get_curr_delim(line, pos)
+                [what_del_open, what_del_close] = F90Aligner.get_curr_delim(
+                    line, pos)
 
             if not instring and what_del_open:
                 what_del_open = what_del_open.group()
@@ -393,7 +401,8 @@ class F90Aligner(object):
                     level += -1
                     indent_list.pop()
                 else:
-                    log_message(u'unpaired bracket delimiters', "info", filename, line_nr)
+                    log_message(u'unpaired bracket delimiters',
+                                "info", filename, line_nr)
 
                 if pos_ldelim:
                     pos_ldelim.pop()
@@ -406,7 +415,8 @@ class F90Aligner(object):
                     if what_del_open == r"[":
                         valid = what_del_close == r"]"
                     if not valid:
-                        log_message(u'unpaired bracket delimiters', "info", filename, line_nr)
+                        log_message(u'unpaired bracket delimiters',
+                                    "info", filename, line_nr)
 
                 else:
                     pos_rdelim.append(pos)
@@ -548,7 +558,8 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
         what_del_open = None
         what_del_close = None
         if pos > end_of_delim:
-            [what_del_open, what_del_close] = F90Aligner.get_curr_delim(line, pos)
+            [what_del_open, what_del_close] = F90Aligner.get_curr_delim(
+                line, pos)
 
         if what_del_open or what_del_close:
             sep1 = 0
@@ -587,7 +598,8 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
                 if level > 0:
                     level += -1  # close scope
                 else:
-                    log_message(u'unpaired bracket delimiters', "info", filename, line_nr)
+                    log_message(u'unpaired bracket delimiters',
+                                "info", filename, line_nr)
 
                 # add separating whitespace after closing delimiter
                 # with some exceptions:
@@ -970,10 +982,12 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
                               (133 - 2 * is_omp_conditional -
                                len(line.lstrip(u' '))) + line.lstrip(u' '))
 
-                log_message(LINESPLIT_MESSAGE, "warning", orig_filename, stream.line_nr)
+                log_message(LINESPLIT_MESSAGE, "warning",
+                            orig_filename, stream.line_nr)
             else:
                 outfile.write(orig_line)
-                log_message(LINESPLIT_MESSAGE, "warning", orig_filename, stream.line_nr)
+                log_message(LINESPLIT_MESSAGE, "warning",
+                            orig_filename, stream.line_nr)
 
         # no indentation of semicolon separated lines
         if re.search(r";\s*$", f_line, RE_FLAGS):
@@ -1000,11 +1014,13 @@ def set_fprettify_logger(level):
     stream_handler.setFormatter(formatter)
     logger.addHandler(stream_handler)
 
+
 def log_exception(e, message):
     """
     log an exception and a message
     """
     log_message(message, "exception", e.filename, e.line_nr)
+
 
 def log_message(message, level, filename, line_nr):
     """
@@ -1015,6 +1031,7 @@ def log_message(message, level, filename, line_nr):
     logger_d = {u'ffilename': filename, u'fline': line_nr}
     logger_to_use = getattr(logger, level)
     logger_to_use(message, extra=logger_d)
+
 
 def run(argv=None):
     """
