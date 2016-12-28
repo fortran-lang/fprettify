@@ -26,7 +26,7 @@ except ImportError:
 BEFORE_DIR = r'fortran_tests/before/'
 AFTER_DIR = r'fortran_tests/after/'
 RESULT_DIR = r'fortran_tests/test_results/'
-RESULT_FILE = os.path.join(RESULT_DIR, u'expected_results')
+RESULT_FILE = os.path.join(RESULT_DIR, 'expected_results')
 
 # recognize fortran files by extension
 FORTRAN_EXTENSIONS = [".f", ".for", ".ftn",
@@ -147,7 +147,7 @@ def addtestmethod(testcase, fpath, ffile):
 
             testcase.assertMultiLineEqual(before_nosp, after_nosp)
 
-        sep_str = u' : '
+        sep_str = ' : '
         with io.open(RESULT_FILE, 'r', encoding='utf-8') as fpr_hash:
             found = False
             for line in fpr_hash:
@@ -163,7 +163,7 @@ def addtestmethod(testcase, fpath, ffile):
             print(test_info + " new", end=" ")
             sys.stdout.flush()
             with io.open(RESULT_FILE, 'a', encoding='utf-8') as fpr_hash:
-                fpr_hash.write(sep_str.join(test_content) + u'\n')
+                fpr_hash.write(sep_str.join(test_content) + '\n')
 
     # not sure why this even works, using "test something" (with a space) as function name...
     # however it gives optimal test output

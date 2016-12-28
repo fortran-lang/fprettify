@@ -50,20 +50,20 @@ class CharFilter(object):
 
     def __init__(self, it):
         self._it = it
-        self._instring = u''
+        self._instring = ''
 
     def __iter__(self):
         return self
 
     def __next__(self):
         pos, char = next(self._it)
-        if not self._instring and char == u'!':
+        if not self._instring and char == '!':
             raise StopIteration
 
         # detect start/end of a string
-        if char == u'"' or char == "'":
+        if char == '"' or char == "'":
             if self._instring == char:
-                self._instring = u''
+                self._instring = ''
             elif not self._instring:
                 self._instring = char
 
@@ -107,20 +107,20 @@ class InputStream(object):
                 is_omp_conditional = False
                 omp_indent = 0
                 if OMP_RE.match(line):
-                    omp_indent = len(line) - len(line.lstrip(u' '))
-                    line = OMP_RE.sub(u'', line, count=1)
+                    omp_indent = len(line) - len(line.lstrip(' '))
+                    line = OMP_RE.sub('', line, count=1)
                     is_omp_conditional = True
                 line_start = 0
                 for pos, char in CharFilter(enumerate(line)):
-                    if char == u';' or pos + 1 == len(line):
-                        self.line_buffer.append(omp_indent * u' ' + u'!$' * is_omp_conditional +
+                    if char == ';' or pos + 1 == len(line):
+                        self.line_buffer.append(omp_indent * ' ' + '!$' * is_omp_conditional +
                                                 line[line_start:pos + 1])
                         omp_indent = 0
                         is_omp_conditional = False
                         line_start = pos + 1
                 if line_start < len(line):
                     # line + comment
-                    self.line_buffer.append(u'!$' * is_omp_conditional +
+                    self.line_buffer.append('!$' * is_omp_conditional +
                                             line[line_start:])
 
             if self.line_buffer:
@@ -147,18 +147,18 @@ class InputStream(object):
             core_att = match.group("core")
             if OMP_RE.match(core_att) and joined_line.strip():
                 # remove omp '!$' for line continuation
-                core_att = OMP_RE.sub(u'', core_att, count=1).lstrip()
+                core_att = OMP_RE.sub('', core_att, count=1).lstrip()
             joined_line = joined_line.rstrip("\n") + core_att
             if core_att and not core_att.isspace():
                 continuation = 0
             if match.group("continue"):
                 continuation = 1
-            if line.lstrip().startswith(u'!') and not OMP_RE.search(line):
-                comments.append(line.rstrip(u'\n'))
+            if line.lstrip().startswith('!') and not OMP_RE.search(line):
+                comments.append(line.rstrip('\n'))
             elif match.group("comment"):
                 comments.append(match.group("comment"))
             else:
-                comments.append(u'')
+                comments.append('')
             if not continuation:
                 break
         return (joined_line, comments, lines)
