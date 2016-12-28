@@ -49,13 +49,6 @@ import logging
 import os
 import io
 
-try:
-    # Use the old Python 2's StringIO if available since
-    # the converter does not yield unicode strings (yet)
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
-
 from .fparse_utils import (USE_PARSE_RE, VAR_DECL_RE, OMP_RE, OMP_DIR_RE,
                            InputStream, CharFilter,
                            FprettifyException, FprettifyParseException, FprettifyInternalException, RE_FLAGS)
@@ -735,18 +728,18 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
 def reformat_inplace(filename, stdout=False, **kwargs):
     """reformat a file in place."""
     if filename == 'stdin':
-        infile = StringIO()
+        infile = io.StringIO()
         infile.write(sys.stdin.read())
     else:
         infile = io.open(filename, 'r', encoding='utf-8')
 
     if stdout:
-        newfile = StringIO()
+        newfile = io.StringIO()
         reformat_ffile(infile=infile, outfile=newfile,
                        orig_filename=filename, **kwargs)
         sys.stdout.write(newfile.getvalue())
     else:
-        outfile = StringIO()
+        outfile = io.StringIO()
         reformat_ffile(infile=infile, outfile=outfile,
                        orig_filename=filename, **kwargs)
         newfile = io.open(filename, 'w', encoding='utf-8')

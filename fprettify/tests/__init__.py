@@ -16,13 +16,6 @@ import re
 import fprettify
 from fprettify.fparse_utils import FprettifyParseException, FprettifyInternalException
 
-try:
-    # Use the old Python 2's StringIO if available since
-    # the converter does not yield unicode strings (yet)
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
-
 BEFORE_DIR = r'fortran_tests/before/'
 AFTER_DIR = r'fortran_tests/after/'
 RESULT_DIR = r'fortran_tests/test_results/'
@@ -110,7 +103,7 @@ def addtestmethod(testcase, fpath, ffile):
 
         with io.open(example_before, 'r', encoding='utf-8') as infile:
 
-            outstring = StringIO()
+            outstring = io.StringIO()
 
             try:
                 fprettify.reformat_ffile(infile, outstring)
