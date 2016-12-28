@@ -168,10 +168,14 @@ class F90Indenter(object):
     """
 
     def __init__(self, filename):
+        # scopes / subunits:
         self._scope_storage = []
+        # indents for all fortran lines:
         self._indent_storage = [0]
-        self._filename = filename
+        # indents of actual lines of current fortran line
         self._line_indents = []
+
+        self._filename = filename
         self._aligner = F90Aligner(filename)
 
     def process_lines_of_fline(self, f_line, lines, rel_ind, rel_ind_con,
@@ -186,6 +190,8 @@ class F90Indenter(object):
 
         self._line_indents = [0] * len(lines)
         br_indent_list = [0] * len(lines)
+
+        # local variables to avoid self hassle:
         line_indents = self._line_indents
         scopes = self._scope_storage
         indents = self._indent_storage
@@ -260,20 +266,30 @@ class F90Indenter(object):
             if not valid_con:
                 log_message('invalid continue statement',
                             "info", filename, line_nr)
-            else:
+            try:
                 line_indents = [ind + indents[-2] for ind in line_indents]
+            except IndexError:
+                line_indents = [ind + indents[-1] - rel_ind for ind in line_indents]
 
         elif is_end:
             if not valid_end:
                 log_message('invalid end statement',
                             "info", filename, line_nr)
-            else:
+            try:
                 line_indents = [ind + indents[-2] for ind in line_indents]
+            except IndexError:
+                line_indents = [ind + indents[-1] - rel_ind for ind in line_indents]
+
+            if len(indents) > 1:
                 indents.pop()
+
         else:
             line_indents = [ind + indents[-1] for ind in line_indents]
 
+        # reassigning self.* to the updated variables
         self._line_indents = line_indents
+        self._scope_storage = scopes
+        self._indent_storage = indents
 
     def get_fline_indent(self):
         """after processing, retrieve the indentation of the full Fortran line."""
