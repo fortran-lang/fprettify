@@ -1,6 +1,9 @@
 pylint:
   disable:
     - redefined-builtin
+pyflakes:
+    disable:
+    - F401
 python-targets:
   - 2
   - 3
