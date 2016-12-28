@@ -417,25 +417,22 @@ class F90Aligner(object):
                 else:
                     pos_rdelim.append(pos)
                     rdelim.append(what_del_close)
-            if not instring and not level:
-                if not is_decl and char == '=':
-                    if not REL_OP_RE.match(
-                            line[max(0, pos - 1):min(pos + 2, len(line))]):
+            if not instring and not level and not is_decl and char == '=' and not REL_OP_RE.match(
+                    line[max(0, pos - 1):min(pos + 2, len(line))]):
                         # should only have one assignment per line!
-                        if pos_eq > 0:
-                            raise FprettifyInternalException(
-                                "found more than one assignment in the same Fortran line", filename, line_nr)
-                        is_pointer = line[pos + 1] == '>'
-                        pos_eq = pos + 1
-                        # don't align if assignment operator directly before
-                        # line break
-                        if not re.search(r"=>?\s*" + LINEBREAK_STR, line,
-                                         RE_FLAGS):
-                            indent_list.append(
-                                pos_eq + 1 + is_pointer + indent_list[-1])
-                elif is_decl and line[pos:pos + 2] == '::':
-                    if not re.search(r"::\s*" + LINEBREAK_STR, line, RE_FLAGS):
-                        indent_list.append(pos + 3 + indent_list[-1])
+                if pos_eq > 0:
+                    raise FprettifyInternalException(
+                        "found more than one assignment in the same Fortran line", filename, line_nr)
+                is_pointer = line[pos + 1] == '>'
+                pos_eq = pos + 1
+                # don't align if assignment operator directly before
+                # line break
+                if not re.search(r"=>?\s*" + LINEBREAK_STR, line,
+                                 RE_FLAGS):
+                    indent_list.append(
+                        pos_eq + 1 + is_pointer + indent_list[-1])
+            elif is_decl and line[pos:pos + 2] == '::' and not re.search(r"::\s*" + LINEBREAK_STR, line, RE_FLAGS):
+                indent_list.append(pos + 3 + indent_list[-1])
 
         # Don't align if delimiter opening directly before line break
         if level and re.search(DEL_OPEN_STR + r"\s*" + LINEBREAK_STR, line,
@@ -477,11 +474,12 @@ def inspect_ffile_format(infile, indent_size, orig_filename=None):
         if f_line.strip() and first_indent == -1:
             first_indent = offset
         indents.append(offset - prev_offset)
-        if not adopt:  # do not adopt indentations but impose fixed rel. ind.
-            # but don't impose indentation for blocked do/if constructs
-            if prev_offset != offset or (not IF_RE.search(f_line) and
-                                         not DO_RE.search(f_line)):
-                indents[-1] = indent_size
+
+        # do not adopt indentations but impose fixed rel. ind.
+        # but don't impose indentation for blocked do/if constructs:
+        if not adopt and (prev_offset != offset or (not IF_RE.search(f_line) and
+                                                    not DO_RE.search(f_line))):
+            indents[-1] = indent_size
         prev_offset = offset
 
         if F77_STYLE.search(f_line):
@@ -531,8 +529,9 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
     for pos, char in CharFilter(enumerate(line)):
         is_decl = line[pos:].lstrip().startswith('::') or line[
             :pos].rstrip().endswith('::')
+
         if char == ' ':
-            # remove double spaces
+            # remove double spaces:
             if line_ftd and (re.search(r'[\w"]', line_ftd[-1]) or is_decl):
                 line_ftd = line_ftd + char
         else:
@@ -612,7 +611,7 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
                 delim + ' ' * sep2 + rhs.lstrip(' ')
 
         # format commas and semicolons
-        if char == ',' or char == ';':
+        if char in [',', ';']:
             lhs = line_ftd[:pos + offset]
             rhs = line_ftd[pos + 1 + offset:]
             line_ftd = lhs.rstrip(' ') + char + ' ' * \
@@ -627,14 +626,13 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
                 ' ') + line[pos:pos + 5] + ' ' * spacey[3] + rhs.lstrip(' ')
 
         # strip whitespaces from '=' and prepare assignment operator
-        # formatting
-        if char == '=':
-            if not REL_OP_RE.search(line[pos - 1:pos + 2]):
-                lhs = line_ftd[:pos + offset]
-                rhs = line_ftd[pos + 1 + offset:]
-                line_ftd = lhs.rstrip(' ') + '=' + rhs.lstrip(' ')
-                if not level:  # remember position of assignment operator
-                    pos_eq.append(len(lhs.rstrip(' ')))
+        # formatting:
+        if char == '=' and not REL_OP_RE.search(line[pos - 1:pos + 2]):
+            lhs = line_ftd[:pos + offset]
+            rhs = line_ftd[pos + 1 + offset:]
+            line_ftd = lhs.rstrip(' ') + '=' + rhs.lstrip(' ')
+            if not level:  # remember position of assignment operator
+                pos_eq.append(len(lhs.rstrip(' ')))
 
     line = line_ftd
 
@@ -660,7 +658,7 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
     str_end = -1
     instring = ''
     for pos, char in enumerate(line):
-        if char == '"' or char == "'":  # skip string
+        if char in ['"', "'"]:  # skip string
             if not instring:
                 str_start = pos
                 line_parts.append(line[str_end + 1:str_start])
@@ -967,7 +965,7 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
             if ind_use + line_length <= 133:  # 132 plus 1 newline char
                 outfile.write('!$' * is_omp_conditional +
                               ' ' * (ind_use - 2 * is_omp_conditional +
-                                      len(line) - len(line.lstrip(' '))) +
+                                     len(line) - len(line.lstrip(' '))) +
                               line.lstrip(' '))
             elif line_length <= 133:
                 outfile.write('!$' * is_omp_conditional + ' ' *
