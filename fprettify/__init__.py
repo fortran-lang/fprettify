@@ -1,44 +1,44 @@
 """
-  Impose white space conventions and indentation based on scopes / subunits
+Impose white space conventions and indentation based on scopes / subunits
 
-  normalization of white spaces supported for following operators:
-  - relational operators:
-    .EQ. .NE. .LT. .LE. .GT. .GE.
-    ==   /=   <    <=    >   >=
-  - logical operators:
-    .AND. .OR. .EQV. .NEQV.
-    .NOT.
-  - bracket delimiters
-  - commas and semicolons:
-  - arithmetic operators:
-    *  /  **  +  -
-  - other operators:
-    %  - (sign)  = (function argument)
-    = (assignment)  => (pointer assignment)
+normalization of white spaces supported for following operators:
+- relational operators:
+  .EQ. .NE. .LT. .LE. .GT. .GE.
+  ==   /=   <    <=    >   >=
+- logical operators:
+  .AND. .OR. .EQV. .NEQV.
+  .NOT.
+- bracket delimiters
+- commas and semicolons:
+- arithmetic operators:
+  *  /  **  +  -
+- other operators:
+  %  - (sign)  = (function argument)
+  = (assignment)  => (pointer assignment)
 
-  supported criteria for alignment / indentation:
-   Fortran lines:
-   - if, else, endif
-   - do, enddo
-   - select case, case, end select
-   - subroutine, end subroutine
-   - function, end function
-   - module, end module
-   - program, end program
-   - interface, end interface
-   - type, end type
-   Actual lines (parts of Fortran lines separated by linebreaks):
-   - bracket delimiters (.), (/./), and [.]
-   - assignments by value = and pointer =>.
+supported criteria for alignment / indentation:
+ Fortran lines:
+ - if, else, endif
+ - do, enddo
+ - select case, case, end select
+ - subroutine, end subroutine
+ - function, end function
+ - module, end module
+ - program, end program
+ - interface, end interface
+ - type, end type
+ Actual lines (parts of Fortran lines separated by linebreaks):
+ - bracket delimiters (.), (/./), and [.]
+ - assignments by value = and pointer =>.
 
-  LIMITATIONS
-  - assumes that all subunits are explicitly ended within same file,
-    no treatment of #include statements
-  - can not deal with f77 constructs (files are ignored)
+LIMITATIONS
+- assumes that all subunits are explicitly ended within same file,
+  no treatment of #include statements
+- can not deal with f77 constructs (files are ignored)
 
-  FIXME's
-  - replace temp files by StringIO
-  - internal errors should not happen
+FIXME's
+- replace temp files by StringIO
+- internal errors should not happen
 """
 from __future__ import (absolute_import, division,
                         print_function, unicode_literals)
@@ -1077,7 +1077,6 @@ def run(argv=None):
                     return 0
                 else:
                     args.append(arg)
-    failure = 0
     if not args:
         args = [u'stdin']
 
