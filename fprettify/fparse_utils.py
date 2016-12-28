@@ -1,6 +1,5 @@
-"""
-  This is a collection of Fortran parsing utilities.
-"""
+"""This is a collection of Fortran parsing utilities."""
+
 from __future__ import (absolute_import, division,
                         print_function, unicode_literals)
 from builtins import *
@@ -33,11 +32,13 @@ class FprettifyException(Exception):
 
 class FprettifyParseException(FprettifyException):
     """Exception for unparseable Fortran code (user's fault)."""
+
     pass
 
 
 class FprettifyInternalException(FprettifyException):
     """Exception for potential internal errors (fixme's)."""
+
     pass
 
 
@@ -73,9 +74,7 @@ class CharFilter(object):
 
 
 class InputStream(object):
-    """
-    Class to read logical Fortran lines from a Fortran file.
-    """
+"""Class to read logical Fortran lines from a Fortran file."""
 
     def __init__(self, infile, orig_filename=None):
         if not orig_filename:

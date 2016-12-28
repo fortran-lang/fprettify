@@ -284,15 +284,11 @@ class F90Indenter(object):
         self._line_indents = line_indents
 
     def get_fline_indent(self):
-        """
-        after processing, retrieve the indentation of the full Fortran line.
-        """
+        """after processing, retrieve the indentation of the full Fortran line."""
         return self._indent_storage[-1]
 
     def get_lines_indent(self):
-        """
-        after processing, retrieve the indents of all line parts.
-        """
+        """after processing, retrieve the indents of all line parts."""
         return self._line_indents
 
 
@@ -329,7 +325,7 @@ class F90Aligner(object):
 
     @staticmethod
     def get_curr_delim(line, pos):
-        """ get delimiter token in line starting at pos, if it exists """
+        """get delimiter token in line starting at pos, if it exists"""
         what_del_open = DEL_OPEN_RE.match(line[pos:pos + 2])
         what_del_close = DEL_CLOSE_RE.match(line[pos:pos + 2])
         return [what_del_open, what_del_close]
@@ -354,9 +350,7 @@ class F90Aligner(object):
                         "info", self._filename, self._line_nr)
 
     def get_lines_indent(self):
-        """
-        after processing, retrieve the indents of all line parts.
-        """
+        """after processing, retrieve the indents of all line parts."""
         return self._line_indents
 
     def __align_line_continuations(self, line, is_decl, indent_size, line_nr):
@@ -740,9 +734,7 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
 
 
 def reformat_inplace(filename, stdout=False, **kwargs):
-    """
-    reformat a file in place.
-    """
+    """reformat a file in place."""
     if filename == u'stdin':
         infile = StringIO()
         infile.write(sys.stdin.read())
@@ -764,9 +756,7 @@ def reformat_inplace(filename, stdout=False, **kwargs):
 
 def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
                    orig_filename=None):
-    """
-    main method to be invoked for formatting a Fortran file.
-    """
+    """main method to be invoked for formatting a Fortran file."""
 
     if not orig_filename:
         orig_filename = infile.name
@@ -1002,9 +992,7 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
 
 
 def set_fprettify_logger(level):
-    """
-    setup custom logger
-    """
+    """setup custom logger"""
     logger = logging.getLogger('fprettify-logger')
     logger.setLevel(level)
     stream_handler = logging.StreamHandler()
@@ -1016,16 +1004,12 @@ def set_fprettify_logger(level):
 
 
 def log_exception(e, message):
-    """
-    log an exception and a message
-    """
+    """log an exception and a message"""
     log_message(message, "exception", e.filename, e.line_nr)
 
 
 def log_message(message, level, filename, line_nr):
-    """
-    log a message
-    """
+    """log a message"""
 
     logger = logging.getLogger('fprettify-logger')
     logger_d = {u'ffilename': filename, u'fline': line_nr}
@@ -1034,9 +1018,7 @@ def log_message(message, level, filename, line_nr):
 
 
 def run(argv=None):
-    """
-    Command line interface
-    """
+    """Command line interface"""
     if argv is None:
         argv = sys.argv
     defaults_dict = {u'indent': 3, u'whitespace': 2,

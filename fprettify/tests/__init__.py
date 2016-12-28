@@ -42,7 +42,7 @@ class FPrettifyTestCase(unittest.TestCase):
     """
 
     def shortDescription(self):
-        """ don't print doc string of testmethod """
+        """don't print doc string of testmethod"""
         return None
 
     def setUp(self):
@@ -92,10 +92,10 @@ class FPrettifyTestCase(unittest.TestCase):
 
 
 def addtestmethod(testcase, fpath, ffile):
-    """ add a test method for each example. """
+    """add a test method for each example."""
 
     def testmethod(testcase):
-        """ this is the test method invoked for each example. """
+        """this is the test method invoked for each example."""
 
         dirpath_before = os.path.join(BEFORE_DIR, fpath)
         dirpath_after = os.path.join(AFTER_DIR, fpath)

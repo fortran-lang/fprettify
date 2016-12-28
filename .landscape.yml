@@ -4,6 +4,9 @@ pylint:
 pyflakes:
     disable:
     - F401
+pep257:
+    disable:
+    - D203
 python-targets:
   - 2
   - 3

@@ -1,9 +1,7 @@
-#!/usr/bin/env python
-"""
-wrapper script to run fprettify
-"""
+#!/sr/bin/env python
+"""wrapper script to run fprettify"""
 
-from fprettify import run
+from fprettify import rn
 
 if __name__ == '__main__':
-    run()
+    rn()
