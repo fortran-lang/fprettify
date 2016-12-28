@@ -74,7 +74,7 @@ class CharFilter(object):
 
 
 class InputStream(object):
-"""Class to read logical Fortran lines from a Fortran file."""
+    """Class to read logical Fortran lines from a Fortran file."""
 
     def __init__(self, infile, orig_filename=None):
         if not orig_filename:
