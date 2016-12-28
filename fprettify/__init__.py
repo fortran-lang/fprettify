@@ -37,7 +37,6 @@ LIMITATIONS
 - can not deal with f77 constructs (files are ignored)
 
 FIXME's
-- replace temp files by StringIO
 - internal errors should not happen
 """
 from __future__ import (absolute_import, division,
@@ -147,9 +146,9 @@ LOG_OP_RE = re.compile(r"\s*(\.(?:AND|OR|EQV|NEQV)\.)\s*", RE_FLAGS)
 
 # regular expressions for parsing delimiters
 DEL_OPEN_STR = r"(\(\/?|\[)"
-DEL_OPEN_RE = re.compile(DEL_OPEN_STR, RE_FLAGS)
+DEL_OPEN_RE = re.compile(r"^"+DEL_OPEN_STR, RE_FLAGS)
 DEL_CLOSE_STR = r"(\/?\)|\])"
-DEL_CLOSE_RE = re.compile(DEL_CLOSE_STR, RE_FLAGS)
+DEL_CLOSE_RE = re.compile(r"^"+DEL_CLOSE_STR, RE_FLAGS)
 
 # empty line regex
 EMPTY_RE = re.compile(SOL_STR + r"(!.*)?$", RE_FLAGS)
@@ -327,8 +326,8 @@ class F90Aligner(object):
     @staticmethod
     def get_curr_delim(line, pos):
         """get delimiter token in line starting at pos, if it exists"""
-        what_del_open = DEL_OPEN_RE.match(line[pos:pos + 2])
-        what_del_close = DEL_CLOSE_RE.match(line[pos:pos + 2])
+        what_del_open = DEL_OPEN_RE.search(line[pos:pos + 2])
+        what_del_close = DEL_CLOSE_RE.search(line[pos:pos + 2])
         return [what_del_open, what_del_close]
 
     def process_lines_of_fline(self, f_line, lines, rel_ind, line_nr):
@@ -339,7 +338,7 @@ class F90Aligner(object):
 
         self.__init_line(line_nr)
 
-        is_decl = VAR_DECL_RE.match(f_line) or PUBLIC_RE.match(f_line)
+        is_decl = VAR_DECL_RE.search(f_line) or PUBLIC_RE.search(f_line)
         for pos, line in enumerate(lines):
             self.__align_line_continuations(
                 line, is_decl, rel_ind, self._line_nr + pos)
@@ -417,7 +416,7 @@ class F90Aligner(object):
                 else:
                     pos_rdelim.append(pos)
                     rdelim.append(what_del_close)
-            if not instring and not level and not is_decl and char == '=' and not REL_OP_RE.match(
+            if not instring and not level and not is_decl and char == '=' and not REL_OP_RE.search(
                     line[max(0, pos - 1):min(pos + 2, len(line))]):
                         # should only have one assignment per line!
                 if pos_eq > 0:
@@ -619,7 +618,7 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
             line_ftd = line_ftd.rstrip(' ')
 
         # format .NOT.
-        if re.match(r"\.NOT\.", line[pos:pos + 5], RE_FLAGS):
+        if re.search(r"^\.NOT\.", line[pos:pos + 5], RE_FLAGS):
             lhs = line_ftd[:pos + offset]
             rhs = line_ftd[pos + 5 + offset:]
             line_ftd = lhs.rstrip(
@@ -674,7 +673,7 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
     for n_op, lr_re in enumerate(LR_OPS_RE):
         for pos, part in enumerate(line_parts):
             # exclude comments, strings:
-            if not re.match(r"['\"!]", part, RE_FLAGS):
+            if not re.search(r"^['\"!]", part, RE_FLAGS):
                 partsplit = lr_re.split(part)
                 line_parts[pos] = (' ' * spacey[n_op + 2]).join(partsplit)
 
@@ -821,8 +820,8 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
 
         is_omp_conditional = False
 
-        is_omp = OMP_RE.match(f_line)
-        if is_omp and not OMP_DIR_RE.match(f_line):
+        is_omp = OMP_RE.search(f_line)
+        if is_omp and not OMP_DIR_RE.search(f_line):
             # convert OMP-conditional fortran statements into normal
             # fortran statements but remember to convert them back
             f_line = OMP_RE.sub('  ', f_line, count=1)
@@ -831,9 +830,9 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
 
         is_empty = EMPTY_RE.search(f_line)  # blank line or comment only line
 
-        if USE_PARSE_RE.match(f_line):
+        if USE_PARSE_RE.search(f_line):
             do_indent = False
-        elif OMP_DIR_RE.match(f_line):
+        elif OMP_DIR_RE.search(f_line):
             # move '!$OMP' to line start, otherwise don't format omp directives
             lines = ['!$OMP' + (len(l) - len(l.lstrip())) *
                      ' ' + OMP_DIR_RE.sub('', l, count=1) for l in lines]

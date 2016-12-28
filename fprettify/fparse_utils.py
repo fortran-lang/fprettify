@@ -10,12 +10,12 @@ from collections import deque
 RE_FLAGS = re.IGNORECASE | re.UNICODE
 
 USE_PARSE_RE = re.compile(
-    r" *use +(?P<module>[a-zA-Z_][a-zA-Z_0-9]*)(?P<only> *, *only *:)? *(?P<imports>.*)$",
+    r"^ *use +(?P<module>[a-zA-Z_][a-zA-Z_0-9]*)(?P<only> *, *only *:)? *(?P<imports>.*)$",
     RE_FLAGS)
 
 # FIXME bad ass regex!
 VAR_DECL_RE = re.compile(
-    r" *(?P<type>integer(?: *\* *[0-9]+)?|logical|character(?: *\* *[0-9]+)?|real(?: *\* *[0-9]+)?|complex(?: *\* *[0-9]+)?|type) *(?P<parameters>\((?:[^()]+|\((?:[^()]+|\([^()]*\))*\))*\))? *(?P<attributes>(?: *, *[a-zA-Z_0-9]+(?: *\((?:[^()]+|\((?:[^()]+|\([^()]*\))*\))*\))?)+)? *(?P<dpnt>::)?(?P<vars>[^\n]+)\n?", RE_FLAGS)
+    r"^ *(?P<type>integer(?: *\* *[0-9]+)?|logical|character(?: *\* *[0-9]+)?|real(?: *\* *[0-9]+)?|complex(?: *\* *[0-9]+)?|type) *(?P<parameters>\((?:[^()]+|\((?:[^()]+|\([^()]*\))*\))*\))? *(?P<attributes>(?: *, *[a-zA-Z_0-9]+(?: *\((?:[^()]+|\((?:[^()]+|\([^()]*\))*\))*\))?)+)? *(?P<dpnt>::)?(?P<vars>[^\n]+)\n?", RE_FLAGS)
 
 OMP_DIR_RE = re.compile(r"^\s*(!\$omp)", RE_FLAGS)
 OMP_RE = re.compile(r"^\s*(!\$)", RE_FLAGS)
@@ -106,7 +106,7 @@ class InputStream(object):
                 # but remember to convert them back
                 is_omp_conditional = False
                 omp_indent = 0
-                if OMP_RE.match(line):
+                if OMP_RE.search(line):
                     omp_indent = len(line) - len(line.lstrip(' '))
                     line = OMP_RE.sub('', line, count=1)
                     is_omp_conditional = True
@@ -130,7 +130,7 @@ class InputStream(object):
                 break
 
             lines.append(line)
-            match = line_re.match(line)
+            match = line_re.search(line)
 
             if not match or match.span()[1] != len(line):
                 # FIXME: does not handle line continuation of
@@ -145,7 +145,7 @@ class InputStream(object):
                 comments.append(line)
                 break
             core_att = match.group("core")
-            if OMP_RE.match(core_att) and joined_line.strip():
+            if OMP_RE.search(core_att) and joined_line.strip():
                 # remove omp '!$' for line continuation
                 core_att = OMP_RE.sub('', core_att, count=1).lstrip()
             joined_line = joined_line.rstrip("\n") + core_att
