@@ -61,7 +61,7 @@ class CharFilter(object):
             raise StopIteration
 
         # detect start/end of a string
-        if char == '"' or char == "'":
+        if char in ['"', "'"]:
             if self._instring == char:
                 self._instring = ''
             elif not self._instring:
