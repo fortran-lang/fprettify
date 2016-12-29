@@ -49,6 +49,19 @@ import logging
 import os
 import io
 
+# allow for unicode for stdin / stdout
+try:
+    # python 3
+    sys.stdin = io.TextIOWrapper(sys.stdin.detach(), encoding='UTF-8', line_buffering=True)
+    sys.stdout = io.TextIOWrapper(sys.stdout.detach(), encoding='UTF-8', line_buffering=True)
+except:
+    # python 2
+    import codecs
+    UTF8Reader = codecs.getreader('utf-8')
+    UTF8Writer = codecs.getwriter('utf-8')
+    sys.stdin = UTF8Reader(sys.stdin)
+    sys.stdout = UTF8Writer(sys.stdout)
+
 from .fparse_utils import (USE_PARSE_RE, VAR_DECL_RE, OMP_RE, OMP_DIR_RE,
                            InputStream, CharFilter,
                            FprettifyException, FprettifyParseException, FprettifyInternalException, RE_FLAGS)
