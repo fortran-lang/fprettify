@@ -12,7 +12,6 @@ import hashlib
 import logging
 import io
 import re
-import codecs
 
 # allow for unicode for stdin / stdout
 try:
