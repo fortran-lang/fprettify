@@ -8,10 +8,10 @@ engines:
     config:
       languages:
       - python
-   fixme:
-    enabled: true
-  radon:
-    enabled: true
+    fixme:
+      enabled: true
+    radon:
+      enabled: true
 ratings:
   paths:
   - "**.py"
