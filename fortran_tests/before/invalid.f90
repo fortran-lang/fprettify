@@ -61,4 +61,12 @@ real(kind=dp) :: r1,   r2,  r3, r4, r5,  r6
    write(*, *)(&
    merge(3, 1, i<=2)
    write(*, *) test_function(r,i,j , k)
+END MODULE
+ENDPROGRAM
+ENDIF
+ENDDO
+FUNCTION a(b)
+   integer :: a
+   ENDFUNCTION
+   END SUBROUTINE
 

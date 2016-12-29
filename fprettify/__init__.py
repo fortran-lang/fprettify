@@ -167,25 +167,46 @@ class F90Indenter(object):
     and updates the indentation.
     """
 
-    def __init__(self, filename):
+    def __init__(self, first_indent, rel_indent, filename):
         # scopes / subunits:
         self._scope_storage = []
         # indents for all fortran lines:
-        self._indent_storage = [0]
+        self._indent_storage = []
         # indents of actual lines of current fortran line
         self._line_indents = []
 
         self._filename = filename
         self._aligner = F90Aligner(filename)
 
+        # no lines have been processed yet:
+        self._initial = True
+
+        # implicit scopes: we define implicit scopes, as many as match
+        # first_indent and rel_indent. This allows for, e.g., a properly
+        # indented "END FUNCTION" without matching "FUNCTION" statement:
+        if rel_indent > 0:
+            for n_impl in range(first_indent % rel_indent, first_indent+1, rel_indent):
+                self._indent_storage += [n_impl]
+
+        if not self._indent_storage:
+            self._indent_storage = [0]
+
+
     def process_lines_of_fline(self, f_line, lines, rel_ind, rel_ind_con,
                                line_nr, manual_lines_indent=None):
         """
-        Process all lines that belong to a Fortran line `f_line`,
-        impose a relative indent of `rel_ind` for current Fortran line,
+        Process all lines that belong to a Fortran line `f_line`.
+
+        Impose a relative indent of `rel_ind` for current Fortran line,
         and `rel_ind_con` for line continuation.
         By default line continuations are auto-aligned by F90Aligner
-        - manual offsets can be set by manual_lines_indents.
+        :param f_line: fortran line
+        :param lines: actual lines belonging to f_line
+        :param rel_ind: relative scope indent size for this line
+        :rel_ind_con: relative continuation indent size for this line
+        :line_nr: line number
+        :manual_lines_indent: don't use F90Aligner but manually impose
+                              indents for continuations
         """
 
         self._line_indents = [0] * len(lines)
@@ -193,6 +214,7 @@ class F90Indenter(object):
 
         # local variables to avoid self hassle:
         line_indents = self._line_indents
+
         scopes = self._scope_storage
         indents = self._indent_storage
         filename = self._filename
@@ -255,36 +277,37 @@ class F90Indenter(object):
                             "info", filename, line_nr)
 
             line_indents = [ind + indents[-1] for ind in line_indents]
-            old_ind = indents[-1]
 
-            # prevent originally unindented do/if blocks
-            # from being indented:
-            rel_ind += old_ind
-            indents.append(rel_ind)
+            indents.append(rel_ind+indents[-1])
 
         elif is_con:
             if not valid_con:
                 log_message('invalid continue statement',
                             "info", filename, line_nr)
             try:
-                line_indents = [ind + indents[-2] for ind in line_indents]
+                line_indents = [ind + indents[-2+self._initial] for ind in line_indents]
             except IndexError:
-                line_indents = [ind + indents[-1] - rel_ind for ind in line_indents]
+                assert not valid_con
 
         elif is_end:
             if not valid_end:
                 log_message('invalid end statement',
                             "info", filename, line_nr)
             try:
-                line_indents = [ind + indents[-2] for ind in line_indents]
+                line_indents = [ind + indents[-2+self._initial] for ind in line_indents]
             except IndexError:
-                line_indents = [ind + indents[-1] - rel_ind for ind in line_indents]
+                assert not valid_end
 
             if len(indents) > 1:
                 indents.pop()
+            else:
+                indents[-1]=0
 
         else:
             line_indents = [ind + indents[-1] for ind in line_indents]
+
+        # we have processed first line:
+        self._initial = False
 
         # reassigning self.* to the updated variables
         self._line_indents = line_indents
@@ -458,9 +481,17 @@ class F90Aligner(object):
 
 def inspect_ffile_format(infile, indent_size, orig_filename=None):
     """
-    Determine indentation by inspecting original Fortran file
-    (mainly for finding aligned blocks of DO/IF statements).
+    Determine indentation by inspecting original Fortran file.
+
+    This is mainly for finding aligned blocks of DO/IF statements.
     Also check if it has f77 constructs.
+    :param infile: open file
+    :param indent_size: the default indent size, if <= 0,
+                        adopt original indents
+    :orig_filename: filename used for messages
+    :returns: [ target indent sizes for each line,
+                indent of first line (offset),
+                whether file is sufficiently modern fortran ]
     """
     if not orig_filename:
         orig_filename = infile.name
@@ -769,8 +800,6 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
     if not orig_filename:
         orig_filename = infile.name
 
-    indenter = F90Indenter(orig_filename)
-
     infile.seek(0)
     req_indents, first_indent, modern = inspect_ffile_format(
         infile, indent_size, orig_filename)
@@ -778,7 +807,9 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
 
     if not modern:
         raise FprettifyParseException(
-            "fprettify can not format fixed format or f77 constructs", orig_filename, 0)
+            "fprettify failed because of fixed format or f77 constructs.", orig_filename, 0)
+
+    indenter = F90Indenter(first_indent, indent_size, orig_filename)
 
     nfl = 0  # fortran line counter
 
@@ -937,8 +968,10 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
                 lines[pos] = lines[pos].rstrip(' ') + comment + '\n' * has_nl
 
             try:
+                # target indent for next line
                 rel_indent = req_indents[nfl]
             except IndexError:
+                # this happens when nfl is last line
                 rel_indent = 0
 
             indenter.process_lines_of_fline(
@@ -964,7 +997,7 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
             line_length += 1
 
             if do_indent:
-                ind_use = ind + first_indent
+                ind_use = ind
             else:
                 if use_same_line:
                     ind_use = 1
