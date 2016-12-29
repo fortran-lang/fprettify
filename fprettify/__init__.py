@@ -52,15 +52,17 @@ import io
 # allow for unicode for stdin / stdout
 try:
     # python 3
-    sys.stdin = io.TextIOWrapper(sys.stdin.detach(), encoding='UTF-8', line_buffering=True)
-    sys.stdout = io.TextIOWrapper(sys.stdout.detach(), encoding='UTF-8', line_buffering=True)
-except:
+    sys.stdin = io.TextIOWrapper(
+        sys.stdin.detach(), encoding='UTF-8', line_buffering=True)
+    sys.stdout = io.TextIOWrapper(
+        sys.stdout.detach(), encoding='UTF-8', line_buffering=True)
+except AttributeError:
     # python 2
     import codecs
-    UTF8Reader = codecs.getreader('utf-8')
-    UTF8Writer = codecs.getwriter('utf-8')
-    sys.stdin = UTF8Reader(sys.stdin)
-    sys.stdout = UTF8Writer(sys.stdout)
+    utf8_reader = codecs.getreader('utf-8')
+    utf8_writer = codecs.getwriter('utf-8')
+    sys.stdin = utf8_reader(sys.stdin)
+    sys.stdout = utf8_writer(sys.stdout)
 
 from .fparse_utils import (USE_PARSE_RE, VAR_DECL_RE, OMP_RE, OMP_DIR_RE,
                            InputStream, CharFilter,
@@ -152,9 +154,9 @@ LOG_OP_RE = re.compile(r"\s*(\.(?:AND|OR|EQV|NEQV)\.)\s*", RE_FLAGS)
 
 # regular expressions for parsing delimiters
 DEL_OPEN_STR = r"(\(\/?|\[)"
-DEL_OPEN_RE = re.compile(r"^"+DEL_OPEN_STR, RE_FLAGS)
+DEL_OPEN_RE = re.compile(r"^" + DEL_OPEN_STR, RE_FLAGS)
 DEL_CLOSE_STR = r"(\/?\)|\])"
-DEL_CLOSE_RE = re.compile(r"^"+DEL_CLOSE_STR, RE_FLAGS)
+DEL_CLOSE_RE = re.compile(r"^" + DEL_CLOSE_STR, RE_FLAGS)
 
 # empty line regex
 EMPTY_RE = re.compile(SOL_STR + r"(!.*)?$", RE_FLAGS)
@@ -198,12 +200,11 @@ class F90Indenter(object):
         # first_indent and rel_indent. This allows for, e.g., a properly
         # indented "END FUNCTION" without matching "FUNCTION" statement:
         if rel_indent > 0:
-            for n_impl in range(first_indent % rel_indent, first_indent+1, rel_indent):
+            for n_impl in range(first_indent % rel_indent, first_indent + 1, rel_indent):
                 self._indent_storage += [n_impl]
 
         if not self._indent_storage:
             self._indent_storage = [0]
-
 
     def process_lines_of_fline(self, f_line, lines, rel_ind, rel_ind_con,
                                line_nr, manual_lines_indent=None):
@@ -291,14 +292,15 @@ class F90Indenter(object):
 
             line_indents = [ind + indents[-1] for ind in line_indents]
 
-            indents.append(rel_ind+indents[-1])
+            indents.append(rel_ind + indents[-1])
 
         elif is_con:
             if not valid_con:
                 log_message('invalid continue statement',
                             "info", filename, line_nr)
             try:
-                line_indents = [ind + indents[-2+self._initial] for ind in line_indents]
+                line_indents = [ind + indents[-2 + self._initial]
+                                for ind in line_indents]
             except IndexError:
                 assert not valid_con
 
@@ -307,14 +309,15 @@ class F90Indenter(object):
                 log_message('invalid end statement',
                             "info", filename, line_nr)
             try:
-                line_indents = [ind + indents[-2+self._initial] for ind in line_indents]
+                line_indents = [ind + indents[-2 + self._initial]
+                                for ind in line_indents]
             except IndexError:
                 assert not valid_end
 
             if len(indents) > 1:
                 indents.pop()
             else:
-                indents[-1]=0
+                indents[-1] = 0
 
         else:
             line_indents = [ind + indents[-1] for ind in line_indents]

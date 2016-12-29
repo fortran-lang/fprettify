@@ -16,12 +16,13 @@ import re
 # allow for unicode for stdin / stdout
 try:
     # python 3
-    sys.stdout = io.TextIOWrapper(sys.stdout.detach(), encoding='UTF-8', line_buffering=True)
-except:
+    sys.stdout = io.TextIOWrapper(
+        sys.stdout.detach(), encoding='UTF-8', line_buffering=True)
+except AttributeError:
     # python 2
     import codecs
-    UTF8Writer = codecs.getwriter('utf-8')
-    sys.stdout = UTF8Writer(sys.stdout)
+    utf8_writer = codecs.getwriter('utf-8')
+    sys.stdout = utf8_writer(sys.stdout)
 
 import fprettify
 from fprettify.fparse_utils import FprettifyParseException, FprettifyInternalException
@@ -37,6 +38,7 @@ FORTRAN_EXTENSIONS = [".f", ".for", ".ftn",
 FORTRAN_EXTENSIONS += [_.upper() for _ in FORTRAN_EXTENSIONS]
 
 fprettify.set_fprettify_logger(logging.ERROR)
+
 
 class FPrettifyTestCase(unittest.TestCase):
     """
