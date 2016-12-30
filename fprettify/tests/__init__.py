@@ -40,13 +40,15 @@ FORTRAN_EXTENSIONS += [_.upper() for _ in FORTRAN_EXTENSIONS]
 
 fprettify.set_fprettify_logger(logging.ERROR)
 
+
 def eprint(*args, **kwargs):
     """
     Print to stderr - to print output compatible with default unittest output.
     """
 
     print(*args, file=sys.stderr, **kwargs)
-    sys.stderr.flush() # python 2 print does not have flush argument
+    sys.stderr.flush()  # python 2 print does not have flush argument
+
 
 class FPrettifyTestCase(unittest.TestCase):
     """
@@ -92,11 +94,12 @@ class FPrettifyTestCase(unittest.TestCase):
         output.
         """
         format = "{:<20}{:<6}"
-        eprint('\n'+"=" * 70)
+        eprint('\n' + "=" * 70)
         eprint("IGNORED errors: invalid or old Fortran")
         eprint("-" * 70)
         eprint(format.format("parse errors: ", cls.n_parsefail))
         eprint(format.format("internal errors: ", cls.n_internalfail))
+
 
 def addtestmethod(testcase, fpath, ffile):
     """add a test method for each example."""
@@ -148,7 +151,8 @@ def addtestmethod(testcase, fpath, ffile):
         if after_exists:
             with io.open(example_before, 'r', encoding='utf-8') as infile:
                 before_content = infile.read()
-                before_nosp = re.sub(r'\n{3,}', r'\n\n', before_content.lower().replace(' ', '').replace('\t', ''))
+                before_nosp = re.sub(
+                    r'\n{3,}', r'\n\n', before_content.lower().replace(' ', '').replace('\t', ''))
 
             with io.open(example_after, 'r', encoding='utf-8') as outfile:
                 after_content = outfile.read()
@@ -164,11 +168,11 @@ def addtestmethod(testcase, fpath, ffile):
                 if line_content[0] == test_content[0]:
                     found = True
                     eprint(test_info, end=" ")
-                    msg=''
+                    msg = ''
                     if test_info == "checksum" and after_exists:
-                        d = difflib.Differ()
-                        result = list(d.compare(before_content.splitlines(True), after_content.splitlines(True)))
-                        msg = '\n'+''.join(result)
+                        result = list(difflib.unified_diff(before_content.splitlines(
+                            True), after_content.splitlines(True), fromfile=test_content[0], tofile=line_content[0]))
+                        msg = '\n' + ''.join(result)
 
                     testcase.assertEqual(line_content[1], test_content[1], msg)
                     break
