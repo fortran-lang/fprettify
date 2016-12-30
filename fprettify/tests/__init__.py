@@ -12,17 +12,18 @@ import hashlib
 import logging
 import io
 import re
+import difflib
 
 # allow for unicode for stdin / stdout
 try:
     # python 3
-    sys.stdout = io.TextIOWrapper(
-        sys.stdout.detach(), encoding='UTF-8', line_buffering=True)
+    sys.stderr = io.TextIOWrapper(
+        sys.stderr.detach(), encoding='UTF-8', line_buffering=True)
 except AttributeError:
     # python 2
     import codecs
     utf8_writer = codecs.getwriter('utf-8')
-    sys.stdout = utf8_writer(sys.stdout)
+    sys.stderr = utf8_writer(sys.stderr)
 
 import fprettify
 from fprettify.fparse_utils import FprettifyParseException, FprettifyInternalException
@@ -39,6 +40,13 @@ FORTRAN_EXTENSIONS += [_.upper() for _ in FORTRAN_EXTENSIONS]
 
 fprettify.set_fprettify_logger(logging.ERROR)
 
+def eprint(*args, **kwargs):
+    """
+    Print to stderr - to print output compatible with default unittest output.
+    """
+
+    print(*args, file=sys.stderr, **kwargs)
+    sys.stderr.flush() # python 2 print does not have flush argument
 
 class FPrettifyTestCase(unittest.TestCase):
     """
@@ -55,6 +63,7 @@ class FPrettifyTestCase(unittest.TestCase):
         We have large files to compare, raise the limit
         """
         self.maxDiff = None
+        self.longMessage = False
 
     @classmethod
     def setUpClass(cls):
@@ -66,34 +75,28 @@ class FPrettifyTestCase(unittest.TestCase):
         cls.n_parsefail = 0
         cls.n_internalfail = 0
         cls.n_unexpectedfail = 0
-        print("-" * 70)
-        print("recognized Fortran files")
-        print(", ".join(FORTRAN_EXTENSIONS))
-        print("-" * 70)
-        print("Testing with Fortran files in " + BEFORE_DIR)
-        print("Writing formatted Fortran files to " + AFTER_DIR)
-        print("Storing expected results in " + RESULT_FILE)
-        print("-" * 70)
-        print(
-            "NOTE: internal error or parse error can happen if file is not 'modern' Fortran")
-        print("-" * 70)
-        sys.stdout.flush()
+
+        eprint("-" * 70)
+        eprint("recognized Fortran files")
+        eprint(", ".join(FORTRAN_EXTENSIONS))
+        eprint("-" * 70)
+        eprint("Testing with Fortran files in " + BEFORE_DIR)
+        eprint("Writing formatted Fortran files to " + AFTER_DIR)
+        eprint("Storing expected results in " + RESULT_FILE)
+        eprint("-" * 70)
 
     @classmethod
     def tearDownClass(cls):
         """
-        tearDownClass to be recognized by unittest.
+        tearDownClass to be recognized by unittest. Used for test summary
+        output.
         """
-
         format = "{:<20}{:<6}"
-        print("-" * 70)
-        print(format.format("successful:", cls.n_success))
-        print(format.format("parse errors: ", cls.n_parsefail))
-        print(format.format("internal errors: ", cls.n_internalfail))
-        print(format.format("unexpected errors: ", cls.n_unexpectedfail))
-        print("-" * 70)
-        sys.stdout.flush()
-
+        eprint('\n'+"=" * 70)
+        eprint("IGNORED errors: invalid or old Fortran")
+        eprint("-" * 70)
+        eprint(format.format("parse errors: ", cls.n_parsefail))
+        eprint(format.format("internal errors: ", cls.n_internalfail))
 
 def addtestmethod(testcase, fpath, ffile):
     """add a test method for each example."""
@@ -141,13 +144,15 @@ def addtestmethod(testcase, fpath, ffile):
                 FPrettifyTestCase.n_unexpectedfail += 1
                 raise
 
-        if os.path.isfile(example_after):
+        after_exists = os.path.isfile(example_after)
+        if after_exists:
             with io.open(example_before, 'r', encoding='utf-8') as infile:
-                before_nosp = re.sub(r'\n{3,}', r'\n\n', infile.read(
-                ).lower().replace(' ', '').replace('\t', ''))
+                before_content = infile.read()
+                before_nosp = re.sub(r'\n{3,}', r'\n\n', before_content.lower().replace(' ', '').replace('\t', ''))
 
             with io.open(example_after, 'r', encoding='utf-8') as outfile:
-                after_nosp = outfile.read().lower().replace(' ', '')
+                after_content = outfile.read()
+                after_nosp = after_content.lower().replace(' ', '')
 
             testcase.assertMultiLineEqual(before_nosp, after_nosp)
 
@@ -158,14 +163,18 @@ def addtestmethod(testcase, fpath, ffile):
                 line_content = line.strip().split(sep_str)
                 if line_content[0] == test_content[0]:
                     found = True
-                    print(test_info, end=" ")
-                    sys.stdout.flush()
-                    testcase.assertEqual(line_content[1], test_content[1])
+                    eprint(test_info, end=" ")
+                    msg=''
+                    if test_info == "checksum" and after_exists:
+                        d = difflib.Differ()
+                        result = list(d.compare(before_content.splitlines(True), after_content.splitlines(True)))
+                        msg = '\n'+''.join(result)
+
+                    testcase.assertEqual(line_content[1], test_content[1], msg)
                     break
 
         if not found:
-            print(test_info + " new", end=" ")
-            sys.stdout.flush()
+            eprint(test_info + " new", end=" ")
             with io.open(RESULT_FILE, 'a', encoding='utf-8') as fpr_hash:
                 fpr_hash.write(sep_str.join(test_content) + '\n')
 
