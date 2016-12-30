@@ -133,6 +133,8 @@ ENUM_RE = re.compile(
     RE_FLAGS)
 ENDENUM_RE = re.compile(SOL_STR + r"END\s*ENUM(\s+\w+)?" + EOL_STR, RE_FLAGS)
 
+ENDANY_RE = re.compile(SOL_STR + r"END" + EOL_STR, RE_FLAGS)
+
 PUBLIC_RE = re.compile(SOL_STR + r"PUBLIC\s*::", RE_FLAGS)
 
 # intrinsic statements with parenthesis notation that are not functions
@@ -173,7 +175,7 @@ NEW_SCOPE_RE = [IF_RE, DO_RE, SELCASE_RE, SUBR_RE,
 CONTINUE_SCOPE_RE = [ELSE_RE, None, CASE_RE, CONTAINS_RE,
                      CONTAINS_RE, CONTAINS_RE, CONTAINS_RE, None, CONTAINS_RE, None]
 END_SCOPE_RE = [ENDIF_RE, ENDDO_RE, ENDSEL_RE, ENDSUBR_RE,
-                ENDFCT_RE, ENDMOD_RE, ENDPROG_RE, ENDINTERFACE_RE, ENDTYPE_RE, ENDENUM_RE]
+                ENDFCT_RE, ENDMOD_RE, ENDPROG_RE, ENDINTERFACE_RE, ENDTYPE_RE, ENDENUM_RE, ENDANY_RE]
 
 
 class F90Indenter(object):
