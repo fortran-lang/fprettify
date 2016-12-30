@@ -801,18 +801,15 @@ def reformat_inplace(filename, stdout=False, **kwargs):
     else:
         infile = io.open(filename, 'r', encoding='utf-8')
 
+    newfile = io.StringIO()
+    reformat_ffile(infile=infile, outfile=newfile,
+                   orig_filename=filename, **kwargs)
+
     if stdout:
-        newfile = io.StringIO()
-        reformat_ffile(infile=infile, outfile=newfile,
-                       orig_filename=filename, **kwargs)
         sys.stdout.write(newfile.getvalue())
     else:
-        outfile = io.StringIO()
-        reformat_ffile(infile=infile, outfile=outfile,
-                       orig_filename=filename, **kwargs)
-        newfile = io.open(filename, 'w', encoding='utf-8')
-        newfile.write(outfile.getvalue())
-
+        outfile = io.open(filename, 'w', encoding='utf-8')
+        outfile.write(newfile.getvalue())
 
 def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
                    orig_filename=None):
