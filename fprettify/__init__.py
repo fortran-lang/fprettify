@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 """
 Impose white space conventions and indentation based on scopes / subunits
 
@@ -48,6 +50,7 @@ import sys
 import logging
 import os
 import io
+import argparse
 
 # allow for unicode for stdin / stdout
 try:
@@ -792,7 +795,7 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
 
 def reformat_inplace(filename, stdout=False, **kwargs):
     """reformat a file in place."""
-    if filename == 'stdin':
+    if filename == '-':
         infile = io.StringIO()
         infile.write(sys.stdin.read())
     else:
@@ -1076,90 +1079,51 @@ def log_message(message, level, filename, line_nr):
     logger_to_use(message, extra=logger_d)
 
 
-def run(argv=None):
+def run(argv=sys.argv):
     """Command line interface"""
-    if argv is None:
-        argv = sys.argv
-    defaults_dict = {'indent': 3, 'whitespace': 2,
-                     'stdout': 0, 'report-errors': 1,
-                     'debug': 0}
 
-    usage_desc = ("usage:\n" + argv[0] + """
-    [--indent=3] [--whitespace=2]
-    [--[no-]stdout] [--[no-]report-errors] file1 [file2 ...]
-    [--help]
-    [--[no-]debug]
+    parser = argparse.ArgumentParser(prog=argv[0],
+                                     description='Auto-format modern Fortran source files.', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument("-i", "--indent", type=int, default=3,
+                        help="relative indentation width")
+    parser.add_argument("-w", "--whitespace", type=int,
+                        choices=range(0, 3), default=2, help="Amount of whitespace")
+    parser.add_argument("-s", "--stdout", action='store_true', default=False,
+                        help="Write to stdout instead of formatting inplace")
 
-    Auto-format F90 source file1, file2, ...:
-    If no files are given, stdin is used.
-             Auto-indentation, auto-alignment and whitespace formatting.
-             Amount of whitespace controlled by --whitespace=0,1,2.
-             For indenting with a relative width of n columns
-             specify --indent=n.
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("-S", "--silent", "--no-report-errors", action='store_true',
+                       default=False, help="Don't write any errors or warnings to stderr")
+    group.add_argument("-D", "--debug", action='store_true',
+                       default=False, help=argparse.SUPPRESS)
+    parser.add_argument("filename", type=str, nargs='*',
+                        help="File1 File2 ... to be formatted. If no files are given, stdin (-) is used.", default=['-'])
 
-             For manual formatting of specific lines:
+    args = parser.parse_args(argv[1:])
 
-             * disable auto-alignment by starting line continuation
-               with an ampersand '&'.
-             * completely disable reformatting by adding a comment '!&'.
+    # support legacy input:
+    if 'stdin' in args.filename and not os.path.isfile('stdin'):
+        args.filename = ['-' if _ == 'stdin' else _ for _ in args.filename]
 
-             For manual formatting of a code block, use:
-
-             * start a manually formatted block with a '!&<' comment
-               and close it with a '!&>' comment.
-
-    --stdout
-             write output to stdout
-    --[no-]report-errors
-             report warnings and errors
-
-    Defaults:
-    """ + str(defaults_dict))
-
-    if "--help" in argv:
-        sys.stderr.write(usage_desc + '\n')
-        return 0
-    args = []
-    for arg in argv[1:]:
-        match = re.match(
-            r"--(no-)?(stdout|report-errors|debug)", arg)
-        if match:
-            defaults_dict[match.groups()[1]] = not match.groups()[0]
-        else:
-            match = re.match(
-                r"--(indent|whitespace)=(.*)", arg)
-            if match:
-                defaults_dict[match.groups()[0]] = int(match.groups()[1])
-            else:
-                if arg.startswith('--'):
-                    sys.stderr.write('unknown option ' + arg + '\n')
-                    return 0
-                else:
-                    args.append(arg)
-    if not args:
-        args = ['stdin']
-
-    for filename in args:
-        if not os.path.isfile(filename) and filename != 'stdin':
+    for filename in args.filename:
+        if not os.path.isfile(filename) and filename != '-':
             sys.stderr.write("file " + filename + " does not exists!\n")
         else:
-            stdout = defaults_dict['stdout'] or filename == 'stdin'
+            stdout = args.stdout or filename == '-'
 
-            if defaults_dict['report-errors']:
-                if defaults_dict['debug']:
-                    level = logging.DEBUG
-                else:
-                    level = logging.WARNING
-
-            else:
+            if args.debug:
+                level = logging.DEBUG
+            elif args.silent:
                 level = logging.CRITICAL
+            else:
+                level = logging.WARNING
 
             set_fprettify_logger(level)
 
             try:
                 reformat_inplace(filename,
                                  stdout=stdout,
-                                 indent_size=defaults_dict['indent'],
-                                 whitespace=defaults_dict['whitespace'])
+                                 indent_size=args.indent,
+                                 whitespace=args.whitespace)
             except FprettifyException as e:
                 log_exception(e, "Fatal error occured")
