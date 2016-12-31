@@ -99,7 +99,7 @@ class FPrettifyTestCase(unittest.TestCase):
 
         mypath = os.path.dirname(os.path.abspath(
             inspect.getfile(inspect.currentframe())))
-        cls.runscript = os.path.join(mypath, "../../fprettify.py")
+        cls.runscript = os.path.join(mypath, "../fprettify_run.py")
 
     @classmethod
     def tearDownClass(cls):
