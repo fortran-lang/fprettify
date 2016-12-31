@@ -15,16 +15,19 @@ import logging
 import io
 import re
 import difflib
+import subprocess
+import inspect
 
-# allow for unicode for stdin / stdout
+# allow unicode for stdin / stdout, it's a mess
 try:
     # python 3
     sys.stderr = io.TextIOWrapper(
         sys.stderr.detach(), encoding='UTF-8', line_buffering=True)
+
 except AttributeError:
     # python 2
     import codecs
-    utf8_writer = codecs.getwriter('utf-8')
+    utf8_writer = codecs.getwriter('UTF-8')
     sys.stderr = utf8_writer(sys.stderr)
 
 import fprettify
@@ -41,6 +44,11 @@ FORTRAN_EXTENSIONS = [".f", ".for", ".ftn",
 FORTRAN_EXTENSIONS += [_.upper() for _ in FORTRAN_EXTENSIONS]
 
 fprettify.set_fprettify_logger(logging.ERROR)
+
+
+class AlienInvasion(Exception):
+    """Should not happen"""
+    pass
 
 
 def eprint(*args, **kwargs):
@@ -89,18 +97,108 @@ class FPrettifyTestCase(unittest.TestCase):
         eprint("Storing expected results in " + RESULT_FILE)
         eprint("-" * 70)
 
+        mypath = os.path.dirname(os.path.abspath(
+            inspect.getfile(inspect.currentframe())))
+        cls.runscript = os.path.join(mypath, "../../fprettify.py")
+
     @classmethod
     def tearDownClass(cls):
         """
         tearDownClass to be recognized by unittest. Used for test summary
         output.
         """
-        format = "{:<20}{:<6}"
-        eprint('\n' + "=" * 70)
-        eprint("IGNORED errors: invalid or old Fortran")
-        eprint("-" * 70)
-        eprint(format.format("parse errors: ", cls.n_parsefail))
-        eprint(format.format("internal errors: ", cls.n_internalfail))
+        if cls.n_parsefail + cls.n_internalfail < 0:
+            format = "{:<20}{:<6}"
+            eprint('\n' + "=" * 70)
+            eprint("IGNORED errors: invalid or old Fortran")
+            eprint("-" * 70)
+            eprint(format.format("parse errors: ", cls.n_parsefail))
+            eprint(format.format("internal errors: ", cls.n_internalfail))
+
+    def test_whitespace(self):
+        """simple test for whitespace formatting options -w in [0, 1, 2]"""
+        instring = "(/-a-b-(a+b-c)/(-c)*d**e,f[1]%v/)"
+        outstring_exp = ["(/-a-b-(a+b-c)/(-c)*d**e,f[1]%v/)",
+                         "(/-a-b-(a+b-c)/(-c)*d**e, f[1]%v/)",
+                         "(/-a - b - (a + b - c)/(-c)*d**e, f[1]%v/)"]
+
+        outstring = []
+        for w in range(0, 3):
+            p1 = subprocess.Popen([self.runscript, '-w', str(w)],
+                                  stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+            outstring.append(p1.communicate(
+                instring.encode('UTF-8'))[0].decode('UTF-8'))
+
+        for istr, outstr in enumerate(outstring):
+            self.assertEqual(outstring_exp[istr], outstr.strip())
+
+    def test_indent(self):
+        """simple test for indent options -i in [0, 3, 4]"""
+
+        indents = [0, 3, 4]
+
+        instring = "iF(teSt)ThEn\nCaLl subr(a,b,&\nc,(/d,&\ne,f/))\nEnD iF"
+        outstring_exp = [
+            "iF (teSt) ThEn\n" +
+            " " * ind + "CaLl subr(a, b, &\n" +
+            " " * (10 + ind) + "c, (/d, &\n" +
+            " " * (15 + ind) + "e, f/))\nEnD iF"
+            for ind in indents
+        ]
+
+        outstring = []
+        for ind in indents:
+            p1 = subprocess.Popen([self.runscript, '-i', str(ind)],
+                                  stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+            outstring.append(p1.communicate(
+                instring.encode('UTF-8'))[0].decode('UTF-8'))
+
+        for istr, outstr in enumerate(outstring):
+            self.assertEqual(outstring_exp[istr], outstr.strip())
+
+    def test_io(self):
+        """simple test for io (file inplace, stdin & stdout)"""
+
+        # io and unicode
+        outstring = []
+        instring = "CALL  alien_invasion( 👽 )"
+        outstring_exp = "CALL alien_invasion(👽)"
+
+        alien_file = "alien_invasion.f90"
+        if os.path.isfile(alien_file):
+            raise AlienInvasion("remove file alien_invasion.f90")
+
+        try:
+            with io.open(alien_file, 'w', encoding='utf-8') as infile:
+                infile.write(instring)
+
+            # testing stdin --> stdout
+            p1 = subprocess.Popen(self.runscript,
+                                  stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+            outstring.append(p1.communicate(
+                instring.encode('UTF-8'))[0].decode('UTF-8'))
+
+            # testing file --> stdout
+            p1 = subprocess.Popen([self.runscript, alien_file, '--stdout'],
+                                  stdout=subprocess.PIPE)
+            outstring.append(p1.communicate(
+                instring.encode('UTF-8')[0])[0].decode('UTF-8'))
+
+            # testing file --> file (inplace)
+            p1 = subprocess.Popen([self.runscript, alien_file])
+            p1.wait()
+
+            with io.open(alien_file, 'r', encoding='utf-8') as infile:
+                outstring.append(infile.read())
+
+            for outstr in outstring:
+                self.assertEqual(outstring_exp, outstr.strip())
+        except:
+            if os.path.isfile(alien_file):
+                os.remove(alien_file)
+            raise
+        else:
+            os.remove(alien_file)
 
 
 def addtestmethod(testcase, fpath, ffile):

@@ -52,7 +52,7 @@ import os
 import io
 import argparse
 
-# allow for unicode for stdin / stdout
+# allow for unicode for stdin / stdout, it's a mess
 try:
     # python 3
     sys.stdin = io.TextIOWrapper(
@@ -62,8 +62,8 @@ try:
 except AttributeError:
     # python 2
     import codecs
-    utf8_reader = codecs.getreader('utf-8')
-    utf8_writer = codecs.getwriter('utf-8')
+    utf8_reader = codecs.getreader('UTF-8')
+    utf8_writer = codecs.getwriter('UTF-8')
     sys.stdin = utf8_reader(sys.stdin)
     sys.stdout = utf8_writer(sys.stdout)
 
@@ -810,6 +810,7 @@ def reformat_inplace(filename, stdout=False, **kwargs):
     else:
         outfile = io.open(filename, 'w', encoding='utf-8')
         outfile.write(newfile.getvalue())
+
 
 def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
                    orig_filename=None):
