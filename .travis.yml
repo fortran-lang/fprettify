@@ -9,7 +9,7 @@ before_install:
 install:
  - pip install -U -r requirements.txt
  - if [[ $DO_COVERAGE ]]; then pip install coveralls; fi
- - if [[ $DO_COVERAGE ]]; then tee $(python -c "import site; print(site.getsitepackages())"[0])/zzz_coverage_process_start.pth <<< "import coverage; coverage.process_startup()"; fi
+ - if [[ $DO_COVERAGE ]]; then tee $(python -c "import site; print(site.getusersitepackages())")/zzz_coverage_process_start.pth <<< "import coverage; coverage.process_startup()"; fi
 before_script:
  - wget https://github.com/acmeism/RosettaCodeData/archive/bba7b.tar.gz
  - mkdir fortran_tests/before/RosettaCodeData && tar -xf bba7b.tar.gz -C fortran_tests/before/RosettaCodeData --strip-components=1
