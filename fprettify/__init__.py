@@ -793,7 +793,7 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
     return lines_out
 
 
-def reformat_inplace(filename, stdout=False, **kwargs):
+def reformat_inplace(filename, stdout=False, **kwargs): # pragma: no cover
     """reformat a file in place."""
     if filename == '-':
         infile = io.StringIO()
@@ -1077,7 +1077,7 @@ def log_message(message, level, filename, line_nr):
     logger_to_use(message, extra=logger_d)
 
 
-def run(argv=sys.argv):
+def run(argv=sys.argv): # pragma: no cover
     """Command line interface"""
 
     parser = argparse.ArgumentParser(prog=argv[0],
