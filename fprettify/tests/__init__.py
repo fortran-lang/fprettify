@@ -274,7 +274,8 @@ def addtestmethod(testcase, fpath, ffile):
                     found = True
                     eprint(test_info, end=" ")
                     msg = ''
-                    if test_info == "checksum" and after_exists:
+                    if test_info == "checksum" and after_exists and after_content.count('\n') < 10000:
+                        # difflib can not handle large files
                         result = list(difflib.unified_diff(before_content.splitlines(
                             True), after_content.splitlines(True), fromfile=test_content[0], tofile=line_content[0]))
                         msg = '\n' + ''.join(result)
