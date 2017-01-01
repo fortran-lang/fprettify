@@ -96,11 +96,11 @@ DO_RE = re.compile(SOL_STR + r"(\w+\s*:)?\s*DO(" + EOL_STR + r"|\s)", RE_FLAGS)
 ENDDO_RE = re.compile(SOL_STR + r"END\s*DO(\s+\w+)?" + EOL_STR, RE_FLAGS)
 
 SELCASE_RE = re.compile(
-    SOL_STR + r"SELECT\s*CASE\s*\(.+\)" + EOL_STR, RE_FLAGS)
-CASE_RE = re.compile(SOL_STR + r"CASE\s*(\(.+\)|DEFAULT)" + EOL_STR, RE_FLAGS)
+    SOL_STR + r"SELECT\s*(CASE|TYPE)\s*\(.+\)" + EOL_STR, RE_FLAGS)
+CASE_RE = re.compile(SOL_STR + r"(CASE|TYPE\s+IS|CLASS\s+IS)\s*(\(.+\)|DEFAULT)" + EOL_STR, RE_FLAGS)
 ENDSEL_RE = re.compile(SOL_STR + r"END\s*SELECT" + EOL_STR, RE_FLAGS)
 
-ASSOCIATE_RE = re.compile(SOL_STR + r"ASSOCIATE\s*\(", RE_FLAGS)
+ASSOCIATE_RE = re.compile(SOL_STR + r"ASSOCIATE\s*\(.+\)" + EOL_STR, RE_FLAGS)
 ENDASSOCIATE_RE = re.compile(SOL_STR + r"END\s*ASSOCIATE" + EOL_STR, RE_FLAGS)
 
 SUBR_RE = re.compile(
@@ -638,7 +638,8 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
                 level += 1  # new scope
                 # add separating whitespace before opening delimiter
                 # with some exceptions:
-                # FIXME: duplication of regex
+                # FIXME: duplication of regex, better to include them into
+                # INTR_STMTS_PAR
                 if ((not re.search((r"(" + DEL_OPEN_STR +
                                     r"|[\w\*/=\+\-:])\s*$"),
                                    line[:pos], RE_FLAGS) and
@@ -648,6 +649,10 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
                         re.search(SOL_STR + r"(\w+\s*:)?\s*DO\s+WHILE\s*$",
                                   line[:pos], RE_FLAGS) or
                         re.search(SOL_STR + r"(SELECT)?\s*CASE\s*",
+                                  line[:pos], RE_FLAGS) or
+                        re.search(SOL_STR + r"SELECT\s*TYPE\s*",
+                                  line[:pos], RE_FLAGS) or
+                        re.search(SOL_STR + r"(TYPE|CLASS)\s+IS\s*",
                                   line[:pos], RE_FLAGS) or
                         re.search(r"\b" + INTR_STMTS_PAR + r"\s*$",
                                   line[:pos], RE_FLAGS)):
