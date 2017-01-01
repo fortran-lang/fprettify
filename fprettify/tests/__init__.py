@@ -31,6 +31,7 @@ except AttributeError:
 import fprettify
 from fprettify.fparse_utils import FprettifyParseException, FprettifyInternalException
 
+
 def joinpath(path1, path2):
     return os.path.normpath(os.path.join(path1, path2))
 
@@ -104,7 +105,6 @@ class FPrettifyTestCase(unittest.TestCase):
         eprint("Storing failed results in " + FAILED_FILE)
         eprint("-" * 70)
 
-
     @classmethod
     def tearDownClass(cls):
         """
@@ -170,7 +170,8 @@ class FPrettifyTestCase(unittest.TestCase):
 
         alien_file = "alien_invasion.f90"
         if os.path.isfile(alien_file):
-            raise AlienInvasion("remove file alien_invasion.f90") # pragma: no cover
+            raise AlienInvasion(
+                "remove file alien_invasion.f90")  # pragma: no cover
 
         try:
             with io.open(alien_file, 'w', encoding='utf-8') as infile:
@@ -197,7 +198,7 @@ class FPrettifyTestCase(unittest.TestCase):
 
             for outstr in outstring:
                 self.assertEqual(outstring_exp, outstr.strip())
-        except: # pragma: no cover
+        except:  # pragma: no cover
             if os.path.isfile(alien_file):
                 os.remove(alien_file)
             raise
@@ -247,7 +248,7 @@ def addtestmethod(testcase, fpath, ffile):
                 fprettify.log_exception(e, test_info)
                 test_content = test_result(example_before, test_info)
                 FPrettifyTestCase.n_internalfail += 1
-            except: # pragma: no cover
+            except:  # pragma: no cover
                 FPrettifyTestCase.n_unexpectedfail += 1
                 raise
 
@@ -278,14 +279,15 @@ def addtestmethod(testcase, fpath, ffile):
                             True), after_content.splitlines(True), fromfile=test_content[0], tofile=line_content[0]))
                         msg = '\n' + ''.join(result)
                     try:
-                        testcase.assertEqual(line_content[1], test_content[1], msg)
-                    except AssertionError: # pragma: no cover
+                        testcase.assertEqual(
+                            line_content[1], test_content[1], msg)
+                    except AssertionError:  # pragma: no cover
                         with io.open(FAILED_FILE, 'a', encoding='utf-8') as outfile:
                             outfile.write(sep_str.join(test_content) + '\n')
                         raise
                     break
 
-        if not found: # pragma: no cover
+        if not found:  # pragma: no cover
             eprint(test_info + " new", end=" ")
             with io.open(RESULT_FILE, 'a', encoding='utf-8') as outfile:
                 outfile.write(sep_str.join(test_content) + '\n')
@@ -302,15 +304,15 @@ def addtestmethod(testcase, fpath, ffile):
     setattr(testcase, testmethod.__name__, testmethod)
 
 # make sure all directories exist
-if not os.path.exists(BEFORE_DIR): # pragma: no cover
+if not os.path.exists(BEFORE_DIR):  # pragma: no cover
     os.makedirs(BEFORE_DIR)
-if not os.path.exists(AFTER_DIR): # pragma: no cover
+if not os.path.exists(AFTER_DIR):  # pragma: no cover
     os.makedirs(AFTER_DIR)
-if not os.path.exists(RESULT_DIR): # pragma: no cover
+if not os.path.exists(RESULT_DIR):  # pragma: no cover
     os.makedirs(RESULT_DIR)
-if not os.path.exists(RESULT_FILE): # pragma: no cover
+if not os.path.exists(RESULT_FILE):  # pragma: no cover
     io.open(RESULT_FILE, 'w', encoding='utf-8').close()
-if os.path.exists(FAILED_FILE): # pragma: no cover
+if os.path.exists(FAILED_FILE):  # pragma: no cover
     # erase failures from previous testers
     io.open(FAILED_FILE, 'w', encoding='utf-8').close()
 
