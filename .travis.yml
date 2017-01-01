@@ -13,7 +13,7 @@ before_script:
  - wget https://github.com/acmeism/RosettaCodeData/archive/bba7b.tar.gz
  - mkdir fortran_tests/before/RosettaCodeData && tar -xf bba7b.tar.gz -C fortran_tests/before/RosettaCodeData --strip-components=1
  - if [[ "$TRAVIS_EVENT_TYPE" = "cron" ]]; then wget https://github.com/cp2k/cp2k/archive/ca7e2c.tar.gz; fi
- - if [[ "$TRAVIS_EVENT_TYPE" = "cron" ]]; then mkdir fortran_tests/before/cp2k && tar -xf ca7e2c.tar.gz -C fortran_tests/before/cp2k --strip-components=1; fi
+ - if [[ "$TRAVIS_EVENT_TYPE" = "cron" ]]; then tar -xf ca7e2c.tar.gz -C fortran_tests/before --strip-components=1 cp2k-ca7e2c09634e2a1b7a8b7357cb15a856726483a4/cp2k/src; fi
 script:
  - if ! [[ $DO_COVERAGE ]]; then python setup.py test; fi
  - if [[ $DO_COVERAGE ]]; then coverage run --source=fprettify setup.py test; fi
