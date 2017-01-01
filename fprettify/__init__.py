@@ -1107,6 +1107,7 @@ def run(argv=sys.argv):  # pragma: no cover
                        default=False, help=argparse.SUPPRESS)
     parser.add_argument("filename", type=str, nargs='*',
                         help="File1 File2 ... to be formatted. If no files are given, stdin (-) is used.", default=['-'])
+    parser.add_argument('--version', action='version', version='%(prog)s 0.3.1')
 
     args = parser.parse_args(argv[1:])
 
