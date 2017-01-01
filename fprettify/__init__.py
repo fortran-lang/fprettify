@@ -156,6 +156,7 @@ REL_OP_RE = re.compile(
     r"\s*(\.(?:EQ|NE|LT|LE|GT|GE)\.|(?:==|\/=|<(?!=)|<=|(?<!=)>(?!=)|>=))\s*",
     RE_FLAGS)
 LOG_OP_RE = re.compile(r"\s*(\.(?:AND|OR|EQV|NEQV)\.)\s*", RE_FLAGS)
+PRINT_RE = re.compile(r"(?<=\w)\s*(\*,)\s*", RE_FLAGS)
 
 # regular expressions for parsing delimiters
 DEL_OPEN_STR = r"(\(\/?|\[)"
@@ -167,7 +168,7 @@ DEL_CLOSE_RE = re.compile(r"^" + DEL_CLOSE_STR, RE_FLAGS)
 EMPTY_RE = re.compile(SOL_STR + r"(!.*)?$", RE_FLAGS)
 
 # two-sided operators
-LR_OPS_RE = [REL_OP_RE, LOG_OP_RE, PLUSMINUS_RE]
+LR_OPS_RE = [REL_OP_RE, LOG_OP_RE, PLUSMINUS_RE, PRINT_RE]
 
 # markups to deactivate formatter
 NO_ALIGN_RE = re.compile(SOL_STR + r"&\s*[^\s*]+")
@@ -570,13 +571,14 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
     # 2: relational operators
     # 3: logical operators
     # 4: arithm. operators plus and minus
+    # 5: print / read statements
 
     if whitespace == 0:
-        spacey = [0, 0, 0, 0, 0]
+        spacey = [0, 0, 0, 0, 0, 0]
     elif whitespace == 1:
-        spacey = [1, 1, 1, 1, 0]
+        spacey = [1, 1, 1, 1, 0, 1]
     elif whitespace == 2:
-        spacey = [1, 1, 1, 1, 1]
+        spacey = [1, 1, 1, 1, 1, 1]
     else:
         raise NotImplementedError("unknown value for whitespace")
 
@@ -714,6 +716,7 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
     line = line_ftd
 
     # for more advanced replacements we separate comments and strings
+    # in order to be able to apply a regex to a whole line part
     line_parts = []
     str_end = -1
     instring = ''
