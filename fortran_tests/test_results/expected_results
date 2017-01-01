@@ -315,7 +315,7 @@ RosettaCodeData/Task/Horners-rule-for-polynomial-evaluation/Fortran/horners-rule
 RosettaCodeData/Task/Host-introspection/Fortran/host-introspection.f : f28188cca6625b2528e2da0638889439367f352c88eb0af2afc242c2d93cc7a4
 RosettaCodeData/Task/Hostname/Fortran/hostname-1.f : 73f91b7879305a6ea7028d4ff57c3b4a742bc6f7c9baebcfb099e431b8b641a0
 RosettaCodeData/Task/Hostname/Fortran/hostname-2.f : 0eff3562723326963de30d294e03e931a7cc4b9350501c3ce99f05f0f4137e41
-RosettaCodeData/Task/Huffman-coding/Fortran/huffman-coding.f : f3095c8b6550881d136f47b20887976c3c4d6446fbe53849b2a094c12562d772
+RosettaCodeData/Task/Huffman-coding/Fortran/huffman-coding.f : fee23dbb3f2a0433db35cbc8812642d9402f815f031e169fe1a4bddfd3047ac2
 RosettaCodeData/Task/I-before-E-except-after-C/Fortran/i-before-e-except-after-c.f : b45c3145a996a492a4f788d2695ea37383efcab92742b6665d0faf651db3dab0
 RosettaCodeData/Task/Identity-matrix/Fortran/identity-matrix-1.f : 253b92850fb6a1929e82a6418ac66b2c88f9c0e69d3ecf3da5812c8a1551bc91
 RosettaCodeData/Task/Identity-matrix/Fortran/identity-matrix-3.f : parse error
@@ -497,7 +497,7 @@ RosettaCodeData/Task/Price-fraction/Fortran/price-fraction-2.f : parse error
 RosettaCodeData/Task/Primality-by-trial-division/Fortran/primality-by-trial-division.f : ec2cf305d046482a0ed27dc9893aa4493fe49190c2f23d453812527144df50a8
 RosettaCodeData/Task/Prime-decomposition/Fortran/prime-decomposition-1.f : bcec46c44468bfa90fbf2c959d5382976a8cdc697f3c67db3b9b8ad8a3b98ff4
 RosettaCodeData/Task/Prime-decomposition/Fortran/prime-decomposition-2.f : a91419293317f902caf38c02cad8ab219c20a530a94b374aaf8ac2584b761b7c
-RosettaCodeData/Task/Priority-queue/Fortran/priority-queue.f : e056e80b545981381aef4cf839fdb821f362ce8e9e654eb6137a579949decf44
+RosettaCodeData/Task/Priority-queue/Fortran/priority-queue.f : 94f789551d54c45514e9b8ac20c145a43426bf52a08a0a68b83c87028d4adcae
 RosettaCodeData/Task/Probabilistic-choice/Fortran/probabilistic-choice.f : 3d3eeefb1e46a6e9f8f5c1de1d1af2747717e27868097e6da6042e32cb063323
 RosettaCodeData/Task/Problem-of-Apollonius/Fortran/problem-of-apollonius.f : d420b8590f9c7b3903383747577597fc68464ebe003eed362760da0841997e16
 RosettaCodeData/Task/Program-name/Fortran/program-name.f : 3fbcdc588a49b2a3504304da621115ff48b943f7d7e65cddb3fd148c2a0f427f

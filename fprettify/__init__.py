@@ -100,6 +100,9 @@ SELCASE_RE = re.compile(
 CASE_RE = re.compile(SOL_STR + r"CASE\s*(\(.+\)|DEFAULT)" + EOL_STR, RE_FLAGS)
 ENDSEL_RE = re.compile(SOL_STR + r"END\s*SELECT" + EOL_STR, RE_FLAGS)
 
+ASSOCIATE_RE = re.compile(SOL_STR + r"ASSOCIATE\s*\(", RE_FLAGS)
+ENDASSOCIATE_RE = re.compile(SOL_STR + r"END\s*ASSOCIATE" + EOL_STR, RE_FLAGS)
+
 SUBR_RE = re.compile(
     r"^([^\"'!]* )?SUBROUTINE\s+\w+\s*(\(.*\))?" + EOL_STR, RE_FLAGS)
 ENDSUBR_RE = re.compile(
@@ -143,7 +146,7 @@ PUBLIC_RE = re.compile(SOL_STR + r"PUBLIC\s*::", RE_FLAGS)
 # intrinsic statements with parenthesis notation that are not functions
 INTR_STMTS_PAR = (r"(ALLOCATE|DEALLOCATE|REWIND|BACKSPACE|INQUIRE|"
                   r"OPEN|CLOSE|READ|WRITE|"
-                  r"FORALL|WHERE|NULLIFY)")
+                  r"FORALL|WHERE|ASSOCIATE|NULLIFY)")
 
 # regular expressions for parsing linebreaks
 LINEBREAK_STR = r"(&)[\s]*(?:!.*)?$"
@@ -175,11 +178,11 @@ NO_ALIGN_RE = re.compile(SOL_STR + r"&\s*[^\s*]+")
 
 # combine regex that define subunits
 NEW_SCOPE_RE = [IF_RE, DO_RE, SELCASE_RE, SUBR_RE,
-                FCT_RE, MOD_RE, PROG_RE, INTERFACE_RE, TYPE_RE, ENUM_RE]
+                FCT_RE, MOD_RE, PROG_RE, INTERFACE_RE, TYPE_RE, ENUM_RE, ASSOCIATE_RE, None]
 CONTINUE_SCOPE_RE = [ELSE_RE, None, CASE_RE, CONTAINS_RE,
-                     CONTAINS_RE, CONTAINS_RE, CONTAINS_RE, None, CONTAINS_RE, None]
+                     CONTAINS_RE, CONTAINS_RE, CONTAINS_RE, None, CONTAINS_RE, None, None, None]
 END_SCOPE_RE = [ENDIF_RE, ENDDO_RE, ENDSEL_RE, ENDSUBR_RE,
-                ENDFCT_RE, ENDMOD_RE, ENDPROG_RE, ENDINTERFACE_RE, ENDTYPE_RE, ENDENUM_RE, ENDANY_RE]
+                ENDFCT_RE, ENDMOD_RE, ENDPROG_RE, ENDINTERFACE_RE, ENDTYPE_RE, ENDENUM_RE, ENDASSOCIATE_RE, ENDANY_RE]
 
 
 class F90Indenter(object):
@@ -244,7 +247,7 @@ class F90Indenter(object):
         valid_new = False
 
         for new_n, newre in enumerate(NEW_SCOPE_RE):
-            if newre.search(f_line) and not END_SCOPE_RE[new_n].search(f_line):
+            if newre and newre.search(f_line) and not END_SCOPE_RE[new_n].search(f_line):
                 what_new = new_n
                 is_new = True
                 valid_new = True
@@ -256,7 +259,7 @@ class F90Indenter(object):
         is_con = False
         valid_con = False
         for con_n, conre in enumerate(CONTINUE_SCOPE_RE):
-            if conre is not None and conre.search(f_line):
+            if conre and conre.search(f_line):
                 what_con = con_n
                 is_con = True
                 if len(scopes) > 0:
@@ -270,7 +273,7 @@ class F90Indenter(object):
         is_end = False
         valid_end = False
         for end_n, endre in enumerate(END_SCOPE_RE):
-            if endre.search(f_line):
+            if endre and endre.search(f_line):
                 what_end = end_n
                 is_end = True
                 if len(scopes) > 0:
