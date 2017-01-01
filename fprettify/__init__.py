@@ -902,9 +902,7 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
 
         is_empty = EMPTY_RE.search(f_line)  # blank line or comment only line
 
-        if USE_PARSE_RE.search(f_line):
-            do_indent = False
-        elif OMP_DIR_RE.search(f_line):
+        if OMP_DIR_RE.search(f_line):
             # move '!$OMP' to line start, otherwise don't format omp directives
             lines = ['!$OMP' + (len(l) - len(l.lstrip())) *
                      ' ' + OMP_DIR_RE.sub('', l, count=1) for l in lines]

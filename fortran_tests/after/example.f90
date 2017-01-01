@@ -43,7 +43,7 @@ contains
 end module
 
 program example_prog
- use example, only: dp, test_routine, test_function, test_type,str_function
+   use example, only:dp, test_routine, test_function, test_type, str_function
 
    implicit none
    integer :: r, i, j, k, l, my_integer, m
