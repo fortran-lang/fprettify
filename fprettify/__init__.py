@@ -40,6 +40,8 @@ LIMITATIONS
 
 FIXME's
 - internal errors should not happen
+- wrap regular expression parser. This allows to extend parser by constructs
+  that are not regular expressions (and support e.g. forall construct).
 """
 from __future__ import (absolute_import, division,
                         print_function, unicode_literals)
