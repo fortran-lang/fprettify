@@ -70,21 +70,18 @@ For local installation, use `--user` option.
 ```
 fprettify file1, file2, ...
 ```
-The default indent is 3. If you prefer something else, use `--indent=<n>` argument.
+The default indent is 3. If you prefer something else, use `--indent n` argument. For more options, read
+```
+fprettify -h
+```
 
 For editor integration, use
 ```
 fprettify --silent
 ```
-
 For instance, with Vim, use fprettify with `gq` by putting the following commands in your `.vimrc`:
 ```vim
 autocmd Filetype fortran setlocal formatprg=fprettify\ --silent
-```
-
-For more information, read
-```
-fprettify --help
 ```
 
 
