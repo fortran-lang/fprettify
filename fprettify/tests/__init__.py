@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-Dynamically create tests based on examples in examples/before.
-"""
+"""Dynamically create tests based on examples in examples/before."""
 from __future__ import (absolute_import, division,
                         print_function, unicode_literals)
 from builtins import *
@@ -267,9 +265,9 @@ def addtestmethod(testcase, fpath, ffile):
             testcase.assertMultiLineEqual(before_nosp, after_nosp)
 
         sep_str = ' : '
-        with io.open(RESULT_FILE, 'r', encoding='utf-8') as fpr_hash:
+        with io.open(RESULT_FILE, 'r', encoding='utf-8') as infile:
             found = False
-            for line in fpr_hash:
+            for line in infile:
                 line_content = line.strip().split(sep_str)
                 if line_content[0] == test_content[0]:
                     found = True
@@ -282,7 +280,7 @@ def addtestmethod(testcase, fpath, ffile):
                     try:
                         testcase.assertEqual(line_content[1], test_content[1], msg)
                     except AssertionError: # pragma: no cover
-                        with io.open(FAILED_FILE, 'a', encoding='utf-8') as outfile:
+                        with io.open(FAILED_FILE, 'w', encoding='utf-8') as outfile:
                             outfile.write(sep_str.join(test_content) + '\n')
                         raise
                     break
