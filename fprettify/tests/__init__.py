@@ -280,7 +280,7 @@ def addtestmethod(testcase, fpath, ffile):
                     try:
                         testcase.assertEqual(line_content[1], test_content[1], msg)
                     except AssertionError: # pragma: no cover
-                        with io.open(FAILED_FILE, 'w', encoding='utf-8') as outfile:
+                        with io.open(FAILED_FILE, 'a', encoding='utf-8') as outfile:
                             outfile.write(sep_str.join(test_content) + '\n')
                         raise
                     break
@@ -310,6 +310,9 @@ if not os.path.exists(RESULT_DIR): # pragma: no cover
     os.makedirs(RESULT_DIR)
 if not os.path.exists(RESULT_FILE): # pragma: no cover
     io.open(RESULT_FILE, 'w', encoding='utf-8').close()
+if os.path.exists(FAILED_FILE): # pragma: no cover
+    # erase failures from previous testers
+    io.open(FAILED_FILE, 'w', encoding='utf-8').close()
 
 # this prepares FPrettifyTestCase class when module is loaded by unittest
 for dirpath, _, filenames in os.walk(BEFORE_DIR):
