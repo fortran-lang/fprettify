@@ -39,7 +39,7 @@ print*,endif
 endif
 end program
 ```
-⇩⇩⇩⇩⇩⇩⇩⇩⇩⇩
+⇩⇩⇩⇩⇩⇩⇩⇩⇩⇩ fprettify ⇩⇩⇩⇩⇩⇩⇩⇩⇩⇩
 ``` Fortran
 program demo
    integer :: endif, if, else
