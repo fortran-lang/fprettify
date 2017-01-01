@@ -2057,7 +2057,7 @@ cp2k/potentials/mm_potentials/src/output.f90 : 7cc5ac48ac7e92fb5fa63d2b78f6a141b
 RosettaCodeData/Task/99-Bottles-of-Beer/Fortran/99-bottles-of-beer-3.f : 5dd9be291c1c6d3b9fc51f4a30e39511bad1c794dcad2653ac8f7132b3d1c27f
 RosettaCodeData/Task/Abstract-type/Fortran/abstract-type.f : ffdb2d52c08608a1846009421b3120f96c4e5ec96167090938c8efd14d7c6599
 RosettaCodeData/Task/Accumulator-factory/Fortran/accumulator-factory-2.f : b012420353f44b8a1cbf863f58def625d4a414d85041c99558a83a2646ca7127
-RosettaCodeData/Task/Arithmetic-Rational/Fortran/arithmetic-rational-1.f : a3922a1211bdf8183954333d7149058ead353a70b2188e9b201a6522bdfd896e
+RosettaCodeData/Task/Arithmetic-Rational/Fortran/arithmetic-rational-1.f : d9798ac7d48984a81e6066f955431b6b1147c4a23676e2ce9161d6491a36c234
 RosettaCodeData/Task/Classes/Fortran/classes.f : ab23f3823fb82e0ffff96b869f2aca7c2515db18add95104f4be86c881692d74
 RosettaCodeData/Task/Constrained-genericity/Fortran/constrained-genericity.f : 7405722a03f8a4db70a8202861df79ce6037355c4cc7250d95b76fc4cbc99e97
 RosettaCodeData/Task/Define-a-primitive-data-type/Fortran/define-a-primitive-data-type-1.f : a61ce7b5d3641ca7f223a03229a31cc8feb6d8aa473d827df5bf0a85baea6af7

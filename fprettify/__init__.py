@@ -153,7 +153,7 @@ LINEBREAK_STR = r"(&)[\s]*(?:!.*)?$"
 PLUSMINUS_RE = re.compile(
     r"(?<=[\w\)\]])(?<![\d\.]\w)\s*(\+|-)\s*", RE_FLAGS)
 REL_OP_RE = re.compile(
-    r"\s*(\.(?:EQ|NE|LT|LE|GT|GE)\.|(?:==|\/=|<(?!=)|<=|(?<!=)>(?!=)|>=))\s*",
+    r"(?<!\()\s*(\.(?:EQ|NE|LT|LE|GT|GE)\.|(?:==|\/=|<(?!=)|<=|(?<!=)>(?!=)|>=))\s*(?!\))",
     RE_FLAGS)
 LOG_OP_RE = re.compile(r"\s*(\.(?:AND|OR|EQV|NEQV)\.)\s*", RE_FLAGS)
 PRINT_RE = re.compile(r"(?<=\w)\s*(\*,)\s*", RE_FLAGS)
