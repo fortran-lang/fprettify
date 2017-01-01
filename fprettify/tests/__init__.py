@@ -33,11 +33,19 @@ except AttributeError:
 import fprettify
 from fprettify.fparse_utils import FprettifyParseException, FprettifyInternalException
 
-BEFORE_DIR = r'fortran_tests/before/'
-AFTER_DIR = r'fortran_tests/after/'
-RESULT_DIR = r'fortran_tests/test_results/'
-RESULT_FILE = os.path.join(RESULT_DIR, 'expected_results')
+def joinpath(path1, path2):
+    return os.path.normpath(os.path.join(path1, path2))
 
+MYPATH = os.path.dirname(os.path.abspath(
+    inspect.getfile(inspect.currentframe())))
+
+BEFORE_DIR = joinpath(MYPATH, r'../../fortran_tests/before/')
+AFTER_DIR = joinpath(MYPATH, r'../../fortran_tests/after/')
+RESULT_DIR = joinpath(MYPATH, r'../../fortran_tests/test_results/')
+RESULT_FILE = joinpath(RESULT_DIR, r'expected_results')
+FAILED_FILE = joinpath(RESULT_DIR, r'failed_results')
+
+RUNSCRIPT = joinpath(MYPATH, r"../../fprettify.py")
 # recognize fortran files by extension
 FORTRAN_EXTENSIONS = [".f", ".for", ".ftn",
                       ".f90", ".f95", ".f03", ".fpp"]
@@ -95,11 +103,9 @@ class FPrettifyTestCase(unittest.TestCase):
         eprint("Testing with Fortran files in " + BEFORE_DIR)
         eprint("Writing formatted Fortran files to " + AFTER_DIR)
         eprint("Storing expected results in " + RESULT_FILE)
+        eprint("Storing failed results in " + FAILED_FILE)
         eprint("-" * 70)
 
-        mypath = os.path.dirname(os.path.abspath(
-            inspect.getfile(inspect.currentframe())))
-        cls.runscript = os.path.join(mypath, "../../fprettify.py")
 
     @classmethod
     def tearDownClass(cls):
@@ -124,7 +130,7 @@ class FPrettifyTestCase(unittest.TestCase):
 
         outstring = []
         for w in range(0, 3):
-            p1 = subprocess.Popen([self.runscript, '-w', str(w)],
+            p1 = subprocess.Popen([RUNSCRIPT, '-w', str(w)],
                                   stdout=subprocess.PIPE, stdin=subprocess.PIPE)
             outstring.append(p1.communicate(
                 instring.encode('UTF-8'))[0].decode('UTF-8'))
@@ -148,7 +154,7 @@ class FPrettifyTestCase(unittest.TestCase):
 
         outstring = []
         for ind in indents:
-            p1 = subprocess.Popen([self.runscript, '-i', str(ind)],
+            p1 = subprocess.Popen([RUNSCRIPT, '-i', str(ind)],
                                   stdout=subprocess.PIPE, stdin=subprocess.PIPE)
             outstring.append(p1.communicate(
                 instring.encode('UTF-8'))[0].decode('UTF-8'))
@@ -173,19 +179,19 @@ class FPrettifyTestCase(unittest.TestCase):
                 infile.write(instring)
 
             # testing stdin --> stdout
-            p1 = subprocess.Popen(self.runscript,
+            p1 = subprocess.Popen(RUNSCRIPT,
                                   stdout=subprocess.PIPE, stdin=subprocess.PIPE)
             outstring.append(p1.communicate(
                 instring.encode('UTF-8'))[0].decode('UTF-8'))
 
             # testing file --> stdout
-            p1 = subprocess.Popen([self.runscript, alien_file, '--stdout'],
+            p1 = subprocess.Popen([RUNSCRIPT, alien_file, '--stdout'],
                                   stdout=subprocess.PIPE)
             outstring.append(p1.communicate(
                 instring.encode('UTF-8')[0])[0].decode('UTF-8'))
 
             # testing file --> file (inplace)
-            p1 = subprocess.Popen([self.runscript, alien_file])
+            p1 = subprocess.Popen([RUNSCRIPT, alien_file])
             p1.wait()
 
             with io.open(alien_file, 'r', encoding='utf-8') as infile:
@@ -207,16 +213,16 @@ def addtestmethod(testcase, fpath, ffile):
     def testmethod(testcase):
         """this is the test method invoked for each example."""
 
-        dirpath_before = os.path.join(BEFORE_DIR, fpath)
-        dirpath_after = os.path.join(AFTER_DIR, fpath)
+        dirpath_before = joinpath(BEFORE_DIR, fpath)
+        dirpath_after = joinpath(AFTER_DIR, fpath)
         if not os.path.exists(dirpath_after):
             os.makedirs(dirpath_after)
 
-        example_before = os.path.join(dirpath_before, ffile)
-        example_after = os.path.join(dirpath_after, ffile)
+        example_before = joinpath(dirpath_before, ffile)
+        example_after = joinpath(dirpath_after, ffile)
 
         def test_result(path, info):
-            return [path.replace(BEFORE_DIR, ""), info]
+            return [os.path.relpath(path, BEFORE_DIR), info]
 
         with io.open(example_before, 'r', encoding='utf-8') as infile:
 
@@ -273,23 +279,27 @@ def addtestmethod(testcase, fpath, ffile):
                         result = list(difflib.unified_diff(before_content.splitlines(
                             True), after_content.splitlines(True), fromfile=test_content[0], tofile=line_content[0]))
                         msg = '\n' + ''.join(result)
-
-                    testcase.assertEqual(line_content[1], test_content[1], msg)
+                    try:
+                        testcase.assertEqual(line_content[1], test_content[1], msg)
+                    except AssertionError: # pragma: no cover
+                        with io.open(FAILED_FILE, 'a', encoding='utf-8') as outfile:
+                            outfile.write(sep_str.join(test_content) + '\n')
+                        raise
                     break
 
         if not found: # pragma: no cover
             eprint(test_info + " new", end=" ")
-            with io.open(RESULT_FILE, 'a', encoding='utf-8') as fpr_hash:
-                fpr_hash.write(sep_str.join(test_content) + '\n')
+            with io.open(RESULT_FILE, 'a', encoding='utf-8') as outfile:
+                outfile.write(sep_str.join(test_content) + '\n')
 
     # not sure why this even works, using "test something" (with a space) as function name...
     # however it gives optimal test output
     try:
-        testmethod.__name__ = ("test " + os.path.join(fpath, ffile))
+        testmethod.__name__ = ("test " + joinpath(fpath, ffile))
     except TypeError:
         # need to encode in python 2 since we are using unicode strings
         testmethod.__name__ = (
-            "test " + os.path.join(fpath, ffile)).encode('utf-8')
+            "test " + joinpath(fpath, ffile)).encode('utf-8')
 
     setattr(testcase, testmethod.__name__, testmethod)
 
@@ -304,7 +314,7 @@ if not os.path.exists(RESULT_FILE): # pragma: no cover
     io.open(RESULT_FILE, 'w', encoding='utf-8').close()
 
 # this prepares FPrettifyTestCase class when module is loaded by unittest
-for dirpath, dirnames, filenames in os.walk(BEFORE_DIR):
+for dirpath, _, filenames in os.walk(BEFORE_DIR):
     for example in [f for f in filenames if any(f.endswith(_) for _ in FORTRAN_EXTENSIONS)]:
-        addtestmethod(FPrettifyTestCase, dirpath.replace(
-            BEFORE_DIR, ""), example)
+        rel_dirpath = os.path.relpath(dirpath, start=BEFORE_DIR)
+        addtestmethod(FPrettifyTestCase, rel_dirpath, example)
