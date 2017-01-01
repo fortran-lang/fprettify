@@ -67,6 +67,7 @@ For local installation, use `--user` option.
 
 ## Usage
 
+Autoformat file1, file2, ... inplace by
 ```
 fprettify file1, file2, ...
 ```
