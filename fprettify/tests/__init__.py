@@ -120,7 +120,7 @@ class FPrettifyTestCase(unittest.TestCase):
             eprint(format.format("internal errors: ", cls.n_internalfail))
 
     @staticmethod
-    def write_result(filename, content, sep_str):
+    def write_result(filename, content, sep_str): # pragma: no cover
         with io.open(filename, 'a', encoding='utf-8') as outfile:
             outfile.write(sep_str.join(content) + '\n')
 
@@ -287,13 +287,13 @@ def addtestmethod(testcase, fpath, ffile):
                         testcase.assertEqual(
                             line_content[1], test_content[1], msg)
                     except AssertionError:  # pragma: no cover
-                        self.write_result(FAILED_FILE, test_content, sep_str)
+                        FPrettifyTestCase.write_result(FAILED_FILE, test_content, sep_str)
                         raise
                     break
 
         if not found:  # pragma: no cover
             eprint(test_info + " new", end=" ")
-            self.write_result(RESULT_FILE, test_content, sep_str)
+            FPrettifyTestCase.write_result(RESULT_FILE, test_content, sep_str)
 
     # not sure why this even works, using "test something" (with a space) as function name...
     # however it gives optimal test output
