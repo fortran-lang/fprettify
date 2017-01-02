@@ -42,6 +42,8 @@ FIXME's
 - internal errors should not happen
 - wrap regular expression parser. This allows to extend parser by constructs
   that are not regular expressions (and support e.g. forall construct).
+- strip whitespaces once and for all and then assume no trailing / leading
+  whitespaces
 """
 from __future__ import (absolute_import, division,
                         print_function, unicode_literals)
@@ -860,9 +862,15 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
     while 1:
         f_line, comments, lines = stream.next_fortran_line()
 
+        # --> format line
+
         if not lines:
             break
 
+        orig_lines = lines
+        nfl += 1
+
+        #--> prepare comments to be appended to reformatted fortran line
         comment_lines = []
         for line, comment in zip(lines, comments):
             has_comment = bool(comment.strip())
@@ -870,9 +878,7 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
             if line.strip():  # empty lines between linebreaks are ignored
                 comment_lines.append(' ' * sep + comment.strip())
 
-        orig_lines = lines
-        nfl += 1
-
+        #--> read formatter pragmas
         auto_align = not any(NO_ALIGN_RE.search(_) for _ in lines)
         auto_format = not (in_manual_block or any(
             _.lstrip().startswith('!&') for _ in comment_lines))
@@ -896,6 +902,7 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
 
         indent = [0] * len(lines)
 
+        #--> parse omp and convert to fortran
         is_omp_conditional = False
 
         is_omp = OMP_RE.search(f_line)
@@ -908,164 +915,224 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
 
         is_empty = EMPTY_RE.search(f_line)  # blank line or comment only line
 
-        if OMP_DIR_RE.search(f_line):
-            # move '!$OMP' to line start, otherwise don't format omp directives
-            lines = ['!$OMP' + (len(l) - len(l.lstrip())) *
-                     ' ' + OMP_DIR_RE.sub('', l, count=1) for l in lines]
-            do_indent = False
-        elif lines[0].startswith('#'):  # preprocessor macros
-            if len(lines) != 1:
-                raise FprettifyInternalException(
-                    "Continuation lines for preprocessor statement", orig_filename, stream.line_nr)
-            do_indent = False
-        elif EMPTY_RE.search(f_line):  # empty lines including comment lines
-            if len(lines) != 1:
-                raise FprettifyInternalException(
-                    "Continuation lines for comment lines", orig_filename, stream.line_nr)
-            if any(comments):
-                if lines[0].startswith('!'):
-                    # don't indent unindented comments
-                    do_indent = False
-                else:
-                    indent[0] = indenter.get_fline_indent()
-            elif skip_blank:
-                continue
-            else:
-                do_indent = False
+        lines, do_format, use_indent, is_blank = preprocess_line(f_line, lines, comments, orig_filename, stream.line_nr)
 
-            lines = [l.strip(' ') for l in lines]
-        else:
-            manual_lines_indent = []
+        if is_blank and skip_blank:
+            continue
+
+        if not do_format:
+            do_indent = use_indent
+            if use_indent:
+                assert len(indent) == 1
+                # inherit indent from previous line
+                indent[0] = indenter.get_fline_indent()
+        else: #--> do actual formatting
+
             if not auto_align:
-                manual_lines_indent = [
-                    len(l) - len(l.lstrip(' ').lstrip('&')) for l in lines]
-                manual_lines_indent = [ind - manual_lines_indent[0]
-                                       for ind in manual_lines_indent]
+                manual_lines_indent = get_manual_alignment(lines)
+            else:
+                manual_lines_indent = []
 
-            # ampersands at line starts are remembered (pre_ampersand)
-            # and recovered later;
-            # define the desired number of separating whitespaces
-            # before ampersand at line end (ampersand_sep):
-            # - insert one whitespace character before ampersand
-            #   as default formatting
-            # - don't do this if next line starts with an ampersand but
-            #   remember the original formatting
-            # this "special rule" is necessary since ampersands starting a line
-            # can be used to break literals, so inserting a whitespace in this
-            # case leads to invalid syntax.
+            lines, pre_ampersand, ampersand_sep = remove_pre_ampersands(lines, orig_filename, stream.line_nr)
 
-            pre_ampersand = []
-            ampersand_sep = []
-            for pos, line in enumerate(lines):
-                match = re.search(SOL_STR + r'(&\s*)', line)
-                if match:
-                    pre_ampersand.append(match.group(1))
-                    try:
-                        sep = len(re.search(r'(\s*)&[\s]*(?:!.*)?$',
-                                            lines[pos - 1]).group(1))
-                    except AttributeError:
-                        raise FprettifyParseException(
-                            "Bad continuation line format", orig_filename, stream.line_nr)
+            linebreak_pos = get_linebreak_pos(lines)
 
-                    ampersand_sep.append(sep)
-                else:
-                    pre_ampersand.append('')
-                    if pos > 0:
-                        ampersand_sep.append(1)
-
-            lines = [l.strip(' ').strip('&') for l in lines]
-            f_line = f_line.strip(' ')
-
-            # find linebreak positions
-            linebreak_pos = []
-            for pos, line in enumerate(lines):
-                found = None
-                for char_pos, char in CharFilter(enumerate(line)):
-                    if char == "&":
-                        found = char_pos
-                if found:
-                    linebreak_pos.append(found)
-                elif line.lstrip(' ').startswith('!'):
-                    linebreak_pos.append(0)
-
-            linebreak_pos = [sum(linebreak_pos[0:_ + 1]) -
-                             1 for _ in range(0, len(linebreak_pos))]
+            f_line = f_line.strip(' ') # FIXME: should not be necessary
 
             lines = format_single_fline(
                 f_line, whitespace, linebreak_pos, ampersand_sep,
                 orig_filename, stream.line_nr, auto_format)
 
-            # we need to insert comments in formatted lines
-            for pos, (line, comment) in enumerate(zip(lines, comment_lines)):
-                if pos < len(lines) - 1:
-                    has_nl = True
-                else:
-                    has_nl = not re.search(EOL_SC, line)
-                lines[pos] = lines[pos].rstrip(' ') + comment + '\n' * has_nl
+            lines = append_comments(lines, comment_lines)
 
-            try:
-                # target indent for next line
-                rel_indent = req_indents[nfl]
-            except IndexError:
-                # this happens when nfl is last line
-                rel_indent = 0
+            # target indent for next line
+            rel_indent = req_indents[nfl] if nfl < len(req_indents) else 0
 
             indenter.process_lines_of_fline(
                 f_line, lines, rel_indent, indent_size,
                 stream.line_nr, manual_lines_indent)
             indent = indenter.get_lines_indent()
 
-            # recover ampersands at line start
-            for pos, line in enumerate(lines):
-                amp_insert = pre_ampersand[pos]
-                if amp_insert:
-                    indent[pos] += -1
-                    lines[pos] = amp_insert + line
+            lines, indent = prepend_ampersands(lines, indent, pre_ampersand)
 
-        lines = [re.sub(r"\s+$", '\n', l, RE_FLAGS)
-                 for l in lines]  # deleting trailing whitespaces
 
-        for ind, line, orig_line in zip(indent, lines, orig_lines):
-            # get actual line length excluding comment:
-            line_length = 0
-            for line_length, _ in CharFilter(enumerate(line)):
-                pass
-            line_length += 1
+        lines = remove_trailing_whitespace(lines)
 
-            if do_indent:
-                ind_use = ind
-            else:
-                if use_same_line:
-                    ind_use = 1
-                else:
-                    ind_use = 0
-            if ind_use + line_length <= 133:  # 132 plus 1 newline char
-                outfile.write('!$' * is_omp_conditional +
-                              ' ' * (ind_use - 2 * is_omp_conditional +
-                                     len(line) - len(line.lstrip(' '))) +
-                              line.lstrip(' '))
-            elif line_length <= 133:
-                outfile.write('!$' * is_omp_conditional + ' ' *
-                              (133 - 2 * is_omp_conditional -
-                               len(line.lstrip(' '))) + line.lstrip(' '))
+        write_formatted_line(outfile, indent, lines, orig_lines, do_indent, use_same_line, is_omp_conditional, orig_filename, stream.line_nr)
 
-                log_message(LINESPLIT_MESSAGE, "warning",
-                            orig_filename, stream.line_nr)
-            else:
-                outfile.write(orig_line)
-                log_message(LINESPLIT_MESSAGE, "warning",
-                            orig_filename, stream.line_nr)
-
-        # no indentation of semicolon separated lines
-        if re.search(r";\s*$", f_line, RE_FLAGS):
-            do_indent = False
-            use_same_line = True
-        else:
-            do_indent = True
-            use_same_line = False
+        do_indent, use_same_line = pass_defaults_to_next_line(f_line)
 
         # rm subsequent blank lines
         skip_blank = is_empty and not any(comments) and not is_omp
+
+def preprocess_line(f_line, lines, comments, filename, line_nr):
+    """preprocess lines: identification and formatting of special cases"""
+    is_blank = False
+    use_indent = False
+    do_format = False
+
+    if OMP_DIR_RE.search(f_line):
+        # move '!$OMP' to line start, otherwise don't format omp directives
+        lines = ['!$OMP' + (len(l) - len(l.lstrip())) *
+                 ' ' + OMP_DIR_RE.sub('', l, count=1) for l in lines]
+    elif lines[0].startswith('#'):  # preprocessor macros
+        if len(lines) != 1:
+            raise FprettifyInternalException(
+                "Continuation lines for preprocessor statement", filename, line_nr)
+    elif EMPTY_RE.search(f_line):  # empty lines including comment lines
+        if len(lines) != 1:
+            raise FprettifyInternalException(
+                "Continuation lines for comment lines", filename, line_nr)
+        if any(comments):
+            if not lines[0].startswith('!'):
+                # indent comment lines only if they were not indented before.
+                use_indent = True
+        else:
+            is_blank = True
+        lines = [l.strip(' ') for l in lines]
+    else:
+        do_format = True
+
+    return [lines, do_format, use_indent, is_blank]
+
+
+def pass_defaults_to_next_line(f_line):
+    """defaults to be transferred from f_line to next line"""
+    if re.search(r";\s*$", f_line, RE_FLAGS):
+        # if line ended with semicolon, don't indent next line
+        do_indent = False
+        use_same_line = True
+    else:
+        do_indent = True
+        use_same_line = False
+    return [do_indent, use_same_line]
+
+def remove_trailing_whitespace(lines):
+    """remove trailing whitespaces from lines"""
+    lines = [re.sub(r"\s+$", '\n', l, RE_FLAGS)
+             for l in lines]
+    return lines
+
+def prepend_ampersands(lines, indent, pre_ampersand):
+    """prepend ampersands and correct indent"""
+    for pos, line in enumerate(lines):
+        amp_insert = pre_ampersand[pos]
+        if amp_insert:
+            indent[pos] += -1
+            lines[pos] = amp_insert + line
+
+    return [lines, indent]
+
+def append_comments(lines, comment_lines):
+    """append comments to lines"""
+    for pos, (line, comment) in enumerate(zip(lines, comment_lines)):
+        if pos < len(lines) - 1:
+            has_nl = True # has next line
+        else:
+            has_nl = not re.search(EOL_SC, line)
+        lines[pos] = lines[pos].rstrip(' ') + comment + '\n' * has_nl
+
+    return lines
+
+def get_linebreak_pos(lines):
+    """extract linebreak positions in Fortran line from lines"""
+    linebreak_pos = []
+    for pos, line in enumerate(lines):
+        found = None
+        for char_pos, char in CharFilter(enumerate(line)):
+            if char == "&":
+                found = char_pos
+        if found:
+            linebreak_pos.append(found)
+        elif line.lstrip(' ').startswith('!'):
+            linebreak_pos.append(0)
+
+    linebreak_pos = [sum(linebreak_pos[0:_ + 1]) -
+                     1 for _ in range(0, len(linebreak_pos))]
+
+    return linebreak_pos
+
+def remove_pre_ampersands(lines, filename, line_nr):
+    """
+    remove and return preceding ampersands ('pre_ampersand'). Also return
+    number of whitespace characters before ampersand of previous line
+    ('ampersand_sep').
+
+    Note: Don't do any whitespace formatting on ampersands if next line starts
+    with an ampersand but remember the original number of spaces
+    (ampersand_sep). This "special rule" is necessary since ampersands starting
+    a line can be used to break literals, so changing the number of whitespaces
+    before the ampersand ending the previous line may lead to invalid syntax or
+    may change the number of whitespace characters in a string.
+    """
+    pre_ampersand = []
+    ampersand_sep = []
+
+    for pos, line in enumerate(lines):
+        match = re.search(SOL_STR + r'(&\s*)', line)
+        if match:
+            pre_ampersand.append(match.group(1))
+            try:
+                # amount of whitespace before ampersand of previous line:
+                sep = len(re.search(r'(\s*)&[\s]*(?:!.*)?$',
+                                    lines[pos - 1]).group(1))
+            except AttributeError:
+                raise FprettifyParseException(
+                    "Bad continuation line format", filename, line_nr)
+
+            ampersand_sep.append(sep)
+        else:
+            pre_ampersand.append('')
+            if pos > 0:
+                # use default 1 whitespace character before ampersand
+                ampersand_sep.append(1)
+
+    lines = [l.strip(' ').strip('&') for l in lines]
+
+    return [lines, pre_ampersand, ampersand_sep]
+
+
+def get_manual_alignment(lines):
+    """extract manual indents for line continuations from line"""
+    manual_lines_indent = [
+        len(l) - len(l.lstrip(' ').lstrip('&')) for l in lines]
+    manual_lines_indent = [ind - manual_lines_indent[0]
+                           for ind in manual_lines_indent]
+    return manual_lines_indent
+
+
+def write_formatted_line(outfile, indent, lines, orig_lines, do_indent, use_same_line, is_omp_conditional, filename, line_nr):
+    """Write reformatted line to file"""
+    for ind, line, orig_line in zip(indent, lines, orig_lines):
+        # get actual line length excluding comment:
+        line_length = 0
+        for line_length, _ in CharFilter(enumerate(line)):
+            pass
+        line_length += 1
+
+        if do_indent:
+            ind_use = ind
+        else:
+            if use_same_line:
+                ind_use = 1
+            else:
+                ind_use = 0
+        if ind_use + line_length <= 133:  # 132 plus 1 newline char
+            outfile.write('!$' * is_omp_conditional +
+                          ' ' * (ind_use - 2 * is_omp_conditional +
+                                 len(line) - len(line.lstrip(' '))) +
+                          line.lstrip(' '))
+        elif line_length <= 133:
+            outfile.write('!$' * is_omp_conditional + ' ' *
+                          (133 - 2 * is_omp_conditional -
+                           len(line.lstrip(' '))) + line.lstrip(' '))
+
+            log_message(LINESPLIT_MESSAGE, "warning",
+                        filename, line_nr)
+        else:
+            outfile.write(orig_line)
+            log_message(LINESPLIT_MESSAGE, "warning",
+                        filename, line_nr)
 
 
 def get_curr_delim(line, pos):
