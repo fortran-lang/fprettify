@@ -28,13 +28,15 @@ Compare `examples/*before.f90` (original Fortran files) with `examples/*after.f9
 
 ``` Fortran
 program demo
-integer :: endif,if,else
-endif=3; if=2
+integer :: endif,if,elseif
+integer,DIMENSION(2) :: function
+endif=3;if=2
 if(endif==2)then
 endif=5
-else=if+4*(endif+&
+elseif=if+4*(endif+&
 2**10)
-else if(endif==3)then
+elseif(endif==3)then
+function(if)=endif/elseif
 print*,endif
 endif
 end program
@@ -42,13 +44,15 @@ end program
 ⇩⇩⇩⇩⇩⇩⇩⇩⇩⇩ `fprettify` ⇩⇩⇩⇩⇩⇩⇩⇩⇩⇩
 ``` Fortran
 program demo
-   integer :: endif, if, else
+   integer :: endif, if, elseif
+   integer, DIMENSION(2) :: function
    endif = 3; if = 2
    if (endif == 2) then
       endif = 5
-      else = if + 4*(endif + &
-                     2**10)
-   else if (endif == 3) then
+      elseif = if + 4*(endif + &
+                       2**10)
+   elseif (endif == 3) then
+      function(if) = endif/elseif
       print *, endif
    endif
 end program
