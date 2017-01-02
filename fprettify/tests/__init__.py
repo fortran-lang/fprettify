@@ -120,7 +120,7 @@ class FPrettifyTestCase(unittest.TestCase):
             eprint(format.format("internal errors: ", cls.n_internalfail))
 
     @staticmethod
-    def write_result(filename, content, sep_str): # pragma: no cover
+    def write_result(filename, content, sep_str):  # pragma: no cover
         with io.open(filename, 'a', encoding='utf-8') as outfile:
             outfile.write(sep_str.join(content) + '\n')
 
@@ -133,7 +133,7 @@ class FPrettifyTestCase(unittest.TestCase):
 
         outstring = []
         for w, out in zip(range(0, 3), outstring_exp):
-            args=['-w', str(w)]
+            args = ['-w', str(w)]
             self.assert_fprettify_result(args, instring, out)
 
     def test_indent(self):
@@ -151,7 +151,7 @@ class FPrettifyTestCase(unittest.TestCase):
         ]
 
         for ind, out in zip(indents, outstring_exp):
-            args=['-i', str(ind)]
+            args = ['-i', str(ind)]
             self.assert_fprettify_result(args, instring, out)
 
     def test_directive(self):
@@ -181,8 +181,10 @@ class FPrettifyTestCase(unittest.TestCase):
         outstring_exp
         """
         args.insert(0, RUNSCRIPT)
-        p1 = subprocess.Popen(args, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
-        outstring = p1.communicate(instring.encode('UTF-8'))[0].decode('UTF-8').strip()
+        p1 = subprocess.Popen(
+            args, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+        outstring = p1.communicate(instring.encode(
+            'UTF-8'))[0].decode('UTF-8').strip()
         self.assertEqual(outstring_exp, outstring)
 
     def test_io(self):
@@ -308,7 +310,8 @@ def addtestmethod(testcase, fpath, ffile):
                         testcase.assertEqual(
                             line_content[1], test_content[1], msg)
                     except AssertionError:  # pragma: no cover
-                        FPrettifyTestCase.write_result(FAILED_FILE, test_content, sep_str)
+                        FPrettifyTestCase.write_result(
+                            FAILED_FILE, test_content, sep_str)
                         raise
                     break
 

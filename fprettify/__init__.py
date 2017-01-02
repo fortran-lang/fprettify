@@ -915,7 +915,8 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
 
         is_empty = EMPTY_RE.search(f_line)  # blank line or comment only line
 
-        lines, do_format, use_indent, is_blank = preprocess_line(f_line, lines, comments, orig_filename, stream.line_nr)
+        lines, do_format, use_indent, is_blank = preprocess_line(
+            f_line, lines, comments, orig_filename, stream.line_nr)
 
         if is_blank and skip_blank:
             continue
@@ -926,18 +927,19 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
                 assert len(indent) == 1
                 # inherit indent from previous line
                 indent[0] = indenter.get_fline_indent()
-        else: #--> do actual formatting
+        else:  # --> do actual formatting
 
             if not auto_align:
                 manual_lines_indent = get_manual_alignment(lines)
             else:
                 manual_lines_indent = []
 
-            lines, pre_ampersand, ampersand_sep = remove_pre_ampersands(lines, orig_filename, stream.line_nr)
+            lines, pre_ampersand, ampersand_sep = remove_pre_ampersands(
+                lines, orig_filename, stream.line_nr)
 
             linebreak_pos = get_linebreak_pos(lines)
 
-            f_line = f_line.strip(' ') # FIXME: should not be necessary
+            f_line = f_line.strip(' ')  # FIXME: should not be necessary
 
             lines = format_single_fline(
                 f_line, whitespace, linebreak_pos, ampersand_sep,
@@ -955,15 +957,16 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
 
             lines, indent = prepend_ampersands(lines, indent, pre_ampersand)
 
-
         lines = remove_trailing_whitespace(lines)
 
-        write_formatted_line(outfile, indent, lines, orig_lines, do_indent, use_same_line, is_omp_conditional, orig_filename, stream.line_nr)
+        write_formatted_line(outfile, indent, lines, orig_lines, do_indent,
+                             use_same_line, is_omp_conditional, orig_filename, stream.line_nr)
 
         do_indent, use_same_line = pass_defaults_to_next_line(f_line)
 
         # rm subsequent blank lines
         skip_blank = is_empty and not any(comments) and not is_omp
+
 
 def preprocess_line(f_line, lines, comments, filename, line_nr):
     """preprocess lines: identification and formatting of special cases"""
@@ -1007,11 +1010,13 @@ def pass_defaults_to_next_line(f_line):
         use_same_line = False
     return [do_indent, use_same_line]
 
+
 def remove_trailing_whitespace(lines):
     """remove trailing whitespaces from lines"""
     lines = [re.sub(r"\s+$", '\n', l, RE_FLAGS)
              for l in lines]
     return lines
+
 
 def prepend_ampersands(lines, indent, pre_ampersand):
     """prepend ampersands and correct indent"""
@@ -1023,16 +1028,18 @@ def prepend_ampersands(lines, indent, pre_ampersand):
 
     return [lines, indent]
 
+
 def append_comments(lines, comment_lines):
     """append comments to lines"""
     for pos, (line, comment) in enumerate(zip(lines, comment_lines)):
         if pos < len(lines) - 1:
-            has_nl = True # has next line
+            has_nl = True  # has next line
         else:
             has_nl = not re.search(EOL_SC, line)
         lines[pos] = lines[pos].rstrip(' ') + comment + '\n' * has_nl
 
     return lines
+
 
 def get_linebreak_pos(lines):
     """extract linebreak positions in Fortran line from lines"""
@@ -1051,6 +1058,7 @@ def get_linebreak_pos(lines):
                      1 for _ in range(0, len(linebreak_pos))]
 
     return linebreak_pos
+
 
 def remove_pre_ampersands(lines, filename, line_nr):
     """
