@@ -871,7 +871,7 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
 
         comment_lines = format_comments(lines, comments)
         auto_align, auto_format, in_format_off_block = parse_fprettify_directives(
-            lines, comment_lines, in_format_off_block)
+            lines, comment_lines, in_format_off_block, orig_filename, stream.line_nr)
         f_line, lines, is_omp, is_omp_conditional = preprocess_omp(
             f_line, lines)
 
@@ -936,7 +936,7 @@ def format_comments(lines, comments):
     return comments_ftd
 
 
-def parse_fprettify_directives(lines, comment_lines, in_format_off_block):
+def parse_fprettify_directives(lines, comment_lines, in_format_off_block, filename, line_nr):
     """
     parse formatter directives '!&' and line continuations starting with an
     ampersand.
@@ -960,7 +960,7 @@ def parse_fprettify_directives(lines, comment_lines, in_format_off_block):
                 in_format_off_block = False
         if not valid_directive:
             raise FprettifyParseException(
-                FORMATTER_ERROR_MESSAGE, orig_filename, stream.line_nr)
+                FORMATTER_ERROR_MESSAGE, filename, line_nr)
 
     return [auto_align, auto_format, in_format_off_block]
 
