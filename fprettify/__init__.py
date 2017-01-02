@@ -44,6 +44,7 @@ FIXME's
   that are not regular expressions (and support e.g. forall construct).
 - strip whitespaces once and for all and then assume no trailing / leading
   whitespaces
+- open files only when needed
 """
 from __future__ import (absolute_import, division,
                         print_function, unicode_literals)
@@ -849,85 +850,42 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
         raise FprettifyParseException(
             "fprettify failed because of fixed format or f77 constructs.", orig_filename, 0)
 
+    # initialization
     indenter = F90Indenter(first_indent, indent_size, orig_filename)
-
     nfl = 0  # fortran line counter
-
     do_indent = True
     use_same_line = False
     stream = InputStream(infile, orig_filename)
     skip_blank = False
-    in_manual_block = False
+    in_format_off_block = False
 
     while 1:
         f_line, comments, lines = stream.next_fortran_line()
 
-        # --> format line
-
         if not lines:
             break
 
-        orig_lines = lines
-        nfl += 1
-
-        #--> prepare comments to be appended to reformatted fortran line
-        comment_lines = []
-        for line, comment in zip(lines, comments):
-            has_comment = bool(comment.strip())
-            sep = has_comment and not comment.strip() == line.strip()
-            if line.strip():  # empty lines between linebreaks are ignored
-                comment_lines.append(' ' * sep + comment.strip())
-
-        #--> read formatter pragmas
-        auto_align = not any(NO_ALIGN_RE.search(_) for _ in lines)
-        auto_format = not (in_manual_block or any(
-            _.lstrip().startswith('!&') for _ in comment_lines))
-        if not auto_format:
-            auto_align = False
-        if (len(lines)) == 1:
-            valid_directive = True
-            if lines[0].strip().startswith('!&<'):
-                if in_manual_block:
-                    valid_directive = False
-                else:
-                    in_manual_block = True
-            if lines[0].strip().startswith('!&>'):
-                if not in_manual_block:
-                    valid_directive = False
-                else:
-                    in_manual_block = False
-            if not valid_directive:
-                raise FprettifyParseException(
-                    FORMATTER_ERROR_MESSAGE, orig_filename, stream.line_nr)
-
         indent = [0] * len(lines)
+        nfl += 1
+        orig_lines = lines
 
-        #--> parse omp and convert to fortran
-        is_omp_conditional = False
-
-        is_omp = OMP_RE.search(f_line)
-        if is_omp and not OMP_DIR_RE.search(f_line):
-            # convert OMP-conditional fortran statements into normal
-            # fortran statements but remember to convert them back
-            f_line = OMP_RE.sub('  ', f_line, count=1)
-            lines = [OMP_RE.sub('  ', l, count=1) for l in lines]
-            is_omp_conditional = True
-
-        is_empty = EMPTY_RE.search(f_line)  # blank line or comment only line
+        comment_lines = format_comments(lines, comments)
+        auto_align, auto_format, in_format_off_block = parse_fprettify_directives(
+            lines, comment_lines, in_format_off_block)
+        f_line, lines, is_omp, is_omp_conditional = preprocess_omp(
+            f_line, lines)
 
         lines, do_format, use_indent, is_blank = preprocess_line(
             f_line, lines, comments, orig_filename, stream.line_nr)
-
         if is_blank and skip_blank:
             continue
-
         if not do_format:
             do_indent = use_indent
             if use_indent:
                 assert len(indent) == 1
                 # inherit indent from previous line
                 indent[0] = indenter.get_fline_indent()
-        else:  # --> do actual formatting
+        else:
 
             if not auto_align:
                 manual_lines_indent = get_manual_alignment(lines)
@@ -936,10 +894,9 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
 
             lines, pre_ampersand, ampersand_sep = remove_pre_ampersands(
                 lines, orig_filename, stream.line_nr)
-
             linebreak_pos = get_linebreak_pos(lines)
 
-            f_line = f_line.strip(' ')  # FIXME: should not be necessary
+            f_line = f_line.strip(' ')
 
             lines = format_single_fline(
                 f_line, whitespace, linebreak_pos, ampersand_sep,
@@ -965,7 +922,59 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
         do_indent, use_same_line = pass_defaults_to_next_line(f_line)
 
         # rm subsequent blank lines
-        skip_blank = is_empty and not any(comments) and not is_omp
+        skip_blank = EMPTY_RE.search(
+            f_line) and not any(comments) and not is_omp
+
+
+def format_comments(lines, comments):
+    comments_ftd = []
+    for line, comment in zip(lines, comments):
+        has_comment = bool(comment.strip())
+        sep = has_comment and not comment.strip() == line.strip()
+        if line.strip():  # empty lines between linebreaks are ignored
+            comments_ftd.append(' ' * sep + comment.strip())
+    return comments_ftd
+
+
+def parse_fprettify_directives(lines, comment_lines, in_format_off_block):
+    """
+    parse formatter directives '!&' and line continuations starting with an
+    ampersand.
+    """
+    auto_align = not any(NO_ALIGN_RE.search(_) for _ in lines)
+    auto_format = not (in_format_off_block or any(
+        _.lstrip().startswith('!&') for _ in comment_lines))
+    if not auto_format:
+        auto_align = False
+    if (len(lines)) == 1:
+        valid_directive = True
+        if lines[0].strip().startswith('!&<'):
+            if in_format_off_block:
+                valid_directive = False
+            else:
+                in_format_off_block = True
+        if lines[0].strip().startswith('!&>'):
+            if not in_format_off_block:
+                valid_directive = False
+            else:
+                in_format_off_block = False
+        if not valid_directive:
+            raise FprettifyParseException(
+                FORMATTER_ERROR_MESSAGE, orig_filename, stream.line_nr)
+
+    return [auto_align, auto_format, in_format_off_block]
+
+
+def preprocess_omp(f_line, lines):
+    """convert omp conditional to normal fortran"""
+
+    is_omp = OMP_RE.search(f_line)
+    is_omp_conditional = bool(is_omp and not OMP_DIR_RE.search(f_line))
+    if is_omp_conditional:
+        f_line = OMP_RE.sub('  ', f_line, count=1)
+        lines = [OMP_RE.sub('  ', l, count=1) for l in lines]
+
+    return [f_line, lines, is_omp, is_omp_conditional]
 
 
 def preprocess_line(f_line, lines, comments, filename, line_nr):
@@ -1044,7 +1053,7 @@ def append_comments(lines, comment_lines):
 def get_linebreak_pos(lines):
     """extract linebreak positions in Fortran line from lines"""
     linebreak_pos = []
-    for pos, line in enumerate(lines):
+    for line in lines:
         found = None
         for char_pos, char in CharFilter(enumerate(line)):
             if char == "&":
