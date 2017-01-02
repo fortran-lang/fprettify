@@ -119,6 +119,11 @@ class FPrettifyTestCase(unittest.TestCase):
             eprint(format.format("parse errors: ", cls.n_parsefail))
             eprint(format.format("internal errors: ", cls.n_internalfail))
 
+    @staticmethod
+    def write_result(filename, content, sep_str):
+        with io.open(filename, 'a', encoding='utf-8') as outfile:
+            outfile.write(sep_str.join(content) + '\n')
+
     def test_whitespace(self):
         """simple test for whitespace formatting options -w in [0, 1, 2]"""
         instring = "(/-a-b-(a+b-c)/(-c)*d**e,f[1]%v/)"
@@ -127,14 +132,9 @@ class FPrettifyTestCase(unittest.TestCase):
                          "(/-a - b - (a + b - c)/(-c)*d**e, f[1]%v/)"]
 
         outstring = []
-        for w in range(0, 3):
-            p1 = subprocess.Popen([RUNSCRIPT, '-w', str(w)],
-                                  stdout=subprocess.PIPE, stdin=subprocess.PIPE)
-            outstring.append(p1.communicate(
-                instring.encode('UTF-8'))[0].decode('UTF-8'))
-
-        for istr, outstr in enumerate(outstring):
-            self.assertEqual(outstring_exp[istr], outstr.strip())
+        for w, out in zip(range(0, 3), outstring_exp):
+            args=['-w', str(w)]
+            self.assert_fprettify_result(args, instring, out)
 
     def test_indent(self):
         """simple test for indent options -i in [0, 3, 4]"""
@@ -150,15 +150,19 @@ class FPrettifyTestCase(unittest.TestCase):
             for ind in indents
         ]
 
-        outstring = []
-        for ind in indents:
-            p1 = subprocess.Popen([RUNSCRIPT, '-i', str(ind)],
-                                  stdout=subprocess.PIPE, stdin=subprocess.PIPE)
-            outstring.append(p1.communicate(
-                instring.encode('UTF-8'))[0].decode('UTF-8'))
+        for ind, out in zip(indents, outstring_exp):
+            args=['-i', str(ind)]
+            self.assert_fprettify_result(args, instring, out)
 
-        for istr, outstr in enumerate(outstring):
-            self.assertEqual(outstring_exp[istr], outstr.strip())
+    def assert_fprettify_result(self, args, instring, outstring_exp):
+        """
+        assert that result of calling fprettify with args on instring gives
+        outstring_exp
+        """
+        args.insert(0, RUNSCRIPT)
+        p1 = subprocess.Popen(args, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+        outstring = p1.communicate(instring.encode('UTF-8'))[0].decode('UTF-8').strip()
+        self.assertEqual(outstring_exp, outstring)
 
     def test_io(self):
         """simple test for io (file inplace, stdin & stdout)"""
@@ -283,15 +287,13 @@ def addtestmethod(testcase, fpath, ffile):
                         testcase.assertEqual(
                             line_content[1], test_content[1], msg)
                     except AssertionError:  # pragma: no cover
-                        with io.open(FAILED_FILE, 'a', encoding='utf-8') as outfile:
-                            outfile.write(sep_str.join(test_content) + '\n')
+                        self.write_result(FAILED_FILE, test_content, sep_str)
                         raise
                     break
 
         if not found:  # pragma: no cover
             eprint(test_info + " new", end=" ")
-            with io.open(RESULT_FILE, 'a', encoding='utf-8') as outfile:
-                outfile.write(sep_str.join(test_content) + '\n')
+            self.write_result(RESULT_FILE, test_content, sep_str)
 
     # not sure why this even works, using "test something" (with a space) as function name...
     # however it gives optimal test output

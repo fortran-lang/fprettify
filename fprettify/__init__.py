@@ -299,37 +299,30 @@ class F90Indenter(object):
 
         if is_new:
             if not valid_new:
-                log_message('invalid new statement',
+                log_message('invalid scope opening statement',
                             "info", filename, line_nr)
 
             line_indents = [ind + indents[-1] for ind in line_indents]
 
             indents.append(rel_ind + indents[-1])
 
-        elif is_con:
-            if not valid_con:
-                log_message('invalid continue statement',
+        elif is_con or is_end:
+            valid = valid_con if is_con else valid_end
+
+            if not valid:
+                log_message('invalid scope closing statement',
                             "info", filename, line_nr)
             try:
                 line_indents = [ind + indents[-2 + self._initial]
                                 for ind in line_indents]
             except IndexError:
-                assert not valid_con
+                assert not valid
 
-        elif is_end:
-            if not valid_end:
-                log_message('invalid end statement',
-                            "info", filename, line_nr)
-            try:
-                line_indents = [ind + indents[-2 + self._initial]
-                                for ind in line_indents]
-            except IndexError:
-                assert not valid_end
-
-            if len(indents) > 1:
-                indents.pop()
-            else:
-                indents[-1] = 0
+            if is_end:
+                if len(indents) > 1:
+                    indents.pop()
+                else:
+                    indents[-1] = 0
 
         else:
             line_indents = [ind + indents[-1] for ind in line_indents]
