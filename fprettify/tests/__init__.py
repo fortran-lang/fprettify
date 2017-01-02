@@ -154,6 +154,27 @@ class FPrettifyTestCase(unittest.TestCase):
             args=['-i', str(ind)]
             self.assert_fprettify_result(args, instring, out)
 
+    def test_directive(self):
+        """
+        test deactivate directives '!&' (inline) and '!&<', '!&>' (block)
+        and manual alignment (continuation line prefixed with '&')
+        """
+
+        # manual alignment
+        instring = "align_me = [ -1,  10,0,  &\n    &     0,1000 ,  0,&\n            &0 , -1,  1]"
+        outstring_exp = "align_me = [-1, 10, 0,  &\n    &     0, 1000, 0,&\n            &0, -1, 1]"
+        self.assert_fprettify_result([], instring, outstring_exp)
+
+        # inline deactivate
+        instring2 = '\n'.join(_ + ' !&' for _ in instring.splitlines())
+        outstring_exp = instring2
+        self.assert_fprettify_result([], instring2, outstring_exp)
+
+        # block deactivate
+        instring3 = '!&<\n' + instring + '\n!&>'
+        outstring_exp = instring3
+        self.assert_fprettify_result([], instring3, outstring_exp)
+
     def assert_fprettify_result(self, args, instring, outstring_exp):
         """
         assert that result of calling fprettify with args on instring gives
