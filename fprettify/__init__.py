@@ -99,7 +99,8 @@ ENDDO_RE = re.compile(SOL_STR + r"END\s*DO(\s+\w+)?" + EOL_STR, RE_FLAGS)
 
 SELCASE_RE = re.compile(
     SOL_STR + r"SELECT\s*(CASE|TYPE)\s*\(.+\)" + EOL_STR, RE_FLAGS)
-CASE_RE = re.compile(SOL_STR + r"(CASE|TYPE\s+IS|CLASS\s+IS)\s*(\(.+\)|DEFAULT)" + EOL_STR, RE_FLAGS)
+CASE_RE = re.compile(
+    SOL_STR + r"(CASE|TYPE\s+IS|CLASS\s+IS)\s*(\(.+\)|DEFAULT)" + EOL_STR, RE_FLAGS)
 ENDSEL_RE = re.compile(SOL_STR + r"END\s*SELECT" + EOL_STR, RE_FLAGS)
 
 ASSOCIATE_RE = re.compile(SOL_STR + r"ASSOCIATE\s*\(.+\)" + EOL_STR, RE_FLAGS)
@@ -382,13 +383,6 @@ class F90Aligner(object):
         self._level = 0
         self._br_indent_list = [0]
 
-    @staticmethod
-    def get_curr_delim(line, pos):
-        """get delimiter token in line starting at pos, if it exists"""
-        what_del_open = DEL_OPEN_RE.search(line[pos:pos + 2])
-        what_del_close = DEL_CLOSE_RE.search(line[pos:pos + 2])
-        return [what_del_open, what_del_close]
-
     def process_lines_of_fline(self, f_line, lines, rel_ind, line_nr):
         """
         process all lines that belong to a Fortran line `f_line`,
@@ -438,8 +432,7 @@ class F90Aligner(object):
             what_del_open = None
             what_del_close = None
             if pos > end_of_delim:
-                [what_del_open, what_del_close] = F90Aligner.get_curr_delim(
-                    line, pos)
+                [what_del_open, what_del_close] = get_curr_delim(line, pos)
 
             if not instring and what_del_open:
                 what_del_open = what_del_open.group()
@@ -590,7 +583,23 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
     line = f_line
     line_orig = line
 
-    # rm extraneous whitespace chars, except for declarations
+    if auto_format:
+        line = rm_extra_whitespace(line)
+        line = add_whitespace_charwise(line, spacey, filename, line_nr)
+        line = add_whitespace_context(line, spacey)
+
+        # format ':' for labels
+        for newre in NEW_SCOPE_RE[0:2]:
+            if newre.search(line) and re.search(SOL_STR + r"\w+\s*:", line):
+                line = ': '.join(_.strip() for _ in line.split(':', 1))
+
+    lines_out = split_reformatted_line(
+        line_orig, linebreak_pos, ampersand_sep, line, filename, line_nr)
+    return lines_out
+
+
+def rm_extra_whitespace(line):
+    """rm all unneeded whitespace chars, except for declarations"""
     line_ftd = ''
     pos_prev = -1
     for pos, char in CharFilter(enumerate(line)):
@@ -607,8 +616,12 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
                 line_ftd = line_ftd[:-1]  # remove spaces except between words
             line_ftd = line_ftd + line[pos_prev + 1:pos + 1]
         pos_prev = pos
-    line = line_ftd
+    return line_ftd
 
+
+def add_whitespace_charwise(line, spacey, filename, line_nr):
+    """add whitespace character wise (no need for context aware parsing)"""
+    line_ftd = line
     pos_eq = []
     end_of_delim = -1
     level = 0
@@ -620,8 +633,7 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
         what_del_open = None
         what_del_close = None
         if pos > end_of_delim:
-            [what_del_open, what_del_close] = F90Aligner.get_curr_delim(
-                line, pos)
+            [what_del_open, what_del_close] = get_curr_delim(line, pos)
 
         if what_del_open or what_del_close:
             sep1 = 0
@@ -708,7 +720,6 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
 
     line = line_ftd
 
-    # format assignments
     for pos in pos_eq:
         offset = len(line_ftd) - len(line)
         is_pointer = line[pos + 1] == '>'
@@ -723,10 +734,18 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
                     ' ' * spacey[1] + rhs.lstrip(' '))
         # offset w.r.t. unformatted line
 
-    line = line_ftd
+    if level != 0:
+        log_message('unpaired bracket delimiters', "info", filename, line_nr)
 
-    # for more advanced replacements we separate comments and strings
-    # in order to be able to apply a regex to a whole line part
+    return line_ftd
+
+
+def add_whitespace_context(line, spacey):
+    """
+    for context aware whitespace formatting we extract line parts that are
+    not comments or strings in order to be able to apply a context aware regex.
+    """
+
     line_parts = []
     str_end = -1
     instring = ''
@@ -751,21 +770,18 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
                 partsplit = lr_re.split(part)
                 line_parts[pos] = (' ' * spacey[n_op + 2]).join(partsplit)
 
-    line = ''.join(line_parts)
+    return ''.join(line_parts)
 
-    # format ':' for labels
-    for newre in NEW_SCOPE_RE[0:2]:
-        if newre.search(line) and re.search(SOL_STR + r"\w+\s*:", line):
-            line = ': '.join(_.strip() for _ in line.split(':', 1))
 
-    if not auto_format:
-        line = line_orig
-
-    # Now it gets messy - we need to shift line break positions from original
-    # to reformatted line
+def split_reformatted_line(line_orig, linebreak_pos_orig, ampersand_sep, line, filename, line_nr):
+    """
+    Infer linebreak positions of formatted line from linebreak positions in
+    original line and split line.
+    """
+    # shift line break positions from original to reformatted line
     pos_new = 0
     pos_old = 0
-    linebreak_pos.sort(reverse=True)
+    linebreak_pos_orig.sort(reverse=True)
     linebreak_pos_ftd = []
     while 1:
 
@@ -776,8 +792,8 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
             raise FprettifyInternalException(
                 "failed at finding line break position", filename, line_nr)
 
-        if linebreak_pos and pos_old > linebreak_pos[-1]:
-            linebreak_pos.pop()
+        if linebreak_pos_orig and pos_old > linebreak_pos_orig[-1]:
+            linebreak_pos_orig.pop()
             linebreak_pos_ftd.append(pos_new)
             continue
 
@@ -791,19 +807,16 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
 
     linebreak_pos_ftd.insert(0, 0)
 
-    # We do not insert ampersands in empty lines and comments lines
-    lines_out = [(line[l:r].rstrip(' ') +
-                  ' ' * ampersand_sep[pos] +
-                  '&' * min(1, r - l))
-                 for pos, (l, r) in enumerate(zip(linebreak_pos_ftd[0:-1],
-                                                  linebreak_pos_ftd[1:]))]
+    # We split line into parts and we insert ampersands at line end, but not
+    # for empty lines and comment lines
+    lines_splitted = [(line[l:r].rstrip(' ') +
+                       ' ' * ampersand_sep[pos] + '&' * min(1, r - l))
+                      for pos, (l, r) in enumerate(zip(linebreak_pos_ftd[0:-1],
+                                                       linebreak_pos_ftd[1:]))]
 
-    lines_out.append(line[linebreak_pos_ftd[-1]:])
+    lines_splitted.append(line[linebreak_pos_ftd[-1]:])
 
-    if level != 0:
-        log_message('unpaired bracket delimiters', "info", filename, line_nr)
-
-    return lines_out
+    return lines_splitted
 
 
 def reformat_inplace(filename, stdout=False, **kwargs):  # pragma: no cover
@@ -1062,6 +1075,13 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
         skip_blank = is_empty and not any(comments) and not is_omp
 
 
+def get_curr_delim(line, pos):
+    """get delimiter token in line starting at pos, if it exists"""
+    what_del_open = DEL_OPEN_RE.search(line[pos:pos + 2])
+    what_del_close = DEL_CLOSE_RE.search(line[pos:pos + 2])
+    return [what_del_open, what_del_close]
+
+
 def set_fprettify_logger(level):
     """setup custom logger"""
     logger = logging.getLogger('fprettify-logger')
@@ -1107,7 +1127,8 @@ def run(argv=sys.argv):  # pragma: no cover
                        default=False, help=argparse.SUPPRESS)
     parser.add_argument("filename", type=str, nargs='*',
                         help="File1 File2 ... to be formatted. If no files are given, stdin (-) is used.", default=['-'])
-    parser.add_argument('--version', action='version', version='%(prog)s 0.3.1')
+    parser.add_argument('--version', action='version',
+                        version='%(prog)s 0.3.1')
 
     args = parser.parse_args(argv[1:])
 
