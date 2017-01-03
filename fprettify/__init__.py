@@ -879,12 +879,13 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
             f_line, lines, comments, orig_filename, stream.line_nr)
         if is_blank and skip_blank:
             continue
-        if not do_format:
-            do_indent = use_indent
+        if not do_format and do_indent:
             if use_indent:
                 assert len(indent) == 1
                 # inherit indent from previous line
                 indent[0] = indenter.get_fline_indent()
+            else:
+                do_indent = False
         else:
 
             if not auto_align:
