@@ -82,7 +82,6 @@ class FPrettifyTestCase(unittest.TestCase):
         We have large files to compare, raise the limit
         """
         self.maxDiff = None
-        self.longMessage = False
 
     @classmethod
     def setUpClass(cls):
@@ -300,12 +299,12 @@ def addtestmethod(testcase, fpath, ffile):
                 if line_content[0] == test_content[0]:
                     found = True
                     eprint(test_info, end=" ")
-                    msg = ''
+                    msg = '{} (old) != {} (new)'.format(line_content[1], test_content[1])
                     if test_info == "checksum" and after_exists and after_content.count('\n') < 10000:
                         # difflib can not handle large files
                         result = list(difflib.unified_diff(before_content.splitlines(
                             True), after_content.splitlines(True), fromfile=test_content[0], tofile=line_content[0]))
-                        msg = '\n' + ''.join(result)
+                        msg += '\n' + ''.join(result)
                     try:
                         testcase.assertEqual(
                             line_content[1], test_content[1], msg)
