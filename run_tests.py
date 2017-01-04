@@ -19,7 +19,7 @@ if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(FPrettifyTestCase)
     unittest.TextTestRunner(verbosity=2).run(suite)
 
-    if args.reset:
+    if args.reset and os.path.isfile(FAILED_FILE):
         sep_str = ' : '
         with io.open(FAILED_FILE, 'r', encoding='utf-8') as infile:
             for failed_line in infile:
