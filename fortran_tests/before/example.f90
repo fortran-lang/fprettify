@@ -1,4 +1,4 @@
-module fprettify_example
+module example
     implicit none
    private
      public :: dp, test_routine, &
@@ -236,7 +236,7 @@ real(kind=dp) :: r1,   r2,  r3, r4, r5,  r6
        endif
 
 ! example 4.3
-   arr = [1,( /3,4, &
+   arr = [1,(/3,4, &
       5 /),&
           6 ]+ &
     [1,2, 3, 4,5] ; arr = [1, 2,&

@@ -72,7 +72,7 @@ except AttributeError:
     sys.stdin = utf8_reader(sys.stdin)
     sys.stdout = utf8_writer(sys.stdout)
 
-from .fparse_utils import (USE_PARSE_RE, VAR_DECL_RE, OMP_RE, OMP_DIR_RE,
+from .fparse_utils import (VAR_DECL_RE, OMP_RE, OMP_DIR_RE,
                            InputStream, CharFilter,
                            FprettifyException, FprettifyParseException, FprettifyInternalException, RE_FLAGS)
 
@@ -178,6 +178,8 @@ EMPTY_RE = re.compile(SOL_STR + r"(!.*)?$", RE_FLAGS)
 
 # two-sided operators
 LR_OPS_RE = [REL_OP_RE, LOG_OP_RE, PLUSMINUS_RE, PRINT_RE]
+
+USE_RE = re.compile(SOL_STR + "USE(\s+|(,.+?)?::\s*)\w+?((,.+?=>.+?)+|,\s*only\s*:.+?)?$" + EOL_STR, RE_FLAGS)
 
 # markups to deactivate formatter
 NO_ALIGN_RE = re.compile(SOL_STR + r"&\s*[^\s*]+")
@@ -581,10 +583,13 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
         line = add_whitespace_charwise(line, spacey, filename, line_nr)
         line = add_whitespace_context(line, spacey)
 
-        # format ':' for labels
+        # format ':' for labels and use only statements
         for newre in NEW_SCOPE_RE[0:2]:
             if newre.search(line) and re.search(SOL_STR + r"\w+\s*:", line):
                 line = ': '.join(_.strip() for _ in line.split(':', 1))
+
+        if USE_RE.search(line):
+            line = 'only: '.join(re.split('only\s*:\s*', line, maxsplit=1, flags=RE_FLAGS))
 
     lines_out = split_reformatted_line(
         line_orig, linebreak_pos, ampersand_sep, line, filename, line_nr)
