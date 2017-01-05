@@ -45,10 +45,6 @@ RESULT_FILE = joinpath(RESULT_DIR, r'expected_results')
 FAILED_FILE = joinpath(RESULT_DIR, r'failed_results')
 
 RUNSCRIPT = joinpath(MYPATH, r"../../fprettify.py")
-# recognize fortran files by extension
-FORTRAN_EXTENSIONS = [".f", ".for", ".ftn",
-                      ".f90", ".f95", ".f03", ".fpp"]
-FORTRAN_EXTENSIONS += [_.upper() for _ in FORTRAN_EXTENSIONS]
 
 fprettify.set_fprettify_logger(logging.ERROR)
 
@@ -96,7 +92,7 @@ class FPrettifyTestCase(unittest.TestCase):
 
         eprint("-" * 70)
         eprint("recognized Fortran files")
-        eprint(", ".join(FORTRAN_EXTENSIONS))
+        eprint(", ".join(fprettify.FORTRAN_EXTENSIONS))
         eprint("-" * 70)
         eprint("Testing with Fortran files in " + BEFORE_DIR)
         eprint("Writing formatted Fortran files to " + AFTER_DIR)
@@ -299,7 +295,8 @@ def addtestmethod(testcase, fpath, ffile):
                 if line_content[0] == test_content[0]:
                     found = True
                     eprint(test_info, end=" ")
-                    msg = '{} (old) != {} (new)'.format(line_content[1], test_content[1])
+                    msg = '{} (old) != {} (new)'.format(
+                        line_content[1], test_content[1])
                     if test_info == "checksum" and after_exists and after_content.count('\n') < 10000:
                         # difflib can not handle large files
                         result = list(difflib.unified_diff(before_content.splitlines(
@@ -344,6 +341,6 @@ if os.path.exists(FAILED_FILE):  # pragma: no cover
 
 # this prepares FPrettifyTestCase class when module is loaded by unittest
 for dirpath, _, filenames in os.walk(BEFORE_DIR):
-    for example in [f for f in filenames if any(f.endswith(_) for _ in FORTRAN_EXTENSIONS)]:
+    for example in [f for f in filenames if any(f.endswith(_) for _ in fprettify.FORTRAN_EXTENSIONS)]:
         rel_dirpath = os.path.relpath(dirpath, start=BEFORE_DIR)
         addtestmethod(FPrettifyTestCase, rel_dirpath, example)

@@ -5,7 +5,7 @@ from os import path
 
 here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
-        long_description = f.read()
+    long_description = f.read()
 
 setup(name='fprettify',
       version='0.3.1',
@@ -20,7 +20,7 @@ setup(name='fprettify',
       install_requires=['future'],
       keywords='fortran format formatting auto-formatter indent',
       url='https://github.com/pseewald/fprettify',
-      download_url= 'https://github.com/pseewald/fprettify/archive/v0.3.1.tar.gz',
+      download_url='https://github.com/pseewald/fprettify/archive/v0.3.1.tar.gz',
       classifiers=[
           'Development Status :: 5 - Production/Stable',
           'Intended Audience :: Developers',

@@ -76,8 +76,12 @@ from .fparse_utils import (VAR_DECL_RE, OMP_RE, OMP_DIR_RE,
                            InputStream, CharFilter,
                            FprettifyException, FprettifyParseException, FprettifyInternalException, RE_FLAGS)
 
-# constants, mostly regular expressions:
+# recognize fortran files by extension
+FORTRAN_EXTENSIONS = [".f", ".for", ".ftn",
+                      ".f90", ".f95", ".f03", ".fpp"]
+FORTRAN_EXTENSIONS += [_.upper() for _ in FORTRAN_EXTENSIONS]
 
+# constants, mostly regular expressions:
 FORMATTER_ERROR_MESSAGE = (" Wrong usage of formatting-specific directives"
                            " '&', '!&', '!&<' or '!&>'.")
 LINESPLIT_MESSAGE = ("auto indentation faile due to 132 chars limit, "
@@ -179,7 +183,8 @@ EMPTY_RE = re.compile(SOL_STR + r"(!.*)?$", RE_FLAGS)
 # two-sided operators
 LR_OPS_RE = [REL_OP_RE, LOG_OP_RE, PLUSMINUS_RE, PRINT_RE]
 
-USE_RE = re.compile(SOL_STR + "USE(\s+|(,.+?)?::\s*)\w+?((,.+?=>.+?)+|,\s*only\s*:.+?)?$" + EOL_STR, RE_FLAGS)
+USE_RE = re.compile(
+    SOL_STR + "USE(\s+|(,.+?)?::\s*)\w+?((,.+?=>.+?)+|,\s*only\s*:.+?)?$" + EOL_STR, RE_FLAGS)
 
 # markups to deactivate formatter
 NO_ALIGN_RE = re.compile(SOL_STR + r"&\s*[^\s*]+")
@@ -589,7 +594,8 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
                 line = ': '.join(_.strip() for _ in line.split(':', 1))
 
         if USE_RE.search(line):
-            line = 'only: '.join(re.split('only\s*:\s*', line, maxsplit=1, flags=RE_FLAGS))
+            line = 'only: '.join(
+                re.split('only\s*:\s*', line, maxsplit=1, flags=RE_FLAGS))
 
     lines_out = split_reformatted_line(
         line_orig, linebreak_pos, ampersand_sep, line, filename, line_nr)
@@ -1205,22 +1211,49 @@ def run(argv=sys.argv):  # pragma: no cover
                        default=False, help="Don't write any errors or warnings to stderr")
     group.add_argument("-D", "--debug", action='store_true',
                        default=False, help=argparse.SUPPRESS)
-    parser.add_argument("filename", type=str, nargs='*',
-                        help="File1 File2 ... to be formatted. If no files are given, stdin (-) is used.", default=['-'])
+    parser.add_argument("path", type=str, nargs='*',
+                        help="Paths to files to be formatted inplace. If no paths are given, stdin (-) is used by default. Path can be a directory if --recursive is used.", default=['-'])
+    parser.add_argument('-r', '--recursive', action='store_true',
+                        default=False, help="Recursively auto-format all Fortran files in subdirectories of specified path; recognized filename extensions: {}". format(", ".join(FORTRAN_EXTENSIONS)))
+    parser.add_argument('-f', '--fortran', type=str, action='append', default=[],
+                        help="Overrides default fortran extensions recognized by --recursive. Repeat this option to specify more than one extension.")
     parser.add_argument('--version', action='version',
                         version='%(prog)s 0.3.1')
 
     args = parser.parse_args(argv[1:])
 
     # support legacy input:
-    if 'stdin' in args.filename and not os.path.isfile('stdin'):
-        args.filename = ['-' if _ == 'stdin' else _ for _ in args.filename]
+    if 'stdin' in args.path and not os.path.isfile('stdin'):
+        args.path = ['-' if _ == 'stdin' else _ for _ in args.path]
 
-    for filename in args.filename:
-        if not os.path.isfile(filename) and filename != '-':
-            sys.stderr.write("file " + filename + " does not exists!\n")
+    for directory in args.path:
+        if directory == '-':
+            if args.recursive:
+                sys.stderr.write("--recursive requires a directory.\n")
+                sys.exit()
         else:
-            stdout = args.stdout or filename == '-'
+            if not os.path.exists(directory):
+                sys.stderr.write("directory " + directory +
+                                 " does not exist!\n")
+                sys.exit()
+            if not os.path.isfile(directory) and directory != '-' and not args.recursive:
+                sys.stderr.write("file " + directory + " does not exist!\n")
+                sys.exit()
+
+        if not args.recursive:
+            filenames = [directory]
+        else:
+            if args.fortran:
+                ext = args.fortran
+            else:
+                ext = FORTRAN_EXTENSIONS
+            filenames = []
+            for dirpath, _, files in os.walk(directory):
+                for ffile in [os.path.join(dirpath, f) for f in files if any(f.endswith(_) for _ in ext)]:
+                    filenames.append(ffile)
+
+        for filename in filenames:
+            stdout = args.stdout or directory == '-'
 
             if args.debug:
                 level = logging.DEBUG
