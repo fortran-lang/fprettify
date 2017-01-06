@@ -588,15 +588,6 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
         line = add_whitespace_charwise(line, spacey, filename, line_nr)
         line = add_whitespace_context(line, spacey)
 
-        # format ':' for labels and use only statements
-        for newre in NEW_SCOPE_RE[0:2]:
-            if newre.search(line) and re.search(SOL_STR + r"\w+\s*:", line):
-                line = ': '.join(_.strip() for _ in line.split(':', 1))
-
-        if USE_RE.search(line):
-            line = 'only: '.join(
-                re.split('only\s*:\s*', line, maxsplit=1, flags=RE_FLAGS))
-
     lines_out = split_reformatted_line(
         line_orig, linebreak_pos, ampersand_sep, line, filename, line_nr)
     return lines_out
@@ -774,8 +765,17 @@ def add_whitespace_context(line, spacey):
                 partsplit = lr_re.split(part)
                 line_parts[pos] = (' ' * spacey[n_op + 2]).join(partsplit)
 
-    return ''.join(line_parts)
+    line = ''.join(line_parts)
 
+    # format ':' for labels and use only statements
+    for newre in NEW_SCOPE_RE[0:2]:
+        if newre.search(line) and re.search(SOL_STR + r"\w+\s*:", line):
+            line = ': '.join(_.strip() for _ in line.split(':', 1))
+
+    if USE_RE.search(line):
+        line = re.sub(r'(only)\s*:\s*', r'\g<1>:' + ' '*spacey[0], line, flags=RE_FLAGS)
+
+    return line
 
 def split_reformatted_line(line_orig, linebreak_pos_orig, ampersand_sep, line, filename, line_nr):
     """
