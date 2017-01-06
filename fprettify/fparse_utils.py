@@ -85,10 +85,6 @@ class InputStream(object):
         returns a touple with the joined line, and a list with the original lines.
         Doesn't support multiline character constants!
         """
-        # FIXME regex
-        line_re = re.compile(
-            r"(?:(?P<preprocessor>#.*\n?)| *(&)?(?P<core>(?:!\$|[^&!\"']+|\"[^\"]*\"|'[^']*')*)(?P<continue>&)? *(?P<comment>!.*)?\n?)",
-            RE_FLAGS)
         joined_line = ""
         comments = []
         lines = []
@@ -126,35 +122,49 @@ class InputStream(object):
                 break
 
             lines.append(line)
-            match = line_re.search(line)
 
-            if not match or match.span()[1] != len(line):
-                # FIXME: does not handle line continuation of
-                # omp conditional fortran statements
-                # starting with an ampersand.
-                raise FprettifyInternalException(
-                    "unexpected line format", self.filename, self.line_nr)
-            if match.group("preprocessor"):
-                if len(lines) > 1:
-                    raise FprettifyParseException(
-                        "continuation to a preprocessor line not supported", self.filename, self.line_nr)
+            if line.startswith('#'):
                 comments.append(line)
                 break
-            core_att = match.group("core")
-            if OMP_RE.search(core_att) and joined_line.strip():
+
+            if OMP_RE.search(line) and joined_line.strip():
                 # remove omp '!$' for line continuation
-                core_att = OMP_RE.sub('', core_att, count=1).lstrip()
-            joined_line = joined_line.rstrip("\n") + core_att
-            if core_att and not core_att.isspace():
+                line_core = OMP_RE.sub('', line, count=1).lstrip()
+                continue
+
+            endpos=-1
+            for pos, char in CharFilter(enumerate(line)):
+                endpos=pos
+
+            line_core = line[:endpos+1]
+            line_comments=''
+
+            has_more = len(line) > endpos+1
+
+            if has_more:
+                if line[endpos+1] == '!':
+                    line_comments = line[endpos+1:]
+                else:
+                    # this happens if line ends with string
+                    line_core += line[endpos+1:]
+
+            line_core = line_core.strip()
+
+            if line_core:
                 continuation = 0
-            if match.group("continue"):
+            if line_core.endswith('&'):
                 continuation = 1
-            if line.lstrip().startswith('!') and not OMP_RE.search(line):
-                comments.append(line.rstrip('\n'))
-            elif match.group("comment"):
-                comments.append(match.group("comment"))
-            else:
-                comments.append('')
+
+            line_core = line_core.strip('&')
+
+            comments.append(line_comments.rstrip('\n'))
+            joined_line = joined_line.rstrip('\n') + line_core
+
+
             if not continuation:
                 break
+
+        #print("joined_line:", joined_line)
+        #print("comments:", comments)
+        #print("lines:", lines)
         return (joined_line, comments, lines)
