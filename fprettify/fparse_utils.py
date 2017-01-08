@@ -107,7 +107,7 @@ class InputStream(object):
                     line = line.replace(what_omp, '', 1)
                 line_start = 0
                 for pos, char in enumerate(line):
-                    if not instring and (char == '!' or char == '#'):
+                    if not instring and char in ['!', '#']:
                         self.endpos.append(pos - 1 - line_start)
                         self.line_buffer.append(line[line_start:])
                         self.what_omp.append(what_omp)
@@ -142,7 +142,7 @@ class InputStream(object):
             line_core = line[:endpos + 1]
 
             try:
-                if line[endpos + 1] == '!' or line[endpos + 1] == '#':
+                if line[endpos + 1] in ['!', '#']:
                     line_comments = line[endpos + 1:]
                 else:
                     line_comments = ''

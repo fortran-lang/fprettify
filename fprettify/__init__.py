@@ -1066,12 +1066,12 @@ def get_linebreak_pos(lines):
     linebreak_pos = []
     for line in lines:
         found = None
-        for char_pos, char in CharFilter(enumerate(line)):
+        for char_pos, _ in CharFilter(enumerate(line)):
             if re.match(LINEBREAK_STR, line[char_pos:], RE_FLAGS):
                 found = char_pos
         if found:
             linebreak_pos.append(found)
-        elif line.lstrip(' ').startswith('!') or line.lstrip(' ').startswith('#'):
+        elif line.lstrip(' ')[0] in ['!','#']:
             linebreak_pos.append(0)
 
     linebreak_pos = [sum(linebreak_pos[0:_ + 1]) -
