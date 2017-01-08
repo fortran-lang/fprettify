@@ -242,6 +242,9 @@ def addtestmethod(testcase, fpath, ffile):
         example_before = joinpath(dirpath_before, ffile)
         example_after = joinpath(dirpath_after, ffile)
 
+        if os.path.isfile(example_after):
+            os.remove(example_after)
+
         def test_result(path, info):
             return [os.path.relpath(path, BEFORE_DIR), info]
 
