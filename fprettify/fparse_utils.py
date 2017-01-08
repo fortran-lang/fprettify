@@ -107,7 +107,7 @@ class InputStream(object):
                 line_start = 0
                 for pos, char in enumerate(line):
                     if not instring and char == '!':
-                        self.endpos.append(pos-1 - line_start)
+                        self.endpos.append(pos-1 + is_omp_conditional - line_start)
                         break # ***
                     if char in ['"', "'"]:
                         if instring == char:
@@ -118,7 +118,7 @@ class InputStream(object):
                         if char == ';' or pos + 1 == len(line):
                             #if re.match(r";\s*$", line[pos:]):
                             #    pos = len(line) - 1
-                            self.endpos.append(pos - line_start)
+                            self.endpos.append(pos + is_omp_conditional - line_start)
                             self.line_buffer.append(omp_indent * ' ' + '!$' * is_omp_conditional +
                                                     line[line_start:pos + 1])
                             omp_indent = 0
@@ -133,7 +133,7 @@ class InputStream(object):
                     self.line_buffer.append('!$' * is_omp_conditional +
                                             line[line_start:])
                     if instring:
-                        self.endpos.append(len(line) - line_start)
+                        self.endpos.append(len(line) +is_omp_conditional - line_start)
 
             if self.line_buffer:
                 line = self.line_buffer.popleft()
