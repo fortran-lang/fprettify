@@ -18,6 +18,7 @@ OMP_DIR_RE = re.compile(r"^\s*(!\$omp)", RE_FLAGS)
 OMP_RE = re.compile(r"^\s*(!\$)", RE_FLAGS)
 OMP_SUBS_RE = re.compile(r"^\s*(!\$(omp)?)", RE_FLAGS)
 
+
 class FprettifyException(Exception):
     """Base class for all custom exceptions"""
 
@@ -107,7 +108,7 @@ class InputStream(object):
                 line_start = 0
                 for pos, char in enumerate(line):
                     if not instring and (char == '!' or char == '#'):
-                        self.endpos.append(pos-1 - line_start)
+                        self.endpos.append(pos - 1 - line_start)
                         self.line_buffer.append(line[line_start:])
                         self.what_omp.append(what_omp)
                         break
@@ -125,7 +126,8 @@ class InputStream(object):
                             line_start = pos + 1
 
                 if instring:
-                    raise FprettifyInternalException("multline strings not supported", self.filename, self.line_nr)
+                    raise FprettifyInternalException(
+                        "multline strings not supported", self.filename, self.line_nr)
 
             if self.line_buffer:
                 line = self.line_buffer.popleft()
@@ -137,14 +139,13 @@ class InputStream(object):
 
             lines.append(what_omp + line)
 
-
-            line_core = line[:endpos+1]
+            line_core = line[:endpos + 1]
 
             try:
-                if line[endpos+1] == '!' or line[endpos+1] == '#':
-                    line_comments=line[endpos+1:]
+                if line[endpos + 1] == '!' or line[endpos + 1] == '#':
+                    line_comments = line[endpos + 1:]
                 else:
-                    line_comments=''
+                    line_comments = ''
             except IndexError:
                 line_comments = ''
 
@@ -164,9 +165,10 @@ class InputStream(object):
 
             comments.append(line_comments.rstrip('\n'))
             if joined_line.strip():
-                joined_line = joined_line.rstrip('\n') + line_core + '\n'*newline
+                joined_line = joined_line.rstrip(
+                    '\n') + line_core + '\n' * newline
             else:
-                joined_line = what_omp + line_core + '\n'*newline
+                joined_line = what_omp + line_core + '\n' * newline
 
             if not continuation:
                 break

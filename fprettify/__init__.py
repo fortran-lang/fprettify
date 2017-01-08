@@ -773,9 +773,11 @@ def add_whitespace_context(line, spacey):
             line = ': '.join(_.strip() for _ in line.split(':', 1))
 
     if USE_RE.search(line):
-        line = re.sub(r'(only)\s*:\s*', r'\g<1>:' + ' '*spacey[0], line, flags=RE_FLAGS)
+        line = re.sub(r'(only)\s*:\s*', r'\g<1>:' + ' ' *
+                      spacey[0], line, flags=RE_FLAGS)
 
     return line
+
 
 def split_reformatted_line(line_orig, linebreak_pos_orig, ampersand_sep, line, filename, line_nr):
     """
@@ -1130,7 +1132,6 @@ def get_manual_alignment(lines):
 def write_formatted_line(outfile, indent, lines, orig_lines, do_indent, use_same_line, is_omp_conditional, filename, line_nr):
     """Write reformatted line to file"""
     for ind, line, orig_line in zip(indent, lines, orig_lines):
-
 
         # get actual line length excluding comment:
         line_length = 0
