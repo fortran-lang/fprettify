@@ -148,8 +148,6 @@ class InputStream(object):
             except IndexError:
                 line_comments = ''
 
-            # FIXME: line_core should be abstract fortran and it should not
-            # matter whether it ends with new line
             if line_core:
                 newline = (line_core[-1] == '\n')
             else:
@@ -173,7 +171,4 @@ class InputStream(object):
             if not continuation:
                 break
 
-        #print("joined_line:", joined_line)
-        #print("comments:", comments)
-        #print("lines:", lines)
         return (joined_line, comments, lines)
