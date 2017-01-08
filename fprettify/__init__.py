@@ -1065,7 +1065,7 @@ def get_linebreak_pos(lines):
     for line in lines:
         found = None
         for char_pos, char in CharFilter(enumerate(line)):
-            if char == "&":
+            if re.match(LINEBREAK_STR, line[char_pos:], RE_FLAGS):
                 found = char_pos
         if found:
             linebreak_pos.append(found)

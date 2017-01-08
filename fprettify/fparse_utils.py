@@ -13,9 +13,10 @@ RE_FLAGS = re.IGNORECASE | re.UNICODE
 VAR_DECL_RE = re.compile(
     r"^ *(?P<type>integer(?: *\* *[0-9]+)?|logical|character(?: *\* *[0-9]+)?|real(?: *\* *[0-9]+)?|complex(?: *\* *[0-9]+)?|type) *(?P<parameters>\((?:[^()]+|\((?:[^()]+|\([^()]*\))*\))*\))? *(?P<attributes>(?: *, *[a-zA-Z_0-9]+(?: *\((?:[^()]+|\((?:[^()]+|\([^()]*\))*\))*\))?)+)? *(?P<dpnt>::)?(?P<vars>[^\n]+)\n?", RE_FLAGS)
 
+# FIXME: unify omp regular expressions
 OMP_DIR_RE = re.compile(r"^\s*(!\$omp)", RE_FLAGS)
 OMP_RE = re.compile(r"^\s*(!\$)", RE_FLAGS)
-
+OMP_SUBS_RE = re.compile(r"^\s*(!\$(omp)?)", RE_FLAGS)
 
 class FprettifyException(Exception):
     """Base class for all custom exceptions"""
@@ -80,6 +81,7 @@ class InputStream(object):
         self.line_nr = 0
         self.filename = orig_filename
         self.endpos = deque([])
+        self.what_omp = deque([])
 
     def next_fortran_line(self):
         """Reads a group of connected lines (connected with &, separated by newline or semicolon)
@@ -98,16 +100,14 @@ class InputStream(object):
                 self.line_nr += 1
                 # convert OMP-conditional fortran statements into normal fortran statements
                 # but remember to convert them back
-                is_omp_conditional = False
-                omp_indent = 0
-                if OMP_RE.search(line):
-                    omp_indent = len(line) - len(line.lstrip(' '))
-                    line = OMP_RE.sub('', line, count=1)
-                    is_omp_conditional = True
+                what_omp = ''
+                if OMP_SUBS_RE.search(line):
+                    what_omp = OMP_SUBS_RE.search(line).group(1)
+                    line = line.replace(what_omp, '', 1)
                 line_start = 0
                 for pos, char in enumerate(line):
                     if not instring and char == '!':
-                        self.endpos.append(pos-1 + is_omp_conditional - line_start)
+                        self.endpos.append(pos-1 - line_start)
                         break # ***
                     if char in ['"', "'"]:
                         if instring == char:
@@ -116,44 +116,32 @@ class InputStream(object):
                             instring = char
                     if not instring:
                         if char == ';' or pos + 1 == len(line):
-                            #if re.match(r";\s*$", line[pos:]):
-                            #    pos = len(line) - 1
-                            self.endpos.append(pos + is_omp_conditional - line_start)
-                            self.line_buffer.append(omp_indent * ' ' + '!$' * is_omp_conditional +
-                                                    line[line_start:pos + 1])
-                            omp_indent = 0
-                            is_omp_conditional = False
+                            self.endpos.append(pos - line_start)
+                            self.line_buffer.append(line[line_start:pos + 1])
+                            self.what_omp.append(what_omp)
+                            what_omp = ''
                             line_start = pos + 1
-                            #if pos == len(line) - 1:
-                            #    break
 
                 if line_start < len(line):
                     # line + comment
                     # fixme: move to ***
-                    self.line_buffer.append('!$' * is_omp_conditional +
-                                            line[line_start:])
+                    self.line_buffer.append(line[line_start:])
+                    self.what_omp.append(what_omp)
                     if instring:
                         raise FprettifyInternalException("multline strings not supported", self.filename, self.line_nr)
-                        #self.endpos.append(len(line) +is_omp_conditional - line_start)
-
             if self.line_buffer:
                 line = self.line_buffer.popleft()
                 endpos = self.endpos.popleft()
+                what_omp = self.what_omp.popleft()
 
             if not line:
                 break
 
-            lines.append(line)
+            lines.append(what_omp + line)
 
             if line.startswith('#'):
                 comments.append(line)
                 break
-
-            if OMP_RE.search(line) and joined_line.strip():
-                # remove omp '!$' for line continuation
-                line_core = OMP_RE.sub('', line, count=1).lstrip()
-                continue
-
 
             line_core = line[:endpos+1]
 
@@ -182,7 +170,10 @@ class InputStream(object):
             line_core = line_core.strip('&')
 
             comments.append(line_comments.rstrip('\n'))
-            joined_line = joined_line.rstrip('\n') + line_core + '\n'*newline
+            if joined_line.strip():
+                joined_line = joined_line.rstrip('\n') + line_core + '\n'*newline
+            else:
+                joined_line = what_omp + line_core + '\n'*newline
 
             if not continuation:
                 break
