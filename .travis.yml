@@ -10,8 +10,8 @@ install:
  - pip install -U -r requirements.txt
  - if [[ $DO_COVERAGE ]]; then pip install coveralls; fi
 before_script:
- - .travis/prep_rosetta.sh
- - if [[ "$TRAVIS_EVENT_TYPE" = "cron" ]]; then .travis/prep_cp2k.sh; fi
+ - .travis/prep_regular.sh
+ - if [[ "$TRAVIS_EVENT_TYPE" = "cron" ]]; then .travis/prep_cron.sh; fi
 script:
  - if ! [[ $DO_COVERAGE ]]; then python setup.py test; fi
  - if [[ $DO_COVERAGE ]]; then coverage run --source=fprettify setup.py test; fi
