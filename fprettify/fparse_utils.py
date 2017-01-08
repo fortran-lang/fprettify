@@ -108,7 +108,9 @@ class InputStream(object):
                 for pos, char in enumerate(line):
                     if not instring and (char == '!' or char == '#'):
                         self.endpos.append(pos-1 - line_start)
-                        break # ***
+                        self.line_buffer.append(line[line_start:])
+                        self.what_omp.append(what_omp)
+                        break
                     if char in ['"', "'"]:
                         if instring == char:
                             instring = ''
@@ -122,13 +124,9 @@ class InputStream(object):
                             what_omp = ''
                             line_start = pos + 1
 
-                if line_start < len(line):
-                    # line + comment
-                    # fixme: move to ***
-                    self.line_buffer.append(line[line_start:])
-                    self.what_omp.append(what_omp)
-                    if instring:
-                        raise FprettifyInternalException("multline strings not supported", self.filename, self.line_nr)
+                if instring:
+                    raise FprettifyInternalException("multline strings not supported", self.filename, self.line_nr)
+
             if self.line_buffer:
                 line = self.line_buffer.popleft()
                 endpos = self.endpos.popleft()
