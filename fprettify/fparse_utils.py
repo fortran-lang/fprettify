@@ -79,6 +79,7 @@ class InputStream(object):
         self.infile = infile
         self.line_nr = 0
         self.filename = orig_filename
+        self.endpos = deque([])
 
     def next_fortran_line(self):
         """Reads a group of connected lines (connected with &, separated by newline or semicolon)
@@ -89,6 +90,7 @@ class InputStream(object):
         comments = []
         lines = []
         continuation = 0
+        instring = ''
 
         while 1:
             if not self.line_buffer:
@@ -103,20 +105,39 @@ class InputStream(object):
                     line = OMP_RE.sub('', line, count=1)
                     is_omp_conditional = True
                 line_start = 0
-                for pos, char in CharFilter(enumerate(line)):
-                    if char == ';' or pos + 1 == len(line):
-                        self.line_buffer.append(omp_indent * ' ' + '!$' * is_omp_conditional +
-                                                line[line_start:pos + 1])
-                        omp_indent = 0
-                        is_omp_conditional = False
-                        line_start = pos + 1
+                for pos, char in enumerate(line):
+                    if not instring and char == '!':
+                        self.endpos.append(pos-1 - line_start)
+                        break # ***
+                    if char in ['"', "'"]:
+                        if instring == char:
+                            instring = ''
+                        elif not instring:
+                            instring = char
+                    if not instring:
+                        if char == ';' or pos + 1 == len(line):
+                            #if re.match(r";\s*$", line[pos:]):
+                            #    pos = len(line) - 1
+                            self.endpos.append(pos - line_start)
+                            self.line_buffer.append(omp_indent * ' ' + '!$' * is_omp_conditional +
+                                                    line[line_start:pos + 1])
+                            omp_indent = 0
+                            is_omp_conditional = False
+                            line_start = pos + 1
+                            #if pos == len(line) - 1:
+                            #    break
+
                 if line_start < len(line):
                     # line + comment
+                    # fixme: move to ***
                     self.line_buffer.append('!$' * is_omp_conditional +
                                             line[line_start:])
+                    if instring:
+                        self.endpos.append(len(line) - line_start)
 
             if self.line_buffer:
                 line = self.line_buffer.popleft()
+                endpos = self.endpos.popleft()
 
             if not line:
                 break
@@ -132,21 +153,16 @@ class InputStream(object):
                 line_core = OMP_RE.sub('', line, count=1).lstrip()
                 continue
 
-            endpos=-1
-            for pos, char in CharFilter(enumerate(line)):
-                endpos=pos
 
             line_core = line[:endpos+1]
-            line_comments=''
 
-            has_more = len(line) > endpos+1
-
-            if has_more:
+            try:
                 if line[endpos+1] == '!':
-                    line_comments = line[endpos+1:]
+                    line_comments=line[endpos+1:]
                 else:
-                    # this happens if line ends with string
-                    line_core += line[endpos+1:]
+                    line_comments=''
+            except IndexError:
+                line_comments = ''
 
             line_core = line_core.strip()
 
