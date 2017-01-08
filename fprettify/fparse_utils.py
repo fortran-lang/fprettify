@@ -133,7 +133,8 @@ class InputStream(object):
                     self.line_buffer.append('!$' * is_omp_conditional +
                                             line[line_start:])
                     if instring:
-                        self.endpos.append(len(line) +is_omp_conditional - line_start)
+                        raise FprettifyInternalException("multline strings not supported", self.filename, self.line_nr)
+                        #self.endpos.append(len(line) +is_omp_conditional - line_start)
 
             if self.line_buffer:
                 line = self.line_buffer.popleft()
