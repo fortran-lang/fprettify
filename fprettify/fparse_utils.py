@@ -164,6 +164,13 @@ class InputStream(object):
             except IndexError:
                 line_comments = ''
 
+            # FIXME: line_core should be abstract fortran and it should not
+            # matter whether it ends with new line
+            if line_core:
+                newline = (line_core[-1] == '\n')
+            else:
+                newline = False
+
             line_core = line_core.strip()
 
             if line_core:
@@ -174,8 +181,7 @@ class InputStream(object):
             line_core = line_core.strip('&')
 
             comments.append(line_comments.rstrip('\n'))
-            joined_line = joined_line.rstrip('\n') + line_core
-
+            joined_line = joined_line.rstrip('\n') + line_core + '\n'*newline
 
             if not continuation:
                 break
