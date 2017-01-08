@@ -178,7 +178,7 @@ DEL_CLOSE_STR = r"(\/?\)|\])"
 DEL_CLOSE_RE = re.compile(r"^" + DEL_CLOSE_STR, RE_FLAGS)
 
 # empty line regex
-EMPTY_RE = re.compile(SOL_STR + r"(!.*)?$", RE_FLAGS)
+EMPTY_RE = re.compile(SOL_STR + r"([!#].*)?$", RE_FLAGS)
 
 # two-sided operators
 LR_OPS_RE = [REL_OP_RE, LOG_OP_RE, PLUSMINUS_RE, PRINT_RE]
@@ -1069,7 +1069,7 @@ def get_linebreak_pos(lines):
                 found = char_pos
         if found:
             linebreak_pos.append(found)
-        elif line.lstrip(' ').startswith('!'):
+        elif line.lstrip(' ').startswith('!') or line.lstrip(' ').startswith('#'):
             linebreak_pos.append(0)
 
     linebreak_pos = [sum(linebreak_pos[0:_ + 1]) -
@@ -1130,6 +1130,8 @@ def get_manual_alignment(lines):
 def write_formatted_line(outfile, indent, lines, orig_lines, do_indent, use_same_line, is_omp_conditional, filename, line_nr):
     """Write reformatted line to file"""
     for ind, line, orig_line in zip(indent, lines, orig_lines):
+
+
         # get actual line length excluding comment:
         line_length = 0
         for line_length, _ in CharFilter(enumerate(line)):
@@ -1143,6 +1145,10 @@ def write_formatted_line(outfile, indent, lines, orig_lines, do_indent, use_same
                 ind_use = 1
             else:
                 ind_use = 0
+
+        if line.lstrip().startswith('#'):
+            ind_use = 0
+
         if ind_use + line_length <= 133:  # 132 plus 1 newline char
             outfile.write('!$' * is_omp_conditional +
                           ' ' * (ind_use - 2 * is_omp_conditional +
