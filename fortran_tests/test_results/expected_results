@@ -80,7 +80,7 @@ RosettaCodeData/Task/Averages-Pythagorean-means/Fortran/averages-pythagorean-mea
 RosettaCodeData/Task/Averages-Root-mean-square/Fortran/averages-root-mean-square.f : c91a4cd3ce7dbb9ce8fa753f767a4ccd3fbe17435415839d44338248d2fb14ff
 RosettaCodeData/Task/Averages-Simple-moving-average/Fortran/averages-simple-moving-average.f : 0d491d70d629b0cf7388399eafc6d795eeba199efd6faf0a408e219273bde08d
 RosettaCodeData/Task/Balanced-brackets/Fortran/balanced-brackets.f : 4f6a094ddd888d2c43075746eae3aa02ca8fe6deba0d9f52079d72d692cf2303
-RosettaCodeData/Task/Benfords-law/Fortran/benfords-law-1.f : internal error
+RosettaCodeData/Task/Benfords-law/Fortran/benfords-law-1.f : parse error
 RosettaCodeData/Task/Benfords-law/Fortran/benfords-law-2.f : fb60a397c271dc994b2add1b83d5fa4d9d4829cb4f6aee242f2d9c0a153b9921
 RosettaCodeData/Task/Binary-digits/Fortran/binary-digits.f : 167851fce02aa6bd48f8e2dcceaec4b25f404d392a1e957f2213d5116d6872d4
 RosettaCodeData/Task/Binary-search/Fortran/binary-search-1.f : 7e34adf3713ae8d52197fc2e9ea0cbc4ba085eb96a1e74b261effe30f563b4a7
@@ -102,7 +102,7 @@ RosettaCodeData/Task/Bitmap-Write-a-PPM-file/Fortran/bitmap-write-a-ppm-file.f :
 RosettaCodeData/Task/Bitwise-operations/Fortran/bitwise-operations-1.f : f48188e2edb0d3f9c3eae10abe8b7158af97ad5aa97b53b6d6bef5423970a6ca
 RosettaCodeData/Task/Bitwise-operations/Fortran/bitwise-operations-2.f : 5c938deb1218587e7c7f11cc1f7233f714087a621a56d38627781f37ce8b1e89
 RosettaCodeData/Task/Bitwise-operations/Fortran/bitwise-operations-3.f : 5307a19d719c87432cdce43013eadc2701ad6d49886468a1beb501373c815262
-RosettaCodeData/Task/Bitwise-operations/Fortran/bitwise-operations-4.f : internal error
+RosettaCodeData/Task/Bitwise-operations/Fortran/bitwise-operations-4.f : 38317a1004e8a785b02d2b8f176b075c52c9cfdc49e92c74c42f03ceccf2be09
 RosettaCodeData/Task/Box-the-compass/Fortran/box-the-compass.f : 2fe21b60b51d6e83ef12f57b6085a6b823c7b9e39da3397a770cc21788b308a6
 RosettaCodeData/Task/Brownian-tree/Fortran/brownian-tree.f : d849ff55f413a944fd0ef902d85fa3781ecf7ceb999d2607939c697c3d806f04
 RosettaCodeData/Task/Bulls-and-cows-Player/Fortran/bulls-and-cows-player.f : 7583c36ce7dc8826e8c557f708d66cbf6dfc56e8fa99e312999e96f5f2ca2d6d
@@ -185,7 +185,7 @@ RosettaCodeData/Task/Doubly-linked-list-Definition/Fortran/doubly-linked-list-de
 RosettaCodeData/Task/Doubly-linked-list-Element-definition/Fortran/doubly-linked-list-element-definition.f : 7a7a98feb6d30d5f36df83ad6dc4ebbb9a73aada1a148c1f4ed651420016ae58
 RosettaCodeData/Task/Doubly-linked-list-Element-insertion/Fortran/doubly-linked-list-element-insertion-1.f : 1b49784bec51bf3d7663a04b910bb8be6cd7101d318a5333b6a8db49b8a5d241
 RosettaCodeData/Task/Doubly-linked-list-Element-insertion/Fortran/doubly-linked-list-element-insertion-2.f : parse error
-RosettaCodeData/Task/Doubly-linked-list-Traversal/Fortran/doubly-linked-list-traversal.f : 36ac0d0be7bedef611a5b6d3ea0e578929032709d3170696eeec4db531146b5e
+RosettaCodeData/Task/Doubly-linked-list-Traversal/Fortran/doubly-linked-list-traversal.f : 1043f4d7a4421ccafcb4dc95dbe86d0c2bed49e9e7422d8038646a58ac8e9fdc
 RosettaCodeData/Task/Draw-a-clock/Fortran/draw-a-clock.f : 01b170af9c6990bf2bc15954d5aef6a4afc06f3e6891afefa09d188b90b6eede
 RosettaCodeData/Task/Dutch-national-flag-problem/Fortran/dutch-national-flag-problem.f : c643bd95d62a299f3db7b11e644f9b1647af4eb3b8d43375ebe3ebcb44730490
 RosettaCodeData/Task/Empty-program/Fortran/empty-program.f : 045b8c59aec7c2977abfd443438877a300ed4dd930f4f7aaddf0bafe54c0327a
@@ -342,7 +342,7 @@ RosettaCodeData/Task/Largest-int-from-concatenated-ints/Fortran/largest-int-from
 RosettaCodeData/Task/Last-Friday-of-each-month/Fortran/last-friday-of-each-month.f : f5a9d38f7836e6d9bee9d8b81ab13e8377564596931ac2b172bf7011d8d14e99
 RosettaCodeData/Task/Leap-year/Fortran/leap-year.f : 11c19a620b178220504813575d06f5dba7dcbe0ce2434f42d41a54ac82712c33
 RosettaCodeData/Task/Least-common-multiple/Fortran/least-common-multiple.f : dc67fa8d1533bc99fc064c62014ff21b38d80b98f837c2ade535f80c7990ad27
-RosettaCodeData/Task/Letter-frequency/Fortran/letter-frequency-1.f : internal error
+RosettaCodeData/Task/Letter-frequency/Fortran/letter-frequency-1.f : parse error
 RosettaCodeData/Task/Letter-frequency/Fortran/letter-frequency-2.f : 4c2a5600f7d8a5d97bee3c51e05e88a962566d8b42ebc107b05e7777ff9e3a13
 RosettaCodeData/Task/Linear-congruential-generator/Fortran/linear-congruential-generator.f : 65068b15776740e34046981cfecd5240158da1cbb1ef84f32ff8461a219d4a15
 RosettaCodeData/Task/List-comprehensions/Fortran/list-comprehensions.f : 7bb9f29d48c589100d0d215d3b8f13b9555a99e2345f0cb6e596735e2e54e4da
@@ -462,7 +462,7 @@ RosettaCodeData/Task/Parsing-Shunting-yard-algorithm/Fortran/parsing-shunting-ya
 RosettaCodeData/Task/Pascals-triangle/Fortran/pascals-triangle.f : fe4b6230620590087a581c964b0f2ce68587eb648e6488850aeab33c306a5fbe
 RosettaCodeData/Task/Percentage-difference-between-images/Fortran/percentage-difference-between-images.f : e691c73a8b6b53b95f72d4905acdca353ebf2a255a552bfec89109c2105c7098
 RosettaCodeData/Task/Percolation-Mean-run-density/Fortran/percolation-mean-run-density.f : 75fccf70e6c4fef17e5859ffeba4b51db785813baf4e0b5934dfd5c7a859fa86
-RosettaCodeData/Task/Percolation-Site-percolation/Fortran/percolation-site-percolation.f : internal error
+RosettaCodeData/Task/Percolation-Site-percolation/Fortran/percolation-site-percolation.f : 224669f7128ce9ac239ed681145aa5bd4d4ef69349f61dfe3348481f28fc0898
 RosettaCodeData/Task/Perfect-numbers/Fortran/perfect-numbers.f : 79a3b0069c3b47b37445e5b1a34734712bc4f234078e2f60c8cfe9e26c9de91a
 RosettaCodeData/Task/Permutations/Fortran/permutations-1.f : b3cf1d3f0124abbaaf902dfad91f13a215c901fce785a322bbadab9491e549fa
 RosettaCodeData/Task/Permutations/Fortran/permutations-2.f : d50c5b5d86ed2615c3860fad6f189ab5a14e8219bcdf11d3bdea7955fc615b31
