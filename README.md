@@ -98,7 +98,7 @@ autocmd Filetype fortran setlocal formatprg=fprettify\ --silent
 ```
 
 
-## Deactivation (experimental feature)
+## Deactivation and manual formatting (experimental feature)
 
 fprettify can be deactivated for selected lines: a single line followed by an inline comment starting with `!&` is not auto-formatted and consecutive lines that are enclosed between two comment lines `!&<` and `!&>` are not auto-formatted. This is useful for cases where manual alignment is preferred over auto-formatting. Furthermore, deactivation is necessary when non-standard Fortran syntax (such as advanced usage of preprocessor directives) prevents proper formatting. As an example, consider the following snippet of fprettify formatted code:
 ```fortran
