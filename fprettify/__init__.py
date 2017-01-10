@@ -470,9 +470,17 @@ class F90Aligner(object):
                 else:
                     pos_rdelim.append(pos)
                     rdelim.append(what_del_close)
+            if char == ',' and not level and pos_eq > 0:
+                # a top level comma removes previous alignment position.
+                # (see issue #11)
+                pos_eq = 0
+                indent_list.pop()
             if not level and not is_decl and char == '=' and not REL_OP_RE.search(
                     line[max(0, pos - 1):min(pos + 2, len(line))]):
                         # should only have one assignment per line!
+                if pos_eq > 0:
+                    raise FprettifyInternalException(
+                            "found more than one assignment in the same Fortran line", filename, line_nr)
                 is_pointer = line[pos + 1] == '>'
                 pos_eq = pos + 1
                 # don't align if assignment operator directly before

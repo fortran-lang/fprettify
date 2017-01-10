@@ -102,7 +102,7 @@ RosettaCodeData/Task/Bitmap-Write-a-PPM-file/Fortran/bitmap-write-a-ppm-file.f :
 RosettaCodeData/Task/Bitwise-operations/Fortran/bitwise-operations-1.f : f48188e2edb0d3f9c3eae10abe8b7158af97ad5aa97b53b6d6bef5423970a6ca
 RosettaCodeData/Task/Bitwise-operations/Fortran/bitwise-operations-2.f : 5c938deb1218587e7c7f11cc1f7233f714087a621a56d38627781f37ce8b1e89
 RosettaCodeData/Task/Bitwise-operations/Fortran/bitwise-operations-3.f : 5307a19d719c87432cdce43013eadc2701ad6d49886468a1beb501373c815262
-RosettaCodeData/Task/Bitwise-operations/Fortran/bitwise-operations-4.f : 38317a1004e8a785b02d2b8f176b075c52c9cfdc49e92c74c42f03ceccf2be09
+RosettaCodeData/Task/Bitwise-operations/Fortran/bitwise-operations-4.f : internal error
 RosettaCodeData/Task/Box-the-compass/Fortran/box-the-compass.f : 2fe21b60b51d6e83ef12f57b6085a6b823c7b9e39da3397a770cc21788b308a6
 RosettaCodeData/Task/Brownian-tree/Fortran/brownian-tree.f : d849ff55f413a944fd0ef902d85fa3781ecf7ceb999d2607939c697c3d806f04
 RosettaCodeData/Task/Bulls-and-cows-Player/Fortran/bulls-and-cows-player.f : 7583c36ce7dc8826e8c557f708d66cbf6dfc56e8fa99e312999e96f5f2ca2d6d
@@ -462,7 +462,7 @@ RosettaCodeData/Task/Parsing-Shunting-yard-algorithm/Fortran/parsing-shunting-ya
 RosettaCodeData/Task/Pascals-triangle/Fortran/pascals-triangle.f : fe4b6230620590087a581c964b0f2ce68587eb648e6488850aeab33c306a5fbe
 RosettaCodeData/Task/Percentage-difference-between-images/Fortran/percentage-difference-between-images.f : e691c73a8b6b53b95f72d4905acdca353ebf2a255a552bfec89109c2105c7098
 RosettaCodeData/Task/Percolation-Mean-run-density/Fortran/percolation-mean-run-density.f : 75fccf70e6c4fef17e5859ffeba4b51db785813baf4e0b5934dfd5c7a859fa86
-RosettaCodeData/Task/Percolation-Site-percolation/Fortran/percolation-site-percolation.f : 224669f7128ce9ac239ed681145aa5bd4d4ef69349f61dfe3348481f28fc0898
+RosettaCodeData/Task/Percolation-Site-percolation/Fortran/percolation-site-percolation.f : internal error
 RosettaCodeData/Task/Perfect-numbers/Fortran/perfect-numbers.f : 79a3b0069c3b47b37445e5b1a34734712bc4f234078e2f60c8cfe9e26c9de91a
 RosettaCodeData/Task/Permutations/Fortran/permutations-1.f : b3cf1d3f0124abbaaf902dfad91f13a215c901fce785a322bbadab9491e549fa
 RosettaCodeData/Task/Permutations/Fortran/permutations-2.f : d50c5b5d86ed2615c3860fad6f189ab5a14e8219bcdf11d3bdea7955fc615b31

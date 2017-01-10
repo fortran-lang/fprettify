@@ -227,6 +227,11 @@ class FPrettifyTestCase(unittest.TestCase):
         else:
             os.remove(alien_file)
 
+    def test_multi_alias(self):
+        """test for issue #11 (multiple alias and alignment)"""
+        instring="use A,only:B=>C,&\nD=>E"
+        outstring="use A, only: B => C, &\n   D => E"
+        self.assert_fprettify_result([], instring, outstring)
 
 def addtestmethod(testcase, fpath, ffile):
     """add a test method for each example."""
