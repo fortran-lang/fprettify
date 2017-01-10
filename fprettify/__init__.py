@@ -427,7 +427,6 @@ class F90Aligner(object):
         # or alignment to assignment operator
         rel_ind = indent_list[-1]  # indentation of prev. line
 
-        instring = ''
         end_of_delim = -1
 
         for pos, char in CharFilter(enumerate(line)):
@@ -437,14 +436,14 @@ class F90Aligner(object):
             if pos > end_of_delim:
                 [what_del_open, what_del_close] = get_curr_delim(line, pos)
 
-            if not instring and what_del_open:
+            if what_del_open:
                 what_del_open = what_del_open.group()
                 end_of_delim = pos + len(what_del_open) - 1
                 level += 1
                 indent_list.append(pos + len(what_del_open) + rel_ind)
                 pos_ldelim.append(pos)
                 ldelim.append(what_del_open)
-            if not instring and what_del_close:
+            if what_del_close:
                 what_del_close = what_del_close.group()
                 end_of_delim = pos + len(what_del_close) - 1
                 if level > 0:
@@ -471,7 +470,7 @@ class F90Aligner(object):
                 else:
                     pos_rdelim.append(pos)
                     rdelim.append(what_del_close)
-            if not instring and not level and not is_decl and char == '=' and not REL_OP_RE.search(
+            if not level and not is_decl and char == '=' and not REL_OP_RE.search(
                     line[max(0, pos - 1):min(pos + 2, len(line))]):
                         # should only have one assignment per line!
                 is_pointer = line[pos + 1] == '>'
