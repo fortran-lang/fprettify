@@ -80,7 +80,11 @@ Autoformat file1, file2, ... inplace by
 ```
 fprettify file1, file2, ...
 ```
-The default indent is 3. If you prefer something else, use `--indent n` argument. For more options, read
+The default indent is 3. If you prefer something else, use `--indent n` argument.
+
+In order to apply fprettify recursively to an entire Fortran project instead of a single file, use the `-r` option.
+
+For more options, read
 ```
 fprettify -h
 ```
