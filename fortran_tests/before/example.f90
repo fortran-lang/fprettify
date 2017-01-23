@@ -2,10 +2,10 @@ module example
     implicit none
    private
      public :: dp, test_routine, &
-                 test_function,  test_type,    str_function
-   integer,   parameter :: dp = selected_real_kind ( 15 , 307)
-   type  test_type
-      real  (kind =dp ) :: r = 1.0d-3
+                 test_function ,test_type,str_function
+   integer,parameter:: dp = selected_real_kind ( 15 , 307)
+   type test_type
+      real (kind =dp ) ::r = 1.0d-3
       integer :: i
    end type test_type
 
@@ -14,17 +14,17 @@ contains
 
    subroutine test_routine( &
    r, i, j, k, l)
-        integer, intent(in)                                :: r, i, j, k
-       integer,   intent (out)                               :: l
+        integer, intent(in)                                :: r, i ,j, k
+       integer,intent (out)                               :: l
 
     l  = test_function(r,i,j,k)
  end &
 subroutine
 
- pure function test_function(r, i, j, &
+ pure function test_function(r ,i, j, &
                                         k) &
    result(l)
-   integer, intent(in)                                :: r, i, j, k
+   integer, intent(in)                                :: r , i, j, k
    integer                                            :: l
 
       l=r + i +j  +k
@@ -44,24 +44,24 @@ end function
 end module
 
 program example_prog
- use example, only: dp, test_routine, test_function, test_type,str_function
+ use example, only: dp, test_routine, test_function ,test_type,str_function
 
-   implicit  none
-  integer :: r,i,j,k,l,my_integer,m
+   implicit none
+  integer:: r,i,j ,k,l ,my_integer,m
      integer, dimension(5) :: arr
    integer, dimension(20) :: big_arr
-integer :: endif
+integer ::endif
    type(test_type) :: t
-real(kind=dp) :: r1,   r2,  r3, r4, r5,  r6
-  integer, pointer :: point
+real(kind=dp) :: r1,r2 , r3,r4, r5, r6
+  integer , pointer ::point
 
   point=>  null( )
 
 ! 1) white space formatting !
 !***************************!
 ! example 1.1
-   r=1;i=-2;j=3;k=4;l=5
-   r2  =  0.0_dp; r3= 1.0_dp;   r4 =2.0_dp; r5=3.0_dp;  r6 = 4.0_dp
+   r=1 ;i=-2 ; j=3; k=4;l=5
+   r2  =  0.0_dp ;r3= 1.0_dp;r4 =2.0_dp; r5=3.0_dp;r6 = 4.0_dp
    r1=-(r2**i*(r3+r5*(-r4)-r6))-2.e+2
    if( r.eq.2.and.r<=5) i=3
    write(*, *)(merge(3, 1, i<=2))
@@ -154,7 +154,7 @@ real(kind=dp) :: r1,   r2,  r3, r4, r5,  r6
               3*(2+ 1 )
 
    l =  test_function(1, 2,   &
-               test_function(1, 2,  3, 4),  4)+ &
+               test_function(1, 2 ,3, 4) , 4)+ &
                                     3 * (2+1)
 
    l = test_function(1, 2, &
@@ -163,7 +163,7 @@ real(kind=dp) :: r1,   r2,  r3, r4, r5,  r6
    3*(2 + 1)
 
 ! example 3.2
-   arr = [1, (/3,4, 5/),   6] + [  1, 2,3, 4,5 ]
+   arr = [1, (/3,4, 5/) ,6] + [  1, 2,3, 4,5 ]
 
    arr = [1,(/ 3, 4, 5 /) , &
    6]  +[1,2, 3, 4, 5 ]
@@ -199,7 +199,7 @@ real(kind=dp) :: r1,   r2,  r3, r4, r5,  r6
    case( 1)
            do i=1,100;if (i<=2) then! comment
           do j = 1,5
-                    do   k= 1, 3
+                    do k= 1, 3
                  l = l +  1
 ! unindented comment
          ! indented comment

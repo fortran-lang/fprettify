@@ -156,7 +156,7 @@ class FPrettifyTestCase(unittest.TestCase):
         """
 
         # manual alignment
-        instring = "align_me = [ -1,  10,0,  &\n    &     0,1000 ,  0,&\n            &0 , -1,  1]"
+        instring = "align_me = [-1,10,0,  &\n    &     0,1000,0,&\n            &0,-1,1]"
         outstring_exp = "align_me = [-1, 10, 0,  &\n    &     0, 1000, 0,&\n            &0, -1, 1]"
         self.assert_fprettify_result([], instring, outstring_exp)
 
@@ -187,7 +187,7 @@ class FPrettifyTestCase(unittest.TestCase):
 
         # io and unicode
         outstring = []
-        instring = "CALL  alien_invasion( 👽 )"
+        instring = "CALL alien_invasion( 👽 )"
         outstring_exp = "CALL alien_invasion(👽)"
 
         alien_file = "alien_invasion.f90"

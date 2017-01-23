@@ -556,7 +556,7 @@ def inspect_ffile_format(infile, indent_size, orig_filename=None):
     return indents, first_indent, modern_fortran
 
 
-def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
+def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep, nkeep_blank,
                         filename, line_nr, auto_format=True):
     """
     format a single Fortran line - imposes white space formatting
@@ -591,8 +591,8 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
     line_orig = line
 
     if auto_format:
-        line = rm_extra_whitespace(line)
-        line = add_whitespace_charwise(line, spacey, filename, line_nr)
+        line = rm_extra_whitespace(line, nkeep_blank)
+        line = add_whitespace_charwise(line, spacey, nkeep_blank, filename, line_nr)
         line = add_whitespace_context(line, spacey)
 
     lines_out = split_reformatted_line(
@@ -600,28 +600,34 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
     return lines_out
 
 
-def rm_extra_whitespace(line):
+def rm_extra_whitespace(line, nkeep_blank):
     """rm all unneeded whitespace chars, except for declarations"""
     line_ftd = ''
     pos_prev = -1
-    for pos, char in CharFilter(enumerate(line)):
-        is_decl = line[pos:].lstrip().startswith('::') or line[
-            :pos].rstrip().endswith('::')
+    nsp = 0
 
+    has_sep = False # remember that blank has been inserted between words
+    for pos, char in CharFilter(enumerate(line)):
         if char == ' ':
-            # remove double spaces:
-            if line_ftd and (re.search(r'[\w"]', line_ftd[-1]) or is_decl):
-                line_ftd = line_ftd + char
+            nsp += 1
+            # remove blanks, except blanks between words and respect nkeep_blank
+            if line_ftd and (re.search(r'[\w"]', line_ftd[-1]) or nsp >= nkeep_blank):
+                if nsp == nkeep_blank:
+                    line_ftd = line_ftd + (nkeep_blank-has_sep)*char
+                else:
+                    line_ftd = line_ftd + char
+                    has_sep = True
         else:
-            if (line_ftd and line_ftd[-1] == ' ' and
-                    (not re.search(r'[\w"]', char) and not is_decl)):
-                line_ftd = line_ftd[:-1]  # remove spaces except between words
+            has_sep = False
+            if (line_ftd and line_ftd[-1] == ' ' and not re.search(r'[\w"]', char) and nsp < nkeep_blank):
+                line_ftd = line_ftd[:-1] # remove blank
+            nsp = 0
             line_ftd = line_ftd + line[pos_prev + 1:pos + 1]
         pos_prev = pos
     return line_ftd
 
 
-def add_whitespace_charwise(line, spacey, filename, line_nr):
+def add_whitespace_charwise(line, spacey, nkeep_blank, filename, line_nr):
     """add whitespace character wise (no need for context aware parsing)"""
     line_ftd = line
     pos_eq = []
@@ -700,16 +706,38 @@ def add_whitespace_charwise(line, spacey, filename, line_nr):
         if char in [',', ';']:
             lhs = line_ftd[:pos + offset]
             rhs = line_ftd[pos + 1 + offset:]
-            line_ftd = lhs.rstrip(' ') + char + ' ' * \
-                spacey[0] + rhs.lstrip(' ')
+
+            if len(lhs) - len(lhs.rstrip(' ')) < nkeep_blank:
+                lhs = lhs.rstrip(' ')
+
+            if len(rhs) - len(rhs.lstrip(' ')) < nkeep_blank:
+                rhs = ' '*spacey[0] + rhs.lstrip(' ')
+
+            line_ftd = lhs + char + rhs
             line_ftd = line_ftd.rstrip(' ')
+
+            #line_ftd = lhs.rstrip(' ') + char + ' ' * \
+            #    spacey[0] + rhs.lstrip(' ')
 
         # format .NOT.
         if re.search(r"^\.NOT\.", line[pos:pos + 5], RE_FLAGS):
             lhs = line_ftd[:pos + offset]
             rhs = line_ftd[pos + 5 + offset:]
-            line_ftd = lhs.rstrip(
-                ' ') + line[pos:pos + 5] + ' ' * spacey[3] + rhs.lstrip(' ')
+            line_ftd = (lhs.rstrip(' ') +
+                line[pos:pos + 5] + ' ' * spacey[3] + rhs.lstrip(' '))
+
+        # format ::
+        if re.search(r"^::", line[pos:pos+2], RE_FLAGS) and not level:
+            lhs = line_ftd[:pos + offset]
+            rhs = line_ftd[pos + 2 + offset:]
+
+            if len(lhs) - len(lhs.rstrip(' ')) < nkeep_blank:
+                lhs = lhs.rstrip(' ') + ' '*spacey[0]
+
+            if len(rhs) - len(rhs.lstrip(' ')) < nkeep_blank:
+                rhs = ' '*spacey[0] + rhs.lstrip(' ')
+
+            line_ftd = lhs + '::' + rhs
 
         # strip whitespaces from '=' and prepare assignment operator
         # formatting:
@@ -774,7 +802,7 @@ def add_whitespace_context(line, spacey):
 
     line = ''.join(line_parts)
 
-    # format ':' for labels and use only statements
+    # format ':' for labels, use only statements and declarations
     for newre in NEW_SCOPE_RE[0:2]:
         if newre.search(line) and re.search(SOL_STR + r"\w+\s*:", line):
             line = ': '.join(_.strip() for _ in line.split(':', 1))
@@ -851,7 +879,7 @@ def reformat_inplace(filename, stdout=False, **kwargs):  # pragma: no cover
         outfile.write(newfile.getvalue())
 
 
-def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
+def reformat_ffile(infile, outfile, indent_size=3, whitespace=2, nkeep_blank=2,
                    orig_filename=None):
     """main method to be invoked for formatting a Fortran file."""
 
@@ -886,7 +914,7 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
         nfl += 1
         orig_lines = lines
 
-        comment_lines = format_comments(lines, comments)
+        comment_lines = format_comments(lines, comments, nkeep_blank)
         auto_align, auto_format, in_format_off_block = parse_fprettify_directives(
             lines, comment_lines, in_format_off_block, orig_filename, stream.line_nr)
         f_line, lines, is_omp, is_omp_conditional = preprocess_omp(
@@ -917,7 +945,7 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
             f_line = f_line.strip(' ')
 
             lines = format_single_fline(
-                f_line, whitespace, linebreak_pos, ampersand_sep,
+                f_line, whitespace, linebreak_pos, ampersand_sep, nkeep_blank,
                 orig_filename, stream.line_nr, auto_format)
 
             lines = append_comments(lines, comment_lines)
@@ -944,11 +972,17 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
             f_line) and not any(comments) and not is_omp
 
 
-def format_comments(lines, comments):
+def format_comments(lines, comments, nkeep_blank):
     comments_ftd = []
     for line, comment in zip(lines, comments):
         has_comment = bool(comment.strip())
-        sep = has_comment and not comment.strip() == line.strip()
+        if has_comment and not comment.strip() == line.strip():
+            line_nocomment = line.strip().replace(comment.strip(), '', 1)
+            nsp = len(line_nocomment) - len(line_nocomment.rstrip())
+            sep = 1 if nsp < nkeep_blank else nsp
+        else:
+            sep = 0
+
         if line.strip():  # empty lines between linebreaks are ignored
             comments_ftd.append(' ' * sep + comment.strip())
     return comments_ftd
@@ -1217,6 +1251,9 @@ def run(argv=sys.argv):  # pragma: no cover
                         help="relative indentation width")
     parser.add_argument("-w", "--whitespace", type=int,
                         choices=range(0, 3), default=2, help="Amount of whitespace")
+    #FIXME: add whitespace options for other arithmetic operators
+
+    parser.add_argument('-k', '--keepblank', metavar="K", type=int, default=2, help="Preserve K or more consecutive blanks. Set to high number to enable complete whitespace formatting.")
     parser.add_argument("-s", "--stdout", action='store_true', default=False,
                         help="Write to stdout instead of formatting inplace")
 
@@ -1282,6 +1319,7 @@ def run(argv=sys.argv):  # pragma: no cover
                 reformat_inplace(filename,
                                  stdout=stdout,
                                  indent_size=args.indent,
-                                 whitespace=args.whitespace)
+                                 whitespace=args.whitespace,
+                                 nkeep_blank = args.keepblank)
             except FprettifyException as e:
                 log_exception(e, "Fatal error occured")

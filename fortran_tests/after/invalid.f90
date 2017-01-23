@@ -1,9 +1,9 @@
     implicit none
     private
     public :: dp, test_routine, &
-              test_function, test_type, str_function
-    integer, parameter :: dp = selected_real_kind(15, 307)
-    type test_type
+              test_function,  test_type,    str_function
+    integer,   parameter :: dp = selected_real_kind(15, 307)
+    type  test_type
        real(kind=dp) :: r = 1.0d-3
        integer :: i
     end type test_type
@@ -13,7 +13,7 @@
     subroutine test_routine( &
        r, i, j, k, l)
        integer, intent(in)                                :: r, i, j, k
-       integer, intent(out)                               :: l
+       integer,   intent(out)                               :: l
 
        l = test_function(r, i, j, k)
 
@@ -41,13 +41,13 @@
        program example_prog
           use example, only: dp, test_routine, test_function, test_type, str_function
 
-          implicit none
+          implicit  none
           integer :: r, i, j, k, l, my_integer, m
           integer, dimension(5) :: arr
           integer, dimension(20) :: big_arr
           integer :: endif
           type(test_type) :: t
-          real(kind=dp) :: r1, r2, r3, r4, r5, r6
+          real(kind=dp) :: r1,   r2,  r3, r4, r5,  r6
           integer, pointer :: point
 
           point => null()
