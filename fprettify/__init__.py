@@ -164,7 +164,7 @@ LINEBREAK_STR = r"(&)[\s]*(?:!.*)?$"
 # regular expressions for parsing operators
 # Note: +/- in real literals and sign operator is ignored
 PLUSMINUS_RE = re.compile(
-    r"(?<=[\w\)\]])(?<![\d\.]\w)\s*(\+|-)\s*", RE_FLAGS)
+    r"(?<=[\w\)\]])(?<![\d\.][de])\s*(\+|-)\s*", RE_FLAGS)
 REL_OP_RE = re.compile(
     r"(?<!\()\s*(\.(?:EQ|NE|LT|LE|GT|GE)\.|(?:==|\/=|<(?!=)|<=|(?<!=)>(?!=)|>=))\s*(?!\))",
     RE_FLAGS)
