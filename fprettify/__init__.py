@@ -154,6 +154,7 @@ ENDENUM_RE = re.compile(SOL_STR + r"END\s*ENUM(\s+\w+)?" + EOL_STR, RE_FLAGS)
 
 ENDANY_RE = re.compile(SOL_STR + r"END" + EOL_STR, RE_FLAGS)
 
+PRIVATE_RE = re.compile(SOL_STR + r"PRIVATE\s*::", RE_FLAGS)
 PUBLIC_RE = re.compile(SOL_STR + r"PUBLIC\s*::", RE_FLAGS)
 
 # intrinsic statements with parenthesis notation that are not functions
@@ -397,7 +398,7 @@ class F90Aligner(object):
 
         self.__init_line(line_nr)
 
-        is_decl = VAR_DECL_RE.search(f_line) or PUBLIC_RE.search(f_line)
+        is_decl = VAR_DECL_RE.search(f_line) or PUBLIC_RE.search(f_line) or PRIVATE_RE.match(f_line)
         for pos, line in enumerate(lines):
             self.__align_line_continuations(
                 line, is_decl, rel_ind, self._line_nr + pos)
