@@ -169,6 +169,9 @@ LINEBREAK_STR = r"(&)[\s]*(?:!.*)?$"
 # Note: +/- in real literals and sign operator is ignored
 PLUSMINUS_RE = re.compile(
     r"(?<=[\w\)\]])(?<![\d\.]\w)\s*(\+|-)\s*", RE_FLAGS)
+# Note: ** or // (or any multiples of * or /) are ignored
+MULTDIV_RE = re.compile(
+    r"((?<!\*)\*(?!\*)|(?<!/)/(?!/))", RE_FLAGS)
 REL_OP_RE = re.compile(
     r"(?<!\()\s*(\.(?:EQ|NE|LT|LE|GT|GE)\.|(?:==|\/=|<(?!=)|<=|(?<!=)>(?!=)|>=))\s*(?!\))",
     RE_FLAGS)
@@ -185,7 +188,7 @@ DEL_CLOSE_RE = re.compile(r"^" + DEL_CLOSE_STR, RE_FLAGS)
 EMPTY_RE = re.compile(SOL_STR + r"([!#].*)?$", RE_FLAGS)
 
 # two-sided operators
-LR_OPS_RE = [REL_OP_RE, LOG_OP_RE, PLUSMINUS_RE, PRINT_RE]
+LR_OPS_RE = [REL_OP_RE, LOG_OP_RE, PLUSMINUS_RE, MULTDIV_RE, PRINT_RE]
 
 USE_RE = re.compile(
     SOL_STR + "USE(\s+|(,.+?)?::\s*)\w+?((,.+?=>.+?)+|,\s*only\s*:.+?)?$" + EOL_STR, RE_FLAGS)
@@ -570,7 +573,7 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
     separating whitespace characters before ampersand (`ampersand_sep`).
     `filename` and `line_nr` just for error messages.
     The higher `whitespace`, the more white space characters inserted -
-    whitespace = 0, 1, 2 are currently supported.
+    whitespace = 0, 1, 2, 3 are currently supported.
     auto formatting can be turned off by setting `auto_format` to False.
     """
 
@@ -580,14 +583,17 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
     # 2: relational operators
     # 3: logical operators
     # 4: arithm. operators plus and minus
-    # 5: print / read statements
+    # 5: arithm. operators multiply and divide
+    # 6: print / read statements
 
     if whitespace == 0:
-        spacey = [0, 0, 0, 0, 0, 0]
+        spacey = [0, 0, 0, 0, 0, 0, 0]
     elif whitespace == 1:
-        spacey = [1, 1, 1, 1, 0, 1]
+        spacey = [1, 1, 1, 1, 0, 0, 1]
     elif whitespace == 2:
-        spacey = [1, 1, 1, 1, 1, 1]
+        spacey = [1, 1, 1, 1, 1, 0, 1]
+    elif whitespace == 3:
+        spacey = [1, 1, 1, 1, 1, 1, 1]
     else:
         raise NotImplementedError("unknown value for whitespace")
 
@@ -768,13 +774,24 @@ def add_whitespace_context(line, spacey):
         if pos == len(line) - 1:
             line_parts.append(line[str_end + 1:])
 
+    # format namelists with spaces around /
+    if re.match(r"namelist.*/.*/", line, RE_FLAGS):
+        for n_op, lr_re in enumerate([MULTDIV_RE]):
+            for pos, part in enumerate(line_parts):
+                # exclude comments, strings:
+                if not re.match(r"['\"!]", part, RE_FLAGS):
+                    partsplit = lr_re.split(part)
+                    line_parts[pos] = (' '.join(partsplit))
+
     # Two-sided operators
     for n_op, lr_re in enumerate(LR_OPS_RE):
         for pos, part in enumerate(line_parts):
             # exclude comments, strings:
             if not re.search(r"^['\"!]", part, RE_FLAGS):
-                partsplit = lr_re.split(part)
-                line_parts[pos] = (' ' * spacey[n_op + 2]).join(partsplit)
+                # also exclude / from namelists
+                if not re.match(r"namelist.*/.*/", line, RE_FLAGS):
+                    partsplit = lr_re.split(part)
+                    line_parts[pos] = (' ' * spacey[n_op + 2]).join(partsplit)
 
     line = ''.join(line_parts)
 
@@ -1220,7 +1237,7 @@ def run(argv=sys.argv):  # pragma: no cover
     parser.add_argument("-i", "--indent", type=int, default=3,
                         help="relative indentation width")
     parser.add_argument("-w", "--whitespace", type=int,
-                        choices=range(0, 3), default=2, help="Amount of whitespace")
+                        choices=range(0, 4), default=2, help="Amount of whitespace")
     parser.add_argument("-s", "--stdout", action='store_true', default=False,
                         help="Write to stdout instead of formatting inplace")
 
