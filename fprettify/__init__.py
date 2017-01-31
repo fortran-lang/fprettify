@@ -107,7 +107,7 @@ ENDDO_RE = re.compile(SOL_STR + r"END\s*DO(\s+\w+)?" + EOL_STR, RE_FLAGS)
 SELCASE_RE = re.compile(
     SOL_STR + r"SELECT\s*(CASE|TYPE)\s*\(.+\)" + EOL_STR, RE_FLAGS)
 CASE_RE = re.compile(
-    SOL_STR + r"(CASE|TYPE\s+IS|CLASS\s+IS)\s*(\(.+\)|DEFAULT)" + EOL_STR, RE_FLAGS)
+    SOL_STR + r"(CASE|TYPE\s+IS|CLASS|CLASS\s+IS)\s*(\(.+\)|DEFAULT)" + EOL_STR, RE_FLAGS)
 ENDSEL_RE = re.compile(SOL_STR + r"END\s*SELECT" + EOL_STR, RE_FLAGS)
 
 ASSOCIATE_RE = re.compile(SOL_STR + r"ASSOCIATE\s*\(.+\)" + EOL_STR, RE_FLAGS)
