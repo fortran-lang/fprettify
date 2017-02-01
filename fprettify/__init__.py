@@ -113,7 +113,7 @@ ENDSEL_RE = re.compile(SOL_STR + r"END\s*SELECT" + EOL_STR, RE_FLAGS)
 ASSOCIATE_RE = re.compile(SOL_STR + r"ASSOCIATE\s*\(.+\)" + EOL_STR, RE_FLAGS)
 ENDASSOCIATE_RE = re.compile(SOL_STR + r"END\s*ASSOCIATE" + EOL_STR, RE_FLAGS)
 
-BLK_RE = re.compile(SOL_STR + r"(\w+\s*:)?\s*BLOCK", RE_FLAGS)
+BLK_RE = re.compile(SOL_STR + r"(\w+\s*:)?\s*BLOCK\s", RE_FLAGS)
 ENDBLK_RE = re.compile(SOL_STR + r"END\s*BLOCK(\s+\w+)?" + EOL_STR, RE_FLAGS)
 
 SUBR_RE = re.compile(
