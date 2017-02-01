@@ -107,13 +107,13 @@ ENDDO_RE = re.compile(SOL_STR + r"END\s*DO(\s+\w+)?" + EOL_STR, RE_FLAGS)
 SELCASE_RE = re.compile(
     SOL_STR + r"SELECT\s*(CASE|TYPE)\s*\(.+\)" + EOL_STR, RE_FLAGS)
 CASE_RE = re.compile(
-    SOL_STR + r"(CASE|TYPE\s+IS|CLASS|CLASS\s+IS)\s*(\(.+\)|DEFAULT)" + EOL_STR, RE_FLAGS)
+    SOL_STR + r"((CASE|TYPE\s+IS|CLASS\s+IS)\s*(\(.+\)|DEFAULT)|CLASS\s+DEFAULT)" + EOL_STR, RE_FLAGS)
 ENDSEL_RE = re.compile(SOL_STR + r"END\s*SELECT" + EOL_STR, RE_FLAGS)
 
 ASSOCIATE_RE = re.compile(SOL_STR + r"ASSOCIATE\s*\(.+\)" + EOL_STR, RE_FLAGS)
 ENDASSOCIATE_RE = re.compile(SOL_STR + r"END\s*ASSOCIATE" + EOL_STR, RE_FLAGS)
 
-BLK_RE = re.compile(SOL_STR + r"(\w+\s*:)?\s*BLOCK\s", RE_FLAGS)
+BLK_RE = re.compile(SOL_STR + r"(\w+\s*:)?\s*BLOCK\b", RE_FLAGS)
 ENDBLK_RE = re.compile(SOL_STR + r"END\s*BLOCK(\s+\w+)?" + EOL_STR, RE_FLAGS)
 
 SUBR_RE = re.compile(
@@ -677,6 +677,8 @@ def add_whitespace_charwise(line, spacey, filename, line_nr):
                         re.search(SOL_STR + r"(SELECT)?\s*CASE\s*",
                                   line[:pos], RE_FLAGS) or
                         re.search(SOL_STR + r"SELECT\s*TYPE\s*",
+                                  line[:pos], RE_FLAGS) or
+                        re.search(SOL_STR + r"CLASS\s*DEFAULT\s*",
                                   line[:pos], RE_FLAGS) or
                         re.search(SOL_STR + r"(TYPE|CLASS)\s+IS\s*",
                                   line[:pos], RE_FLAGS) or
