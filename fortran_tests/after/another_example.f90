@@ -50,7 +50,7 @@ program test
    res = factor*5/block_test + 1
    ! whitespace 3
 !  res = factor * 5 / block_test + 1
-   res = factor * 5 / block_test + 1
+   res = factor*5/block_test + 1
 
    stop
 

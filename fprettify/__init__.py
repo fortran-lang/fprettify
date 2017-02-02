@@ -204,6 +204,8 @@ CONTINUE_SCOPE_RE = [ELSE_RE, None, CASE_RE, CONTAINS_RE,
 END_SCOPE_RE = [ENDIF_RE, ENDDO_RE, ENDSEL_RE, ENDSUBR_RE,
                 ENDFCT_RE, ENDMOD_RE, ENDPROG_RE, ENDINTERFACE_RE, ENDTYPE_RE, ENDENUM_RE, ENDASSOCIATE_RE, ENDANY_RE, ENDBLK_RE]
 
+# match namelist names
+NML_RE = re.compile(r"(/\w+/)", RE_FLAGS)
 
 class F90Indenter(object):
     """
@@ -781,7 +783,7 @@ def add_whitespace_context(line, spacey):
         for pos, part in enumerate(line_parts):
             # exclude comments, strings:
             if not re.match(r"['\"!]", part, RE_FLAGS):
-                partsplit = MULTDIV_RE.split(part)
+                partsplit = NML_RE.split(part)
                 line_parts[pos] = (' '.join(partsplit))
 
     # Two-sided operators
