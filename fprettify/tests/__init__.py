@@ -124,10 +124,11 @@ class FPrettifyTestCase(unittest.TestCase):
         instring = "(/-a-b-(a+b-c)/(-c)*d**e,f[1]%v/)"
         outstring_exp = ["(/-a-b-(a+b-c)/(-c)*d**e,f[1]%v/)",
                          "(/-a-b-(a+b-c)/(-c)*d**e, f[1]%v/)",
-                         "(/-a - b - (a + b - c)/(-c)*d**e, f[1]%v/)"]
+                         "(/-a - b - (a + b - c)/(-c)*d**e, f[1]%v/)",
+                         "(/-a - b - (a + b - c) / (-c) * d**e, f[1]%v/)"]
 
         outstring = []
-        for w, out in zip(range(0, 3), outstring_exp):
+        for w, out in zip(range(0, 4), outstring_exp):
             args = ['-w', str(w)]
             self.assert_fprettify_result(args, instring, out)
 

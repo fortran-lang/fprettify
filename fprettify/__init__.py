@@ -113,7 +113,7 @@ ENDSEL_RE = re.compile(SOL_STR + r"END\s*SELECT" + EOL_STR, RE_FLAGS)
 ASSOCIATE_RE = re.compile(SOL_STR + r"ASSOCIATE\s*\(.+\)" + EOL_STR, RE_FLAGS)
 ENDASSOCIATE_RE = re.compile(SOL_STR + r"END\s*ASSOCIATE" + EOL_STR, RE_FLAGS)
 
-BLK_RE = re.compile(SOL_STR + r"(\w+\s*:)?\s*BLOCK\b", RE_FLAGS)
+BLK_RE = re.compile(SOL_STR + r"(\w+\s*:)?\s*BLOCK" + EOL_STR, RE_FLAGS)
 ENDBLK_RE = re.compile(SOL_STR + r"END\s*BLOCK(\s+\w+)?" + EOL_STR, RE_FLAGS)
 
 SUBR_RE = re.compile(
@@ -778,19 +778,18 @@ def add_whitespace_context(line, spacey):
 
     # format namelists with spaces around /
     if re.match(r"namelist.*/.*/", line, RE_FLAGS):
-        for n_op, lr_re in enumerate([MULTDIV_RE]):
-            for pos, part in enumerate(line_parts):
-                # exclude comments, strings:
-                if not re.match(r"['\"!]", part, RE_FLAGS):
-                    partsplit = lr_re.split(part)
-                    line_parts[pos] = (' '.join(partsplit))
+        for pos, part in enumerate(line_parts):
+            # exclude comments, strings:
+            if not re.match(r"['\"!]", part, RE_FLAGS):
+                partsplit = MULTDIV_RE.split(part)
+                line_parts[pos] = (' '.join(partsplit))
 
     # Two-sided operators
     for n_op, lr_re in enumerate(LR_OPS_RE):
         for pos, part in enumerate(line_parts):
             # exclude comments, strings:
             if not re.search(r"^['\"!]", part, RE_FLAGS):
-                # also exclude / from namelists
+                # also exclude / if we see a namelist
                 if not re.match(r"namelist.*/.*/", line, RE_FLAGS):
                     partsplit = lr_re.split(part)
                     line_parts[pos] = (' ' * spacey[n_op + 2]).join(partsplit)
