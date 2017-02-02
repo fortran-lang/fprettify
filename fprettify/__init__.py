@@ -171,7 +171,7 @@ PLUSMINUS_RE = re.compile(
     r"(?<=[\w\)\]])(?<![\d\.]\w)\s*(\+|-)\s*", RE_FLAGS)
 # Note: ** or // (or any multiples of * or /) are ignored
 MULTDIV_RE = re.compile(
-    r"((?<!\*)\*(?!\*)|(?<!/)/(?!/))", RE_FLAGS)
+    r"(?<=[\w\)\]])\s*((?<!\*)\*(?!\*)|(?<!/)/(?!/))(?=[\s\w\(])", RE_FLAGS)
 REL_OP_RE = re.compile(
     r"(?<!\()\s*(\.(?:EQ|NE|LT|LE|GT|GE)\.|(?:==|\/=|<(?!=)|<=|(?<!=)>(?!=)|>=))\s*(?!\))",
     RE_FLAGS)
