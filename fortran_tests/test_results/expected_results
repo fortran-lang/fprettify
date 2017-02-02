@@ -1917,7 +1917,7 @@ RosettaCodeData/Task/Accumulator-factory/Fortran/accumulator-factory-2.f : 06ff1
 RosettaCodeData/Task/Arithmetic-Rational/Fortran/arithmetic-rational-1.f : d9798ac7d48984a81e6066f955431b6b1147c4a23676e2ce9161d6491a36c234
 RosettaCodeData/Task/Classes/Fortran/classes.f : ab23f3823fb82e0ffff96b869f2aca7c2515db18add95104f4be86c881692d74
 RosettaCodeData/Task/Constrained-genericity/Fortran/constrained-genericity.f : a2ddcb9eefef24be8475b19015a323a09a5245b7a0325faab6f14cd5d8c99232
-RosettaCodeData/Task/Define-a-primitive-data-type/Fortran/define-a-primitive-data-type-1.f : a61ce7b5d3641ca7f223a03229a31cc8feb6d8aa473d827df5bf0a85baea6af7
+RosettaCodeData/Task/Define-a-primitive-data-type/Fortran/define-a-primitive-data-type-1.f : 615b5f17286283068720f211d282558d186b9a7af06076739fea0a4e90898f18
 RosettaCodeData/Task/Exponentiation-operator/Fortran/exponentiation-operator.f : 9dd247f51e19e4c445522b7577368fe009003524bec66ed3f2efbfb58d8e8fed
 RosettaCodeData/Task/Fibonacci-sequence/Fortran/fibonacci-sequence-4.f : 758c9f5caeed8b02a4b54ec8c207c8bc70f2a92065455c76978b487d1fa8566d
 RosettaCodeData/Task/Grayscale-image/Fortran/grayscale-image-3.f : ed4d53de1d0437d3fbc830ac7b75a48dd373f181183cbb35dc0c1fa2b23569cd
@@ -1925,7 +1925,7 @@ RosettaCodeData/Task/LU-decomposition/Fortran/lu-decomposition.f : 900a20c9ca96f
 RosettaCodeData/Task/Long-multiplication/Fortran/long-multiplication-1.f : acbc61418d79d708837c1dd7780007bca8de3390e5474c5c3de7c4e6abf04f2e
 RosettaCodeData/Task/Matrix-exponentiation-operator/Fortran/matrix-exponentiation-operator.f : a45ce9e65278545613d72f1cea16406f5484ec12ad5e721fdc4e9ab83c1f27ce
 RosettaCodeData/Task/Polymorphic-copy/Fortran/polymorphic-copy.f : a5a9a5568a06157d085f5f1879a6b91bd1d102a0a63951ba451bda00fe2d702c
-RosettaCodeData/Task/Quaternion-type/Fortran/quaternion-type.f : 734e5c5479150979cd2a48874dcde06903b708434cd81dcb9cdba3eda9f064e6
+RosettaCodeData/Task/Quaternion-type/Fortran/quaternion-type.f : a331a9ff10e9cbc8b2d5fbdbbd56e2540a555a029aac61425250bed548fc28ab
 FLAP/src/lib/flap.f90 : d8c91241624cf28e1cf1d5c2ba70b775a7bcfd3221d81e8697baf55532375f51
 FLAP/src/lib/flap_command_line_argument_t.F90 : 763c6a6142ba8383518e84f5d088796c6cf3818d1ed97d11060957b11bfee767
 FLAP/src/lib/flap_command_line_arguments_group_t.f90 : b0dec2d7c0174753bb2047bcf63e1e0392cbf929c9c6dade8a5cd63e70338420
