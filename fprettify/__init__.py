@@ -107,11 +107,14 @@ ENDDO_RE = re.compile(SOL_STR + r"END\s*DO(\s+\w+)?" + EOL_STR, RE_FLAGS)
 SELCASE_RE = re.compile(
     SOL_STR + r"SELECT\s*(CASE|TYPE)\s*\(.+\)" + EOL_STR, RE_FLAGS)
 CASE_RE = re.compile(
-    SOL_STR + r"(CASE|TYPE\s+IS|CLASS\s+IS)\s*(\(.+\)|DEFAULT)" + EOL_STR, RE_FLAGS)
+    SOL_STR + r"((CASE|TYPE\s+IS|CLASS\s+IS)\s*(\(.+\)|DEFAULT)|CLASS\s+DEFAULT)" + EOL_STR, RE_FLAGS)
 ENDSEL_RE = re.compile(SOL_STR + r"END\s*SELECT" + EOL_STR, RE_FLAGS)
 
 ASSOCIATE_RE = re.compile(SOL_STR + r"ASSOCIATE\s*\(.+\)" + EOL_STR, RE_FLAGS)
 ENDASSOCIATE_RE = re.compile(SOL_STR + r"END\s*ASSOCIATE" + EOL_STR, RE_FLAGS)
+
+BLK_RE = re.compile(SOL_STR + r"(\w+\s*:)?\s*BLOCK" + EOL_STR, RE_FLAGS)
+ENDBLK_RE = re.compile(SOL_STR + r"END\s*BLOCK(\s+\w+)?" + EOL_STR, RE_FLAGS)
 
 SUBR_RE = re.compile(
     r"^([^\"'!]* )?SUBROUTINE\s+\w+\s*(\(.*\))?" + EOL_STR, RE_FLAGS)
@@ -151,6 +154,7 @@ ENDENUM_RE = re.compile(SOL_STR + r"END\s*ENUM(\s+\w+)?" + EOL_STR, RE_FLAGS)
 
 ENDANY_RE = re.compile(SOL_STR + r"END" + EOL_STR, RE_FLAGS)
 
+PRIVATE_RE = re.compile(SOL_STR + r"PRIVATE\s*::", RE_FLAGS)
 PUBLIC_RE = re.compile(SOL_STR + r"PUBLIC\s*::", RE_FLAGS)
 
 # intrinsic statements with parenthesis notation that are not functions
@@ -165,6 +169,9 @@ LINEBREAK_STR = r"(&)[\s]*(?:!.*)?$"
 # Note: +/- in real literals and sign operator is ignored
 PLUSMINUS_RE = re.compile(
     r"(?<=[\w\)\]])(?<![\d\.]\w)\s*(\+|-)\s*", RE_FLAGS)
+# Note: ** or // (or any multiples of * or /) are ignored
+MULTDIV_RE = re.compile(
+    r"(?<=[\w\)\]])\s*((?<!\*)\*(?!\*)|(?<!/)/(?!/))(?=[\s\w\(])", RE_FLAGS)
 REL_OP_RE = re.compile(
     r"(?<!\()\s*(\.(?:EQ|NE|LT|LE|GT|GE)\.|(?:==|\/=|<(?!=)|<=|(?<!=)>(?!=)|>=))\s*(?!\))",
     RE_FLAGS)
@@ -181,7 +188,7 @@ DEL_CLOSE_RE = re.compile(r"^" + DEL_CLOSE_STR, RE_FLAGS)
 EMPTY_RE = re.compile(SOL_STR + r"([!#].*)?$", RE_FLAGS)
 
 # two-sided operators
-LR_OPS_RE = [REL_OP_RE, LOG_OP_RE, PLUSMINUS_RE, PRINT_RE]
+LR_OPS_RE = [REL_OP_RE, LOG_OP_RE, PLUSMINUS_RE, MULTDIV_RE, PRINT_RE]
 
 USE_RE = re.compile(
     SOL_STR + "USE(\s+|(,.+?)?::\s*)\w+?((,.+?=>.+?)+|,\s*only\s*:.+?)?$" + EOL_STR, RE_FLAGS)
@@ -191,12 +198,17 @@ NO_ALIGN_RE = re.compile(SOL_STR + r"&\s*[^\s*]+")
 
 # combine regex that define subunits
 NEW_SCOPE_RE = [IF_RE, DO_RE, SELCASE_RE, SUBR_RE,
-                FCT_RE, MOD_RE, PROG_RE, INTERFACE_RE, TYPE_RE, ENUM_RE, ASSOCIATE_RE, None]
+                FCT_RE, MOD_RE, PROG_RE, INTERFACE_RE, TYPE_RE, ENUM_RE, ASSOCIATE_RE, None, BLK_RE]
 CONTINUE_SCOPE_RE = [ELSE_RE, None, CASE_RE, CONTAINS_RE,
-                     CONTAINS_RE, CONTAINS_RE, CONTAINS_RE, None, CONTAINS_RE, None, None, None]
+                     CONTAINS_RE, CONTAINS_RE, CONTAINS_RE, None, CONTAINS_RE, None, None, None, None]
 END_SCOPE_RE = [ENDIF_RE, ENDDO_RE, ENDSEL_RE, ENDSUBR_RE,
-                ENDFCT_RE, ENDMOD_RE, ENDPROG_RE, ENDINTERFACE_RE, ENDTYPE_RE, ENDENUM_RE, ENDASSOCIATE_RE, ENDANY_RE]
+                ENDFCT_RE, ENDMOD_RE, ENDPROG_RE, ENDINTERFACE_RE, ENDTYPE_RE, ENDENUM_RE, ENDASSOCIATE_RE, ENDANY_RE, ENDBLK_RE]
 
+# match namelist names
+NML_RE = re.compile(r"(/\w+/)", RE_FLAGS)
+# find namelists and data statements
+NML_STMT_RE = re.compile(SOL_STR + r"NAMELIST.*/.*/", RE_FLAGS)
+DATA_STMT_RE = re.compile(SOL_STR + r"DATA\s+\w", RE_FLAGS)
 
 class F90Indenter(object):
     """
@@ -394,7 +406,7 @@ class F90Aligner(object):
 
         self.__init_line(line_nr)
 
-        is_decl = VAR_DECL_RE.search(f_line) or PUBLIC_RE.search(f_line)
+        is_decl = VAR_DECL_RE.search(f_line) or PUBLIC_RE.search(f_line) or PRIVATE_RE.match(f_line)
         for pos, line in enumerate(lines):
             self.__align_line_continuations(
                 line, is_decl, rel_ind, self._line_nr + pos)
@@ -566,7 +578,7 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
     separating whitespace characters before ampersand (`ampersand_sep`).
     `filename` and `line_nr` just for error messages.
     The higher `whitespace`, the more white space characters inserted -
-    whitespace = 0, 1, 2 are currently supported.
+    whitespace = 0, 1, 2, 3 are currently supported.
     auto formatting can be turned off by setting `auto_format` to False.
     """
 
@@ -576,14 +588,17 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
     # 2: relational operators
     # 3: logical operators
     # 4: arithm. operators plus and minus
-    # 5: print / read statements
+    # 5: arithm. operators multiply and divide
+    # 6: print / read statements
 
     if whitespace == 0:
-        spacey = [0, 0, 0, 0, 0, 0]
+        spacey = [0, 0, 0, 0, 0, 0, 0]
     elif whitespace == 1:
-        spacey = [1, 1, 1, 1, 0, 1]
+        spacey = [1, 1, 1, 1, 0, 0, 1]
     elif whitespace == 2:
-        spacey = [1, 1, 1, 1, 1, 1]
+        spacey = [1, 1, 1, 1, 1, 0, 1]
+    elif whitespace == 3:
+        spacey = [1, 1, 1, 1, 1, 1, 1]
     else:
         raise NotImplementedError("unknown value for whitespace")
 
@@ -667,6 +682,8 @@ def add_whitespace_charwise(line, spacey, filename, line_nr):
                         re.search(SOL_STR + r"(SELECT)?\s*CASE\s*",
                                   line[:pos], RE_FLAGS) or
                         re.search(SOL_STR + r"SELECT\s*TYPE\s*",
+                                  line[:pos], RE_FLAGS) or
+                        re.search(SOL_STR + r"CLASS\s*DEFAULT\s*",
                                   line[:pos], RE_FLAGS) or
                         re.search(SOL_STR + r"(TYPE|CLASS)\s+IS\s*",
                                   line[:pos], RE_FLAGS) or
@@ -764,13 +781,23 @@ def add_whitespace_context(line, spacey):
         if pos == len(line) - 1:
             line_parts.append(line[str_end + 1:])
 
+    # format namelists with spaces around /
+    if NML_STMT_RE.match(line):
+        for pos, part in enumerate(line_parts):
+            # exclude comments, strings:
+            if not re.match(r"['\"!]", part, RE_FLAGS):
+                partsplit = NML_RE.split(part)
+                line_parts[pos] = (' '.join(partsplit))
+
     # Two-sided operators
     for n_op, lr_re in enumerate(LR_OPS_RE):
         for pos, part in enumerate(line_parts):
             # exclude comments, strings:
             if not re.search(r"^['\"!]", part, RE_FLAGS):
-                partsplit = lr_re.split(part)
-                line_parts[pos] = (' ' * spacey[n_op + 2]).join(partsplit)
+                # also exclude / if we see a namelist and data statement
+                if not ( NML_STMT_RE.match(line) or DATA_STMT_RE.match(line) ):
+                    partsplit = lr_re.split(part)
+                    line_parts[pos] = (' ' * spacey[n_op + 2]).join(partsplit)
 
     line = ''.join(line_parts)
 
@@ -1216,7 +1243,7 @@ def run(argv=sys.argv):  # pragma: no cover
     parser.add_argument("-i", "--indent", type=int, default=3,
                         help="relative indentation width")
     parser.add_argument("-w", "--whitespace", type=int,
-                        choices=range(0, 3), default=2, help="Amount of whitespace")
+                        choices=range(0, 4), default=2, help="Amount of whitespace")
     parser.add_argument("-s", "--stdout", action='store_true', default=False,
                         help="Write to stdout instead of formatting inplace")
 
