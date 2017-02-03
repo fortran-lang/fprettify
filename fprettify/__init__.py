@@ -206,6 +206,9 @@ END_SCOPE_RE = [ENDIF_RE, ENDDO_RE, ENDSEL_RE, ENDSUBR_RE,
 
 # match namelist names
 NML_RE = re.compile(r"(/\w+/)", RE_FLAGS)
+# find namelists and data statements
+NML_STMT_RE = re.compile(SOL_STR + r"NAMELIST.*/.*/", RE_FLAGS)
+DATA_STMT_RE = re.compile(SOL_STR + r"DATA\s+\w", RE_FLAGS)
 
 class F90Indenter(object):
     """
@@ -779,7 +782,7 @@ def add_whitespace_context(line, spacey):
             line_parts.append(line[str_end + 1:])
 
     # format namelists with spaces around /
-    if re.match(r"namelist.*/.*/", line, RE_FLAGS):
+    if NML_STMT_RE.match(line):
         for pos, part in enumerate(line_parts):
             # exclude comments, strings:
             if not re.match(r"['\"!]", part, RE_FLAGS):
@@ -791,8 +794,8 @@ def add_whitespace_context(line, spacey):
         for pos, part in enumerate(line_parts):
             # exclude comments, strings:
             if not re.search(r"^['\"!]", part, RE_FLAGS):
-                # also exclude / if we see a namelist
-                if not re.match(r"namelist.*/.*/", line, RE_FLAGS):
+                # also exclude / if we see a namelist and data statement
+                if not ( NML_STMT_RE.match(line) or DATA_STMT_RE.match(line) ):
                     partsplit = lr_re.split(part)
                     line_parts[pos] = (' ' * spacey[n_op + 2]).join(partsplit)
 
