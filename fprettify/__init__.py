@@ -84,7 +84,7 @@ FORTRAN_EXTENSIONS += [_.upper() for _ in FORTRAN_EXTENSIONS]
 # constants, mostly regular expressions:
 FORMATTER_ERROR_MESSAGE = (" Wrong usage of formatting-specific directives"
                            " '&', '!&', '!&<' or '!&>'.")
-LINESPLIT_MESSAGE = ("auto indentation faile due to 132 chars limit, "
+LINESPLIT_MESSAGE = ("auto indentation failed due to 132 chars limit, "
                      "line should be splitted")
 
 EOL_STR = r"\s*;?\s*$"  # end of fortran line
