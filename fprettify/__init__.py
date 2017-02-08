@@ -168,7 +168,7 @@ LINEBREAK_STR = r"(&)[\s]*(?:!.*)?$"
 # regular expressions for parsing operators
 # Note: +/- in real literals and sign operator is ignored
 PLUSMINUS_RE = re.compile(
-    r"(?<=[\w\)\]])(?<![\d\.]\w)\s*(\+|-)\s*", RE_FLAGS)
+    r"(?<=[\w\)\]])(?<![\d\.][de])\s*(\+|-)\s*", RE_FLAGS)
 # Note: ** or // (or any multiples of * or /) are ignored
 MULTDIV_RE = re.compile(
     r"(?<=[\w\)\]])\s*((?<!\*)\*(?!\*)|(?<!/)/(?!/))(?=[\s\w\(])", RE_FLAGS)

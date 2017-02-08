@@ -26,7 +26,7 @@ RosettaCodeData/Task/Arbitrary-precision-integers--included-/Fortran/arbitrary-p
 RosettaCodeData/Task/Arena-storage-pool/Fortran/arena-storage-pool.f : 94d2334685cc86ba5a7a2614fdd93dfb99961f5bdbcc81a0bc62e151967e3c8c
 RosettaCodeData/Task/Arithmetic-Complex/Fortran/arithmetic-complex-1.f : 01bd357685f161e8cb4535b5f4f2aaca97c3f320429b6586094c5b3567f790c5
 RosettaCodeData/Task/Arithmetic-Complex/Fortran/arithmetic-complex-2.f : 471b5b131e86f5d03751cb5e724804f54077dbc048a7c771ff9caa32e14a9912
-RosettaCodeData/Task/Arithmetic-Rational/Fortran/arithmetic-rational-2.f : d78edd9b9f231192d91245f1388fbda36623a6368e26ddeb4123d8f7e09cde8e
+RosettaCodeData/Task/Arithmetic-Rational/Fortran/arithmetic-rational-2.f : 079746d2e3fd0f0c0380462e7d0771322c3aa8d0db67d71168be89bfb4b60392
 RosettaCodeData/Task/Arithmetic-geometric-mean/Fortran/arithmetic-geometric-mean.f : parse error
 RosettaCodeData/Task/Array-concatenation/Fortran/array-concatenation-1.f : 93c237a5b57ff7f84f9996b5480652ccd48593d2e3733b8d41cecab2799840d3
 RosettaCodeData/Task/Array-concatenation/Fortran/array-concatenation-2.f : e6ab814a7d027597691e78b00055436fea0c71cd95f6c95fe5557b477f23264b
@@ -73,7 +73,7 @@ RosettaCodeData/Task/Arrays/Fortran/arrays-8.f : 8f9b36165678a5dc45c8326d3e5d627
 RosettaCodeData/Task/Arrays/Fortran/arrays-9.f : a122a71092f17cda09465f089d20d273944ea679bbdb46f6e9b2383c2fdc7635
 RosettaCodeData/Task/Averages-Arithmetic-mean/Fortran/averages-arithmetic-mean.f : 0e240e6a5e4bd4a9c9a2fa4ffbfc144334904b4d21f548709e810d1935becdcb
 RosettaCodeData/Task/Averages-Mean-angle/Fortran/averages-mean-angle.f : 3f533ac28222aafa25be1c4f94ff5f1ba5d92fb0112ea78b5741dba27a2eb95f
-RosettaCodeData/Task/Averages-Mean-time-of-day/Fortran/averages-mean-time-of-day.f : d9a0a7f5df0174ca571cc927d9182dc4de36d8de2c8da73b2cdc3bc58ac732e8
+RosettaCodeData/Task/Averages-Mean-time-of-day/Fortran/averages-mean-time-of-day.f : 5cb211b9208a4ec0c6019800d026a5c5d5c62d53cf823b89bed6ecf0e46e83c8
 RosettaCodeData/Task/Averages-Median/Fortran/averages-median.f : 3cd6c5021f1428d4000b978f401898259ed08728d1f04ad2dbd85dc4ddcd79d8
 RosettaCodeData/Task/Averages-Mode/Fortran/averages-mode.f : 725050631fde36a951c301757f7bcf03526a9d8d687f9ae145cea48d61e82c41
 RosettaCodeData/Task/Averages-Pythagorean-means/Fortran/averages-pythagorean-means.f : 438ab15fbea58ce50e8deb01da7f34115a6399b7ab20bee72ea9dca7b0d91fc8
@@ -81,14 +81,14 @@ RosettaCodeData/Task/Averages-Root-mean-square/Fortran/averages-root-mean-square
 RosettaCodeData/Task/Averages-Simple-moving-average/Fortran/averages-simple-moving-average.f : 0d491d70d629b0cf7388399eafc6d795eeba199efd6faf0a408e219273bde08d
 RosettaCodeData/Task/Balanced-brackets/Fortran/balanced-brackets.f : 4f6a094ddd888d2c43075746eae3aa02ca8fe6deba0d9f52079d72d692cf2303
 RosettaCodeData/Task/Benfords-law/Fortran/benfords-law-1.f : parse error
-RosettaCodeData/Task/Benfords-law/Fortran/benfords-law-2.f : fb60a397c271dc994b2add1b83d5fa4d9d4829cb4f6aee242f2d9c0a153b9921
+RosettaCodeData/Task/Benfords-law/Fortran/benfords-law-2.f : f67ae0469db659d0b66b97ac3d47d88394d879b9953bc835c6be6c29c68fc2f3
 RosettaCodeData/Task/Binary-digits/Fortran/binary-digits.f : 167851fce02aa6bd48f8e2dcceaec4b25f404d392a1e957f2213d5116d6872d4
 RosettaCodeData/Task/Binary-search/Fortran/binary-search-1.f : 7e34adf3713ae8d52197fc2e9ea0cbc4ba085eb96a1e74b261effe30f563b4a7
 RosettaCodeData/Task/Binary-search/Fortran/binary-search-2.f : 392db6ec24c505dcf4318716e3b7c96942044f55a7d6d9bf9fe973b67c4bc8b2
 RosettaCodeData/Task/Binary-search/Fortran/binary-search-3.f : parse error
 RosettaCodeData/Task/Binary-search/Fortran/binary-search-4.f : parse error
-RosettaCodeData/Task/Bitmap-B-zier-curves-Cubic/Fortran/bitmap-b-zier-curves-cubic.f : db055c261032c6175e8ef8e9bd48e51c1e0ab4d24cfef9b82537c28db21112bf
-RosettaCodeData/Task/Bitmap-B-zier-curves-Quadratic/Fortran/bitmap-b-zier-curves-quadratic.f : ae7d009c0c8b6cbcf08a435655afcdbaa1c43d75f045e1b2712da51b68191440
+RosettaCodeData/Task/Bitmap-B-zier-curves-Cubic/Fortran/bitmap-b-zier-curves-cubic.f : ef2f242214db5b80b44176643c63070ad121e587db6a77712c7838be97a52af2
+RosettaCodeData/Task/Bitmap-B-zier-curves-Quadratic/Fortran/bitmap-b-zier-curves-quadratic.f : 50a1ff91ac7e1dc46a9df8dfbb5de0bcd2215aeebfa61ee9d53bc2fbde652cfc
 RosettaCodeData/Task/Bitmap-Bresenhams-line-algorithm/Fortran/bitmap-bresenhams-line-algorithm-1.f : 1e48875c7a37b40f60f86cc5f249ca2533c300aa5cb5ff7889e59e7be7e3b6b3
 RosettaCodeData/Task/Bitmap-Bresenhams-line-algorithm/Fortran/bitmap-bresenhams-line-algorithm-2.f : 9ffa947fa792bdeaabc8dd18e80981b699018a7d99610a9802bb6ba8be96301a
 RosettaCodeData/Task/Bitmap-Flood-fill/Fortran/bitmap-flood-fill-1.f : 2519451bf52ab542670c4c96af6a28928fc137ee5fc0c2297725ae5ea04238b7
@@ -103,15 +103,15 @@ RosettaCodeData/Task/Bitwise-operations/Fortran/bitwise-operations-1.f : f48188e
 RosettaCodeData/Task/Bitwise-operations/Fortran/bitwise-operations-2.f : 5c938deb1218587e7c7f11cc1f7233f714087a621a56d38627781f37ce8b1e89
 RosettaCodeData/Task/Bitwise-operations/Fortran/bitwise-operations-3.f : 5307a19d719c87432cdce43013eadc2701ad6d49886468a1beb501373c815262
 RosettaCodeData/Task/Bitwise-operations/Fortran/bitwise-operations-4.f : internal error
-RosettaCodeData/Task/Box-the-compass/Fortran/box-the-compass.f : 2fe21b60b51d6e83ef12f57b6085a6b823c7b9e39da3397a770cc21788b308a6
+RosettaCodeData/Task/Box-the-compass/Fortran/box-the-compass.f : dbdb08d0f20f6cee385576deb676346ea2b5efeb4749425c70db157ddeac1972
 RosettaCodeData/Task/Brownian-tree/Fortran/brownian-tree.f : d849ff55f413a944fd0ef902d85fa3781ecf7ceb999d2607939c697c3d806f04
-RosettaCodeData/Task/Bulls-and-cows-Player/Fortran/bulls-and-cows-player.f : 7583c36ce7dc8826e8c557f708d66cbf6dfc56e8fa99e312999e96f5f2ca2d6d
+RosettaCodeData/Task/Bulls-and-cows-Player/Fortran/bulls-and-cows-player.f : 61070b6f7005e814dd7ef70c8c7108fe848ed3b0c36601b8af9790430a7cbbcc
 RosettaCodeData/Task/Bulls-and-cows/Fortran/bulls-and-cows.f : 8dd6e8d54c35165bfb5030e4077b20f5a54d3b1eef7a5c13996f8524a74e6c3d
 RosettaCodeData/Task/CRC-32/Fortran/crc-32.f : 2c30888815f37a0774cd741bb13de0a15d0d00df77cc9741abc7c9e97b0675a0
 RosettaCodeData/Task/CSV-data-manipulation/Fortran/csv-data-manipulation-1.f : 977efad12430db9c76ddf38a41a8fe3ef4e4976aa4df8bb3f00e901843129207
 RosettaCodeData/Task/CSV-data-manipulation/Fortran/csv-data-manipulation-2.f : parse error
 RosettaCodeData/Task/CSV-to-HTML-translation/Fortran/csv-to-html-translation.f : parse error
-RosettaCodeData/Task/Caesar-cipher/Fortran/caesar-cipher.f : 67c609584288f36206131ffa59d418e06b9cbabfe3d61f94217cb25228c1eab2
+RosettaCodeData/Task/Caesar-cipher/Fortran/caesar-cipher.f : 48904e6ffeee33a2520876db9199d82801a9661b88a4e6b59001a0d24fba34b4
 RosettaCodeData/Task/Calendar---for-REAL-programmers/Fortran/calendar---for-real-programmers.f : parse error
 RosettaCodeData/Task/Calendar/Fortran/calendar.f : internal error
 RosettaCodeData/Task/Call-a-foreign-language-function/Fortran/call-a-foreign-language-function-1.f : 41ae608960c8611bb800281f609dc393d8b3c523a028bf174255784d4a9f2dac
@@ -167,8 +167,8 @@ RosettaCodeData/Task/Count-occurrences-of-a-substring/Fortran/count-occurrences-
 RosettaCodeData/Task/Create-a-file/Fortran/create-a-file.f : 6fe609b2201bed3187e4aaa2b36eb01b909f555be2fbc61265ef47807ba96eb6
 RosettaCodeData/Task/Create-a-two-dimensional-array-at-runtime/Fortran/create-a-two-dimensional-array-at-runtime.f : 8581051c5fffeffc4a719c2db968b3588a6143488b435381556f2da1c9099378
 RosettaCodeData/Task/Create-an-HTML-table/Fortran/create-an-html-table.f : internal error
-RosettaCodeData/Task/Date-format/Fortran/date-format.f : 1820a9cf0c7fdc7295e4c9c76d1a894721534f134b9464378679422a09da0fc6
-RosettaCodeData/Task/Day-of-the-week/Fortran/day-of-the-week.f : 53f60cb6e7f4d2b7bb55c624a3c28a8d4a115ddf1b90b81ffbc3108d75c07de0
+RosettaCodeData/Task/Date-format/Fortran/date-format.f : 95c299523e8946531db74cf7c101e4a8c216aa5aa4d10b223b190c57a8a03c23
+RosettaCodeData/Task/Day-of-the-week/Fortran/day-of-the-week.f : 06ed8363f12c7640a59606824a09167bd2cded19e4fa8b1fb67b655553ead132
 RosettaCodeData/Task/Deal-cards-for-FreeCell/Fortran/deal-cards-for-freecell.f : 4ae9b244cc53377dd5f1899691cfee0782d55a7f904ec0a8742aa7b5dc544fea
 RosettaCodeData/Task/Deconvolution-1D/Fortran/deconvolution-1d-1.f : aba9c5002935f07348e1f893875ceb1f995aa63840d494e91f860b4ee8a3bc16
 RosettaCodeData/Task/Deconvolution-1D/Fortran/deconvolution-1d-2.f : c1dc488209a52a62b6a959f14fec798914b8d6a32853ff32120e53e3e7b1ba38
@@ -236,7 +236,7 @@ RosettaCodeData/Task/Find-limit-of-recursion/Fortran/find-limit-of-recursion.f :
 RosettaCodeData/Task/Find-the-last-Sunday-of-each-month/Fortran/find-the-last-sunday-of-each-month-1.f : a9edac96ae4b92f52ec7abc12129fafd1d3f2c17bcc1c1f9a111efc8a63f8402
 RosettaCodeData/Task/Find-the-last-Sunday-of-each-month/Fortran/find-the-last-sunday-of-each-month-2.f : internal error
 RosettaCodeData/Task/Find-the-missing-permutation/Fortran/find-the-missing-permutation.f : 1a60ead41693daffc4a83b3c7ec635c663d305123f46e265856b7d115a0f48bb
-RosettaCodeData/Task/Five-weekends/Fortran/five-weekends.f : 9ca31ad389c50b7dc78b5d3e0643ccef66f976ac7cebc9fdae52f2a7e4f4b4a6
+RosettaCodeData/Task/Five-weekends/Fortran/five-weekends.f : 873ba88fa5e4614171fdd0c45dc85c4b290dd0ecb5f3159e22004a8cf172f7a7
 RosettaCodeData/Task/FizzBuzz/Fortran/fizzbuzz-1.f : 7149ccc87126f2d24eb7a97fe8dc19f9318db01203260d765d4bcd47e0973cc3
 RosettaCodeData/Task/FizzBuzz/Fortran/fizzbuzz-2.f : 0a939708e8f378fbba6774b3b03707c1e0b92c1818b97ca7330e9d9823cc8fdb
 RosettaCodeData/Task/FizzBuzz/Fortran/fizzbuzz-3.f : 84dc4cb33c036a62dde9a4be3bf00a8b2ac1a53faefb8980642497da73be57c0
@@ -339,7 +339,7 @@ RosettaCodeData/Task/Knuth-shuffle/Fortran/knuth-shuffle.f : b094b73348d62775565
 RosettaCodeData/Task/Langtons-ant/Fortran/langtons-ant-1.f : a13e535dce619a96d954265b978e73dd3d08bcb5d4b59203da05adfde046e35d
 RosettaCodeData/Task/Langtons-ant/Fortran/langtons-ant-2.f : internal error
 RosettaCodeData/Task/Largest-int-from-concatenated-ints/Fortran/largest-int-from-concatenated-ints.f : parse error
-RosettaCodeData/Task/Last-Friday-of-each-month/Fortran/last-friday-of-each-month.f : f5a9d38f7836e6d9bee9d8b81ab13e8377564596931ac2b172bf7011d8d14e99
+RosettaCodeData/Task/Last-Friday-of-each-month/Fortran/last-friday-of-each-month.f : 3e076fc62b18ad4a392b35fe1513f63d4f9249437e86dff380b9b0f6b2f8ee8f
 RosettaCodeData/Task/Leap-year/Fortran/leap-year.f : 11c19a620b178220504813575d06f5dba7dcbe0ce2434f42d41a54ac82712c33
 RosettaCodeData/Task/Least-common-multiple/Fortran/least-common-multiple.f : dc67fa8d1533bc99fc064c62014ff21b38d80b98f837c2ade535f80c7990ad27
 RosettaCodeData/Task/Letter-frequency/Fortran/letter-frequency-1.f : parse error
@@ -475,7 +475,7 @@ RosettaCodeData/Task/Phrase-reversals/Fortran/phrase-reversals-4.f : 209e38a88d6
 RosettaCodeData/Task/Pi/Fortran/pi-1.f : parse error
 RosettaCodeData/Task/Pi/Fortran/pi-2.f : 8bc1b4c969a31933742b5b438c2c4f388705f65f8809ca5d190c25be12102fef
 RosettaCodeData/Task/Pick-random-element/Fortran/pick-random-element.f : 17c2071402147e05ce5245489d8a04d9fc01218454695600d97608ad5d1b6995
-RosettaCodeData/Task/Playing-cards/Fortran/playing-cards-1.f : 8e8b7824685b4d7d6cc52f983794ac334909321cff073ae1956f0aba06b40ea9
+RosettaCodeData/Task/Playing-cards/Fortran/playing-cards-1.f : 428c33fc25fd857bfd6573960ac6552fc0ece342f0316cfadb56c44c80c10d16
 RosettaCodeData/Task/Playing-cards/Fortran/playing-cards-2.f : 6bed3f844bacf1514f9f573a5fe83195465fde92223ef74927c0b8c61bd4e20d
 RosettaCodeData/Task/Pointers-and-references/Fortran/pointers-and-references-1.f : df48c92d0d9a41f4cfeae6f0a804a3ccc99e851e4521a7ce01febc99bdc61f30
 RosettaCodeData/Task/Pointers-and-references/Fortran/pointers-and-references-10.f : cc2138796ce151f773d99480fc4ac39254d20d5861f08e446242d9ddedb75640
@@ -498,8 +498,8 @@ RosettaCodeData/Task/Primality-by-trial-division/Fortran/primality-by-trial-divi
 RosettaCodeData/Task/Prime-decomposition/Fortran/prime-decomposition-1.f : bcec46c44468bfa90fbf2c959d5382976a8cdc697f3c67db3b9b8ad8a3b98ff4
 RosettaCodeData/Task/Prime-decomposition/Fortran/prime-decomposition-2.f : 6ed12122a34b32c4d984947bca82f0a2721295eb75f3d2dbf473c9155f404b2c
 RosettaCodeData/Task/Priority-queue/Fortran/priority-queue.f : a014e3f3991dfb6907d6e6f55b54ea70287bb5f0f68215f527752449b4c48edc
-RosettaCodeData/Task/Probabilistic-choice/Fortran/probabilistic-choice.f : 3d3eeefb1e46a6e9f8f5c1de1d1af2747717e27868097e6da6042e32cb063323
-RosettaCodeData/Task/Problem-of-Apollonius/Fortran/problem-of-apollonius.f : d420b8590f9c7b3903383747577597fc68464ebe003eed362760da0841997e16
+RosettaCodeData/Task/Probabilistic-choice/Fortran/probabilistic-choice.f : c1bb02157d97c4e4a37f440f8bdd858d324c2776e54e999dc01c9cd33693451f
+RosettaCodeData/Task/Problem-of-Apollonius/Fortran/problem-of-apollonius.f : 5ef16b3bfc08579bd6ec1d2d6fd11fea86652e0d7868d05e4a256ffb00acc0b7
 RosettaCodeData/Task/Program-name/Fortran/program-name.f : 7e84e433e9a062325fe5309aab904945c40c480eab11709534751aec27a972d6
 RosettaCodeData/Task/Program-termination/Fortran/program-termination.f : 205a670625e2a2766bfe8f5b4d3780ef9d458c95650da50a7aaf4df9b4830eff
 RosettaCodeData/Task/Pythagorean-triples/Fortran/pythagorean-triples.f : 0510fcc94247f781c2b50d25c2b7f57244b3216e590e52e433d2a481e105acb6
@@ -546,14 +546,14 @@ RosettaCodeData/Task/Rot-13/Fortran/rot-13-1.f : 8773f92c86c2482382e2e73ef8480c7
 RosettaCodeData/Task/Rot-13/Fortran/rot-13-2.f : internal error
 RosettaCodeData/Task/Run-length-encoding/Fortran/run-length-encoding.f : internal error
 RosettaCodeData/Task/Runge-Kutta-method/Fortran/runge-kutta-method.f : 71955f0391c340b0fefc2529051e4d03ce7e00f3a2d001a903796275a5077518
-RosettaCodeData/Task/SEDOLs/Fortran/sedols.f : bea7c55d27c60faf4434b210b8dfdfc3d535b8f4d5e119283e1f4e5e5976da41
+RosettaCodeData/Task/SEDOLs/Fortran/sedols.f : c9b5bd5d5db335a0e99120cb905610c824020ccf8dad1e98cbc81f72b38c5677
 RosettaCodeData/Task/SHA-1/Fortran/sha-1.f : parse error
 RosettaCodeData/Task/SHA-256/Fortran/sha-256.f : parse error
 RosettaCodeData/Task/Search-a-list/Fortran/search-a-list.f : 54cae29de889febf2f65d182c756bfcb96196d36543c43be2b1b9ffa4ff587fe
 RosettaCodeData/Task/Secure-temporary-file/Fortran/secure-temporary-file.f : c882c44b378bb770e9c6d0a2dbcb26abdd8acd6a41ca535c9429c78257dca15d
 RosettaCodeData/Task/Semordnilap/Fortran/semordnilap.f : 0142baf8ec333a7b4d5c7f0ed0ce64c2a4625902561c1ae2e4ea1fef3a623d82
 RosettaCodeData/Task/Send-email/Fortran/send-email.f : 2db8cfd487ba4099dc245da401fb75ea2cca794e73422c4e220af6a3d973e581
-RosettaCodeData/Task/Sequence-of-non-squares/Fortran/sequence-of-non-squares.f : db25bf3854cfcc19f87374927813aeee35bcbca29d6584e823dd6a838520f1d5
+RosettaCodeData/Task/Sequence-of-non-squares/Fortran/sequence-of-non-squares.f : 844cec3124f1cb7806a218f9894b402dc4689d0d172801fbedbab9090fffccb7
 RosettaCodeData/Task/Sequence-of-primes-by-Trial-Division/Fortran/sequence-of-primes-by-trial-division.f : parse error
 RosettaCodeData/Task/Seven-sided-dice-from-five-sided-dice/Fortran/seven-sided-dice-from-five-sided-dice.f : 0ded21ffb0a10d2bc0e5c9be671389b9babe46a563efffcb1714c4dc889b08d9
 RosettaCodeData/Task/Shell-one-liner/Fortran/shell-one-liner.f : 591a447fb1a50c94eb7f6bcc2f11586ae5eb11300f6a67a5ea2e7c3b5e58042d
@@ -598,7 +598,7 @@ RosettaCodeData/Task/Stack/Fortran/stack.f : 6ee53c603a055238364f854780cf7c26f5d
 RosettaCodeData/Task/Stair-climbing-puzzle/Fortran/stair-climbing-puzzle.f : 0f92925559ada85cc8ed4ec7e508c6e542030cd00f73959a458ff0ab8fb09cc7
 RosettaCodeData/Task/Standard-deviation/Fortran/standard-deviation-1.f : 892b1475e05d07a9c7ab4778e31f7caeff485435efed30e81369c6c6cc78d974
 RosettaCodeData/Task/Standard-deviation/Fortran/standard-deviation-2.f : parse error
-RosettaCodeData/Task/Statistics-Basic/Fortran/statistics-basic.f : 70590e7b27cb3d281ab7707739794ca9be75e8668abcc61111fd8ead428c19a9
+RosettaCodeData/Task/Statistics-Basic/Fortran/statistics-basic.f : 4cd95177bc33bf1741a245aa4cffe14060c32c3978a7809cdb7a570be4b63568
 RosettaCodeData/Task/Stem-and-leaf-plot/Fortran/stem-and-leaf-plot.f : parse error
 RosettaCodeData/Task/String-append/Fortran/string-append.f : 056a01c77971f05c7509ea89e70334cc896b853a1500d9c2cefb98ee5928f50c
 RosettaCodeData/Task/String-case/Fortran/string-case-1.f : 2fedbb9e1a1871757d3b5be200b84ca1b88ff8a4818790aa377c54fec62b1b12
@@ -623,7 +623,7 @@ RosettaCodeData/Task/Sutherland-Hodgman-polygon-clipping/Fortran/sutherland-hodg
 RosettaCodeData/Task/Symmetric-difference/Fortran/symmetric-difference.f : 47dd059484379258e9efce3d659c1c5b22dab0282add8a8686e7ed8889bab159
 RosettaCodeData/Task/System-time/Fortran/system-time-1.f : 88d6e55d1105eac6d948fbb4da6628da64c740bf8a05efb8f3741ff87104ad63
 RosettaCodeData/Task/System-time/Fortran/system-time-2.f : 81df150338503aded6ee5267ee913c2e7f0ffe30496790d8873c1aa3f33fc87d
-RosettaCodeData/Task/Temperature-conversion/Fortran/temperature-conversion.f : 1eb3464ead73049f47c5322b37b6c0acd52e0b182cf17aeef7e6ebe50f93421b
+RosettaCodeData/Task/Temperature-conversion/Fortran/temperature-conversion.f : b204c6c21ab27b952a61d4d350f560ff8e2f3ba8eb82ea061b31b6266c6d0cda
 RosettaCodeData/Task/Terminal-control-Clear-the-screen/Fortran/terminal-control-clear-the-screen-1.f : c1de1918b73c422d3825e0a092921757f0ca933b9040cf597a86a4ef93c6b7db
 RosettaCodeData/Task/Terminal-control-Clear-the-screen/Fortran/terminal-control-clear-the-screen-2.f : c342405faed44d931b45a4269cb9a667d0a05db6073f4a1c61d958eda548d77d
 RosettaCodeData/Task/Terminal-control-Clear-the-screen/Fortran/terminal-control-clear-the-screen-3.f : 3766f655e98fe2b290194ec70d8cfdfc8c39c5e1232a134e244036de2b6a7d89
@@ -670,7 +670,7 @@ RosettaCodeData/Task/Verify-distribution-uniformity-Chi-squared-test/Fortran/ver
 RosettaCodeData/Task/Verify-distribution-uniformity-Naive/Fortran/verify-distribution-uniformity-naive.f : 045b93a71610f654768c91c291b215fe65ed48ce00b3409bc2c9c8ae16470feb
 RosettaCodeData/Task/Vigen-re-cipher/Fortran/vigen-re-cipher.f : 65c9bc24e9fb80718570b10c722109717511830db1e6a59c3c98cda3a8106f20
 RosettaCodeData/Task/Wireworld/Fortran/wireworld.f : d3be949c10c6eebbe2c2389a1dc508220f7eb4082c07753f2a21a83c148e06f6
-RosettaCodeData/Task/Word-wrap/Fortran/word-wrap-1.f : ece03053b055506ac676511a54366140b1f92d2f4a28729b58e215669520d2b8
+RosettaCodeData/Task/Word-wrap/Fortran/word-wrap-1.f : 95097b84353ef86eb93e9380683a8ff02fefab40fd3f396e3bc2c570c9d73297
 RosettaCodeData/Task/Word-wrap/Fortran/word-wrap-2.f : internal error
 RosettaCodeData/Task/Write-float-arrays-to-a-text-file/Fortran/write-float-arrays-to-a-text-file-1.f : parse error
 RosettaCodeData/Task/Write-float-arrays-to-a-text-file/Fortran/write-float-arrays-to-a-text-file-2.f : 14568d07952459593d44455e40f2c5a962ec7d8075401619d8a7aa7982cd4ba8
@@ -678,7 +678,7 @@ RosettaCodeData/Task/XML-Input/Fortran/xml-input-1.f : 81bb08ddea6cb9fcb34812410
 RosettaCodeData/Task/XML-Input/Fortran/xml-input-2.f : 3250b7be528be17553321b7b04786fa4147760109fd3dc2262198a88334b04a2
 RosettaCodeData/Task/Zero-to-the-zero-power/Fortran/zero-to-the-zero-power.f : 9a7e4de9b75d5871e5fb9c69861055b60d394787b6387d863a7f1f392e4bc6ab
 RosettaCodeData/Task/Zig-zag-matrix/Fortran/zig-zag-matrix.f : 40be9bab9ec902b8991c6ba4edad09c189a046e3efda3e66528a698181dc4677
-RosettaCodeData/Task/Gamma-function/Fortran/gamma-function.f : fc4ebbaf4297f6a41a1fa65f8a2132008d19d8e95fdfb736b4077a521129824e
+RosettaCodeData/Task/Gamma-function/Fortran/gamma-function.f : ef1a4b36734fbb7bba079a248e1e7bc33bd6ede96aa0dd5a4de33efc58f5c977
 RosettaCodeData/Task/Rock-paper-scissors/Fortran/rock-paper-scissors-1.f : b48e78f562c1b99e8b4d0528536a35161776a061b503b03d805b5a3bc046062e
 cp2k/src/acc/acc_device.F : 7199d2994ed74c719aa6e2065e25ee9c1c41de66d81ab210ed79a94b345fcaef
 cp2k/src/acc/acc_devmem.F : 2fa73f4e1b00785c74b4ea494d0fc97fd8d163dd3d77783d4c21dcf9bb56fb67
@@ -700,7 +700,7 @@ cp2k/src/acc/acc_kinds.F : c222a6888e9ab8d385c81a7dd8e15939b5eb05013c86dac081f26
 cp2k/src/acc/acc_stream.F : 36ea4c699fc211909f0a746c9ada6d2db99cd0279f5b0bb1c05e0b91a54edf27
 cp2k/src/admm_dm_methods.F : 009eea4c6dbfcec6bbe5971b5d57bcd2d52f13a7f8f6f5bddf36c52ecec1a2c8
 cp2k/src/admm_dm_types.F : b19e03acf5a10577011699bbb037ffaa56ff194c86e57ca0f21d6a6b39860e17
-cp2k/src/admm_methods.F : 9ecfbcbd8cad32d9a42f2f967445c75cd824d41f8862a91c9193061c021e1327
+cp2k/src/admm_methods.F : ef4b90a51195f3d0db8aa0790791b96d40202e5773438ecfe472910d77c8088f
 cp2k/src/admm_types.F : 31d93b44d429899e1e98343b9e7a693f1b6fe0fbace658bec5432bfdd8ebbb2f
 cp2k/src/admm_utils.F : 0a7746d2b61e1d500d8ccb6048b3aa830ea08601148cb692cd3af86934a50ff9
 cp2k/src/al_system_types.F : 0ca49af5b0e24b479b09e37d025a87685dbbf0f5454f5bbd0cf874bf1065b60e
@@ -708,7 +708,7 @@ cp2k/src/almo_scf.F : 739a1a200f94598bfc4d6d534bc72a9a7d451368d74c7c068862034e5a
 cp2k/src/almo_scf_diis_types.F : 3df1c1618652dbf7a2d505f8ee2e34852a9847e1afe5318f348f4e068fc935f0
 cp2k/src/almo_scf_env_methods.F : 75eb4eae3d01f518aa727e0aa8a266e9bc7ef1aaeaeddf1ea04867a19ed52ff5
 cp2k/src/almo_scf_methods.F : ef704ec692454f85bf143aca1c8f4af095ea260c036ce46e9847a8c8affcca65
-cp2k/src/almo_scf_optimizer.F : 7dc543771b8a8b684a4d7f4cff1eb02d9fb50b363a32a8b56527f5ad6cc15ce0
+cp2k/src/almo_scf_optimizer.F : 6a926286930db346dcb57543dd96daa72565c68a8ee0df92c9584920f00a9b3f
 cp2k/src/almo_scf_qs.F : 34b3c4f5280d18f922fca0a4726dc8b801758bf4bfd431cd61142b2783c83fa6
 cp2k/src/almo_scf_types.F : e1782d5997b62aed11f55869e200fa9cca7d9bc0b8571f2a604af43f789dce31
 cp2k/src/aobasis/ai_angmom.F : ad86b09877b26894c75650b0f059c1776622ca38d8a1a28d533445749a492b88
@@ -775,7 +775,7 @@ cp2k/src/atom_pseudo.F : 68e6400c202eaaf4096f8c3eefcd257d3f68cc17e67c657e28fa49c
 cp2k/src/atom_types.F : 93ae8116398b634db40ae35930d5af39b385f03b3e2f2d3776446c22e8ee8814
 cp2k/src/atom_upf.F : c2a25b940605fae697d0d517a3a837d137e2e69c16a42b935b30351e9651c19e
 cp2k/src/atom_utils.F : 3bfbe8d4ced67d618d1dce76076e164eac345b83b6c3947c4f552ef91fe7a8e2
-cp2k/src/atom_xc.F : 22cf0006e172d98219f2891b3572934422674795a93ddf5ec42ca77d3d5eb2b8
+cp2k/src/atom_xc.F : 6cd6aeab75009ec23b877bfe4068318d8649ccd3260e726a86d456e1e55d8d15
 cp2k/src/atomic_charges.F : 1ac92b4de3aaf8ba87f0af12d3904cdf84a50514de0830386598004015e5b20a
 cp2k/src/atoms_input.F : 00d67b7c8e289c9046aba69ae713bdb8addbe80ec3510009b00de1dc07fee386
 cp2k/src/base/base_hooks.F : a856c917fa5e0858f48be60a69b029d0d3d07c1b25bbb7120a737a74a35b57a6
@@ -800,7 +800,7 @@ cp2k/src/colloc_int_kloop5.f90 : 09490b5a3a5b713a701a10715e3c8e99009531f3ce465d4
 cp2k/src/colloc_int_kloop6.f90 : 5a982561b5af3cf7798c795c2e682c0f8696fac7f90029d7c508bb06ac886783
 cp2k/src/colloc_int_kloop7.f90 : 9cce216b466ddc8ad82ae5adc93f52c7057a536f17071fb39710999bb1ba24ca
 cp2k/src/colloc_int_kloop8.f90 : 4c69ec3af05a85bdc31cdf92fa88364158e8def30e3e9afff6a71678b1f7992b
-cp2k/src/colvar_methods.F : e40e1abf4e022b032b8170013c5394a7bfd278804c2b5565171585af7871ab56
+cp2k/src/colvar_methods.F : c23f63ed37cf872a618d3e35e3d5b4eeb5caa7c117c6d0b3c4112459fb5344f3
 cp2k/src/colvar_utils.F : 08622c8372ee49586d68dd93440eb29aaf7ab3f054c23e706b1ead5d6d720220
 cp2k/src/common/bessel_lib.F : b626894d794d64646fcd4aa040d6d3b8c1186ba2f2f1e8ddd2db1a60e66aa42b
 cp2k/src/common/bibliography.F : 6fe0afd36477594ae3cebc0c6d71eab5f650e45d34920187c1c7ff164cbee19c
@@ -824,8 +824,8 @@ cp2k/src/common/cp_result_types.F : 961615cba61f2ee27c9e12020b1c0339fb4bc0fc3264
 cp2k/src/common/cp_units.F : dab72f6f57d770945575c14559fcdccd7acea2c0dcda586afb9ae738edf5d41f
 cp2k/src/common/cuda_profiling.F : bdbd7f4713cd337628d2294528a701f5dd0641e79d19a065e67857875f65382b
 cp2k/src/common/dict.F : 483145b0f80d1b56b4ded904957b45b59f183d1dc55e0aaa02cf984cbd0c6c81
-cp2k/src/common/dict_i4tuple_callstat.F : 8210395ec23c39cdd198957857233dc9bc3d7c7becb436bd6cf6b54fb1442100
-cp2k/src/common/dict_str_i4.F : aebbf65a462102aebfeb1ceda6f0f43c62b3121a2270d8926d25788e38ba40d6
+cp2k/src/common/dict_i4tuple_callstat.F : edf916b5dc896d478ad0f817166d4aeb4091791a4b8f35e7cba66b13073c3531
+cp2k/src/common/dict_str_i4.F : 44a9c3714ea10036f131e5b14e4d10a8675d1ddebea1683394e91cbded9e972e
 cp2k/src/common/distribution_1d_types.F : edfb968d780e9fa2ff71ea9c8c711268b94d4ca57331ab02ad8b0e0e79c1a362
 cp2k/src/common/eigenvalueproblems.F : 7b2e0b8aae108d5a11782f70aeee8cf8d1bec7282b00eded5909bcf338798ff2
 cp2k/src/common/erf_fn.F : parse error
@@ -844,7 +844,7 @@ cp2k/src/common/list_timerenv.F : 6e6232600d006b78a5e3e80d038987d9d2d2293d432cc0
 cp2k/src/common/mathconstants.F : dc284d9a83d329367efb15122d5883e35dc8a1e0a663da196a7d0a447900e013
 cp2k/src/common/mathlib.F : 5be60a99858fc34be52dee258a93297606045c424639b5c22101d5a0ace1cb46
 cp2k/src/common/memory_utilities.F : c79490b10729ef1efd0f75c13287766a30311d838a798b2588212e8702481efd
-cp2k/src/common/parallel_rng_types.F : 3c2361996223cce423975091cb2b285a50f0a3ea2a3bd391be4ec0f21c32dadb
+cp2k/src/common/parallel_rng_types.F : 4a33c504c8f0b15da93ae25d97c2924f3706d46c97d9d0647bb2519b649804d0
 cp2k/src/common/periodic_table.F : 36f16276953809a15636b3561950f7afe82ab2f71c158fb0190f2848631776b9
 cp2k/src/common/physcon.F : 6101d4ff3842cc2fa6ff88bcbc84609ed57dd2d9d0228abc1928e58478c5ac56
 cp2k/src/common/powell.F : parse error
@@ -856,23 +856,23 @@ cp2k/src/common/reallocate_5.f90 : 1aed8fab9d01796820e445567cd990d76c559fd8b451e
 cp2k/src/common/reference_manager.F : parse error
 cp2k/src/common/sort_m.f90 : f0a9cc1a999a8e594da079433371adead19ac5958e360fb8192c6bb123d316e4
 cp2k/src/common/spherical_harmonics.F : afbc5c3958fcdadd4a7612e885c0b875efeb81c476ee396db57a14548060d17b
-cp2k/src/common/string_table.F : 3ab51a443fb707653934dc39985b3b7f983ec82c4e60ebbee9af70744e7a0186
+cp2k/src/common/string_table.F : 8009ad2b8e82075a7c1e7f566bfd45b1c088309074d1167412c0372349f00042
 cp2k/src/common/string_utilities.F : f025ebe649d79d9c856d470f696e6bb2fc744ffd7677658068256ba2ad1a0a4b
 cp2k/src/common/structure_factor_types.F : 21248734aaef14570ecd7bb20975992d01297282c72ad3d00f62077da45bdfb3
 cp2k/src/common/structure_factors.F : 3f7d8350af9465d86017e00a76e4dfb38a2320f38f5e1a2f080ffdbf8f6fe8e4
 cp2k/src/common/termination.F : 5789ff7666643e5aa0dadad68954f9dc8775567fb8afdf9b50762e2fe8cb9587
-cp2k/src/common/timings.F : 162586c6313141ef9b887f01c785e38883f3754fb514f11f21ae0ba1870678fe
+cp2k/src/common/timings.F : a0d7156db5af55a162ed9fcce942014b5f333acfe1b54211ea85915886ae9d1b
 cp2k/src/common/timings_base_type.F : 09532b8e72632df6fda6b287c0e95328d5934d6cff4aa8aad56e66c0637a99df
 cp2k/src/common/timings_report.F : e06662e8b2a504789b5363060ac7e88e90be995e797f2a9b1d25df2a89a83a55
 cp2k/src/common/timings_types.F : a2cbfbedaee2f5b064013e56009ebf242e52df03eb2270ff9e2fe9a296fd5024
 cp2k/src/common/util.F : 74d9a53dbbff2e3ee3bf791ca6046c7fad9dd159a5e3629632d14e6b31d064a7
-cp2k/src/common/whittaker.F : 25336b3b97262ec3974b583e67da2fdc80d0e47e237a72401f63dfdf83583df1
+cp2k/src/common/whittaker.F : 8a0f75b2878cd9a3a1f023b41d40c2beec816e2251a02e2f0b8f0007f55bf7eb
 cp2k/src/common/xml_parser.F : 1e38e0562ffe6ab1679ea80f4f8e7126c6f0ff7ed23ed2d28ac9496354b4205d
 cp2k/src/commutator_rkinetic.F : 3a64030b08c1dedb9f6f6b7c9277caa11a877b777cfab999b3af22964c4000e9
 cp2k/src/commutator_rpnl.F : 218fdfbfe0462674139422fa9c32e93686f5f3b1470c4b6a7b9263ebd7d04a6f
 cp2k/src/constraint.F : 5d511649f554a092765818aa68c795fca8fd2a6b12f9dfacbf47cad1ed7d1e0f
-cp2k/src/constraint_3x3.F : a274400a905c7d814548baa4e25897e21e11f0c864ac60b0c56b6b7b045c26cc
-cp2k/src/constraint_4x6.F : b7a90884c570777633e6b00e768270686955833e16834ab03023b0004e777e30
+cp2k/src/constraint_3x3.F : 40a08d5518ba2984abb2f6475d3d9afdd9b351eee8b062e4d35da37d48a6087f
+cp2k/src/constraint_4x6.F : eddc3d98be82623c3cb10b27fa339aab03b031ca89c93d517cd88d64d7b58ae6
 cp2k/src/constraint_clv.F : 430e0ad558fa1eaf487fff493b15890c3d274293145c0b835005885b618af6f0
 cp2k/src/constraint_fxd.F : 8a016ba30f8651ac72c488fa98e0cbfb8b6c59d5077d1f90bc0c25027dde3220
 cp2k/src/constraint_util.F : c6b080a9951fcdf0810fb0cae3ca2294cf7793c65f47979167d488f865875c86
@@ -880,7 +880,7 @@ cp2k/src/constraint_vsite.F : 5570f18af57e34af27656a53c1e595ab403d6d79f058ff7229
 cp2k/src/core_ae.F : c97441d557394e348240603ba8cdfe3e93d63ca3765578b7aefb740830cadabc
 cp2k/src/core_ppl.F : 5f8ddfa0dfa2fe9bae7d0b4cecffc1761aded50a56b2e202fe476de902575186
 cp2k/src/core_ppnl.F : 6720bddc263532755985a2594ed08d12e1a4dd72e7936166df58e62767458462
-cp2k/src/cp2k_debug.F : 2ac0b13a61d009b2a174cda18d10cb1c9cda9fede9a7f066437ee8c4cbfe52f5
+cp2k/src/cp2k_debug.F : 7c51e7d6947fbaef1e4a20aac833fd60721390c4cc49349c0d0e193e2533a1ce
 cp2k/src/cp2k_info.F : 01ca5613ee30abe54f9ead5cd19f7f2277da18d7b81b3063a352dfd30ea198fb
 cp2k/src/cp_control_types.F : fd2d429cced675eda199c903baceb0c882432767daabc229398a8cec6f82c722
 cp2k/src/cp_control_utils.F : 4fcd6c5aba748af8631d98852f0803032531e82c1771a1cc01f2fc91fca46885
@@ -891,11 +891,11 @@ cp2k/src/cp_dbcsr_operations.F : parse error
 cp2k/src/cp_dbcsr_output.F : e7e1a21a27c7de5c5d1768a5ad0bffe5b23f8333d96c8236edfedab6af9ebd66
 cp2k/src/cp_ddapc.F : befe058ccf211f54be8775411cdcd7e6fc8075ad69c99185202cc88eca0abdf3
 cp2k/src/cp_ddapc_forces.F : f3230f52a17460966fe8e3fc987faa267571eb0ce7f260e4612030c2a105228b
-cp2k/src/cp_ddapc_methods.F : c153248168ef12cad91beffb07c7316d089cb3049889b035ad017afd7cf50870
+cp2k/src/cp_ddapc_methods.F : b2d51a3f71e93a00abb44057187b6651783a9f9216906fe0906b33886b5d57ce
 cp2k/src/cp_ddapc_types.F : 8617069e43e3a391aea1d222f3bd8b9a3bf60d0d1e7d82efe6bed83d2b631c7c
 cp2k/src/cp_ddapc_util.F : 9b1dc8c4eaf9e71d0d6ec815d6204687dde68c0f6b162bc0bd59f17c6ae112ed
-cp2k/src/cp_eri_mme_interface.F : db02e09fbca44095ae070f11f5663f8be9cb4686d4716e369b0e0c13e9df122b
-cp2k/src/cp_eri_mme_types.F : 98f49fbc74c9f7ea695beb6083410a22f5e629de9f756b36a0ea9f71b6e586a6
+cp2k/src/cp_eri_mme_interface.F : 142b07d05ba7bcb29b3447f731970de4f51f0ef147e28069cb230ceb704b3da4
+cp2k/src/cp_eri_mme_types.F : 8651fd07bbb8782fec560f5d16c4478eba490c3c127e363602ba9ee7e907c8cf
 cp2k/src/cp_external_control.F : 999a145424984f68bb766401effb3e89bb5000deb7f9811072bf17c424b73c17
 cp2k/src/cp_gemm_interface.F : 9dc64c9146e74c7594c32568126908d8a9303e34c1e6def301c43387de558a50
 cp2k/src/cp_realspace_grid_cube.F : 337b71c7305d6e2ab33e65765d56dc6fcef9ff43d8a7ba9f3285a258d80abc26
@@ -905,9 +905,9 @@ cp2k/src/cp_subsys_methods.F : 936a1cc8db8a514eced287760ad9b7a1c361e4652d5a30b26
 cp2k/src/cp_symmetry.F : 7e592036a8e2670f804d64b97bdd14b67b99d9c706d70467ce92a3cebda07cdc
 cp2k/src/csvr_system_types.F : df4ce26c162ba3770aa9193d90a1529db6c90ab035bee9f74171394963257e41
 cp2k/src/csvr_system_utils.F : 94518a1c2c9d2e4d344ac05a1d234b46d1ca0ad638f977058005b8f9f63cf2f8
-cp2k/src/ct_methods.F : cda68390dc64ba83b100527abfdebe2d694f5547f5d10bbd91fb4ddbac124409
+cp2k/src/ct_methods.F : b47cf220bdb66241c4a98516775243738a5524f375b31e13c1f0ef56aa11fa19
 cp2k/src/ct_types.F : df4fa217c6c13ad7fc137b69ff1d459c071ccb08129e806faf84d775321c3840
-cp2k/src/d3_poly.F : f1124ea1a1910ba18bcba17710668d0f247c0ed953246a0d0ce19964c4e5ace9
+cp2k/src/d3_poly.F : 5257e25a848bb871e447a8148172176b7e429182f20f6156aac1ebc00d3ea113
 cp2k/src/dbcsr/base/array_types.F : 0707e166f7d651e4ec88aa889c3360e40cb2db632a39b30baa452495997a6202
 cp2k/src/dbcsr/base/btree_i8_k_cp2d_v.F : 26099e92bbb48994c14250662c5a67a0e2f0596395e179321b2fdcd2e8d86682
 cp2k/src/dbcsr/base/btree_i8_k_dp2d_v.F : 13a39b76b19c198cb09f991f40b37a2abdefd98dc1dc96284baa9da87d1e9e21
@@ -917,9 +917,9 @@ cp2k/src/dbcsr/base/dbcsr_array_sort_d.F : 9c5454ed37796b0b38a58a0f1e301d2a7f63e
 cp2k/src/dbcsr/base/dbcsr_array_sort_i4.F : 6051b6890ce80d77f1ca84ea82772a5c82ba0582a2c987c42fd09275b00b6832
 cp2k/src/dbcsr/base/dbcsr_array_sort_i8.F : 8a685ecf3eb424336fa09452b3e3dfc9f02c0ec69a71225f3463aa7cf4e94751
 cp2k/src/dbcsr/base/dbcsr_array_sort_s.F : 72bdd9ddae055a0a0b4c852429b941731a9bfe64b1ae0446631e4c41a2f47a8b
-cp2k/src/dbcsr/base/dbcsr_config.F : 8357a7c8bf131d5c0f872c7182c2db7834f4f5f9e7799c0c989bbd0162454769
+cp2k/src/dbcsr/base/dbcsr_config.F : e4b5ae71a7350d40e229c3be8b85e445a177b6c9daa63453359bbf384107fb8d
 cp2k/src/dbcsr/base/dbcsr_methods.F : 1158d6035b9dba7ca0083ddaee7df6d32c7eb03e92a80ed638fb74366b9bf019
-cp2k/src/dbcsr/base/dbcsr_toollib.F : f6584881b7544514989b641e08180cbd68b79df29d732a3cf07eb2bd32d3be57
+cp2k/src/dbcsr/base/dbcsr_toollib.F : ddb48c5000dbf70bbe46cc4104ce7532de021de5dcd3811f68a0f97fc4520588
 cp2k/src/dbcsr/base/dbcsr_types.F : fca6225a9c08cdb201d48d1003460a1cbef7801ef98c84e26a8c68a65f0e4195
 cp2k/src/dbcsr/base/hash_table.f90 : 596042fad334a87130e7be5397ed8e7a85b37a0ddb3f731e702edb4d5ccd7a85
 cp2k/src/dbcsr/base/hash_table_types.f90 : b95451ee9710e1f3569aea34197ede390eec326153a2498d7c60f0505a159371
@@ -966,7 +966,7 @@ cp2k/src/dbcsr/dbcsr_example_2.F : b65765cb4974bb88314ab10fe19fac3c10ebc8685cf6a
 cp2k/src/dbcsr/dbcsr_example_3.F : 7f6e872a2d2984d9ab7fdbf9a358178a44985f8f1fae21e7b432f553a23a09e8
 cp2k/src/dbcsr/dbcsr_lib.F : b53eca224edfe6ba93809ecec284951073df080a2326df23ca83ed91f66bc251
 cp2k/src/dbcsr/dbcsr_performance_driver.F : b0daac12a81ce5ef29f205e2252bdb46836a9af54e02b4f56c02ae43aa25e0c4
-cp2k/src/dbcsr/dbcsr_performance_multiply.F : 114ced51e09c3208abdcc0d705d01a4a8d1edd101019c7adf01a1f26f85f0d0c
+cp2k/src/dbcsr/dbcsr_performance_multiply.F : 5e9ce89c02ef2d45c53b6aa56ee96b5a6fd073d55ad3eab3c2ccd7e69300d64c
 cp2k/src/dbcsr/dbcsr_test_add.F : dca92d3f92c82910b3d472aec0d99f17ae4c6ee4b829fd7784073b89aebb24bd
 cp2k/src/dbcsr/dbcsr_test_csr_conversions.F : ad2fb45a4f7a5680b75fa0eed490def4b026d33d4ce66aaa4a93b1843b07cc49
 cp2k/src/dbcsr/dbcsr_test_methods.F : d2f8a34e3a4ce052dc5822bca974f827a0d50fad2e559c1e8ecd0d94bbf5c08e
@@ -1076,12 +1076,12 @@ cp2k/src/ewald_pw_methods.F : 426807ac31520501cb1a799bb08cbb936dc37577b8e93b6b1b
 cp2k/src/ewald_pw_types.F : 896810ee2b79a166eed0e5ac5e6e06ecf8d795b6ab1c231c94681d16dc0838e2
 cp2k/src/ewald_spline_util.F : c4f77d4550f85edede673834c11f6c90ad74cfe5abbf148a7ab34434543c0ebe
 cp2k/src/ewalds.F : e75974c766366b73d5ee7e2e800b9e50b0dbc889904a7b81e8b58a7ad6f45170
-cp2k/src/ewalds_multipole.F : 2e5c4a812e15fa7b3eec8f8085523c6b28f8233c0badccc44873b7328f3d84dd
-cp2k/src/ewalds_multipole_debug.F : 536d2d011c0ede82c336fedecb2d26a592bf9b23998eca266c92fde039b80459
-cp2k/src/ewalds_multipole_sr_erf.f90 : 63fc925b302069ae9a69d4664d4176157a6f61e958604f11642367a5f79f1132
-cp2k/src/ewalds_multipole_sr_erfc.f90 : 802d2331e4701c357ddd0b2dc5f4ec1458039171f05350053068e3f042c48572
-cp2k/src/ewalds_multipole_sr_gauss.f90 : c68edf4665ebe66a06d92f47fdcb17b81f3d051637cf9cd71ed7164d7e945fe9
-cp2k/src/ewalds_multipole_sr_pure.f90 : 6f4d735842b9bf0672bde9ba17d58a5f6a9378b92b1f291bf528c9a77927a7f8
+cp2k/src/ewalds_multipole.F : 3cb4dc3ce86313fe0da45c3dd949c6f77dbdb6bc522487ab76c9a82e2c52b534
+cp2k/src/ewalds_multipole_debug.F : 0ab04a1493ee8e53cf1d7d735157654c7d0972e98acea9be2e7953add72be0b6
+cp2k/src/ewalds_multipole_sr_erf.f90 : 21ba8860addf29b059d51821be014bb0e132a0d52f64e2f97ce78c3dbb008c6d
+cp2k/src/ewalds_multipole_sr_erfc.f90 : f91f9b33deda83c24ad8f8e43005ac211c9e8eba8c37118dc7b04c359ffbe8c8
+cp2k/src/ewalds_multipole_sr_gauss.f90 : 02e0575affb83c5d4e11604d96a43b7a18b23f5f8226bf3259c197b13df9e2a7
+cp2k/src/ewalds_multipole_sr_pure.f90 : f4cb5f46af9f7d769a3ffa44bcb7264c8ec699e908fb70ae64a7e160b5c3af3b
 cp2k/src/exclusion_types.F : 26141d0609c91b195fcf2c02ff8d350719557e08016868c9988bb554280618e8
 cp2k/src/extended_system_types.F : acc28001969ac9aa2e514d00f0ca3f8cf4d545f5943164963350439b5518ae16
 cp2k/src/external_potential_methods.F : b27f8543094ed139d3ce6faa4f7360312b8e8d3a6d2aace5dd30752994be4f04
@@ -1093,11 +1093,11 @@ cp2k/src/fist_energy_types.F : 2aa88182d4d378d265e34c55f0bfe5c73187c0362d582ef45
 cp2k/src/fist_environment.F : b60370f9fe083b7fb3c64c25391161585a22547c31e176f9aabe9cf3f193f8ac
 cp2k/src/fist_environment_types.F : 1f25f25945a445f5cd8225723753a7858fa82aad6ff0b4338172326d68e02986
 cp2k/src/fist_force.F : ca2dbb7c4cb3c7eb6252ce1e69842d06f4b3efe76d5a0045bd77f05b88b0ca53
-cp2k/src/fist_intra_force.F : 71e898f57097997f33b2b5ac95795d078522ac59c852f386ff9389486ddc21ab
+cp2k/src/fist_intra_force.F : 5d9161d4db855b996709023ef02cd2965acc8fa7be4885feb2d6b1117b7f4d56
 cp2k/src/fist_main.F : 7f16d890c13fa50a602f41c4e7b08f3a26e6198ed28f46fe4fbd8786b575beab
-cp2k/src/fist_neighbor_list_control.F : 8e347491e955a8629ab9c696dbda2775cf8757ccedabc037fbef425a8fb44ca9
+cp2k/src/fist_neighbor_list_control.F : a72916c5384372bb9b53dfb3383eff355d0133282304b6a9d52ef2d34360f7a8
 cp2k/src/fist_neighbor_list_types.F : 0d99ea43231eaf0d21d7b0d87530fa0ea5dfd35e390a871a9b053cfb64f41855
-cp2k/src/fist_neighbor_lists.F : 2fc99d716a31a9b03f491b3c5eeb44f8426862bbf17b8999d5f87f2b81b28c0b
+cp2k/src/fist_neighbor_lists.F : ae03c3fe387eabf44973313d1fb8a49743b2475ccdd2bf22141cda76b0089cd9
 cp2k/src/fist_nonbond_env_types.F : edc2554fd845cb44eb9db94867744bc0d6b676caaf0df96fdabcc2ed65023877
 cp2k/src/fist_nonbond_force.F : 73bafe36fcdffb3774902c32ba7dc8dc7624b9cc8608b447a6fd209e91829763
 cp2k/src/fist_pol_scf.F : d1bb6b1966fdde57f23e935463f1cad86f7d14ef65aef9e2c12e5c9953949a30
@@ -1114,7 +1114,7 @@ cp2k/src/fm/cp_fm_struct.F : eca4dc07cfd7349b1cbd4e4955f2c8b92fbdb883b90af59a1fa
 cp2k/src/fm/cp_fm_types.F : 1363efd5dcb008ffdcbb78ab63f027b76e5651446c95f0c75f4a490de848d445
 cp2k/src/fm/cp_fm_vect.F : 244462a902045ba58d07ef8a732ae87769c2f351ec665415efe62f7f62de4d69
 cp2k/src/fm/cp_linked_list_fm.F : bba2699ae7481df19adada95f88de6caa2acb1d80f1f271dafec179ca06447ea
-cp2k/src/force_env_methods.F : 7c8d7caed245bd61333a9c9f88176a4a8121312d885a735b165b90c1e585ca1b
+cp2k/src/force_env_methods.F : 41cba60497404e4f57310302b786dd8eb28a7d42fe05b462dc82a4c818534a10
 cp2k/src/force_env_types.F : 87633b899db3ee43f6493dd7ae3455c4f33784c374b3c53fca4d6bde0dd45264
 cp2k/src/force_env_utils.F : 0062d56778fec57c15dc371c5eaa7ebe9999fcfa4499bd73167bff0ac56558e6
 cp2k/src/force_field_types.F : 8a41b8bf076f3d71b73848395fcfa7e1bcd647c241bbb3db827b76385ad650d2
@@ -1133,12 +1133,12 @@ cp2k/src/gle_system_types.F : 30a135f5048cfaf61c316c1aaf0ec49715e25ad8736f685d56
 cp2k/src/global_types.F : 477715d33bc995574f6e68c7ba8587d84cb15275048fbdf2a9417bff78106152
 cp2k/src/graphcon.F : parse error
 cp2k/src/grid/collocate_fast.f90 : ad1e3e7f7d170cf786d42b89127bee120d871bafcb5d73ce6f591a91d961705c
-cp2k/src/grid/collocate_fast_1.f90 : 98a16926656298e8a0a2c8631bff5875e9bcef110b0b9fa5f34bd3d8b75752e2
-cp2k/src/grid/collocate_fast_2.f90 : b38cf37b4f509c3a07f564b8f01fcd67d6a854e5324e4da3d480e08dbc02cba3
-cp2k/src/grid/collocate_fast_3.f90 : b7a10db6e2c48c24760b9e4fa001c641dca21c0bb16dac0e82b3c4485f7ba463
-cp2k/src/grid/collocate_fast_4.f90 : 23b5697a23e6516dd51e283ca1f460c00c9108f68f641e4c3369480709ae73a8
-cp2k/src/grid/collocate_fast_5.f90 : 61045b39f23e841b0aee3494acc105dc66a0de65b2d4541dcc1e5b919cf7a620
-cp2k/src/grid/collocate_fast_6.f90 : 7fcfc955603c8b331cc73d1902fa76be78afc68ccb64345d02e3412bf505579d
+cp2k/src/grid/collocate_fast_1.f90 : 2a4e18f2a7a774aff13bde0df098c241e4e7f72fd4ea4d032cf7be99b8e98af9
+cp2k/src/grid/collocate_fast_2.f90 : 64fa2e0c8bff902ff293561d7c96ec621dc303863e3ac1d46ba62790a1f447f7
+cp2k/src/grid/collocate_fast_3.f90 : c6001d88e937b447c66ffd0f2e4a3f9840d47104dba35f9331eb63b5d1f32aa3
+cp2k/src/grid/collocate_fast_4.f90 : 85a60e725912d6cb5b65b36b145141b9f559cbb383be36cc64d974a58a5c8b97
+cp2k/src/grid/collocate_fast_5.f90 : 8286a46a58766918d8f4d15169fbbafba75268720482c82a808214efd3d6ff1d
+cp2k/src/grid/collocate_fast_6.f90 : 44476220b03f8c084cc785f448ee3b3fc60220be4f5e20f51e6da665cdea06f3
 cp2k/src/grid/fast.F : be717fc4589661bc1c9f19d4d8de6cb71df9edfd9ed7aa21132e41bde5593299
 cp2k/src/grid/grid_fast.F : 6c8df98aa30b43c5f4c13f263a29e1d39b6ae9310a9bec884111436f5f15901f
 cp2k/src/grid/integrate_fast.f90 : 8ebd491aedaeeefd248a28271350c82602ba31c26aaa7835234556dba5d2dd50
@@ -1149,26 +1149,26 @@ cp2k/src/grid/integrate_fast_4.f90 : aad4a5e7526f03af2e9babb7f6d6d7d2bccaf6f98cf
 cp2k/src/grid/integrate_fast_5.f90 : 1c9683abe39d760254422ad35a54601f60a5a7ba03efb3df0c1bef2f45641259
 cp2k/src/grid/integrate_fast_6.f90 : 4bef0e30a511b93d42f3a86ea6e97040ce968ce1e6c75be3b14d50a0e2b2c5d3
 cp2k/src/grid/xyz_to_vab_optimised.F : f236bb1396c220c23d7c56d19cce7361b1110338724cdfefdf040a25e8c88427
-cp2k/src/hartree_local_methods.F : db77355d2c2f41080bd5849ea1073c6e6afa3d2aa0c4d6c4568a9c0bdd0dacaf
+cp2k/src/hartree_local_methods.F : 3ae8f6c842d2cf07dbf0bc4efdc8ac4dc83ae3ce6b8b5329804f36c6df836ce4
 cp2k/src/hartree_local_types.F : 25a0592af1f446890a1ee6fc630d5b7fdd705904001715b41b839067b80e0c48
 cp2k/src/header.F : 46bc7a315d0f37c91eab31f0aa73dd6b63c3b748ad74dfb3e9d3976430824612
 cp2k/src/hfx_admm_utils.F : d00aa111a9d2ab2272300b3bd5c342186620bc006fcc995ff91ab3522746156e
 cp2k/src/hfx_communication.F : 15fd1891beaaf7d66c45a57f7b87ec44ded9c7baa42eed170b4097e2d2800fa6
 cp2k/src/hfx_compression_methods.F : 4176b6ba35d3dd17ccefbcf31d238ff0931ebf78c3f0ffa017d956ff376568d6
-cp2k/src/hfx_derivatives.F : 1eec06ca903eec50f55c4cb602ad126dbe72e174d267040e09633682c9226aa0
-cp2k/src/hfx_energy_potential.F : 998551b02fbbbfb063e0b4995f12eb604719e6295e08419f97efc04a751c2fa8
+cp2k/src/hfx_derivatives.F : 11a85cccab97e117adab62c819638455abd75084d4d7504e6d732549b2169f29
+cp2k/src/hfx_energy_potential.F : fb5d3a6361cff888e82166367013d50933ef54f947027ec60d6b9a53e50dabff
 cp2k/src/hfx_get_pmax_val.f90 : 1db8593abcd80a51d2c68689d59fcfae4aca0a4314fec6e4d14ea745d9c9cd19
 cp2k/src/hfx_helpers.F : 9728f47ec2775a0e77ba5734b43d9953312333fea88910a18eb10b3d896a0690
 cp2k/src/hfx_libint_interface.F : f18afb68a2266b8efe4de439937542c00c8418bf9344488a66dc92bb4b6f34b6
 cp2k/src/hfx_libint_wrapper.F : cb6687a491efaaab3b21c11ddf2faa66d714a98ffa3351de5408143e2e4dfd80
 cp2k/src/hfx_libint_wrapper_types.F : e3e1e5b818bdf6e2e285921244da5112cc7508aa216d749feda7c9f714f0134a
 cp2k/src/hfx_load_balance_methods.F : 53b3ec9fbbc2e35d409e021fd34e3091bf51e746d2d5f495863a931c2f5f6e95
-cp2k/src/hfx_pair_list_methods.F : 0a86ee5c1fe58fd0fe2f8d79e10200332fa91b6c81cfa56b6c6970213d19a591
+cp2k/src/hfx_pair_list_methods.F : 0596ee1d53de2ab8a0eb377859a3627b971ae17713e87ff8aed79f4e0f78012a
 cp2k/src/hfx_screening_methods.F : 52e2c5a72484e186bf32c1dccbab37ba5a2dbc94402e0913a8f9974bffab9f2b
-cp2k/src/hfx_types.F : 68456131769e1af4cd21be4de3629022e578d03c571f1895d35f721056ae6574
-cp2k/src/hfxbase/hfx_compression_core_methods.F : eb39c36c0466fa933bd31fe6cb455901d5e8db22c471328bdaad58d35eaf1b80
-cp2k/src/hfxbase/hfx_contract_block.F : fc2ea5d014aafb0a69f998e58279978f01158c6a2eb8ab5383efdd9a78c9e1af
-cp2k/src/hfxbase/hfx_contraction_methods.F : 4db60ef37fd70cb2412c7761fcd44f8142f594dd2563a118e45ba86754b2aff1
+cp2k/src/hfx_types.F : cc61f23e7dfc434dcc12b7daa07f4eb434ac0933359be92cd17217d423f433df
+cp2k/src/hfxbase/hfx_compression_core_methods.F : d721fea353c0ec40fa196445e479a9321267ab47b38bd84631e84fb39524a2c6
+cp2k/src/hfxbase/hfx_contract_block.F : cdc4eb9a81ad1d7141ad6a8b75f5f0d09b4ca9356a9f856b56eb1a836bc56541
+cp2k/src/hfxbase/hfx_contraction_methods.F : ca5f8bd0ab414453cd5c0eca4597dd75b57d5dd4d5d9f36bbcff4d890f59a3de
 cp2k/src/hirshfeld_methods.F : fe54ef249e69cc208f9824f6e785cf5b9c1125c4060ee4c30e0214a3787ef9b9
 cp2k/src/hirshfeld_types.F : 2f1ea4f57b5ae1036dabac30bbf90f933804b333ebe902ffd91e9939075b2512
 cp2k/src/input/cp_linked_list_char.F : 9f98a4f0781b4ade25528a3af09c2809ff7e568c3d7f65ecf3693d12ed3bf8d7
@@ -1237,7 +1237,7 @@ cp2k/src/kg_environment_types.F : 268b50db14ea1075421530912b99331aebfbdb9c095263
 cp2k/src/kg_tnadd_mat.F : 8461ca1b033a84b81209f2b9e5abcae4e7e27d72eef961bad1d492d12a22fea5
 cp2k/src/kg_vertex_coloring_methods.F : b1574c4f169ce5bbffe266d6fdf413f73915f94808bc7da8d4f2ebb87cc10115
 cp2k/src/kpoint_io.F : a6dfaab9eac023ef9fc2426876d60aad73f5e4e5f7858fb8d6820b83455ac576
-cp2k/src/kpoint_methods.F : 9f6ab0728dd4bbcf3c7b03dba1c2ea0814c3eaf7dab85874a4b727601e70e8a9
+cp2k/src/kpoint_methods.F : d07cc23ab229bc92e463fbaa06565d3c63e09c7650d858fd3af7416a1afca889
 cp2k/src/kpoint_transitional.F : e2389d00cfd50f6033cf205132cd32bedc7719a8362d71c33e0f4ba7ead75d38
 cp2k/src/kpoint_types.F : 892e29f95647ac2080911e1ab41b19b5344988efd3471d24951bac4f80cde26d
 cp2k/src/library_tests.F : 2c67e01019972e577c7115044f06feaf04cf7212c2da76f6f761f7700f88dcda
@@ -1251,10 +1251,10 @@ cp2k/src/lri_optimize_ri_basis.F : 34233383c883be5499b887cad666a3fdebe5b62456c49
 cp2k/src/lri_optimize_ri_basis_types.F : c02c2998b8a15476b90ccde1f2ef6e75a80c8c6a181ae886b25c99248bf18723
 cp2k/src/ls_matrix_exp.F : f2bc66adc5c62177fadf5a127525b9ff2055162307c9dcc8443de82275ff272b
 cp2k/src/manybody_eam.F : 2766b30b8869c421515c16bbaa30addb82adc02eb06bb0a587b9e7d4c3637439
-cp2k/src/manybody_potential.F : b58ae846468460e932336d9ffa812b79ef040aad7831691c6c43587a30968b50
+cp2k/src/manybody_potential.F : a8f5bd38877bcf16a14eec8f2f3c1d10ed20095c34eaee98792eed9b8fe70e2d
 cp2k/src/manybody_quip.F : 879cb4a9758ba655346666f7de1189331e95817f487709c8075c6b963865ac43
-cp2k/src/manybody_siepmann.F : 3ac96b2c021985d5f5e72d918c86db22a79912e9df7244c5cf8025ee57b3718a
-cp2k/src/manybody_tersoff.F : a5e030d1d41f09e75c9a1184106f3c1084c1c36b15cbae2c98f7d17b0095a90a
+cp2k/src/manybody_siepmann.F : d81aad9093cb0dd93e8a35d1d3e7898bea17c37e5c6d24336b69714ed096ba1c
+cp2k/src/manybody_tersoff.F : db6603e9767cd7226a93102d2f91f869210c521ec67e0ecf2819bb789ca76bac
 cp2k/src/mao_basis.F : ef0658cad46efede425c3154de4fd871952af57c7b5121c42ce2e6a2f76c7f2a
 cp2k/src/mao_methods.F : 1d85500faa7a9d5eb84f60e1d8ef1cd1db0d0c025dbda24f48589866f4c9d582
 cp2k/src/mao_optimizer.F : d400b16d242a8d8d7af23b3f1dc15b62d9bde3df4ba1d69ec0d73c22be8abf2d
@@ -1275,12 +1275,12 @@ cp2k/src/minimax/minimax_rpa.F : 288d37375d1ce875f98eb37d7202e6212edfb44cf6196f2
 cp2k/src/mixed_energy_types.F : 0ebd1ed7e2794381a5f31f009d30052b69e9fbfe29ae9f40af8a7736b13c638d
 cp2k/src/mixed_environment.F : 8b3f819f4098ff8ed103adb421da4a6344f944d860d4fdc3b9543eec1091bd26
 cp2k/src/mixed_environment_types.F : 64df8e67540148561a8558448e8b6043b881b28e5ec2b06dee58179eb41b0742
-cp2k/src/mixed_environment_utils.F : c332d5621ab9eb45f44f86f3eb9f5ad73b5b206d7be6a603730b19a473cf2647
+cp2k/src/mixed_environment_utils.F : 1384621199d96cb636255fbbeb42dec1dfb430c8ca69aaf5369afa1f9f1e198d
 cp2k/src/mixed_main.F : 1f332ab55e2d18313b12e3c0bde4b4bb259862a339926ec856815f3a9e917591
 cp2k/src/mm_collocate_potential.F : 910deca54b6ff9216283f1545f772fd85c6a387f5cf23f017c0ff4bd7936d537
 cp2k/src/mm_mapping_library.F : 86e24a38d76bf97cca9ef104ece2aabb33f47ca5b0d2cc5a52f33e007ddcf85f
 cp2k/src/mode_selective.F : 8d58e309474a7845914b22792fa17f73b43cda9d5f19361220be8ce7a511e14e
-cp2k/src/mol_force.F : 3ae97f5db1839ffbce844c590afff8445f96f3916a5e8c940f47f9a5dc0d3b5b
+cp2k/src/mol_force.F : 0bfda0dad18b12a53795d975b0151be3a8e92aa7c5594ec9b765d7c383a84ec1
 cp2k/src/molden_utils.F : 08bd2dc12f8c945bb7433cb03aaa7b3ac0ecc1dacb84e8ecb9ab7da2a1dca9f6
 cp2k/src/molecular_states.F : 202e3e515a840af90ecbb877034d62af2dbde8ed33d6a69434e0e5d0730d1979
 cp2k/src/molsym.F : 7ffa96379d03618529c170e150f550b272ce655bd18c40385a8348c15b92ebc4
@@ -1291,18 +1291,18 @@ cp2k/src/motion/cell_opt.F : 9312978b79833c354b886b23fb70580c347729159d8fc0a0733
 cp2k/src/motion/cell_opt_types.F : e1af096d2a78500e6be3aaf1409b93b342961336047259446640908439d1a2c6
 cp2k/src/motion/cell_opt_utils.F : e83b08f2dd67529489ba4fc59f3c2d43dcd937f4d67e6e2876509108386b2914
 cp2k/src/motion/cg_optimizer.F : 100e63a2be2bdd463511b87f29e07918c670d240cdcb30d6d431eeadb12dea53
-cp2k/src/motion/cg_utils.F : 93e083a7630045a542187b98d964b9b7a34f813687145208cf6168759da02029
+cp2k/src/motion/cg_utils.F : 74f932769f33b93710d1d130d91e674c9e2f5287a94ee119cdb97703221226ba
 cp2k/src/motion/cp_lbfgs.F : parse error
 cp2k/src/motion/cp_lbfgs_geo.F : dd4c3ee031f4aab088b1e1ffd1173fc3bd60865911632472faf2cfa077934db0
 cp2k/src/motion/cp_lbfgs_optimizer_gopt.F : a2253b469b8a73ecaed52ca2306f506699905abb2cfee9e2f2235b33190640f5
-cp2k/src/motion/dimer_methods.F : eaead134139e84fa113c27239159d39ce872086821d3e3ae6c5d94ff180fd774
+cp2k/src/motion/dimer_methods.F : 756aad48825e5bab21833e8534e95668308d1ef5d9cedc9d1a2f8a1dd243df8a
 cp2k/src/motion/dimer_types.F : f8ad50a3be4ffe3daeb71df073f9a9815c005ea89bb46ec5ba31a204f48688c4
 cp2k/src/motion/dimer_utils.F : ef6fb6ab0feb16287531d25156d507749d38c2fab7a60afb9d23aab8181e054b
 cp2k/src/motion/free_energy_methods.F : b648badcb774d009781297e72a63748dc70a08f3f8bde7d63189c40822f7b459
 cp2k/src/motion/geo_opt.F : 853094aabcc18d019236feb142d95d143c7f9c309dd70d4e75a96896556d9e7d
 cp2k/src/motion/glbopt_callback.F : b33563c5f3671f2f2a8f4ea2e41ac279b0d7093107b0e4a0f7f63b9eae2cacfe
 cp2k/src/motion/gopt_f77_methods.F : de01a6dc5a0cc3e781c031cf819c89eb6fa38e06962c73706b1e7a0e265712fd
-cp2k/src/motion/gopt_f_methods.F : 09cbf7f1edd8275768af94c3c00d55deb8bc80cfcb2a8d9e8f9ba84a009e7496
+cp2k/src/motion/gopt_f_methods.F : af140262b33b50af93982f0e9f2f49f3713cd6a81ce12004c9c416c3c93eb580
 cp2k/src/motion/gopt_f_types.F : 6adbcc42a42c1f5bccbd4ed9336e1838b92391235449f19ad0c51f0eb58dd507
 cp2k/src/motion/gopt_param_types.F : ec99e7189f41e03ee1f6bd8e7f3241c2c7860792555326e42b75e55133da5517
 cp2k/src/motion/helium_common.F : 23e4618742caff68f92f0b363244bfe5a69113181ec44e28459882a5d11a0939
@@ -1321,11 +1321,11 @@ cp2k/src/motion/mc/mc_coordinates.F : abf5ec2924339aed857a8604e3dea7a560fba9e1b2
 cp2k/src/motion/mc/mc_ensembles.F : 1c0f3eaf86c6b48d7f65c1b6f9ca560ac3fd7779700d57b8e2bd12430d386a1b
 cp2k/src/motion/mc/mc_environment_types.F : 52f8c35d623f95607edce15f3527f46b1a0953dd7f4970e6772fe75fba7aaf25
 cp2k/src/motion/mc/mc_ge_moves.F : c020388be46ca85e310e7378458c12fddbc598547900abc17cad317e0f0f947c
-cp2k/src/motion/mc/mc_misc.F : 347695566ec23b1e27395ac537bcb4db43a5efa37e1be06a32263fbd64399809
+cp2k/src/motion/mc/mc_misc.F : 3b38c4f9c38edddee159924ac2fd271a48e31861bdb87b31989b79dd41161ed7
 cp2k/src/motion/mc/mc_move_control.F : parse error
 cp2k/src/motion/mc/mc_moves.F : ba86d0bd160dbbcb001996670c96babad37dd63c9f9fc4b2a9018d42a7828878
 cp2k/src/motion/mc/mc_run.F : f2527538d1f8a042ab375e898e5c7831740cf1da0bd36b1d93cb361550f27fd2
-cp2k/src/motion/mc/mc_types.F : 705adccaa7a701df4714186fede49be7be84269714e3265df74b947ad72a5e09
+cp2k/src/motion/mc/mc_types.F : f9950be92e11617f01fc54305bcd095929e821bed514ccab2f6805d2dc28e4ab
 cp2k/src/motion/mc/tamc_run.F : e2a7fa53fdd55eaa0d2c671c4446d57512fa2bce1d2387209940e31b6824d43c
 cp2k/src/motion/md_conserved_quantities.F : 78c0c440b59cd8de4d0659d6a2d1f4b1bde658afd9092c6b194e01a59a9d328d
 cp2k/src/motion/md_ener_types.F : fea7897ec3eab15fd45b4eb700b2f4f4faa833a5502b79c3942638f4f12d3474
@@ -1335,7 +1335,7 @@ cp2k/src/motion/md_run.F : 6c628b0d80266035d1e3022a8cfd6e6caed7f69ded59fa28b3fbb
 cp2k/src/motion/md_util.F : b586e5e4aa8bad7e0c874a89cf8d9c869b03dae285cfd5fedd4ed9d3c58007ea
 cp2k/src/motion/md_vel_utils.F : parse error
 cp2k/src/motion/mdctrl_methods.F : 7b30f023f999c629099c0586e9eae00471e23e04aa62f52e8656318945927abe
-cp2k/src/motion/neb_io.F : ae1e4f0cf58b3c98011dc51698ddf2498f662b745ddbeec0aa85196b227a02d2
+cp2k/src/motion/neb_io.F : 1030c583924f45cad24c3e72944653d1db4eee6109b0538ee6b8efcc3866f5ba
 cp2k/src/motion/neb_md_utils.F : 5b3c0bf24a5bd837944db8de4538159d9d36f49ff1640e7cf6f2c3de5f5b225f
 cp2k/src/motion/neb_methods.F : b0342b230361c47e80e08789da8b15f1607c78f5133d424ed8b57e1f6accee38
 cp2k/src/motion/neb_opt_utils.F : 66328ac4821284eec6ce2bece1502a93ca9c2132a5776eea51892eb37cebed41
@@ -1379,14 +1379,14 @@ cp2k/src/motion/velocity_verlet_control.F : 9b150b200aaa430073af641be0c3adaa7432
 cp2k/src/motion/vibrational_analysis.F : 2e9d3d8c596705358e7606194a6b9c898280ddc97fa5da143aa5f833c45a676c
 cp2k/src/motion/wiener_process.F : 5057559207bf17536a52f4e96bfe866be695643d6028f2312538da40eddd1235
 cp2k/src/motion_utils.F : a29d06a29b5435b53b5e50ae3d7ee10be34f0ecd0449573eeec885c44bed19ec
-cp2k/src/mp2.F : bf3c7c15fdce103ec52e581ae3b8c7b389ee68f729bab358e50a32a9fa179618
-cp2k/src/mp2_cphf.F : 9b9f9660e9f54a9a3eb76ea296742a0f5010cbe19cc0a845b3f0842b03eb666c
+cp2k/src/mp2.F : 6336ad762d10c49d322c73df37212b008323ebc16c309fcaa0ee1a5d29e2b74d
+cp2k/src/mp2_cphf.F : 321e54428190dea4a2b91ab0ccb43aa5e370bb1cfb6037694534d84ce592612c
 cp2k/src/mp2_direct_method.F : 92e59f8f869fc49cb762ffb9d87b927be99014367fe1931e6f69717bcccaab91
-cp2k/src/mp2_gpw.F : 852b98cd3f5c1c168d7b5773a228e605b21d70725b93d4869ed5eb1010aea62b
+cp2k/src/mp2_gpw.F : 4aefc26611d59162a1400d1fcc991ec18c47a39b0392321622a2b571aad1a285
 cp2k/src/mp2_laplace.F : 9a43621e119896944111b3da53537e8834630e4d58d23c08cb781607c0032b22
 cp2k/src/mp2_optimize_ri_basis.F : 3f79d534a1d545e6e908509db48470b566958eddaf79f4ddd4508acf6b09af59
-cp2k/src/mp2_ri_gpw.F : 17071a90ef57445b13ae7f090d58dad63ea482bce04e7682eaae2b07cf82b70d
-cp2k/src/mp2_ri_grad.F : 982b75bfee935294e7ba90a8ce5687d3b6ab7edeef6b146c5413672a590ce3e3
+cp2k/src/mp2_ri_gpw.F : 9a880a28a9303f017d246840d87ffc3f9d3e6e21ef12b2d10ecc208fd1d4b805
+cp2k/src/mp2_ri_grad.F : 95f321d198303cb70f1f57fd5f0159ac48b95d249242e71172e8e78fa986c7a5
 cp2k/src/mp2_ri_grad_util.F : 1047122ce85206a9c3468bb3caa72ad71c12e5b6925a75b3e9ea2c55759723cc
 cp2k/src/mp2_ri_libint.F : affbf4c7825d9c7463cae4340514aa99ebb6e62ee27c24acba26c0eb96b75a3a
 cp2k/src/mp2_setup.F : 945428323e8dbc6cbcaae3679001acce4c806c117b80fb4e15721a721b5052e8
@@ -1405,9 +1405,9 @@ cp2k/src/optbas_fenv_manipulation.F : ba19e08aa0c249c1a3bd819f0fd96ec4370ec2fd6d
 cp2k/src/optbas_opt_utils.F : 31c63b63cc33e71f2caefa17a10f13b942d9c7356a3e4c2402fac196941f70c0
 cp2k/src/optimize_basis.F : 92767d8493afa7c06b999bd580ffe4b711f4a9bcad7422ca14409d94a686294a
 cp2k/src/optimize_basis_types.F : d8c04d25820419e770c24e431b08c119b75afbb74d74eb7243670a7972462796
-cp2k/src/optimize_basis_utils.F : 18fac1cc8daeab8d369d251b689420518c093ca0d0c9c34eafa97cd2c436da7a
+cp2k/src/optimize_basis_utils.F : 5544de5d7e57af151fac5e9cbd67ce758134fcbdda89107359a2de81bb8fba00
 cp2k/src/optimize_input.F : parse error
-cp2k/src/pair_potential.F : dc3aacd20bb1482184bd2077aa59134a9e5122aba65897058356c8869031fa9e
+cp2k/src/pair_potential.F : 1b76602a9e84101174371d543acd8dab2d38fe0147e2b74deeec8b5688b0ff2d
 cp2k/src/pair_potential_coulomb.F : 23add7a44c62c11d2d68226d32012346545181f4bee7ecf38caed4d62a17ec3a
 cp2k/src/pair_potential_types.F : 9687569a834595fd552fb653dc7d9e79093912460db486d1f3c35f7e884097fa
 cp2k/src/pair_potential_util.F : 4ea8ecc3781be764d93b3a32879698000478361a596c99a47382c1ec001f6a13
@@ -1447,7 +1447,7 @@ cp2k/src/prep.f90 : df5e9a7a3f66a503ed34f68798cca53cbc1a81d2ea26b13fb8f597b07fa7
 cp2k/src/pw/cp_linked_list_3d_r.F : 11b456b22585ae1b43da43c2aa944df4f69eb89cf5f631e9b88605c243b40040
 cp2k/src/pw/cp_linked_list_pw.F : 2cf426d7e3ff2f975b9ace3d2d137d24cd51c9ef53c421e71e4760dfca2c1a93
 cp2k/src/pw/cp_linked_list_rs.F : 23377e63a6deaaf92f5167e368fda1189e58312acdb36ce3781c41b49e534d59
-cp2k/src/pw/cube_utils.F : 588c6c17159230c52878a61f3b3f9b92a821335263a3d735533acdb3a40920f0
+cp2k/src/pw/cube_utils.F : 40a761ba583dab243352602cfd7c554f7e2e192d873fcc44132534a6b63f23dc
 cp2k/src/pw/dct.F : bca55be55d1b1739ec90e60b063fdb775be4d9f04c27c317045ad336e40145b7
 cp2k/src/pw/dg_rho0_types.F : 918de08a515b32c8c2de276e9bcec9a0d2f9c54c919e26e232ac088f0b67ce98
 cp2k/src/pw/dg_types.F : f64c8053dcf2557bd748a97fb855e370be29112c30d83f1e4453ce1ce4d4c809
@@ -1461,7 +1461,7 @@ cp2k/src/pw/fft/fft_lib.F : cd1567c24dc9c420c460c10cde8af99dd1efc038b1b480cdf4ce
 cp2k/src/pw/fft/fft_plan.F : 3fad03563a545c222ce3dd146637dccea2a0ab333f82f10e6f0b7aedabd58ea2
 cp2k/src/pw/fft/fftsg_lib.F : a64c2cffc47ad96c8308fd1f6559c8707d19f519e368bc206db2f1e0c2a11d56
 cp2k/src/pw/fft/fftw3_lib.F : parse error
-cp2k/src/pw/fft/mltfftsg_tools.F : 9f3c317d84134c0e5040a72a7bf7a3ff432c416694038cbe9de334dc229785f0
+cp2k/src/pw/fft/mltfftsg_tools.F : feaa5939623418e4644461102edaa4e49bdc97225432a590aecc37f3f32a0bc3
 cp2k/src/pw/fft_tools.F : c71788bdf3779bdee5f8f201172eb9d8625c193f3313cad0a4082c11f6b407eb
 cp2k/src/pw/lazy.F : e6a8a148fb2a65b75fbe15961d7a24a66b9295d143df3b9b153575622b22da4f
 cp2k/src/pw/lgrid_types.F : 780a483c330c47a19a72c0b348e109fb60022f12c9f4d3e0ce2cbeae340d946e
@@ -1481,9 +1481,9 @@ cp2k/src/pw/pw_grid_types.F : c71c972b8be70c627ff6d256206216590882de7e377a692c82
 cp2k/src/pw/pw_grids.F : 1eb692d422e1a50d29b38144d1c58d38d9d25e8791240263c67d0c61eae1bf63
 cp2k/src/pw/pw_methods.F : 6e63c00df4159972f2aac2b8d43e515ebdc2c7bb71c9cd625f2c51b772254ffb
 cp2k/src/pw/pw_poisson_methods.F : 6bc5f5e7358e7c2c0daf38d6fce4a55a3dd743869b49c6babe9cad91f1dcc3fe
-cp2k/src/pw/pw_poisson_types.F : dcad553be46fed70b055c5390f5b2fc6f5c85e32db650cb270be55790ed9058e
+cp2k/src/pw/pw_poisson_types.F : 7920bd4791157f6df70150ce12a467d97c2a76351a5c5d99dacd0a1686347895
 cp2k/src/pw/pw_pool_types.F : 1f47af37ec8a5e2cdab7eeae76bfab9edb27ec85a65279deb02bb11cb8dd52a1
-cp2k/src/pw/pw_spline_utils.F : ad514d246d7dcb3e7d09d8a2dbbd794e0d82e61e2bc615880de4d342d46b9ee3
+cp2k/src/pw/pw_spline_utils.F : 61f928dafc2a2ddd1030dd792d837ff80f087f3874db21e87d7619ef9d7ed80d
 cp2k/src/pw/pw_types.F : d0e0b3e182738f5fb3dabc52a448e31325042636bb0baa044a608c45a3d3865e
 cp2k/src/pw/realspace_grid_cube.F : 237db63b66cced0b6dcbb7cd364a8f1282c3d8b7acca6dc27e3a5e0cc629faf1
 cp2k/src/pw/realspace_grid_types.F : 3968d2c9fabf143ab989d679f516341e12233b79e39e47db2651ad39c4362b83
@@ -1506,8 +1506,8 @@ cp2k/src/qmmm_init.F : 16f2891bc168c91d351658b874126e6e684147063a3f6ba58569c4d93
 cp2k/src/qmmm_links_methods.F : 535b04d59f85dc9d18741778a40b88616655b287bd7b561f66577ac8874d58ed
 cp2k/src/qmmm_per_elpot.F : dccd30d8e505c0bc4d99ccd4ccbe50d7fbbe8eca915b575963354b97e745e28e
 cp2k/src/qmmm_pw_grid.F : afbc0165300737d5ea2e8cff7d7275a82d42de5753e88670bd6535aa35c41204
-cp2k/src/qmmm_se_energy.F : b4842015e893d76cebb43ac598e852068452934bb36477dc4bb887526a88fc80
-cp2k/src/qmmm_se_forces.F : 2cb7f24e03c9f00dc4eefa6ae814d6f44bd50b766b767dbd79492dac66518f6a
+cp2k/src/qmmm_se_energy.F : e4c60db12d8ac0e1939ad6b653bce9f1743b679ccd86813a30017d5e1f1d92b2
+cp2k/src/qmmm_se_forces.F : 1be9e84936c196174bdeb02aa739a7cac4c9e26a4757742172c183267077235f
 cp2k/src/qmmm_topology_util.F : baa05af2dbb5beb0250a992e5d8480f2766798a2c54aa67bec60db006237b96a
 cp2k/src/qmmm_types.F : 49ae5deefcc3398985edd69c3f37dff4cb320c323060f7c7da7b9ad77a8eb73a
 cp2k/src/qmmm_types_low.F : ebd0fac6da2c8f9795dc6d729a7629d9274e0b4d09e3fe3a6c0a370dc93ed7b8
@@ -1517,13 +1517,13 @@ cp2k/src/qmmmx_force.F : f76104752f33244e4fb94523aecdcf55bc2fa4f81bc18a3d8fa9274
 cp2k/src/qmmmx_types.F : 1ded243505b6898334a1eceaedcfc47cdca48f3bfd21e3dcaf9c15496dfb402a
 cp2k/src/qmmmx_update.F : cb34e7ff186973dc190572aa1524df44548e0c8b2791d205d24a74250b9661c6
 cp2k/src/qmmmx_util.F : 5cfd6847e0c64e6e49343c4ed6f0897f6501f7ba46064c5fb305d99949e46f08
-cp2k/src/qs_active_space_methods.F : 3f270957af92e28adcd0e42dc6cdc5ba729193927d1e29d9ca2feda0ecb0d92b
+cp2k/src/qs_active_space_methods.F : 910b00af2295fefbed6f372150e6dc68ac74d836090a03006ab328de2f894be6
 cp2k/src/qs_active_space_types.F : 036e4e9172380140d2a36b7b6240822753bae1222f5334b8af5028b82ff387ea
 cp2k/src/qs_band_structure.F : e44b0eb13840105279bfd0d34221c3cb29e8a2edf12ffa6ec08aab8efdbc76bc
 cp2k/src/qs_basis_gradient.F : ff4d97683c2c9cbba0ab4c0027318bdb2a6e775daccccc8d46ef57b7663051e5
 cp2k/src/qs_block_davidson_types.F : 01c3fe98a1dc61d551b85757f5887947f1f4cb7428748d4faecd8087e5a8ecdc
 cp2k/src/qs_charges_types.F : 6c1a9dfdcb6a86b216035edeb04ceb16a3d9755d2ec1242b1f653305a355dbd2
-cp2k/src/qs_collocate_density.F : 013c3693f04fbbde113a9136b0bbb1ca232c46ae704fa6bb1df987c5016e4d32
+cp2k/src/qs_collocate_density.F : b617a2e1ce08222144da1d26a7ae5ec865954401e0239538d9a385f0f4455d80
 cp2k/src/qs_commutators.F : ee5b1c97f936859543851365eba1b4b37744df6211ef8666cd6e53851e363f95
 cp2k/src/qs_condnum.F : 94507320c1c62196ab33279ee075ff15eab7bf414a372c38d669a38258088f04
 cp2k/src/qs_core_energies.F : 49746c560329d14e8fdd941e8dfc9621b7271720fef67c29a92137585866c1f0
@@ -1539,13 +1539,13 @@ cp2k/src/qs_dftb_utils.F : 29f243637d902eaa5722adf50704ebb4f28317b17a982bada40bb
 cp2k/src/qs_diis.F : 9e81563dfb4b6b835a8f969fe46987d33fe9359077c2c8752d245b1a08fb2c23
 cp2k/src/qs_diis_types.F : 9fddb489fb9ac73295785705b7f697646ab0fb1f1308ef27bc5f66ac04580bb2
 cp2k/src/qs_dispersion_nonloc.F : 89800f3a21fe6ff2950289308d75aeb5a5f55c9736bf75b02bb028ced82d30fc
-cp2k/src/qs_dispersion_pairpot.F : 28a379696a30638e89bc5114ef942b05fddb38fc8312a6780626984baadccf9b
+cp2k/src/qs_dispersion_pairpot.F : ddc6260f953ced76d86ec048e235df441e7d8578f0c8a0fa09a913bf01b9c769
 cp2k/src/qs_dispersion_types.F : 0e78318bd94e6cd3666838c36001db9d1435961bb2c36d98562a88b2170b56a2
 cp2k/src/qs_dispersion_utils.F : 1713f7f1665bcf24aadd4c547ef4c975ef9ff8f8c2e65a60ca8018609197754d
 cp2k/src/qs_efield_berry.F : d40282c242c69ad40c5c14340eb88db40ed695c0ded4f194d3cd6f3e1282fe28
 cp2k/src/qs_efield_local.F : 638aeac1df16b35e6bb52cd813c2c762f46dec7e616e7002653d5de0b9a2dec8
 cp2k/src/qs_elec_field.F : 51446ea2603dc8142262975a01e22aac760bd28aaf639f3dd57495e069150dd3
-cp2k/src/qs_electric_field_gradient.F : 52044dc846af28d7aa08a1864654d7be3e4462e6fbfc9948911591d60d9ed25d
+cp2k/src/qs_electric_field_gradient.F : 9c0b1a39df443f5a1cd2af7a36f817ccdb3656c74eea01bb4d104052cc9565bc
 cp2k/src/qs_energy.F : f0ebb7a3fdc78bf6e01fc8bb8b7f9fede7caca47a0bc15577945041739318e97
 cp2k/src/qs_energy_init.F : 9a500c2754e7d03cfe29cd3c5d19b1c82b7618b23ab0cafc5a647cf190d763c5
 cp2k/src/qs_energy_matrix_w.F : 2ffb500a095a131ec725e17e3b20f199432d74b0fe8f305f82e884c8901b9423
@@ -1591,14 +1591,14 @@ cp2k/src/qs_kpp1_env_methods.F : f074d964b23470f245140766db695623a6b4e4eedd79db9
 cp2k/src/qs_kpp1_env_types.F : 9afb22e1a9d50b372e936055d421102b3db78c6665c51c9399b4cc30f59dff26
 cp2k/src/qs_ks_apply_restraints.F : fa7164424b31bb2c061ecebf3df7b52c8e4fb35074cdee29626302e5030a62ae
 cp2k/src/qs_ks_atom.F : f6758d3844e87f848bbf8bb80a7f343e7f4f8783f09ff45f8beddfc6f1f23a94
-cp2k/src/qs_ks_methods.F : a5872e561335b2848d140e9659a1047aa84c526b94644861204163eebebf8885
+cp2k/src/qs_ks_methods.F : c9ab690a110d466ce4477696bb311de3cb04668985e796acfaf4ce9b729f673c
 cp2k/src/qs_ks_qmmm_methods.F : 72bed3530b788c2fffeceef8a8eca6306745de797f1172377ccc5a7892eadf8e
 cp2k/src/qs_ks_qmmm_types.F : 1005e2a98a7fc6824bcc153d626200f208b929da593fda0dd5aae0ed93bc2ad3
 cp2k/src/qs_ks_types.F : 1762e7aed1a318e6a334ca82ac31cfa7e08d5a2fae31a0f51b197f702d3ff5fc
 cp2k/src/qs_ks_utils.F : 2cb0b36760be41245f6b6dbd71a2abe0f83d6fc7d3a5284ee768ba05f508ab3c
-cp2k/src/qs_linres_atom_current.F : 4d729239ecb2011f0129e20f034cb608dca4e142ca7775d9f989f8a9e5ed148e
+cp2k/src/qs_linres_atom_current.F : 8e1c0f4cdfafa6faffa728a58cebcb8d4adbfaf8f044dc29219579495f317a93
 cp2k/src/qs_linres_current.F : 5420180719b9bc9ca400c828f56d35940aea53e214681c739687b9c91ef7172f
-cp2k/src/qs_linres_current_utils.F : a754ef2ecf7e2c3a5f4365a9be60a866fc51c7bab4cb9ecb0326344b16e12166
+cp2k/src/qs_linres_current_utils.F : 2b249fcbdd2b579f2f4662283e262aefd8be527f8112b0c99ddca627176f7fb9
 cp2k/src/qs_linres_epr_nablavks.F : 694969279216eba01a48a2335b9fa7218a7e19b3426c549e7c0d658fe25c6593
 cp2k/src/qs_linres_epr_ownutils.F : cf9ff092f2bbd815b1e1da5ac8709b91fdd105318bc118f5d4d30631e92a19b0
 cp2k/src/qs_linres_epr_utils.F : f9a39bc86815bc7a06b5bd62e766006fc182efe8626f61c484d688d2c6f4effc
@@ -1614,9 +1614,9 @@ cp2k/src/qs_linres_types.F : 7d4795b96657ba18c5968e8e33ccdf358f652da4f988117b93d
 cp2k/src/qs_loc_methods.F : b198da68146f2f49f35fbea30c973af5224f970aef55912b0a46d1a8f6d5dc09
 cp2k/src/qs_loc_molecules.F : 1b633019f9a50e410c8eb73c761f944faf5ff719414d21476fe1a2e1197d1130
 cp2k/src/qs_loc_types.F : a3de3543a6c47eb94c46efee22b4bd46da592eba10e79f97ffcc2d698d8b58f9
-cp2k/src/qs_loc_utils.F : 74dd5e0fac63b558abbbcf6285038533a2b8095b7860cd084c9eb8f4aef30dbe
+cp2k/src/qs_loc_utils.F : 7346b1b6eb180e3cea422918a96cbb2434c8182744c2e5c0ed6f2a4ab3f5d1fa
 cp2k/src/qs_local_rho_types.F : e62ea18d491dfd8f0af560fc4d979cad513939e91b151af9f408ad5a9e542da8
-cp2k/src/qs_localization_methods.F : bed671f404c4ad6f0eff7db0b660c133af71c628ef3a7c5d066d12efb9a5e3a6
+cp2k/src/qs_localization_methods.F : 8faad51dcbf309c917996707d28a36e6003f599ef49032ca7db019f2fea7d969
 cp2k/src/qs_matrix_pools.F : 22265bab171afdbbdc9f737ee8149a35ccacaa19f2a5fa691227d66de9e1b4de
 cp2k/src/qs_mo_io.F : 97e50afa10798651df799c0fce11f1dd1483079d9edba4aef90f3274d06dc1a8
 cp2k/src/qs_mo_methods.F : 7df91f1dd5a19efd46b4f15d7d0df224bd5eea9f889c2e4b1ebc0b49d67ec1e1
@@ -1647,7 +1647,7 @@ cp2k/src/qs_resp.F : 79105ebbb0b34313906fa0198033de5ea6e63042c218d725dafb4926542
 cp2k/src/qs_rho0_ggrid.F : 0bf72f54c60ca91cdff4ffdf944dccdbb733179d6b1e7bb38432ddb402fe16e5
 cp2k/src/qs_rho0_methods.F : 5b1012b1c44376499dec9af676761cb01142ffae8e7cc818ef9c10766dd2fefe
 cp2k/src/qs_rho0_types.F : 85760bebea88b9ade8599fe7e5e0ec1fd428435fdcfc484bad6d4e1b0edc79dd
-cp2k/src/qs_rho_atom_methods.F : e9851740803ea2395251a1d687f5ce9d919bf11e24587282f68176e21ac47efa
+cp2k/src/qs_rho_atom_methods.F : c376d0c0816ac169ab5f313afbde9a58e37e77af4c727519b4d8fc7652782001
 cp2k/src/qs_rho_atom_types.F : 72495e52248b7f8e6116b6ba8e0176ad24cd3f347d313d969d253f3fc54653c6
 cp2k/src/qs_rho_methods.F : 302204cbae4eed5979468e22b1bc6efef9a4017c98dd8b251728295aeec70dca
 cp2k/src/qs_rho_types.F : b680ddd1b962389d8406768cdfd04d3cf08b46af049b91382a5537af497a699e
@@ -1677,7 +1677,7 @@ cp2k/src/qs_tddfpt_types.F : 91e2ab809d78fe6553d9190e6495430a8fd69f59a58aebca283
 cp2k/src/qs_tddfpt_utils.F : 6c935e87dd14a37d1121fc0cc5371af1330ac97fe9ca58d132042e390119224d
 cp2k/src/qs_update_s_mstruct.F : 6acdf768041a7f313b4e7eea1c17774e545bb73c22e0fc351ef11fabd1e37493
 cp2k/src/qs_vxc.F : abaa0687f28cdbbb59388031ddb0e2bcd6690299cce24b6170e762bc1ee49196
-cp2k/src/qs_vxc_atom.F : bba6dbe1c7a19cf713cfbaed85a519d62f7182174e482d8cec2367647a0ed423
+cp2k/src/qs_vxc_atom.F : 654643888303648ee7f6497c362c365bb6dcbd82c88e332c3ab1883be9269eba
 cp2k/src/qs_wannier90.F : cf27dfef9daeffc25a83cfd7ec0e4c1bcc887009b6e2f9aef8b585bef39ab312
 cp2k/src/qs_wf_history_methods.F : 7905416cb026a0fb6a57ca30552a2bf2178045beeac7e8a04ddec80a8aac1238
 cp2k/src/qs_wf_history_types.F : 09a4bf52183b514b75a7f74380f62a992f606fbb6d5cf93740f5bfb2587e6f3f
@@ -1689,7 +1689,7 @@ cp2k/src/rmsd.F : 5da3ecf725c872894c38f660c12957a00e54ed6465b62b43bcfc0d01319b22
 cp2k/src/rpa_axk_util.F : 160f3cf71c4036f942b4381f397763396ee8d50741c6ba8c2c4f6d10eccfed48
 cp2k/src/rpa_communication.F : c16d41fbf9aed8afc4351bf5ea6463d181233ebe85f1855f1a9cde01d7d4f5a4
 cp2k/src/rpa_im_time.F : fb50800df9164f03a999fe9f006ec00128cc9e66fb4c552eeefb948fceadfc13
-cp2k/src/rpa_ri_gpw.F : 903ad8249cf9787168d7d823f7dcf9cb38d98a9eb1deab96d65bf9f9881af6e1
+cp2k/src/rpa_ri_gpw.F : d3368642a30ff574a5469aee916f7ecea6831862f4822e9a642323821972c802
 cp2k/src/rs_pw_interface.F : 45be983af05f03d20c63f1c25a61bd4df98eeefcc895ed674f6af5f92e7f597b
 cp2k/src/rt_propagation_forces.F : a2e4b154707f38ef3177c744bf61b12295436c771585f80ff4a13fb600b0b337
 cp2k/src/rt_propagation_types.F : 833748cef51721667d2fa12d16a612807ea08ae80ad1a73c2dcab2656214698e
@@ -1706,10 +1706,10 @@ cp2k/src/scptb_utils.F : 43c5933bf35b4e955d77b63b59d7ad87d69e800633d59c99e28b901
 cp2k/src/se_core_core.F : 3fc2488db50b0c6194cfec32861f321e07e1c4592b390992c5a09991d51b79f5
 cp2k/src/se_core_matrix.F : 810a0371252e311eb0be1d7197c068fcc3050587b86ab694b88c870fb8898242
 cp2k/src/se_fock_matrix.F : 4836ad35d9332a5a33d4075e77172b015e4f5570feb3db7eb2f0ca2ddb6aa208
-cp2k/src/se_fock_matrix_coulomb.F : d549b55104e2a84878b5cb92f6a6d7b246af19a5fc36eb985b7b417a772ce98a
+cp2k/src/se_fock_matrix_coulomb.F : d462f3d78feb29c321714ae830ab807fdff400db5ebd8cc99b018b0aebb688e3
 cp2k/src/se_fock_matrix_dbg.F : 474f41fea5df3239beccf5a472c7165f5b845ceb9b49626eb513cba366af76ca
 cp2k/src/se_fock_matrix_exchange.F : d82ae7bc1649c9146aad649f210454fa84fef4a11a14d62d6ca47d6c565920d0
-cp2k/src/se_fock_matrix_integrals.F : eb244932bcb5988b504c302ccc62f40f015fe9aa5ca1f80933052c11e8e78994
+cp2k/src/se_fock_matrix_integrals.F : c56a1e6e69e669e4089bddd24f8b96d8b4db541d7041324c4f69aa3cceacba59
 cp2k/src/semi_empirical_expns3_methods.F : baee3d1f3c1bad4057cb500c3c842a04ef8b1cc94d19bd772e19dacd37e8c735
 cp2k/src/semi_empirical_expns3_types.F : 562b6921b3f398d662446f51e184f6cd34b131d7fc6c8e81b42e5fe1d78f8ce4
 cp2k/src/semi_empirical_int3_utils.F : 75a60bfd7f85e90a896ac3c5fd16fa410f9168780b2971f09ce052c32d5c0743
@@ -1718,11 +1718,11 @@ cp2k/src/semi_empirical_int_arrays.F : 8a8650ada8876fb797de84e4bbcffe2b6d65df361
 cp2k/src/semi_empirical_int_debug.F : 34fbe404ededb2d1237570ab46e086799fff65128d36469fa5e62bc4b89fc293
 cp2k/src/semi_empirical_int_gks.F : 67af5a5ba42a8120182e1ff436721c928cfe20e57d4612232668766a87721e68
 cp2k/src/semi_empirical_int_num.F : 52182f8e6592e313e9276cfb6616af5d4a891033024718e3083445ee3e5ecb0e
-cp2k/src/semi_empirical_int_utils.F : 26d686dfadfb6d419ed751ab6732b6a65f0850b7b08c5ee2d246249acd821803
+cp2k/src/semi_empirical_int_utils.F : cf57653435504072c70e4da7ed8bc47b42ca483b65d9186d373942bcbb85c972
 cp2k/src/semi_empirical_integrals.F : ee4cc73fe42c1e3c7aad6fd0a2645c2832b6de471e558fbbd5ab61448f2244dc
 cp2k/src/semi_empirical_mpole_methods.F : 1c8ca6b1e0306a2ef1551db5ff3abed03e39ac30e87a18802e871827fd5a6d89
 cp2k/src/semi_empirical_mpole_types.F : 3117f3de292abce4eb567de888975ecd8fc09e7994273c6f1596e35e23d6f47a
-cp2k/src/semi_empirical_par_utils.F : 4a2f39e29662679aa18873f3e31df3d5dcde95ea02acfef8bcdc962841da0417
+cp2k/src/semi_empirical_par_utils.F : cc5d1c7fdb7f554d0387893541260d2f969b242c47dce2d64bbf7e5883edb865
 cp2k/src/semi_empirical_parameters.F : 8426b20d34f6b653b63263f0e42fdbffcf56e2b135d96788496d479d740956bf
 cp2k/src/semi_empirical_store_int_types.F : 020d1ac6d193d6cbc434fbeeef04549c003e078b24de9cbe48cf28f416702b5e
 cp2k/src/semi_empirical_types.F : 99cdfc78c1fd6f98e27e9183974171f5e705e1c56fa3b7aebd75064cdea1d201
@@ -1734,7 +1734,7 @@ cp2k/src/shg_int/generic_shg_integrals_init.F : 21d1c8d6c6e2e3b3e4051407d520d722
 cp2k/src/shg_int/s_contract_shg.F : ec600c9293b55df17e80c96e12dff189c97c51f12908b9eb00b87f5064cfb55a
 cp2k/src/shg_integrals_test.F : ca732d55702254d4b02d4ede896dbfe3f60cd7000646fd7dae7441aab5b9df51
 cp2k/src/simpar_types.F : 711fe0636a3fd3ce2f60b4c9748320d80956b7473ec65eedb05be6d22b647ccc
-cp2k/src/splines_methods.F : 7032543605efadcfc4d593b7e7d55ef8aba514b6d2ea58d97c7fb9a6a4f2efac
+cp2k/src/splines_methods.F : 3a05ad3330047917b986482f7ed00bfef71e621540326d94b728c92f026c7412
 cp2k/src/splines_types.F : eb1c999d3368e5f7389cbc4aa61e63dc2260c10de2b2e5686196067380321473
 cp2k/src/spme.F : ff42b0375aa47f281abc66f23fb618d942efe548fbf73172768d3e17105e1351
 cp2k/src/start/cp2k.F : 01a837f3b558b4f5dfe175b1328d4235507e19d6534723e787504da583cbead8
@@ -1768,9 +1768,9 @@ cp2k/src/surface_dipole.F : 0a2175220bc0dfe3febf4b4575b1d832c39a25a37d2f3709b468
 cp2k/src/swarm/glbopt_history.F : dc5462a984e2c1e62becd1ec5d0519e2f24966529d169f4efe08244ddec40ee1
 cp2k/src/swarm/glbopt_input.F : 6f04dff627fa6771ac8cfd468d726c2f3c2aa398cb3dbf917165b67197676f7e
 cp2k/src/swarm/glbopt_master.F : d9e4a54a1964b103efc949948038f7e39ff9e366c8e18b691581e16d46bf820f
-cp2k/src/swarm/glbopt_mincrawl.F : b61c901a5c710c6acccb228d72eed727a3e1d83e8f2726470c02814beceb30b3
+cp2k/src/swarm/glbopt_mincrawl.F : 19ad832e3af9ec0865bb552655844c28ae939d4b8d3558117632eb111bad2a9a
 cp2k/src/swarm/glbopt_minhop.F : 126fd2d193fe4ab49d5979873f9410cb944e4f38c040ee5fc374d7aade95a313
-cp2k/src/swarm/glbopt_worker.F : b5dfbcec2808ae84aa0cca8539500e64eb964d8dc5f2270dd76ce4f3c8caeb5a
+cp2k/src/swarm/glbopt_worker.F : fdd484a5e6c77ee5ae40dad5281cab0eabdcad0ae4d19466fa0e468c60e9f3b8
 cp2k/src/swarm/swarm.F : bb9f5b6c2e493423f2b45c129062c105da6cb4ea40c7a4f82cb2c488a078cf0d
 cp2k/src/swarm/swarm_input.F : 86b6b8e030109ca2b02ae268762dd397b1af99d9e5efa9afc23ea15dc8fbb490
 cp2k/src/swarm/swarm_master.F : 1001aeb70dea7a6e6e976e24e7131e36924098d34320b32bde46e4a0a821de72
@@ -1786,15 +1786,15 @@ cp2k/src/swarm/swarm_message_r8.f90 : 712fc2f69976c7f5d7ac247f2a3a4f04ebf3b39559
 cp2k/src/swarm/swarm_message_str.f90 : 2b6f22b2a92f162d6290ed9d21f65140dfc0c94a75513e6501475807d30ee76b
 cp2k/src/swarm/swarm_mpi.F : 9e1842fde8dc60da6d3be8e51fff14d66f05b080693dff21cb74f1be5827f9d2
 cp2k/src/swarm/swarm_worker.F : cc5131a89a067aa873d5b55e09b0358011a4004b98acf350e6a5154142c2b5b9
-cp2k/src/t_c_g0.F : b31389a651e44030d57a1fa7529b7b369fc5a0fa8ca2d16636a6fe1d8ce18e69
-cp2k/src/t_sh_p_s_c.F : 49ffff6f17205d9ec567727154468e7a79783f06d9e9c3cea43c520485fbd07e
+cp2k/src/t_c_g0.F : 80312af9714f004a4f77084189c3a18747733b2b1f91be6c43fb287f1cf1a95d
+cp2k/src/t_sh_p_s_c.F : 3e0e4ed3dd042b27d15161a87cf7760394a2477235c7fa7ea54a858a65f21694
 cp2k/src/taper_types.F : 2d30937c8b9882395d37aaf32365a553e52599558e595147d09c6f08ca9556d1
 cp2k/src/task_list_methods.F : 456af9de4cd59ac7c02218120ee8c3cf7fba68c5b69b2a7ca3fdd42d18b224d5
 cp2k/src/task_list_types.F : b1398dffd67d1101c69291d2adc46df855361e6dae2f118d20258f295014676a
 cp2k/src/tmc/input_cp2k_tmc.F : 3c5e8873ccdc6f8aece702cd33d83eceb66dabdf04e1b43ae457601d32a0d915
 cp2k/src/tmc/tmc_analysis.F : b25ddc3a519d252a7185f769b9becd125fb0ab2b16f2b48b9937a66993231a13
 cp2k/src/tmc/tmc_analysis_types.F : 6f79d020bac103c78bcdf5e786bed6de118b7a9ae0fd63bfdcd8f5864dcdeba8
-cp2k/src/tmc/tmc_calculations.F : 7229e4f126931766eed43d428d83e1f90022e516c9f2dea00170d050e2e8389a
+cp2k/src/tmc/tmc_calculations.F : 9699e2802499236302f87ad0af8830102358e58b0c9e88e46252f19b8fe97fb1
 cp2k/src/tmc/tmc_cancelation.F : 965b2eb0054bea529719381a984cdf7aafd985dc4c70912eab092f6ecd9d2c0b
 cp2k/src/tmc/tmc_dot_tree.F : 8e2af6724f8f7d4628f8ad4245c8ad504563000436e47d1e27d4e006a7a0f80a
 cp2k/src/tmc/tmc_file_io.F : a9340a8e85979858b08ed4f7070aa3c6f06dc414a1831ad8cdb7ca8dfa60535f
@@ -1802,7 +1802,7 @@ cp2k/src/tmc/tmc_master.F : 96eec604c42a9a87d1023a436bb5188a11ee67d4d521395a51f1
 cp2k/src/tmc/tmc_messages.F : d0df0dc657e91d0f4cdb431d7d30d4e247ca62de1806080d9a50531ed8dffa72
 cp2k/src/tmc/tmc_move_handle.F : 0becf60ce124f90289813c4485621c6106eec3fcfaff24335fffbdc6ea7d425d
 cp2k/src/tmc/tmc_move_types.F : 212c83a65d0819fb3123637e3d2d03dfd78aebd3ac014cbac883751cf171cb3e
-cp2k/src/tmc/tmc_moves.F : 6cf006701c27e24e826aac64ad77330af00d80f07a8c641c0ad7383bd54ef23e
+cp2k/src/tmc/tmc_moves.F : b2150e9da79a544f984f0d97c4bf484e1485c6237a9e09b45f700e741291f9da
 cp2k/src/tmc/tmc_setup.F : f59892f3f6cc072db0fa6ed3fbe3b4577de5cd4122bee855206df0e483c30c3a
 cp2k/src/tmc/tmc_stati.F : f852daf907053d45bee6d1533e3122449b7f9c400d42a3a9d71a85e2bdd489ec
 cp2k/src/tmc/tmc_tree_acceptance.F : 38a364669ca5947d4599fd594ddd7c7afbd72de7b2461d2a77dfaf4619e73d1a
@@ -1834,7 +1834,7 @@ cp2k/src/transport.F : 39b24f2b34475677be13717e241815b9b72f424baafccf53b3356cbc2
 cp2k/src/transport_env_types.F : e051b71e934352900c4b42226c61c5bb036ac9df1e5ed83ca87b9c9239d741ee
 cp2k/src/uff_vdw_radii_table.F : f30d5bc18be885ed716fa320c55869dd6779ffa4f22771c5145765b60035f9e5
 cp2k/src/virial_methods.F : 4d12fdf7b862a6e6658f4c0fa016d4972169bbc11616cadcfd67c326f34903b5
-cp2k/src/wannier90.F : 20244c896730cf93d1d9ac86f66d89d0acb38894fcaa2b4b24ff3160718ddedf
+cp2k/src/wannier90.F : 4fa281255f4f6adc02b9d5660682bfe281ab13068138aa1b8160c14ba54efec4
 cp2k/src/wannier_states.F : 26d301264b11bfac3462dd2d05a51ee30501ab35efbbd4250bd8840a950ab980
 cp2k/src/wannier_states_types.F : 827f5b1251a4e633eb65863bbb5323e468688390e45e776c101daae829afc917
 cp2k/src/xas_control.F : 1d4c3b21ce64a49e00b1b51c1d453b34ba02f5c4e6fade4f29881409a9bb477a
@@ -1845,43 +1845,43 @@ cp2k/src/xas_tp_scf.F : 9877198f0937b22d2a1ca9e35e0231deaa2880d88c951dc841b379dd
 cp2k/src/xc/cp_linked_list_xc_deriv.F : 9627b5678dcf47b9610bc2a0146a52bc802f190582d8fcbccc0b77264255ea1f
 cp2k/src/xc/xc.F : 63807c41395e24c20b895212be66aac170eefc2db76d638dc538747bd80b8ff5
 cp2k/src/xc/xc_atom.F : bc11016e0928fa3b39fb0e8d7f65537aa0b6ea9a46fe857902f33e62e987d9d8
-cp2k/src/xc/xc_b97.F : 173a67ee192eaa0b13d94d8403452cd19181acc007a70ac3e5ed29655fe4b97d
-cp2k/src/xc/xc_cs1.F : a3f9a1dea797c6895bae86facaf253d76f89ac44f05ca4dc473ad88f6ce13996
+cp2k/src/xc/xc_b97.F : 3e1773f2582169f67326087b2374ed4f6f06c0c0d589a74b123ec6e1c6a7606a
+cp2k/src/xc/xc_cs1.F : 58315457a94652ad8eed1e7b5d280f5bc7472832c9c1eee52d2a492e546b1a09
 cp2k/src/xc/xc_derivative_desc.F : 7d952e63df15a68b5a35bd1b0c4e8bd6c208338cc51e4ede3803cbd2524d6027
 cp2k/src/xc/xc_derivative_set_types.F : 695a0f638f0130a40f7b54d5f80536dc8aea55707a1250ccc832a78fe6689170
 cp2k/src/xc/xc_derivative_types.F : 6e6fe54c27e23562099c5803f21dc54255c99e9494740f4c053d1d85c6c10078
 cp2k/src/xc/xc_derivatives.F : ff04cd724477ff88c12d9f5e6d17be04db94f3103524bd31e51e41fecbe3cc18
-cp2k/src/xc/xc_exchange_gga.F : 40f1eb4550d7ea854f5f4d15c0eb65ef24586029b87cb8d8995318e238d10f04
-cp2k/src/xc/xc_functionals_utilities.F : d7705420d6e8103ab4dd43fdba0fc3a57a94fecabe263ad3502ed1b7a5e352f2
-cp2k/src/xc/xc_hcth.F : 57ebcc0e13d7d5f8cdc0b7c7b3c709dcddd79fcbc1ae8f20d3a640071c9198dd
+cp2k/src/xc/xc_exchange_gga.F : 647366715d40f4aa69acd717badc893f0e9baf0a476bc38df12014bb7851847c
+cp2k/src/xc/xc_functionals_utilities.F : 90974b5fbeb35ac2142e3aa65eae745fbc251c41b23b76c005e08adcc3c4c061
+cp2k/src/xc/xc_hcth.F : 07c55192984d80690a1b46e04fd86fb6dce071704008b8e65cc9723f621494bf
 cp2k/src/xc/xc_input_constants.F : d2a26ccb345a4e301071e55dcf3a9e1a64cb84cf51b601d2a37c7cf4a55946bc
-cp2k/src/xc/xc_ke_gga.F : a663e111ac54520e09e0b2e3837832c16003bbec9baa834418c1601a806b49df
+cp2k/src/xc/xc_ke_gga.F : f8ccbe42dd7eebe069af8f491e60eb394f66f0a3c897c18a1c4db1d0117fbeb0
 cp2k/src/xc/xc_libxc.F : 20abe3bb9241a0a748b385b217cd9ca5d2b0486a918a7dfbeae7e037ab9d14ba
 cp2k/src/xc/xc_libxc_wrap.F : 839be370649a22070a6196ace36cb56ee6c1984a1c587a1c688a495b3ca7c37c
-cp2k/src/xc/xc_lyp.F : 1f6991664e91fdbc26329e96bd5d331943bb37d4c901f3e30d719fcbcf0bd41f
-cp2k/src/xc/xc_lyp_adiabatic.F : e0267725b371d3dee59a450f9adc08e490e0d4521b61a18ecbd0d9c0a956d2db
+cp2k/src/xc/xc_lyp.F : 593e224ba5a4b6ba533b5b097f79178fc2da259f8d2cd3a3edcc6c664127125b
+cp2k/src/xc/xc_lyp_adiabatic.F : e79a115db4ecd35a75f19070e4bea731711473b498f9997294ab09c747b8ca7a
 cp2k/src/xc/xc_optx.F : 6a50d7ab708ab89d615455ec48019854706cf35712f45c860210f91ea88fdba1
-cp2k/src/xc/xc_pade.F : db1d2f5e4690c93f7d0e9ac7bd0a9a968076f0bfc5e7601266af4489b6a47284
-cp2k/src/xc/xc_pbe.F : a6b6352f1bad70e692e10d8a895d1448fa5dec7ef557300c1b3a441f1ce1a206
-cp2k/src/xc/xc_perdew86.F : c2fec83a2e992075c04d3ae3cac2ce805180d27afeaa1dce5131f43710049791
-cp2k/src/xc/xc_perdew_wang.F : d373beefa08271a3e86aa3d816e70e1ae138d128cf9d8e2fcb715e3d865df837
+cp2k/src/xc/xc_pade.F : 837f83bfd8998781d160580083260634ab0a6e355b7ffceee9a84da82e99cf8d
+cp2k/src/xc/xc_pbe.F : 97cf5b7d3f6b94c3ce8443699d1b68bb6cb8c4652e6e649cc69ec3f0c2cb607b
+cp2k/src/xc/xc_perdew86.F : 91728f2546e48772b928e68c128507a1ed736dfc5fcf1db7dd5b1622513a3eb5
+cp2k/src/xc/xc_perdew_wang.F : 586027b6671e72409910895a6a1b40374c2f6498dcbdd1654518d62c48bc47bc
 cp2k/src/xc/xc_perdew_zunger.F : c9472287c77607b2d4ba7a35ae1f72023716ddad959fe6f01635942b1d1ea206
 cp2k/src/xc/xc_rho_cflags_types.F : 1be8a0d3f7d21349a174ee913117bdeb950514ae178833369170a17afe078638
 cp2k/src/xc/xc_rho_set_types.F : 5414119c4a5dc5919a8fe1a4ad5fcfaf76e81ae0efc9abcff0cccf39bb970b7c
 cp2k/src/xc/xc_tfw.F : 98e68a570956d64bc2f87f58d8c53bf5a9c364fee421cd50ab07cd66dc54c039
 cp2k/src/xc/xc_thomas_fermi.F : 403145617baed4cee92c4dc50ae88a69a953c1808f543e95d75cab6dea1c9d5e
-cp2k/src/xc/xc_tpss.F : 0ca923216aa79b5c38094157b8c15d7f669a83e216362734cd80bef5b39db26b
-cp2k/src/xc/xc_vwn.F : 5cf99c45ce7d97645ea654bd5cc693a80a7a0632e53d220f0348d542f4993771
+cp2k/src/xc/xc_tpss.F : f5508d99bb160623b8182ab729a7be01d719d71d708703c77e98c4a98925a084
+cp2k/src/xc/xc_vwn.F : 4e706db62b7638971de616adeecabc288c877f01609bb758aafab1505667f2c5
 cp2k/src/xc/xc_xalpha.F : ac47424333e6d0fe6a5b4c1a5f69186bba41e7499aa10d22057753a6ef168a20
-cp2k/src/xc/xc_xbecke88.F : 1cea68390f9583e9a5797a8925eb9eda89d8230a31d96b42d88149b5aeaa0cff
-cp2k/src/xc/xc_xbecke88_long_range.F : 8396cae661f2288ce72c2a1dea3cced511715573f5ee152e7645cd123fd5cad2
-cp2k/src/xc/xc_xbecke88_lr_adiabatic.F : 1b4d71a2906c5247fad154638903320f355a2ae3b93615538f48a56e58f57c87
-cp2k/src/xc/xc_xbecke_roussel.F : c12378372ce86a3494ecbddaf2ad24910565ea6db1a96c3449c1195c119aa52b
+cp2k/src/xc/xc_xbecke88.F : dac3da7cd7bd833bccfc9c45dab6afaddc24c90653350363ff6337f8f19c3edb
+cp2k/src/xc/xc_xbecke88_long_range.F : b9e1513649e9a704b4b4922234d8b671739c49a1ba74dd8678e79f092c6ba616
+cp2k/src/xc/xc_xbecke88_lr_adiabatic.F : c97580e08bc3807779c3c38908e17c8d1676d750959f8a42b92f181900ddbd4f
+cp2k/src/xc/xc_xbecke_roussel.F : 240d9c76151d73e7f6f7d29f1b3d495d9660da15dde8cf8e599f42a279f4fe0a
 cp2k/src/xc/xc_xbeef.F : d89939e1ceba851fb405544a6e672a2d689eff80c6bd198d3b21a26d2dfcabd3
 cp2k/src/xc/xc_xbr_pbe_lda_hole_t_c_lr.F : e6e9ea688fb7d1a52221921bb190cf51e2655500cf3fcac0d31ba16133323b7f
-cp2k/src/xc/xc_xlda_hole_t_c_lr.F : 622ea520b83d022d958c921fcd3e4731c66a89fbdc2b82b318553afc57548831
-cp2k/src/xc/xc_xpbe_hole_t_c_lr.F : b6f2cf81ed20abdd4f22234629f6e6fc312721f7fce18d7d2fb6a5588d07ca52
-cp2k/src/xc/xc_xwpbe.F : ad867e3b8536bb28aaa970015d66b6cd4eb83a00f214e3debc475fd67494a5df
+cp2k/src/xc/xc_xlda_hole_t_c_lr.F : be2a66f1386528f3816f2fd8e810603e48c097d7303fd7714291809c2481ca72
+cp2k/src/xc/xc_xpbe_hole_t_c_lr.F : 0f2bdd59947f7262eec39f34e09b1c64fa8b2c8e037fe34d427b0150d748e147
+cp2k/src/xc/xc_xwpbe.F : 9f8df1149a53e0c934d2606bc9d933f0f936c60ec3a7b5e97e424612c4b1d084
 cp2k/src/xc_adiabatic_methods.F : ab7b45caf2d769c0c8872d6e421f681f4d68b82ea8c7beb3929b3e1205460899
 cp2k/src/xc_adiabatic_utils.F : cb51289cf731557f24f9c40889c769fc756467dec93b644dd7f68a529f6a79aa
 cp2k/src/xc_pot_saop.F : 4fc69ac868a695d6d1acc896f808583761bd320edd7c331b6ef97449b1cdd78e
@@ -1896,7 +1896,7 @@ RosettaCodeData/Task/Flatten-a-list/Fortran/flatten-a-list-2.f : 73d3740cf4b0670
 RosettaCodeData/Task/Flow-control-structures/Fortran/flow-control-structures-3.f : ec1df26f4dcc86dae6b74b6ec858298cd2488a324fc1bcdfbed8c0fd1373f490
 RosettaCodeData/Task/Function-definition/Fortran/function-definition-3.f : 79442df8a54b042c66367d6d33e64a124dab338390601ee3a925ada460c56bde
 RosettaCodeData/Task/Function-definition/Fortran/function-definition-4.f : 88431521882c31cca4a59329065c83a76efa196f608be0af27a518831e7ef833
-RosettaCodeData/Task/Holidays-related-to-Easter/Fortran/holidays-related-to-easter.f : 00453655ed98060a3602a978c7e4262386ee0248beb00f41a8989dcd1026fa36
+RosettaCodeData/Task/Holidays-related-to-Easter/Fortran/holidays-related-to-easter.f : cadc293d6b70d24b54e5c05486d2c6b7156499b3615c42e60d4933efea1f6746
 RosettaCodeData/Task/Horners-rule-for-polynomial-evaluation/Fortran/horners-rule-for-polynomial-evaluation-2.f : acfe1eee2a39982d059b2e36514479bf7c173176ce9a57d54f8e47b7b9a4fd03
 RosettaCodeData/Task/Identity-matrix/Fortran/identity-matrix-2.f : 32fd48bc77a40532216781cc27c6bffb3ef7f3d31eaec15ccf825b70f31e3ef3
 RosettaCodeData/Task/Integer-comparison/Fortran/integer-comparison-2.f : c2e1064678a8176c2597a4e8e34d7d5e36e4db74e4b7824730a58d2abe9d4ff5
