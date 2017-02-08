@@ -1887,7 +1887,6 @@ cp2k/src/xc_adiabatic_utils.F : cb51289cf731557f24f9c40889c769fc756467dec93b644d
 cp2k/src/xc_pot_saop.F : 4fc69ac868a695d6d1acc896f808583761bd320edd7c331b6ef97449b1cdd78e
 cp2k/src/xc_write_output.F : cd9f4168caa61ac7d49add57f35a59955a414bca394ebd6ff1dbe4746332b135
 cp2k/src/xray_diffraction.F : 0333145c98020e1005a9944081f01b5c3a28912a981a097a019e79b16d98b01a
-invalid.f90 : 898b97788ca1df5c70f76e08561aa07172f1fb0ddc0e67de4cbb9cab18195426
 RosettaCodeData/Task/Accumulator-factory/Fortran/accumulator-factory-1.f : 0eb4b1d8535ad761efe80bf0cdf86261849a4f921441c9233121380094268c0c
 RosettaCodeData/Task/Apply-a-callback-to-an-array/Fortran/apply-a-callback-to-an-array-3.f : 47c4ba77d0a1f81c57dda20053bbb3d1114293a62424ddf9d7bef16021d685dd
 RosettaCodeData/Task/Arithmetic-Integer/Fortran/arithmetic-integer.f : b6a1f52a3921c7297f1af60fe851d36ffcd1995993d2ee7fde05a40ad860b183
@@ -1939,4 +1938,5 @@ FLAP/src/tests/test_hidden.f90 : 1fecd3c5a4844898f4fb5019c37a81f7bb1ef5340e79e02
 FLAP/src/tests/test_minimal.f90 : 9ba58554d1e477b40ea311497e95099d064d4b46b9df6ff2ddbbc5f9fcaed885
 FLAP/src/tests/test_nested.f90 : e6adb6a29770988006c6c83d0eb6572433882724a0bae51f47778899afc3e508
 FLAP/src/tests/test_string.f90 : 7e1bce103b0997861d072ab1a506bf70db9eb29b7ab8867ff415b855aadf1f54
-another_example.f90 : 90257fe1108c8689002b470e2e2620c2a0652ca6465ba1a5bbbd6667e2339be0
+test_invalid.f90 : 898b97788ca1df5c70f76e08561aa07172f1fb0ddc0e67de4cbb9cab18195426
+test_namelist_block_select.f90 : 90257fe1108c8689002b470e2e2620c2a0652ca6465ba1a5bbbd6667e2339be0
