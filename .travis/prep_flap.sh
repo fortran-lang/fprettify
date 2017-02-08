@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
-wget https://github.com/szaghi/FLAP/archive/9e601.tar.gz
-mkdir fortran_tests/before/FLAP && tar -xf 9e601.tar.gz -C fortran_tests/before/FLAP --strip-components=1
+wget https://github.com/pseewald/FLAP/archive/fprettify-test.tar.gz
+mkdir fortran_tests/before/FLAP && tar -xf fprettify-test.tar.gz -C fortran_tests/before/FLAP --strip-components=1
+rm fprettify-test.tar.gz
