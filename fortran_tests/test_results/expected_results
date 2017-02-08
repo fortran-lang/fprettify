@@ -1323,7 +1323,7 @@ cp2k/src/motion/mc/mc_environment_types.F : 52f8c35d623f95607edce15f3527f46b1a09
 cp2k/src/motion/mc/mc_ge_moves.F : c020388be46ca85e310e7378458c12fddbc598547900abc17cad317e0f0f947c
 cp2k/src/motion/mc/mc_misc.F : 347695566ec23b1e27395ac537bcb4db43a5efa37e1be06a32263fbd64399809
 cp2k/src/motion/mc/mc_move_control.F : parse error
-cp2k/src/motion/mc/mc_moves.F : 13d2e8de2d85e25bc66b3e3f08a9452de82433c1e7fc63031be4e9dd4bad0d36
+cp2k/src/motion/mc/mc_moves.F : ba86d0bd160dbbcb001996670c96babad37dd63c9f9fc4b2a9018d42a7828878
 cp2k/src/motion/mc/mc_run.F : f2527538d1f8a042ab375e898e5c7831740cf1da0bd36b1d93cb361550f27fd2
 cp2k/src/motion/mc/mc_types.F : 705adccaa7a701df4714186fede49be7be84269714e3265df74b947ad72a5e09
 cp2k/src/motion/mc/tamc_run.F : e2a7fa53fdd55eaa0d2c671c4446d57512fa2bce1d2387209940e31b6824d43c
