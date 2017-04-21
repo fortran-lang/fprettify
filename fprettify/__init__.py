@@ -542,6 +542,7 @@ def inspect_ffile_format(infile, indent_size, orig_filename=None):
     stream = InputStream(infile, orig_filename)
     prev_offset = 0
     first_indent = -1
+    f77_line_nr = 0
 
     while 1:
         f_line, _, lines = stream.next_fortran_line()
@@ -560,12 +561,13 @@ def inspect_ffile_format(infile, indent_size, orig_filename=None):
             indents[-1] = indent_size
         prev_offset = offset
 
-        if F77_STYLE.search(f_line):
+        if not num_labels and F77_STYLE.search(f_line):
             num_labels = True
+            f77_line_nr = stream.line_nr
 
     modern_fortran = not num_labels
 
-    return indents, first_indent, modern_fortran
+    return indents, first_indent, modern_fortran, f77_line_nr
 
 
 def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
@@ -886,13 +888,13 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
         orig_filename = infile.name
 
     infile.seek(0)
-    req_indents, first_indent, modern = inspect_ffile_format(
+    req_indents, first_indent, modern, f77_line_nr = inspect_ffile_format(
         infile, indent_size, orig_filename)
     infile.seek(0)
 
     if not modern:
         raise FprettifyParseException(
-            "fprettify failed because of fixed format or f77 constructs.", orig_filename, 0)
+            "fprettify failed because of fixed format or f77 constructs.", orig_filename, f77_line_nr)
 
     # initialization
     indenter = F90Indenter(first_indent, indent_size, orig_filename)
