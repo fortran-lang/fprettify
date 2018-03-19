@@ -631,7 +631,7 @@ def rm_extra_whitespace(line):
                 line_ftd = line_ftd + char
         else:
             if (line_ftd and line_ftd[-1] == ' ' and
-                    (not re.search(r'[\w"]', char) and not is_decl)):
+                    (not re.search(r"[\w\"']", char) and not is_decl)):
                 line_ftd = line_ftd[:-1]  # remove spaces except between words
             line_ftd = line_ftd + line[pos_prev + 1:pos + 1]
         pos_prev = pos
