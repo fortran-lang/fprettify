@@ -8,7 +8,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(name='fprettify',
-      version='0.3.1',
+      version='0.3.2',
       description='auto-formatter for modern fortran source code',
       long_description=long_description,
       author='Patrick Seewald',
