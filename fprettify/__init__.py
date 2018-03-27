@@ -898,8 +898,8 @@ def reformat_inplace(filename, stdout=False, **kwargs):  # pragma: no cover
         outfile.write(newfile.getvalue())
 
 
-def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
-                   orig_filename=None):
+def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, impose_whitespace=True,
+                   whitespace=2, strip_comments=False, orig_filename=None):
     """main method to be invoked for formatting a Fortran file."""
 
     if not orig_filename:
@@ -915,9 +915,20 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
             "fprettify failed because of fixed format or f77 constructs.", orig_filename, f77_line_nr)
 
     # initialization
-    indenter = F90Indenter(first_indent, indent_size, orig_filename)
+
+    # special cases for indentation:
+    # indent_special = 0: parse syntax and impose indent
+    # indent_special = 1: no indentation
+    # indent_special = 2: use indent from previous line
+    # indent_special = 3: take indent from input file (leave as is)
+    indent_special = 0
+
+    if impose_indent:
+        indenter = F90Indenter(first_indent, indent_size, orig_filename)
+    else:
+        indent_special = 3
+
     nfl = 0  # fortran line counter
-    do_indent = True
     use_same_line = False
     stream = InputStream(infile, orig_filename)
     skip_blank = False
@@ -929,27 +940,36 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
         if not lines:
             break
 
-        indent = [0] * len(lines)
+        if indent_special != 3:
+            indent = [0] * len(lines)
+        else:
+            indent = [len(l) - len((l.lstrip(' ')).lstrip('&'))  for l in lines]
+
         nfl += 1
         orig_lines = lines
 
-        comment_lines = format_comments(lines, comments)
+        comment_lines = format_comments(lines, comments, strip_comments)
+
         auto_align, auto_format, in_format_off_block = parse_fprettify_directives(
             lines, comment_lines, in_format_off_block, orig_filename, stream.line_nr)
         f_line, lines, is_omp, is_omp_conditional = preprocess_omp(
             f_line, lines)
 
-        lines, do_format, use_indent, is_blank = preprocess_line(
+        lines, do_format, prev_indent, is_blank = preprocess_line(
             f_line, lines, comments, orig_filename, stream.line_nr)
+
+        if prev_indent and indent_special == 0:
+            indent_special = 2
+
         if is_blank and skip_blank:
             continue
-        if not do_format and do_indent:
-            if use_indent:
+        if (not do_format):
+            if indent_special == 2:
                 assert len(indent) == 1
                 # inherit indent from previous line
                 indent[0] = indenter.get_fline_indent()
-            else:
-                do_indent = False
+            elif indent_special == 0:
+                indent_special = 1
         else:
 
             if not auto_align:
@@ -959,43 +979,60 @@ def reformat_ffile(infile, outfile, indent_size=3, whitespace=2,
 
             lines, pre_ampersand, ampersand_sep = remove_pre_ampersands(
                 lines, orig_filename, stream.line_nr)
+
             linebreak_pos = get_linebreak_pos(lines)
 
             f_line = f_line.strip(' ')
 
-            lines = format_single_fline(
-                f_line, whitespace, linebreak_pos, ampersand_sep,
-                orig_filename, stream.line_nr, auto_format)
+            if impose_whitespace:
+                lines = format_single_fline(
+                    f_line, whitespace, linebreak_pos, ampersand_sep,
+                    orig_filename, stream.line_nr, auto_format)
 
-            lines = append_comments(lines, comment_lines)
+                lines = append_comments(lines, comment_lines)
 
             # target indent for next line
             rel_indent = req_indents[nfl] if nfl < len(req_indents) else 0
 
-            indenter.process_lines_of_fline(
-                f_line, lines, rel_indent, indent_size,
-                stream.line_nr, manual_lines_indent)
-            indent = indenter.get_lines_indent()
+            if indent_special != 3:
+                indenter.process_lines_of_fline(
+                    f_line, lines, rel_indent, indent_size,
+                    stream.line_nr, manual_lines_indent)
+                indent = indenter.get_lines_indent()
 
             lines, indent = prepend_ampersands(lines, indent, pre_ampersand)
 
         lines = remove_trailing_whitespace(lines)
 
-        write_formatted_line(outfile, indent, lines, orig_lines, do_indent,
+        write_formatted_line(outfile, indent, lines, orig_lines, indent_special,
                              use_same_line, is_omp_conditional, orig_filename, stream.line_nr)
 
         do_indent, use_same_line = pass_defaults_to_next_line(f_line)
+
+        if indent_special < 3:
+            if do_indent:
+                indent_special = 0
+            else:
+                indent_special = 1
 
         # rm subsequent blank lines
         skip_blank = EMPTY_RE.search(
             f_line) and not any(comments) and not is_omp
 
 
-def format_comments(lines, comments):
+def format_comments(lines, comments, strip_comments):
     comments_ftd = []
     for line, comment in zip(lines, comments):
         has_comment = bool(comment.strip())
-        sep = has_comment and not comment.strip() == line.strip()
+        if has_comment:
+            if strip_comments:
+                sep = not comment.strip() == line.strip()
+            else:
+                line_minus_comment = line.replace(comment,"")
+                sep = len(line_minus_comment.rstrip('\n')) - len(line_minus_comment.rstrip())
+        else:
+            sep = 0
+
         if line.strip():  # empty lines between linebreaks are ignored
             comments_ftd.append(' ' * sep + comment.strip())
     return comments_ftd
@@ -1045,7 +1082,7 @@ def preprocess_omp(f_line, lines):
 def preprocess_line(f_line, lines, comments, filename, line_nr):
     """preprocess lines: identification and formatting of special cases"""
     is_blank = False
-    use_indent = False
+    prev_indent = False
     do_format = False
 
     if OMP_DIR_RE.search(f_line):
@@ -1063,14 +1100,14 @@ def preprocess_line(f_line, lines, comments, filename, line_nr):
         if any(comments):
             if not lines[0].startswith('!'):
                 # indent comment lines only if they were not indented before.
-                use_indent = True
+                prev_indent = True
         else:
             is_blank = True
         lines = [l.strip(' ') for l in lines]
     else:
         do_format = True
 
-    return [lines, do_format, use_indent, is_blank]
+    return [lines, do_format, prev_indent, is_blank]
 
 
 def pass_defaults_to_next_line(f_line):
@@ -1082,6 +1119,7 @@ def pass_defaults_to_next_line(f_line):
     else:
         do_indent = True
         use_same_line = False
+
     return [do_indent, use_same_line]
 
 
@@ -1098,7 +1136,7 @@ def prepend_ampersands(lines, indent, pre_ampersand):
         amp_insert = pre_ampersand[pos]
         if amp_insert:
             indent[pos] += -1
-            lines[pos] = amp_insert + line
+            lines[pos] = amp_insert + line.lstrip()
 
     return [lines, indent]
 
@@ -1183,7 +1221,7 @@ def get_manual_alignment(lines):
     return manual_lines_indent
 
 
-def write_formatted_line(outfile, indent, lines, orig_lines, do_indent, use_same_line, is_omp_conditional, filename, line_nr):
+def write_formatted_line(outfile, indent, lines, orig_lines, indent_special, use_same_line, is_omp_conditional, filename, line_nr):
     """Write reformatted line to file"""
     for ind, line, orig_line in zip(indent, lines, orig_lines):
 
@@ -1193,7 +1231,7 @@ def write_formatted_line(outfile, indent, lines, orig_lines, do_indent, use_same
             pass
         line_length += 1
 
-        if do_indent:
+        if indent_special != 1:
             ind_use = ind
         else:
             if use_same_line:
@@ -1264,6 +1302,9 @@ def run(argv=sys.argv):  # pragma: no cover
                         help="relative indentation width")
     parser.add_argument("-w", "--whitespace", type=int,
                         choices=range(0, 4), default=2, help="Amount of whitespace")
+    parser.add_argument("--disable-indent", action='store_true', default=False, help="don't impose indentation")
+    parser.add_argument("--disable-whitespace", action='store_true', default=False, help="don't impose whitespace formatting")
+    parser.add_argument("--strip-comments", action='store_true', default=False, help="strip whitespaces before comments")
     parser.add_argument("-s", "--stdout", action='store_true', default=False,
                         help="Write to stdout instead of formatting inplace")
 
@@ -1328,7 +1369,10 @@ def run(argv=sys.argv):  # pragma: no cover
             try:
                 reformat_inplace(filename,
                                  stdout=stdout,
+                                 impose_indent=not args.disable_indent,
                                  indent_size=args.indent,
-                                 whitespace=args.whitespace)
+                                 impose_whitespace=not args.disable_whitespace,
+                                 whitespace=args.whitespace,
+                                 strip_comments=args.strip_comments)
             except FprettifyException as e:
                 log_exception(e, "Fatal error occured")
