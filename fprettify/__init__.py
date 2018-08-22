@@ -1318,7 +1318,7 @@ def run(argv=sys.argv):  # pragma: no cover
     parser.add_argument('-f', '--fortran', type=str, action='append', default=[],
                         help="Overrides default fortran extensions recognized by --recursive. Repeat this option to specify more than one extension.")
     parser.add_argument('--version', action='version',
-                        version='%(prog)s 0.3.2')
+                        version='%(prog)s 0.3.3a')
 
     args = parser.parse_args(argv[1:])
 
