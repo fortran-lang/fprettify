@@ -19,7 +19,7 @@ setup(name='fprettify',
       test_suite='fprettify.tests',
       keywords='fortran format formatting auto-formatter indent',
       url='https://github.com/pseewald/fprettify',
-      download_url='https://github.com/pseewald/fprettify/archive/v0.3.1.tar.gz',
+      download_url='https://github.com/pseewald/fprettify/archive/v0.3.2.tar.gz',
       classifiers=[
           'Development Status :: 5 - Production/Stable',
           'Intended Audience :: Developers',
