@@ -1,20 +1,31 @@
 language: python
 python:
- - 2.7
- - 3.4
- - 3.5
- - 3.6
+- 2.7
+- 3.4
+- 3.5
+- 3.6
 before_install:
- - if [[ $TRAVIS_PYTHON_VERSION == "2.7" ]] || [[ $TRAVIS_PYTHON_VERSION == "3.5" ]]; then export DO_COVERAGE=1; fi
- - if [[ "$TRAVIS_EVENT_TYPE" = "cron" ]]; then unset DO_COVERAGE; fi
+- if [[ $TRAVIS_PYTHON_VERSION == "2.7" ]] || [[ $TRAVIS_PYTHON_VERSION == "3.5" ]];
+  then export DO_COVERAGE=1; fi
+- if [[ "$TRAVIS_EVENT_TYPE" = "cron" ]]; then unset DO_COVERAGE; fi
 install:
- - pip install -U -r requirements.txt
- - if [[ $DO_COVERAGE ]]; then pip install coveralls; fi
+- pip install -U -r requirements.txt
+- if [[ $DO_COVERAGE ]]; then pip install coveralls; fi
 before_script:
- - .travis/prep_regular.sh
- - if [[ "$TRAVIS_EVENT_TYPE" = "cron" ]]; then .travis/prep_cron.sh; fi
+- ".travis/prep_regular.sh"
+- if [[ "$TRAVIS_EVENT_TYPE" = "cron" ]]; then .travis/prep_cron.sh; fi
 script:
- - if ! [[ $DO_COVERAGE ]]; then python setup.py test; fi
- - if [[ $DO_COVERAGE ]]; then coverage run --source=fprettify setup.py test; fi
+- if ! [[ $DO_COVERAGE ]]; then python setup.py test; fi
+- if [[ $DO_COVERAGE ]]; then coverage run --source=fprettify setup.py test; fi
 after_success:
- - if [[ $DO_COVERAGE ]]; then coveralls; fi
+- if [[ $DO_COVERAGE ]]; then coveralls; fi
+deploy:
+  provider: pypi
+  user: pseewald
+  password:
+    secure: pypipassword
+  on:
+    tags: true
+env:
+  global:
+    secure: CFIJ8b3KTqxbBgDuNRgcuoK6qT5wbYWZRYh+aFrN1tMRvzTOtxbGdKe9TFvYuXyD/EsMO1Q6A70nrmvUp9QR8Mgf46JLoVDjEx9v9aMu2hL8/9mTOyycmacYR4mUlQl4x1m0jC+6Gis319QF04ANiTQj/HXbUrAyFn3R+qXz3VVq5dIygjlK6QLG+erWvmkmGSzY2eHt+VvH3GqQSkHnFAHnjzf3FMB0WszP24gO5kJ8Wz1WIwyZNuAGJLmZjXQ8vSI7g5iuz/yVrjVKGS76qdiCuwelC/Z82oGP5TD0yzGiZGBI3hn8hKFADCN5pIRffpciiMTw+KkogoOL5zQyOV7XYauQhZsjjzPt1R/y390uYLO5e2e+8I0VWi6k+HYjxAScjZhQiv75oUvebkutYY8qwecRrWKMBO01vLBlPnM0/3vEjfuPQ5GW4AKRxQ6+p31eADY7/fUV4x9yNZ3p8uKpLWD1S2MA2Z6OJjH0sBd7Em94VmqZNWj2NH9d64s1340iLAeV5m/kjcnTdMNv0Flc6yy62xs30SvLx6VAEY771cHOdQtOJoxV0uZofy/qm5/1wKE8Zsh83Clt9FGsxjpeW0vuZumNifFo7VKB+ii+NZ/GsG6UPvW53Ku9FqEh0Aqv2M70TBUG8XNX9UmzL5BXEdXDGqyRsddFvU3/1jg=
