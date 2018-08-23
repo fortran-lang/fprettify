@@ -24,6 +24,7 @@ deploy:
   user: pseewald
   password:
     secure: BBrJA4fm74NRgSurZYzijgiAWrACPMLQqanGDx+dHSErmJGbo3JkPFUC4acjyWghU/4YPLfNkdzx4W5J4t3ec5ONAzSRuu/UthK/PKqKl9rE8lwQqJXNmoTkzEyfSlrTuklMi/Lz5ZGK6Dq+YjMOpkMDNymvnUfr9pZy6MmqBdV7NEjiWwxTaIdcbYE4aaxzhgLzXF2Vlw3kKddNvfg7HB39iCc0gFeW3mhYiHrcPgyksMqp6Ym4koxK2pAFWMxub2RoeXt/anl9AK2x0Uf8YkPOPTJuv4LmXaKH11GIKRQdtQg0jxh36/IT+lwk7NH/FvaJbzudTkJuET8EF0z13C/g87djXCRkRWVOsJyvXb97uFe9r5cKs4nX+Zp+1UDzRtERJA8C2fKCdjruspQ56rj2LBBNaETtFDdxvXBlezuPmfDX0XkiUOS2kzyqnjB1pMRC/RDRpNvU8aelDHE/s90oyKMUE4itwv9M+/b9TxxTxN82bcDRRPp7euCApjJNpaPgxBEmAhZccv24ZD1TqqZDEOyYsPZiCXrwp8s6hXWXMgTubIPF+BjhnhZL+Unl5hLSOhMBnWjTOIeBb3DGDkro3eggvAsHoi8EUyym1nYS7Mvuz0k9+OFmiRlJi/QwaEBVkmQouqXdWrY6Z369klMSgisLgfknQjBU4amtpbo=
+  distributions: sdist bdist_wheel
   on:
     tags: true
     python: 3.6
