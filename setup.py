@@ -8,7 +8,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(name='fprettify',
-      version='0.3.3a',
+      version='0.3.3a0',
       description='auto-formatter for modern fortran source code',
       long_description=long_description,
       author='Patrick Seewald',
@@ -19,7 +19,7 @@ setup(name='fprettify',
       test_suite='fprettify.tests',
       keywords='fortran format formatting auto-formatter indent',
       url='https://github.com/pseewald/fprettify',
-      download_url='https://github.com/pseewald/fprettify/archive/v0.3.3a.tar.gz',
+      download_url='https://github.com/pseewald/fprettify/archive/v0.3.3a0.tar.gz',
       classifiers=[
           'Development Status :: 5 - Production/Stable',
           'Intended Audience :: Developers',
