@@ -131,4 +131,4 @@ A = [-1,   10, 0, &
 The testing mechanism allows you to easily test fprettify with any Fortran project of your choice. Simply clone or copy your entire project into `fortran_tests/before` and run `python setup.py test`. The directory `fortran_tests/after` contains the test output (reformatted Fortran files). If testing fails, please submit an issue!
 
 
-[![Code Health](https://landscape.io/github/pseewald/fprettify/master/landscape.svg?style=flat)](https://landscape.io/github/pseewald/fprettify/master) [![Code Climate](https://codeclimate.com/github/pseewald/fprettify/badges/gpa.svg)](https://codeclimate.com/github/pseewald/fprettify) [![Code Issues](https://www.quantifiedcode.com/api/v1/project/d5bb6eeb81ba41478986898d3d2665e4/badge.svg)](https://www.quantifiedcode.com/app/project/d5bb6eeb81ba41478986898d3d2665e4)
+[![Code Health](https://landscape.io/github/pseewald/fprettify/master/landscape.svg?style=flat)](https://landscape.io/github/pseewald/fprettify/master) [![Code Climate](https://codeclimate.com/github/pseewald/fprettify/badges/gpa.svg)](https://codeclimate.com/github/pseewald/fprettify)
