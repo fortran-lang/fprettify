@@ -783,21 +783,20 @@ def add_whitespace_context(line, spacey):
     not comments or strings in order to be able to apply a context aware regex.
     """
 
-    line_parts = []
-    str_end = -1
-    instring = ''
-    for pos, char in enumerate(line):
-        if char in ['"', "'"]:  # skip string
-            if not instring:
-                str_start = pos
-                line_parts.append(line[str_end + 1:str_start])
-                instring = char
-            elif instring == char:
-                str_end = pos
-                line_parts.append(line[str_start:str_end + 1])
-                instring = ''
-        if pos == len(line) - 1:
-            line_parts.append(line[str_end + 1:])
+
+    pos_prev = -1
+    line_parts = ['']
+    for pos, char in CharFilter(enumerate(line)):
+        if pos > pos_prev + 1: # skipped string
+            line_parts.append(line[pos_prev + 1:pos + 1]) # append string
+            line_parts.append('')
+        else:
+            line_parts[-1] += char
+
+        pos_prev = pos
+
+    if pos + 1 < len(line):
+        line_parts.append(line[pos + 2:])
 
     # format namelists with spaces around /
     if NML_STMT_RE.match(line):
