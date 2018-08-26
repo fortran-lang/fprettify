@@ -1312,7 +1312,7 @@ def run(argv=sys.argv):  # pragma: no cover
     parser.add_argument("-i", "--indent", type=int, default=3,
                         help="relative indentation width")
     parser.add_argument("-w", "--whitespace", type=int,
-                        choices=range(0, 5), default=2, help="Amount of whitespace")
+                        choices=range(0, 5), default=2, help="types of whitespaces to include")
     parser.add_argument("--disable-indent", action='store_true', default=False, help="don't impose indentation")
     parser.add_argument("--disable-whitespace", action='store_true', default=False, help="don't impose whitespace formatting")
     parser.add_argument("--strip-comments", action='store_true', default=False, help="strip whitespaces before comments")
