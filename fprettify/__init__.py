@@ -655,6 +655,8 @@ def rm_extra_whitespace(line):
                 line_ftd = line_ftd[:-1]  # remove spaces except between words
             line_ftd = line_ftd + char
         pos_prev = pos
+
+    line_ftd = line_ftd + line[pos+1:]
     return line_ftd
 
 
@@ -800,7 +802,7 @@ def add_whitespace_context(line, spacey):
         pos_prev = pos
 
     if pos + 1 < len(line):
-        line_parts.append(line[pos + 2:])
+        line_parts.append(line[pos + 1:])
 
     # format namelists with spaces around /
     if NML_STMT_RE.match(line):
