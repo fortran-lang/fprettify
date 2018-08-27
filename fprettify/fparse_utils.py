@@ -83,6 +83,7 @@ class CharFilter(object):
         if char in ['"', "'"]:
             if self._instring == char:
                 self._instring = ''
+                return self.__next__()
             elif not self._instring:
                 self._instring = char
 

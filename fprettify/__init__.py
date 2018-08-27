@@ -624,6 +624,7 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
     line_orig = line
 
     if auto_format:
+
         line = rm_extra_whitespace(line)
         line = add_whitespace_charwise(line, spacey, filename, line_nr)
         line = add_whitespace_context(line, spacey)
@@ -641,15 +642,18 @@ def rm_extra_whitespace(line):
         is_decl = line[pos:].lstrip().startswith('::') or line[
             :pos].rstrip().endswith('::')
 
+        if pos > pos_prev + 1: # skipped string
+            line_ftd = line_ftd + line[pos_prev + 1:pos]
+
         if char == ' ':
             # remove double spaces:
-            if line_ftd and (re.search(r'[\w"]', line_ftd[-1]) or is_decl):
+            if line_ftd and (re.search(r'[\w]', line_ftd[-1]) or is_decl):
                 line_ftd = line_ftd + char
         else:
             if (line_ftd and line_ftd[-1] == ' ' and
-                    (not re.search(r"[\w\"']", char) and not is_decl)):
+                    (not re.search(r'[\w]', char) and not is_decl)):
                 line_ftd = line_ftd[:-1]  # remove spaces except between words
-            line_ftd = line_ftd + line[pos_prev + 1:pos + 1]
+            line_ftd = line_ftd + char
         pos_prev = pos
     return line_ftd
 
@@ -788,10 +792,10 @@ def add_whitespace_context(line, spacey):
     line_parts = ['']
     for pos, char in CharFilter(enumerate(line)):
         if pos > pos_prev + 1: # skipped string
-            line_parts.append(line[pos_prev + 1:pos + 1]) # append string
+            line_parts.append(line[pos_prev + 1:pos].strip()) # append string
             line_parts.append('')
-        else:
-            line_parts[-1] += char
+
+        line_parts[-1] += char
 
         pos_prev = pos
 
