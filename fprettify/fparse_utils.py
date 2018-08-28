@@ -63,9 +63,12 @@ class CharFilter(object):
     and ignore comments and characters inside strings
     """
 
-    def __init__(self, it):
+    def __init__(self, it, filter_comments=True, filter_strings=True):
         self._it = it
         self._instring = ''
+        self._incomment = ''
+        self._filter_comments = filter_comments
+        self._filter_strings = filter_strings
 
     def __iter__(self):
         return self
@@ -83,23 +86,29 @@ class CharFilter(object):
         except StopIteration:
             if self._instring:
                 raise FprettifyInternalException(
-                        "multline strings not supported", '', 0)
+                        "multiline strings not supported", '', 0)
             else:
                 raise
 
         if not self._instring and (char == '!' or char == '#'):
-            raise StopIteration
+            self._incomment = char
 
         # detect start/end of a string
-        if char in ['"', "'"]:
+        if not self._incomment and char in ['"', "'"]:
             if self._instring == char:
                 self._instring = ''
-                return self.__next__()
+                if self._filter_strings:
+                    return self.__next__()
             elif not self._instring:
                 self._instring = char
 
-        if self._instring:
-            return self.__next__()
+        if self._filter_comments:
+            if self._incomment:
+                raise StopIteration
+
+        if self._filter_strings:
+            if self._instring:
+                return self.__next__()
 
         return (pos, char)
 
@@ -150,7 +159,7 @@ class InputStream(object):
                         line_start = pos + 1
 
                 if pos + 1 < len(line):
-                    for pos_add, char in enumerate(line[pos+1:]):
+                    for pos_add, char in CharFilter(enumerate(line[pos+1:]), filter_comments=False):
                         if char in ['!', '#']:
                             self.endpos.append(pos + pos_add - line_start)
                             self.line_buffer.append(line[line_start:])

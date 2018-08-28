@@ -638,6 +638,7 @@ def rm_extra_whitespace(line):
     """rm all unneeded whitespace chars, except for declarations"""
     line_ftd = ''
     pos_prev = -1
+    pos = -1
     for pos, char in CharFilter(enumerate(line)):
         is_decl = line[pos:].lstrip().startswith('::') or line[
             :pos].rstrip().endswith('::')
@@ -791,6 +792,7 @@ def add_whitespace_context(line, spacey):
 
 
     pos_prev = -1
+    pos = -1
     line_parts = ['']
     for pos, char in CharFilter(enumerate(line)):
         if pos > pos_prev + 1: # skipped string
