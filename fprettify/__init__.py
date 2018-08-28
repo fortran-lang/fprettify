@@ -1163,7 +1163,7 @@ def get_linebreak_pos(lines):
     linebreak_pos = []
     for line in lines:
         found = None
-        for char_pos, _ in CharFilter(line):
+        for char_pos, _ in CharFilter(line, filter_strings=False):
             if re.match(LINEBREAK_STR, line[char_pos:], RE_FLAGS):
                 found = char_pos
         if found:

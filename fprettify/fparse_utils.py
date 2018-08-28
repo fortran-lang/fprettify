@@ -71,6 +71,12 @@ class CharFilter(object):
         self._filter_comments = filter_comments
         self._filter_strings = filter_strings
 
+    def update(self, string, filter_comments=True, filter_strings=True):
+        self._content = string
+        self._it = enumerate(self._content)
+        self._filter_comments = filter_comments
+        self._filter_strings = filter_strings
+
     def __iter__(self):
         return self
 
@@ -80,16 +86,7 @@ class CharFilter(object):
 
     def __next__(self):
 
-        # make sure that we are not dealing with multiline strings
-        # this will go away with multiline strings support
-        try:
-            pos, char = next(self._it)
-        except StopIteration:
-            if self._instring:
-                raise FprettifyInternalException(
-                        "multiline strings not supported", '', 0)
-            else:
-                raise
+        pos, char = next(self._it)
 
         if not self._instring and (char == '!' or char == '#'):
             self._incomment = char
@@ -138,6 +135,7 @@ class InputStream(object):
         continuation = 0
         instring = ''
 
+        string_iter = CharFilter('')
         while 1:
             if not self.line_buffer:
                 line = self.infile.readline().replace("\t", 8 * " ")
@@ -151,7 +149,10 @@ class InputStream(object):
                 line_start = 0
 
                 pos = -1
-                for pos, char in CharFilter(line):
+
+                # update instead of CharFilter(line) to account for multiline strings
+                string_iter.update(line)
+                for pos, char in string_iter:
                     if char == ';' or pos + 1 == len(line):
                         self.endpos.append(pos - line_start)
                         self.line_buffer.append(line[line_start:pos + 1])
@@ -167,10 +168,15 @@ class InputStream(object):
                             self.what_omp.append(what_omp)
                             break
 
-            if self.line_buffer:
-                line = self.line_buffer.popleft()
-                endpos = self.endpos.popleft()
-                what_omp = self.what_omp.popleft()
+                if not self.line_buffer:
+                    self.endpos.append(len(line))
+                    self.line_buffer.append(line)
+                    self.what_omp.append('')
+
+
+            line = self.line_buffer.popleft()
+            endpos = self.endpos.popleft()
+            what_omp = self.what_omp.popleft()
 
             if not line:
                 break
