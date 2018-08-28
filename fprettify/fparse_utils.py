@@ -75,8 +75,19 @@ class CharFilter(object):
         return self.__next__()
 
     def __next__(self):
-        pos, char = next(self._it)
-        if not self._instring and char == '!':
+
+        # make sure that we are not dealing with multiline strings
+        # this will go away with multiline strings support
+        try:
+            pos, char = next(self._it)
+        except StopIteration:
+            if self._instring:
+                raise FprettifyInternalException(
+                        "multline strings not supported", '', 0)
+            else:
+                raise
+
+        if not self._instring and (char == '!' or char == '#'):
             raise StopIteration
 
         # detect start/end of a string
@@ -128,28 +139,23 @@ class InputStream(object):
                     what_omp = OMP_SUBS_RE.search(line).group(1)
                     line = line.replace(what_omp, '', 1)
                 line_start = 0
-                for pos, char in enumerate(line):
-                    if not instring and char in ['!', '#']:
-                        self.endpos.append(pos - 1 - line_start)
-                        self.line_buffer.append(line[line_start:])
-                        self.what_omp.append(what_omp)
-                        break
-                    if char in ['"', "'"]:
-                        if instring == char:
-                            instring = ''
-                        elif not instring:
-                            instring = char
-                    if not instring:
-                        if char == ';' or pos + 1 == len(line):
-                            self.endpos.append(pos - line_start)
-                            self.line_buffer.append(line[line_start:pos + 1])
-                            self.what_omp.append(what_omp)
-                            what_omp = ''
-                            line_start = pos + 1
 
-                if instring:
-                    raise FprettifyInternalException(
-                        "multline strings not supported", self.filename, self.line_nr)
+                pos = -1
+                for pos, char in CharFilter(enumerate(line)):
+                    if char == ';' or pos + 1 == len(line):
+                        self.endpos.append(pos - line_start)
+                        self.line_buffer.append(line[line_start:pos + 1])
+                        self.what_omp.append(what_omp)
+                        what_omp = ''
+                        line_start = pos + 1
+
+                if pos + 1 < len(line):
+                    for pos_add, char in enumerate(line[pos+1:]):
+                        if char in ['!', '#']:
+                            self.endpos.append(pos + pos_add - line_start)
+                            self.line_buffer.append(line[line_start:])
+                            self.what_omp.append(what_omp)
+                            break
 
             if self.line_buffer:
                 line = self.line_buffer.popleft()
