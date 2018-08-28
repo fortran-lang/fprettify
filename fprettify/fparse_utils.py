@@ -59,12 +59,13 @@ class FprettifyInternalException(FprettifyException):
 
 class CharFilter(object):
     """
-    An iterator to wrap the iterator returned by `enumerate`
+    An iterator to wrap the iterator returned by `enumerate(string)`
     and ignore comments and characters inside strings
     """
 
-    def __init__(self, it, filter_comments=True, filter_strings=True):
-        self._it = it
+    def __init__(self, string, filter_comments=True, filter_strings=True):
+        self._content = string
+        self._it = enumerate(self._content)
         self._instring = ''
         self._incomment = ''
         self._filter_comments = filter_comments
@@ -150,7 +151,7 @@ class InputStream(object):
                 line_start = 0
 
                 pos = -1
-                for pos, char in CharFilter(enumerate(line)):
+                for pos, char in CharFilter(line):
                     if char == ';' or pos + 1 == len(line):
                         self.endpos.append(pos - line_start)
                         self.line_buffer.append(line[line_start:pos + 1])
@@ -159,7 +160,7 @@ class InputStream(object):
                         line_start = pos + 1
 
                 if pos + 1 < len(line):
-                    for pos_add, char in CharFilter(enumerate(line[pos+1:]), filter_comments=False):
+                    for pos_add, char in CharFilter(line[pos+1:], filter_comments=False):
                         if char in ['!', '#']:
                             self.endpos.append(pos + pos_add - line_start)
                             self.line_buffer.append(line[line_start:])

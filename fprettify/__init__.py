@@ -457,7 +457,7 @@ class F90Aligner(object):
 
         end_of_delim = -1
 
-        for pos, char in CharFilter(enumerate(line)):
+        for pos, char in CharFilter(line):
 
             what_del_open = None
             what_del_close = None
@@ -639,7 +639,7 @@ def rm_extra_whitespace(line):
     line_ftd = ''
     pos_prev = -1
     pos = -1
-    for pos, char in CharFilter(enumerate(line)):
+    for pos, char in CharFilter(line):
         is_decl = line[pos:].lstrip().startswith('::') or line[
             :pos].rstrip().endswith('::')
 
@@ -667,7 +667,7 @@ def add_whitespace_charwise(line, spacey, filename, line_nr):
     pos_eq = []
     end_of_delim = -1
     level = 0
-    for pos, char in CharFilter(enumerate(line)):
+    for pos, char in CharFilter(line):
         # offset w.r.t. unformatted line
         offset = len(line_ftd) - len(line)
 
@@ -794,7 +794,7 @@ def add_whitespace_context(line, spacey):
     pos_prev = -1
     pos = -1
     line_parts = ['']
-    for pos, char in CharFilter(enumerate(line)):
+    for pos, char in CharFilter(line):
         if pos > pos_prev + 1: # skipped string
             line_parts.append(line[pos_prev + 1:pos].strip()) # append string
             line_parts.append('')
@@ -1163,7 +1163,7 @@ def get_linebreak_pos(lines):
     linebreak_pos = []
     for line in lines:
         found = None
-        for char_pos, _ in CharFilter(enumerate(line)):
+        for char_pos, _ in CharFilter(line):
             if re.match(LINEBREAK_STR, line[char_pos:], RE_FLAGS):
                 found = char_pos
         if found:
@@ -1232,7 +1232,7 @@ def write_formatted_line(outfile, indent, lines, orig_lines, indent_special, use
 
         # get actual line length excluding comment:
         line_length = 0
-        for line_length, _ in CharFilter(enumerate(line)):
+        for line_length, _ in CharFilter(line):
             pass
         line_length += 1
 
