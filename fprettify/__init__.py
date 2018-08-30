@@ -90,7 +90,8 @@ except AttributeError:
 
 from .fparse_utils import (VAR_DECL_RE, OMP_RE, OMP_DIR_RE,
                            InputStream, CharFilter,
-                           FprettifyException, FprettifyParseException, FprettifyInternalException, RE_FLAGS)
+                           FprettifyException, FprettifyParseException, FprettifyInternalException,
+                           CPP_RE, NOTFORTRAN_LINE_RE, FYPP_LINE_RE, RE_FLAGS, STR_OPEN_RE)
 
 # recognize fortran files by extension
 FORTRAN_EXTENSIONS = [".f", ".for", ".ftn",
@@ -112,21 +113,21 @@ F77_STYLE = re.compile(r"^\s*\d", RE_FLAGS)
 # regular expressions for parsing statements that start, continue or end a
 # subunit:
 IF_RE = re.compile(
-    SOL_STR + r"(\w+\s*:)?\s*IF\s*\(.+\)\s*THEN" + EOL_STR, RE_FLAGS)
+    SOL_STR + r"(\w+\s*:)?\s*IF\s*\(.*\)\s*THEN" + EOL_STR, RE_FLAGS)
 ELSE_RE = re.compile(
-    SOL_STR + r"ELSE(\s*IF\s*\(.+\)\s*THEN)?" + EOL_STR, RE_FLAGS)
+    SOL_STR + r"ELSE(\s*IF\s*\(.*\)\s*THEN)?" + EOL_STR, RE_FLAGS)
 ENDIF_RE = re.compile(SOL_STR + r"END\s*IF(\s+\w+)?" + EOL_STR, RE_FLAGS)
 
 DO_RE = re.compile(SOL_STR + r"(\w+\s*:)?\s*DO(" + EOL_STR + r"|\s)", RE_FLAGS)
 ENDDO_RE = re.compile(SOL_STR + r"END\s*DO(\s+\w+)?" + EOL_STR, RE_FLAGS)
 
 SELCASE_RE = re.compile(
-    SOL_STR + r"SELECT\s*(CASE|TYPE)\s*\(.+\)" + EOL_STR, RE_FLAGS)
+    SOL_STR + r"SELECT\s*(CASE|TYPE)\s*\(.*\)" + EOL_STR, RE_FLAGS)
 CASE_RE = re.compile(
-    SOL_STR + r"((CASE|TYPE\s+IS|CLASS\s+IS)\s*(\(.+\)|DEFAULT)|CLASS\s+DEFAULT)" + EOL_STR, RE_FLAGS)
+    SOL_STR + r"((CASE|TYPE\s+IS|CLASS\s+IS)\s*(\(.*\)|DEFAULT)|CLASS\s+DEFAULT)" + EOL_STR, RE_FLAGS)
 ENDSEL_RE = re.compile(SOL_STR + r"END\s*SELECT" + EOL_STR, RE_FLAGS)
 
-ASSOCIATE_RE = re.compile(SOL_STR + r"ASSOCIATE\s*\(.+\)" + EOL_STR, RE_FLAGS)
+ASSOCIATE_RE = re.compile(SOL_STR + r"ASSOCIATE\s*\(.*\)" + EOL_STR, RE_FLAGS)
 ENDASSOCIATE_RE = re.compile(SOL_STR + r"END\s*ASSOCIATE" + EOL_STR, RE_FLAGS)
 
 BLK_RE = re.compile(SOL_STR + r"(\w+\s*:)?\s*BLOCK" + EOL_STR, RE_FLAGS)
@@ -287,8 +288,12 @@ class F90Indenter(object):
         is_new = False
         valid_new = False
 
+        f_filter = CharFilter(f_line)
+        f_line_filtered = f_filter.filter_all()
+
         for new_n, newre in enumerate(NEW_SCOPE_RE):
-            if newre and newre.search(f_line) and not END_SCOPE_RE[new_n].search(f_line):
+            if newre and newre.search(f_line_filtered) and \
+                not END_SCOPE_RE[new_n].search(f_line_filtered):
                 what_new = new_n
                 is_new = True
                 valid_new = True
@@ -300,7 +305,7 @@ class F90Indenter(object):
         is_con = False
         valid_con = False
         for con_n, conre in enumerate(CONTINUE_SCOPE_RE):
-            if conre and conre.search(f_line):
+            if conre and conre.search(f_line_filtered):
                 what_con = con_n
                 is_con = True
                 if len(scopes) > 0:
@@ -314,7 +319,7 @@ class F90Indenter(object):
         is_end = False
         valid_end = False
         for end_n, endre in enumerate(END_SCOPE_RE):
-            if endre and endre.search(f_line):
+            if endre and endre.search(f_line_filtered):
                 what_end = end_n
                 is_end = True
                 if len(scopes) > 0:
@@ -810,7 +815,7 @@ def add_whitespace_context(line, spacey):
     if NML_STMT_RE.match(line):
         for pos, part in enumerate(line_parts):
             # exclude comments, strings:
-            if not re.match(r"['\"!]", part, RE_FLAGS):
+            if not STR_OPEN_RE.match(part):
                 partsplit = NML_RE.split(part)
                 line_parts[pos] = (' '.join(partsplit))
 
@@ -818,7 +823,7 @@ def add_whitespace_context(line, spacey):
     for n_op, lr_re in enumerate(LR_OPS_RE):
         for pos, part in enumerate(line_parts):
             # exclude comments, strings:
-            if not re.search(r"^['\"!]", part, RE_FLAGS):
+            if not STR_OPEN_RE.match(part):
                 # also exclude / if we see a namelist and data statement
                 if not ( NML_STMT_RE.match(line) or DATA_STMT_RE.match(line) ):
                     partsplit = lr_re.split(part)
@@ -945,13 +950,13 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, impose_wh
         if not lines:
             break
 
+        nfl += 1
+        orig_lines = lines
+
         if indent_special != 3:
             indent = [0] * len(lines)
         else:
             indent = [len(l) - len((l.lstrip(' ')).lstrip('&'))  for l in lines]
-
-        nfl += 1
-        orig_lines = lines
 
         comment_lines = format_comments(lines, comments, strip_comments)
 
@@ -960,8 +965,11 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, impose_wh
         f_line, lines, is_omp, is_omp_conditional = preprocess_omp(
             f_line, lines)
 
-        lines, do_format, prev_indent, is_blank = preprocess_line(
+        lines, do_format, prev_indent, is_blank, is_fypp = preprocess_line(
             f_line, lines, comments, orig_filename, stream.line_nr)
+
+        if is_fypp:
+            indent_special = 3
 
         if prev_indent and indent_special == 0:
             indent_special = 2
@@ -970,9 +978,8 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, impose_wh
             continue
         if (not do_format):
             if indent_special == 2:
-                assert len(indent) == 1
                 # inherit indent from previous line
-                indent[0] = indenter.get_fline_indent()
+                indent[:] = [indenter.get_fline_indent()]*len(indent)
             elif indent_special == 0:
                 indent_special = 1
         else:
@@ -1014,7 +1021,7 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, impose_wh
 
         do_indent, use_same_line = pass_defaults_to_next_line(f_line)
 
-        if indent_special < 3:
+        if impose_indent:
             if do_indent:
                 indent_special = 0
             else:
@@ -1089,30 +1096,27 @@ def preprocess_line(f_line, lines, comments, filename, line_nr):
     is_blank = False
     prev_indent = False
     do_format = False
+    is_fypp = False
 
     if OMP_DIR_RE.search(f_line):
         # move '!$OMP' to line start, otherwise don't format omp directives
         lines = ['!$OMP' + (len(l) - len(l.lstrip())) *
                  ' ' + OMP_DIR_RE.sub('', l, count=1) for l in lines]
-    elif lines[0].startswith('#'):  # preprocessor macros
-        if len(lines) != 1:
-            raise FprettifyInternalException(
-                "Continuation lines for preprocessor statement", filename, line_nr)
     elif EMPTY_RE.search(f_line):  # empty lines including comment lines
-        if len(lines) != 1:
-            raise FprettifyInternalException(
-                "Continuation lines for comment lines", filename, line_nr)
         if any(comments):
-            if not lines[0].startswith('!'):
+            if lines[0].startswith(' '):
                 # indent comment lines only if they were not indented before.
                 prev_indent = True
+            is_fypp = FYPP_LINE_RE.search(lines[0].lstrip())
         else:
             is_blank = True
-        lines = [l.strip(' ') for l in lines]
+        if not is_fypp:
+            lines = [l.strip(' ') for l in lines]
+
     else:
         do_format = True
 
-    return [lines, do_format, prev_indent, is_blank]
+    return [lines, do_format, prev_indent, is_blank, is_fypp]
 
 
 def pass_defaults_to_next_line(f_line):
@@ -1168,7 +1172,7 @@ def get_linebreak_pos(lines):
                 found = char_pos
         if found:
             linebreak_pos.append(found)
-        elif line.lstrip(' ')[0] in ['!','#']:
+        elif NOTFORTRAN_LINE_RE.search(line.lstrip(' ')):
             linebreak_pos.append(0)
 
     linebreak_pos = [sum(linebreak_pos[0:_ + 1]) -
@@ -1244,7 +1248,7 @@ def write_formatted_line(outfile, indent, lines, orig_lines, indent_special, use
             else:
                 ind_use = 0
 
-        if line.lstrip().startswith('#'):
+        if CPP_RE.search(line.lstrip()):
             ind_use = 0
 
         if ind_use + line_length <= 133:  # 132 plus 1 newline char
