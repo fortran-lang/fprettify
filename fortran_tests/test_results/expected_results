@@ -1,4 +1,4 @@
-example.f90 : 255c56ec48dbb41e4e8911dec421a4fdce7c2622987172f19afd819cd6258ffb
+example.f90 : b5e5fa2b0e98cdeba74dfc359c310e121d0b9577fb56966195f716f815c7bd26
 RosettaCodeData/Task/100-doors/Fortran/100-doors-1.f : b44289edb55a75ca29407be3ca0d997119253d4c7adb5b3dfc1119944036ab0f
 RosettaCodeData/Task/100-doors/Fortran/100-doors-2.f : 263122b2af3e3637a7dab0bc0216dec27d76068b7352e9ab85e420de625408be
 RosettaCodeData/Task/24-game-Solve/Fortran/24-game-solve-1.f : a2e012f58dc96a8c8e1b84064f70e4607d8fd3b720a43f5a11e572efe49f556e
@@ -700,17 +700,17 @@ cp2k/src/acc/acc_kinds.F : c222a6888e9ab8d385c81a7dd8e15939b5eb05013c86dac081f26
 cp2k/src/acc/acc_stream.F : ded3ba323c0eee896fa7732bcf3513d8ef04fbe0a18807ad6c91c53bdad08a1e
 cp2k/src/admm_dm_methods.F : 37f5a2e1c0daf84a9e521e3f760f0afd5eb4fd49749a3d542c19a74c54c05d4b
 cp2k/src/admm_dm_types.F : 27e2dfa41f6d49411bcd51b170977a050bcbd0640d41b3d9ab465111910ab769
-cp2k/src/admm_methods.F : 329d571086ad8131934bff0c72a3be5e5b4321d38454d3d301ad0e3cf0047353
+cp2k/src/admm_methods.F : 8ccbd4a3609035a8f5ba1beaa46b0851e8d8cf350ef2ce200203517ee73fb850
 cp2k/src/admm_types.F : da9694ee4f5f071b83c8e4a970b100b29e998dd5d5f9601781303e577cb6b7ed
 cp2k/src/admm_utils.F : af3c6597a4ecfee2568459d0a68f610a88b93cd9d56f7fda307a3fd3e6528dd7
 cp2k/src/al_system_types.F : c9df9da0959ea8a6d30aac6d764dc6ad671df34e784fedfe202c529712b3e1e1
-cp2k/src/almo_scf.F : 1a99983484510e88ade7ebe124f177613c026eca4415907b8f03092bac9258c1
+cp2k/src/almo_scf.F : 1af52ee3bfddfd87e2a2398abbbdbbf0c40d59a5b8ead2af8808efaac045a306
 cp2k/src/almo_scf_diis_types.F : 7cb466b7fac9400601fe842bdb5d23c250bde46808c62f64846cd9c50c809482
 cp2k/src/almo_scf_env_methods.F : 5ac5acbdba903392c95ae791312eebcac82c7ca5f067bc4cdafe64fa1185d9e6
-cp2k/src/almo_scf_methods.F : db78b2c873f7280a99c633aefc6d8e56fcc45299a4e11e5e98e330bdf16f786a
-cp2k/src/almo_scf_optimizer.F : 18a11790b61c408d29a9cbd912f3a307b10d2aef5d2540d9d1a2bdecb4248a21
+cp2k/src/almo_scf_methods.F : ad63a9064a6236fdbfb757a53394c677f4a27250d80108b570e267e201e5e42c
+cp2k/src/almo_scf_optimizer.F : 8bcd469638d4ecd08c96bd795296901b04bb3247ad30b4f844e69b01c42a2258
 cp2k/src/almo_scf_qs.F : 1d1a377b605cdc59ecf90bed060f13b7cf022684e236cc500832680b0ba38298
-cp2k/src/almo_scf_types.F : ca27c2032a0bdca041aaa30d6070a134e3ee46005bcb8325a2c7332a612b231e
+cp2k/src/almo_scf_types.F : 7d99895baee4ac4cad9ffedbda9fa846ecc93b0491a17107857a790dcef08ed2
 cp2k/src/aobasis/ai_angmom.F : b124ea5beccd9ac5cf28e7d11fa8716876fb5d8dfe6666b96cb0aba0cb605fb6
 cp2k/src/aobasis/ai_contraction.F : 6ade3269ca3a43d4dfa143167f477da1869645b0ef43af7a31f1bc9cf72ff23d
 cp2k/src/aobasis/ai_contraction_sphi.F : 6ee62f99ed8fe5bb2dc90027503da73d9e520f5b712dfee11aefd3548037fb13
@@ -740,7 +740,7 @@ cp2k/src/aobasis/basis_set_container_types.F : 9eb7bd481a0d04cfecd12f38661210ac1
 cp2k/src/aobasis/basis_set_types.F : 3723a08e9820d4ef7f7cd9e27090d75b5cfbb6bad49d0b68995e323290fd4cd1
 cp2k/src/aobasis/orbital_pointers.F : 6e40fdec3470e77ca4ef8828806709385aacb7a97b5e93b043361a682804aec3
 cp2k/src/aobasis/orbital_symbols.F : a749c79edd86db38e7290dc9c8c397025efa2fecd62825890281f583a4346352
-cp2k/src/aobasis/orbital_transformation_matrices.F : bf5207a65c5af308d3f447df9d3c66a5a840cc7815497515dfd6c2087d402420
+cp2k/src/aobasis/orbital_transformation_matrices.F : ae6e94662d43b490e047f775ca101563906c49ea036c91b3c21d317b017fcd35
 cp2k/src/aobasis/soft_basis_set.F : 18c53450a9d1099734890ab0cc87e34b68d09c4ac6fdd8f8a9984375f4ac5bbe
 cp2k/src/aobasis/sto_ng.F : 20d45e2346c274304a8651a521a2a7dd1e54093ebea66d2eb981738f268ce7ed
 cp2k/src/arnoldi/arnoldi_api.F : 9ad2ba9c57b1a5fc31be6723d537f4ad0dc76e16ead9337a4e3e0b94e0b64f43
@@ -781,10 +781,10 @@ cp2k/src/atoms_input.F : e4f7ce0c345acb9fa4a74037e64512418ff2203366550c339b7453e
 cp2k/src/base/base_hooks.F : 3a56ddfe8f2f43a99e48c4593049440f6a627be83c5b1a088b13c0acf4ea2c17
 cp2k/src/base/base_uses.f90 : 96a2979790fda71d8458740fd35eeee2313c5132c57b77e1f9f7480411d7f328
 cp2k/src/base/kinds.F : ed85bbcb4c5c841ed819fbbcaf4e50293a4d8f7ccc03d2ba4c5e0142c281c849
-cp2k/src/base/machine.F : parse error
+cp2k/src/base/machine.F : 1021f4063145858b6a18f51c9d376e56b980bdbc4914b902e5b1881d4a20219a
 cp2k/src/base/machine_internal.F : bd7861ece3b782ce7916ebc6a5d5b4b83cd3936e07a85845f93683751a10a1a8
-cp2k/src/base/machine_posix.f90 : parse error
-cp2k/src/beta_gamma_psi.F : parse error
+cp2k/src/base/machine_posix.f90 : 524740b6f1e793ae17e56e0e41a67fda5fdc662a5f0d1d23f81cca230ff6cf04
+cp2k/src/beta_gamma_psi.F : 03116029c8e485df7ac7635cca54f8928dca5a341ddab3c4821aa3b348d5dc42
 cp2k/src/block_p_types.F : 2e6bb1626848bd12fb8f7e832062a3768ac29e8779a922c7a2a8bc04d88fa0e0
 cp2k/src/bsse.F : df5f77e2315b4569de7dcb649ca534057088e6473d24707abc6d2a106f22de59
 cp2k/src/call_collocate.f90 : c0590386746df2100a5c2c4651117e273737a4dc5ed8abc413bc6dd12aa9d252
@@ -828,7 +828,7 @@ cp2k/src/common/dict_i4tuple_callstat.F : edf916b5dc896d478ad0f817166d4aeb409179
 cp2k/src/common/dict_str_i4.F : 44a9c3714ea10036f131e5b14e4d10a8675d1ddebea1683394e91cbded9e972e
 cp2k/src/common/distribution_1d_types.F : fcfb1695327582838a9eac7503cf68c825134ff1e54123794ea889c2791f4d99
 cp2k/src/common/eigenvalueproblems.F : 701b161f16e2286579c2b3160f4f2d0615707605e64e3dbd5da3f6ebaf688faa
-cp2k/src/common/erf_fn.F : parse error
+cp2k/src/common/erf_fn.F : e8fd5a9efa0b1783316fd6d798ad4c0f477ad1f96b542da5a94a5a31dc14c20d
 cp2k/src/common/fparser.F : 50ee8f5bcfa5158c1db69359251d1ca3127b622b1fb94a2323d9799055bb873a
 cp2k/src/common/gamma.F : 1bfd29e05868bcdd863253e3c4e214f9996de72d9a4a4dff996ca9f4f1ea1eef
 cp2k/src/common/glob_matching.F : 002e808634f1164a89b4dc2d682b0488dd73e48569c447143a52287ba8f08f74
@@ -847,13 +847,13 @@ cp2k/src/common/memory_utilities.F : 40fba9dce265e65ed69d14798b8da770d8c1c2ba6dd
 cp2k/src/common/parallel_rng_types.F : 05970b66121983caec2fbeb3ed4ad00db5ed4ee699d003e73fcb3e78838635d8
 cp2k/src/common/periodic_table.F : c9c11715f03152dcc4086294cdf78ce53152068fc2c336d9abe157562c0b55a9
 cp2k/src/common/physcon.F : b463f6535f0f94d5aa10da6723aa25ab304a42dafad704ef20479610cad154aa
-cp2k/src/common/powell.F : parse error
+cp2k/src/common/powell.F : ca759cb53564b33cd5f931d58e04092e8a866996e919c823bf8cdc342c0e5a04
 cp2k/src/common/reallocate_1.f90 : 5a716326c286ff710f8e19a0a01854fdb75394557f65b12151909e5d6cdeb221
 cp2k/src/common/reallocate_2.f90 : 9c4de06321bd5f4384b3948445557caddf02f826839ccc2184fb71e9117826f6
 cp2k/src/common/reallocate_3.f90 : b7e842503105477422bab4caf0ae4623bb2d24eaa7bf608112f1e46319af7522
 cp2k/src/common/reallocate_4.f90 : 6a8f03058ed4482c4673b37cea76b37def75a902455b2eaf60a332955ebb08ac
 cp2k/src/common/reallocate_5.f90 : 1aed8fab9d01796820e445567cd990d76c559fd8b451ee73214dae22687e52a3
-cp2k/src/common/reference_manager.F : parse error
+cp2k/src/common/reference_manager.F : 866cde382b865773ea82a08b97ce3f6f68b3d956a0cd03629d44c9c044691925
 cp2k/src/common/sort_m.f90 : f0a9cc1a999a8e594da079433371adead19ac5958e360fb8192c6bb123d316e4
 cp2k/src/common/spherical_harmonics.F : 4ccfab8876d3ee4e2b321a8ab412205151c9c624acc15d11833262f637040f64
 cp2k/src/common/string_table.F : d9e39b69a878271fe6f2954649e36d3194dbb14758bb2ba95caf260b1ca328d0
@@ -887,7 +887,7 @@ cp2k/src/cp_control_utils.F : 9317f8fa6877a8b8adb92bbf45d09a458a052c32253eca77ff
 cp2k/src/cp_dbcsr_cholesky.F : 8c0aa58afcc37b7420ac87905dffdd25ac97c64d1f4e5a4bc7145190639a9298
 cp2k/src/cp_dbcsr_cp2k_link.F : ed82fdacf215573450a959ee43460e43b88560e7af049c58aec888c6e0a1a58c
 cp2k/src/cp_dbcsr_diag.F : 9622944bcb67bb7f46911a109a5453255b680e98bdc00502b949473df86b2eca
-cp2k/src/cp_dbcsr_operations.F : parse error
+cp2k/src/cp_dbcsr_operations.F : 04aca63dc9fd9da3734875cd7c8dbba012d7c5dac60b43f1862d2a6e2e139fff
 cp2k/src/cp_dbcsr_output.F : 13f922bd2269a9066ce2d09987add419f36c0ee202800b01298420c61590adbe
 cp2k/src/cp_ddapc.F : 0cd76504bdfcee99e110c42dbf75f68fc76b49b61fb44e3b1c81c4faf7dab3ad
 cp2k/src/cp_ddapc_forces.F : 694730a88b35340207c0fd05812004d5267b2b998496256a15e25855a7ed4df8
@@ -905,7 +905,7 @@ cp2k/src/cp_subsys_methods.F : b61c04ae9f6c1c7cf8b03db20943c5a1e30af8e9a7680f6a6
 cp2k/src/cp_symmetry.F : 1ddd29793bbd680fa5da30bd7454f61c28c14a02f29342b823e1e5eea1548527
 cp2k/src/csvr_system_types.F : 0e5cd0a8d68128d95f6142c4eee2aa013c9c68e5e61b5919f61a7c0c54f7f7b9
 cp2k/src/csvr_system_utils.F : 139b691eecfc4a81cbcfefa3ad8897c0341e833a6aef47beba6a83570ede80e5
-cp2k/src/ct_methods.F : 692d32aba2c8aafec570317081704eb9175921f60619bd8d2d6f44ab9f3182c8
+cp2k/src/ct_methods.F : 294e7766195b234d82d562d1620c42d025610ae2130bf45120288d1339ee0b2d
 cp2k/src/ct_types.F : b6dc35098219abdfd6e39bec7a5bd2b21f44ee7a0eb5f72aa30dd4fb7f3da55a
 cp2k/src/d3_poly.F : 8af3af3b62d12c818bae7bbcb6052e142f8f48f3ddcb3ebe1cf0387e9f710c3b
 cp2k/src/dbcsr/base/array_types.F : bc5fb292e0bfb1d7b491dfaae8cfe1d2ef678bdd4d6859cad236e68c74689db5
@@ -982,7 +982,7 @@ cp2k/src/dbcsr/dist/dbcsr_mp_operations_c.f90 : 555914b3af7ff84bc566a00a8181994b
 cp2k/src/dbcsr/dist/dbcsr_mp_operations_d.f90 : 9065294c60146a59d033340eb98b3f1b07ce8a4b8e8da83cedc2be1357bd222c
 cp2k/src/dbcsr/dist/dbcsr_mp_operations_s.f90 : 83c8905af7cd2c9e9e4372a6767fd91bfee6c8a96c72d49b87ec635856cba0a4
 cp2k/src/dbcsr/dist/dbcsr_mp_operations_z.f90 : 62ba123fa32cd1eedf6fefb7ab11dcfab71af00452a9293573c91367a3461aa9
-cp2k/src/dbcsr/dist/dbcsr_util.F : parse error
+cp2k/src/dbcsr/dist/dbcsr_util.F : 2b8d74c42865635ac9b17d38a8a9ae358f69d9f34d073e0ff67b87a59f63f3d4
 cp2k/src/dbcsr/mm/dbcsr_acc_operations.F : 43e5e2791a27f4bff20893613b08747cf681017e0f597ba7cee0db4fb9d23699
 cp2k/src/dbcsr/mm/dbcsr_mm.F : 5315999857bdc3ad3eb90d11fe9fb06d120928a0210156bb606feada6e83ba3c
 cp2k/src/dbcsr/mm/dbcsr_mm_3d.F : 3d56b9d9bc8088e9c4ea323a7950525ce232c592923c432e286f9328ade73cf6
@@ -991,7 +991,7 @@ cp2k/src/dbcsr/mm/dbcsr_mm_3d_d.f90 : 264804976d0ecf52617d648cf5a917a95dc971e259
 cp2k/src/dbcsr/mm/dbcsr_mm_3d_s.f90 : 27347edfe37aedc56a185e3ba275edd75cbf5a14b65b2336d5b05530f36ade72
 cp2k/src/dbcsr/mm/dbcsr_mm_3d_z.f90 : 7d829622684c2563f665b9aee30c5a880c44f6a44635b21470a7acd826327403
 cp2k/src/dbcsr/mm/dbcsr_mm_accdrv.F : df685e2bdba84f9ada7c7ee8bd4325b7c54b1ec7d8a62b441ab0b1f5b4009c73
-cp2k/src/dbcsr/mm/dbcsr_mm_cannon.F : eafee850b0fec5df14e0ed5f23aa4d76b5c50f1c8c542b1de9f51a0075a083c4
+cp2k/src/dbcsr/mm/dbcsr_mm_cannon.F : d9e7ad96c60905862cbd7d8d3be463d7b86762944c1124ddabf94ff6dc2e4501
 cp2k/src/dbcsr/mm/dbcsr_mm_cannon_c.f90 : 689a5b55fc53b2cf26db3a8f908b064811427135f906fb3f9c66d1d860eb7f0f
 cp2k/src/dbcsr/mm/dbcsr_mm_cannon_d.f90 : 90bf45ebb6fa1086610bd433d9c209373b24a335543fe0eac67b6a5edecfa17e
 cp2k/src/dbcsr/mm/dbcsr_mm_cannon_s.f90 : b6a0d1354ad4dc32e81a1b768fe96a2a2c17563b676829344649668d809261ef
@@ -1010,13 +1010,13 @@ cp2k/src/dbcsr/mm/dbcsr_mm_types.F : 3541e39dd1d3ff7a2fadf53d889a0c71b9691ec9443
 cp2k/src/dbcsr/mm/dbcsr_multiply_api.F : b95dbb7fdcf61debb8934c3a0029df720ef0a8547c4d27ca4df8b36c4a765b3a
 cp2k/src/dbcsr/ops/dbcsr_blas_operations.F : 78e8239f0740e0e3b7de8ae3dbd0239355e0740e335842c987aa264e7daad11c
 cp2k/src/dbcsr/ops/dbcsr_csr_conversions.F : 0d56f812550f49a97ea871ff7864df4bdda81c91ea0bf22eee68ddd2e626e552
-cp2k/src/dbcsr/ops/dbcsr_io.F : 4a27dd941b2efbbfca50a49c6510ed50def8e8701de4046d54bcbbddedc25b04
+cp2k/src/dbcsr/ops/dbcsr_io.F : 6704817e816ee099f2c22eb6f0e62392647bbafd800dc12f0a567a799cbfd13c
 cp2k/src/dbcsr/ops/dbcsr_operations.F : 34fb1ca448818b99915195c79a977f969af58c8a1229189679eef31434589d0d
 cp2k/src/dbcsr/ops/dbcsr_operations_c.f90 : 01b1d8e68ee0f42ceb1d0203ab65c12aad0b907f5491abf51ef6f91dcd1f637d
 cp2k/src/dbcsr/ops/dbcsr_operations_d.f90 : 34d36f3a8f240734bc94fc44c8822be99fa679266ade0c69b50d228df531c91d
 cp2k/src/dbcsr/ops/dbcsr_operations_s.f90 : f73e1edc043ea4638813a42ae1a04e7998987ee4bc4230812c58b380f30705db
 cp2k/src/dbcsr/ops/dbcsr_operations_z.f90 : 0c5cd41cf265842f241599eea7445fbeaaa9aa386bff4db4469dc231ce088210
-cp2k/src/dbcsr/ops/dbcsr_transformations.F : parse error
+cp2k/src/dbcsr/ops/dbcsr_transformations.F : 1c5af6335637d635a2a471cb27dbc6ee9361d78fb27bab14eb54f21ffabc66fe
 cp2k/src/dbcsr/vec/dbcsr_vector_operations.F : 92c40c62477a969768f53a5fe856b04c0236f83b4ba826c82439991f7ab07995
 cp2k/src/dbcsr/vec/dbcsr_vector_operations_low.F : ed8ce822c71714cecdcde28fda12c7f8e78b592be0cb1b093e88cacac588129d
 cp2k/src/dbcsr/vec/dbcsr_vector_operations_low_c.f90 : 1bd97a2219cfda46992c6a419087a54cea7a7a2525247e0fb7ebc668b1cb6474
@@ -1042,7 +1042,7 @@ cp2k/src/distribution_2d_types.F : 938b628dfea190438708b1ba638eba80d7bd602b5fb28
 cp2k/src/distribution_methods.F : 89e5b4c2216017dd346646ab43944f0c90e940eef4ff795f81c38647170bb027
 cp2k/src/dkh_main.F : 57a6685f5b063a78e0cdaaed02c28faeded97e5703dbc9c6318c79fefc9d1548
 cp2k/src/dm_ls_chebyshev.F : 11f0a5668df0dc48c0aabc68e653c9f047b16cf0b824c6f365a6bf83b41d37dd
-cp2k/src/dm_ls_scf.F : d3f74f953673a22e13274793b6be254ac51779f423c6d5715acf01a0baa10410
+cp2k/src/dm_ls_scf.F : 24dfbc0cd7d46efb253c457e6f575a3e9d50a4248bb65f541134bf2d4108b720
 cp2k/src/dm_ls_scf_create.F : 7995fbacac7c90943b86f224144a55019c4b7af4f693504caa143ab69dc42e7e
 cp2k/src/dm_ls_scf_curvy.F : 2526858c8204c32234d37e4d021486c0618993b7bdc0ad4c1625276e19cb1402
 cp2k/src/dm_ls_scf_methods.F : 9641bc28edcb08b614cf6e18c6d533bdc23f7acf5dad68ac9eca2c847464d0e2
@@ -1053,7 +1053,7 @@ cp2k/src/domain_submatrix_types.F : 564cf9bfd6d6b68cc5ff382f008fbcffd6242deea252
 cp2k/src/efield_utils.F : 9d61aeb7d032529a1ba039ffe9dd43ad117c24886bd4d13181094d23f9ca5761
 cp2k/src/eip_environment.F : 2a4a89bdf52ca596d596cdfdcfe6d607ca23791b788804e1a299d81259663daf
 cp2k/src/eip_environment_types.F : 7006e649ed2d2b409554e6b6d197c7ab10d62c69ab4c3297af454a62b1b13cf0
-cp2k/src/eip_silicon.F : parse error
+cp2k/src/eip_silicon.F : 5fb4b514e08a0c9b6ef82250081b14eb493116ce166d9296cc436f1797cfa9de
 cp2k/src/emd/rt_delta_pulse.F : ed5b98a39cd66641ecae3299c18f4ad7615aa1f986c5f37a0b6bfb87f3c50ff7
 cp2k/src/emd/rt_hfx_utils.F : ff01b25f0affd71b44c8c37d837e16eafee01cec7bf9075eb321b65f997bf241
 cp2k/src/emd/rt_make_propagators.F : 272864357d308f163cb4f3169da9cacd4a1c29bef478b6f7e463840e00de36c7
@@ -1131,7 +1131,7 @@ cp2k/src/gaussian_gridlevels.F : 0850d459defc67ab4d44fdbb7e146b1dad63bdcdf0fd982
 cp2k/src/generic_os_integrals.F : 2c829f6a441745c7b79e3b8a4c3962b7b43a42d447d91fde8e1bbcf602392eea
 cp2k/src/gle_system_types.F : 19be2eac7a480902814e0f97e69c1cb200c8a8b7532566a757412c35aeb2ed55
 cp2k/src/global_types.F : dd02953ce05674741454215925b4c562c14f2c69480846be6c888e74fdfb1190
-cp2k/src/graphcon.F : parse error
+cp2k/src/graphcon.F : c3156d3e355a84bd907033b3f952aa391ba42dcb01918e7d30c307595fc37a6e
 cp2k/src/grid/collocate_fast.f90 : ad1e3e7f7d170cf786d42b89127bee120d871bafcb5d73ce6f591a91d961705c
 cp2k/src/grid/collocate_fast_1.f90 : e3da918ab76d952e1ce4aaee8587c07ffd4a924ba3355a48a9784c4da8ae1d8c
 cp2k/src/grid/collocate_fast_2.f90 : d43d6fc9dac09ddeaed2b982ebb994272332ca52c9ccbf3a7c54e8cf292de48f
@@ -1191,12 +1191,12 @@ cp2k/src/input/input_parsing.F : d5e76f3a4b88b55a9dc6d7ece7a02564ab53c5acdba5ff6
 cp2k/src/input/input_section_types.F : f52992407d0cbd2f6333aa5e30841fe069b5bc06c8b04976795f88d9d7e54095
 cp2k/src/input/input_val_types.F : f69212610cdae4331f6ee88f74fa6518b9b1d413db8647640ce128aa0b13914e
 cp2k/src/input_constants.F : 2038a5e7c10296161e8f3f1eab8d0cff5a80cd4044a4e3061293ce548c72d156
-cp2k/src/input_cp2k_almo.F : 5f5848c11aa07a11981f266661a27da5234cef2a204c6e2666efeb31b6379676
+cp2k/src/input_cp2k_almo.F : 1e344b8d877f28ad59e30ce391dae73b322a1042f19a0c4c38c0d77217120a37
 cp2k/src/input_cp2k_atom.F : faccb06ffd188a8ff6141a5a9f4389bf37399db6d805e01c90aa8f250ad6e9f9
 cp2k/src/input_cp2k_atprop.F : 0cebb1bdfc0dd2ecb59c85aaafd32389622d437720f31cee7c13c677edbf42b8
 cp2k/src/input_cp2k_binary_restarts.F : 47e8c352b9a44452c928b54efa79af8c904dd108b2e73e9dc67c19c2488a4a12
 cp2k/src/input_cp2k_check.F : 37d062584c93ab6b97a2d288b5853c2380bd89a825a48300fb42ff28fd934493
-cp2k/src/input_cp2k_colvar.F : 4fe06972574400f43fe54eba0909bbfebc48c2784fd6d06de7f309870579babc
+cp2k/src/input_cp2k_colvar.F : 11311731765233a669275474ec64dea8e18b0422f48e2fba955ff00b3ee7d2f9
 cp2k/src/input_cp2k_constraints.F : 2b272974c23b1f2d234c13587a96415abe6dab1d4e743eba98d8b3577aec80a0
 cp2k/src/input_cp2k_dft.F : 49ac0800c741dd06a095fab218d74b4f43ff06dd86bbd8a976b437f4e3db156b
 cp2k/src/input_cp2k_distribution.F : bef5cefde803319bfb8b46c15b623b765da3ed8b549b6384643b96389b169354
@@ -1260,17 +1260,17 @@ cp2k/src/mao_methods.F : 15aeccd44084419781b733b30c39bd268c00cd6686f2ad099f672d9
 cp2k/src/mao_optimizer.F : 620239661010917d91079cbaeef906a5f93c2e70233a75881516f0e61d3c53f7
 cp2k/src/mao_types.F : 243a7757700b6c7b3629b822c65026c1adc4f7e1e087374fd1c014d41558396f
 cp2k/src/mao_wfn_analysis.F : cc9fb05c51fab5708d26d975f35ac2a52eb9417ba22a426e0975c38f8fd33a6c
-cp2k/src/matrix_exp.F : ef850cd82ca47da67da5b97d4f14bc1ca00b191daf2b722eb66e09eaf723a93c
+cp2k/src/matrix_exp.F : c792fe9cc96d4b85b964153505fa1bf354130f258362f1f89610f12a5bc17479
 cp2k/src/mdctrl_types.F : 065be5edf6cf3592db87959f2019be4ace83451108e46e2f236e3f3e2d30359e
-cp2k/src/metadyn_tools/graph.F : parse error
+cp2k/src/metadyn_tools/graph.F : 2bdf8555dfb028205a7bf35a5d88b0c1619c16dd0b8440bd0008f18bb9d3da7b
 cp2k/src/metadyn_tools/graph_methods.F : f3e74ab5f12b754bb27352e39d22caf13f780f19cfa2acc7b52ed16a8efd7348
-cp2k/src/metadyn_tools/graph_utils.F : parse error
+cp2k/src/metadyn_tools/graph_utils.F : d056c62f4d99692f1d185747757bfdb6625967275aab8d966bc5b6fd267d14e9
 cp2k/src/metadynamics.F : 788385008dfce7c070f37708d252ae475f88c5b88f696d365d54d56b710ce67b
 cp2k/src/metadynamics_types.F : b94c2e2c9fe6caa733390766f2e54ee71b9c75196a18e1d819213afad0042d87
 cp2k/src/metadynamics_utils.F : b2eb04705c2dd6757c99e9c82a834769de27a55ba6a85b853d65894f024a3447
 cp2k/src/minimax/minimax_exp.F : bf93f4f9e2ae18b6002270273ff50eb1e2efe285b51841e721293b7ba0476f0a
 cp2k/src/minimax/minimax_exp_k15.F : 7e00cb04bf878cbedbb5ff2e358c4cfd8273ffa878fe447507100e8b1bbed1a5
-cp2k/src/minimax/minimax_exp_k53.F : acc5d297636183130705ccdb9023b48b0e05b39572fe282c46a5c8d7fb0bfd43
+cp2k/src/minimax/minimax_exp_k53.F : bf3ae69b3acccbc481eea53d507bd65136ab7f942218a19038a883c2943c254a
 cp2k/src/minimax/minimax_rpa.F : 73fcb9e9fe9cc16d99bf7627bc2966f34eba613ed248ad324856f64906789aa6
 cp2k/src/mixed_energy_types.F : 862f50490cdbf1be35d6295894749b708c7ed641caf16a387e53b425d05ac43d
 cp2k/src/mixed_environment.F : c6f05cd2479e2f202421e294b5872cbe037068255e24ffcab1f9bb5a55bb2946
@@ -1286,7 +1286,7 @@ cp2k/src/molecular_states.F : 3fbb8335e79ab1c22419e394a773602586955024eca0dbfba7
 cp2k/src/molsym.F : 8ff4c7c33d06e598f882b4562e06a64314562b909b07d9e485d0d0bbd5771f52
 cp2k/src/moments_utils.F : dfaef3ec40d7ea6c519a50709962bfb69fd8fd859724b746c1d72e23ed311153
 cp2k/src/motion/averages_types.F : 2ff863be0d41fc125f8f447399f652af70c8e5c96a11c2779f440c2cd27799c5
-cp2k/src/motion/bfgs_optimizer.F : parse error
+cp2k/src/motion/bfgs_optimizer.F : ad771677b21e988286ea805642e16236eedad172af1294fb12696144a0ac03df
 cp2k/src/motion/cell_opt.F : 61e7c6a54e65007c214994ae778f4370312f7ec2f8255a15e1e3cc93819c44aa
 cp2k/src/motion/cell_opt_types.F : d4cd7671b367eff7fe172d326bbcd035ab52f480f99fb60f4bd517f5bf0f16a6
 cp2k/src/motion/cell_opt_utils.F : 50488c45b14f9558e8a605e87a0e46946c62cd5eb28e99b911279194725fa956
@@ -1314,7 +1314,7 @@ cp2k/src/motion/helium_types.F : f9c3460a3bf615ee57e168928d26b40ebc6b4dff00cb500
 cp2k/src/motion/input_cp2k_md.F : 6273902fa3138816cbbb8b27e34cc7db7d1134e19f5f86e619d93f97e614ea2d
 cp2k/src/motion/input_cp2k_restarts.F : c86db2a704ff9ffffe3ff813cb443ec21ada0499f77814f0b8cf2535386a4f55
 cp2k/src/motion/input_cp2k_vib.F : 4215dc1f00161bdd1557f595319ddf178a2e8adce2e64cdf6f7bc8a3802a0646
-cp2k/src/motion/integrator.F : parse error
+cp2k/src/motion/integrator.F : 721784050d29447135430e317b069a07cb5a00dbeb75b8463220e35e4ec04e0a
 cp2k/src/motion/integrator_utils.F : f096d6d2aa61a8dbdc2f344f2593481a66a028b63d000c140039cb315b9795e2
 cp2k/src/motion/mc/mc_control.F : e4fff81424e95a4cee50fef737c53fb2c2a1e17d9cdd95273f99ac5518de5395
 cp2k/src/motion/mc/mc_coordinates.F : 1e73f656a56beca980c0b8db514ed94e263b4ce8a5116aa74e18d02c9540d93d
@@ -1322,7 +1322,7 @@ cp2k/src/motion/mc/mc_ensembles.F : 440144a4dc4b6e7d937479da699227f6b88bbc5bb2f9
 cp2k/src/motion/mc/mc_environment_types.F : fbab01be5aedbfcb0ee13d9f4ecd49b9059a600009a079869a779fb1525d29f3
 cp2k/src/motion/mc/mc_ge_moves.F : ccb4f1455f85b7a39d17c8b642c3752bd0064c2b69a72d79ca2854ce7d11e827
 cp2k/src/motion/mc/mc_misc.F : ebd9e9a9c7c3c1b6291218e2535b702124e1a5867787a61ff2982f6e591f6b9e
-cp2k/src/motion/mc/mc_move_control.F : parse error
+cp2k/src/motion/mc/mc_move_control.F : 3a13401b7023de39a40ca76d644a7e173f576a6e411c0347ef8f645919f01614
 cp2k/src/motion/mc/mc_moves.F : 83ad48f8af75ce1da1dd8036d0f6601238ebe14525b50a1993abb992d6b82d2d
 cp2k/src/motion/mc/mc_run.F : 0dd9cb716cbc22c15bc93baabf518b605ba0aee0ed3b625fac0beb08f57371c9
 cp2k/src/motion/mc/mc_types.F : 5c5a9524dd06d2afe7cf3216d362e837a87190300af8edfd565b23b77972a578
@@ -1352,7 +1352,7 @@ cp2k/src/motion/pint_staging.F : 4fe5062930f7defb5b465e4addee0c640746d1067235510
 cp2k/src/motion/pint_transformations.F : a599967b551ae3f6bb56e9a82263ef0a94f0a626b6d9add1965746ad03e73cc6
 cp2k/src/motion/pint_types.F : 303dab6e0987f27a6899e4cf723160fdc2a022daa81f47d6f6c59a42fb2c95c5
 cp2k/src/motion/reftraj_types.F : 3fcd1b34a169b3de0bf1257e08e87640aa111a4a80bb579c7ccfbd655de78f44
-cp2k/src/motion/reftraj_util.F : parse error
+cp2k/src/motion/reftraj_util.F : f21103b287250e40307194c87332c2dadc09e26cc0e247637e9792f858cf3953
 cp2k/src/motion/rt_propagation.F : a2249516d4531b42185e2bd05ba7230884577200ca2830e53f369ef9a906b91e
 cp2k/src/motion/shell_opt.F : 70ccd164e63f0b89c44c77a6bc8649b4165f58a8084589a79751686ec95b0865
 cp2k/src/motion/simpar_methods.F : 3fa85acde9f083fe9230b935a135469bf28d1607daac7d68a8e79ea2018e4fd8
@@ -1406,7 +1406,7 @@ cp2k/src/optbas_opt_utils.F : 2d9390ce9b543cccaaa427f0d3b6d094da6b15af1cdd954246
 cp2k/src/optimize_basis.F : 46aefec5c6900590f6bc2d431ecaf38cda4c3e8394bdb57534860e3ea035b64e
 cp2k/src/optimize_basis_types.F : c6dc74b7a58eecc730d3cb6922e6efdff1ff99ec012b1c5b8bbbcdd0777bc7b9
 cp2k/src/optimize_basis_utils.F : e9ea108b18852576905665dc949e7f3c298ce2ae20e7ebeb3038131f8da0ec8b
-cp2k/src/optimize_input.F : parse error
+cp2k/src/optimize_input.F : 5b96bcf0b5ad544e0c4323e683eecb59493592f8b2d72c086db61f2e01cd3708
 cp2k/src/pair_potential.F : 723b6cc6a31fce44324bdbb005fa85ad6dfac1a6ffa6faf75f72d95229185ac6
 cp2k/src/pair_potential_coulomb.F : ab31ece7ad7ad0915a1cf2304a17d731a4d93a1de87f2a07cc32452890ce18b1
 cp2k/src/pair_potential_types.F : 8c9862b14ab5b76fa093f5f4da080d6ab76eb3d77fb2c6cd51e5826d20fceb47
@@ -1460,7 +1460,7 @@ cp2k/src/pw/fft/fft_kinds.F : 534ad3825753d96a33d652f8d5f55a39db5b60a7ac529fec22
 cp2k/src/pw/fft/fft_lib.F : 101afaa199288e9ca0da9635467260769369f10921b4c90a23d1d0e29e01febf
 cp2k/src/pw/fft/fft_plan.F : 376cb581e4f59d19668eb9db3b2bd255e6134d84b1ac9122382f033cf1ef934a
 cp2k/src/pw/fft/fftsg_lib.F : f332f7155c217b393ad234d4f09597ea46b9c951062df8961876e7299a3ff460
-cp2k/src/pw/fft/fftw3_lib.F : parse error
+cp2k/src/pw/fft/fftw3_lib.F : c221ebdad8f90ec575eecb57dd1d2018ecaa6ac7b8fc0850e94407d8ac81cb73
 cp2k/src/pw/fft/mltfftsg_tools.F : 88614f76b60a63f9c316b08cf1b3bcd0c755f21a8a3a59f94055bd995de5ac6b
 cp2k/src/pw/fft_tools.F : 30142424c09a64cebf7ab6198a0069604d117ed9ad51f094f3d81659fbffe361
 cp2k/src/pw/lazy.F : dc2d3fc3146506f7ebdc0c9065c3c344c88aa41a4fb70374a543ca9607e4ef1e
@@ -1469,8 +1469,8 @@ cp2k/src/pw/mt_util.F : 10ce51e6715fbb6336d50f1ce8d40cc2e94f1e14d9de4862a2451b0b
 cp2k/src/pw/ps_implicit_methods.F : 1c72f33703f64e5873e47b3bf015a948cd22bb2197f9cdb3413c081bcf76f963
 cp2k/src/pw/ps_implicit_types.F : 61882787149f5ac12977347c755780920fa9db8e2523095fb99b853ea40db5f4
 cp2k/src/pw/ps_wavelet_base.F : bdf441a050b23fd8b29d3641b84529a78318cc12cdf21efb2d3243cebddf350a
-cp2k/src/pw/ps_wavelet_fft3d.F : parse error
-cp2k/src/pw/ps_wavelet_kernel.F : parse error
+cp2k/src/pw/ps_wavelet_fft3d.F : 10f5859855eae0ecb07548c1a13dcb9ecc0b7adb36e7adf5d7ba9e6da2e71113
+cp2k/src/pw/ps_wavelet_kernel.F : 167720c262b15eea97381958ba94d887a4519e0a76e2d4de7226a865f66f896b
 cp2k/src/pw/ps_wavelet_methods.F : eae8b175c4434e757a377fe373304c2497baaab986fea317b702e30a15ba743d
 cp2k/src/pw/ps_wavelet_scaling_function.F : 12d78792bb0b7ba82f883677e4a262410fae5306cb6c70975ec7068a1887bb04
 cp2k/src/pw/ps_wavelet_types.F : f05f01d6cb9b382f0d4e3b910949d5fa309eee9ddb1c8d55395b790469fb0b48
@@ -1500,7 +1500,7 @@ cp2k/src/qmmm_gaussian_init.F : b5f133fe48035f08681799229ca6a2c4438dfdbb4de5f85d
 cp2k/src/qmmm_gaussian_input.F : 514aece84a32c21b14509cb2a5d65507a659de4edaa85a65e13fcea8b4276bd1
 cp2k/src/qmmm_gaussian_types.F : feb04f1521118988897212c79b14f18e8bc0cb7f6fc88dda5759694f063d9589
 cp2k/src/qmmm_gpw_energy.F : 33d3bc528f49e0510674790d45bbe4933d4c5d6f72c23f8e33dbbdb19a178cdd
-cp2k/src/qmmm_gpw_forces.F : parse error
+cp2k/src/qmmm_gpw_forces.F : 64bd9a0770db9521181f3fdf3252e20f5d59109283852668d82674a9f99c0eb5
 cp2k/src/qmmm_image_charge.F : 703b2fe34c3df3f3219e01e685ef2d96a5628ac29743ede2bf9224e1d43e1ba7
 cp2k/src/qmmm_init.F : 80541ac18860ed1a256d0d6e422a4bc00641034cbec7219616ee304512ea861c
 cp2k/src/qmmm_links_methods.F : 608cfcaaec8814985bdd5bcbbb0122cf44bf75a403047274052961886ca3823c
@@ -1523,7 +1523,7 @@ cp2k/src/qs_band_structure.F : faff5b2917e87666abd3bff33d418c2beba309e5d16c3b8a8
 cp2k/src/qs_basis_gradient.F : b0ac78358aef351858b6c194557eb9796768f8d050a0169e52f8d62cc9e2a4af
 cp2k/src/qs_block_davidson_types.F : f4b15678ef3b0f4911046d5ce2dcd624383c64121d08b5e1ce4269c6b8163ace
 cp2k/src/qs_charges_types.F : 6eb5c3231d1c84067a40e33d0460416671883467a9ae05cadadfe1e5055c013f
-cp2k/src/qs_collocate_density.F : cc4e5f5d9ef6f2d566628b1244d864443906c9ce9d9810dc841cd602a009d928
+cp2k/src/qs_collocate_density.F : 042d07180b030d3e4aff278fd70d1ddeb6e23925d238d13cea9e10d04b807a93
 cp2k/src/qs_commutators.F : 307a3d309e3f9118dad4c179008f6d0a9cb2adb81cecf5153d97d53e3620be69
 cp2k/src/qs_condnum.F : 64a0667b3f237b9011b5d0134892c89fbc5c15ed2e6f5b42ac67cad49b15050b
 cp2k/src/qs_core_energies.F : dcc3fc0fed0172b2ceb033c929c7ac58b3534449c16f6435eed00a7e3ea0d4c0
@@ -1533,7 +1533,7 @@ cp2k/src/qs_dftb3_methods.F : 79659cdbfc59022af871ef89aa51720b8e1520f6e447317181
 cp2k/src/qs_dftb_coulomb.F : 1a8e0a39b68f4ed9532024704c75494d1c523e22681b2b3f659dafa5d21eba8b
 cp2k/src/qs_dftb_dispersion.F : a24e8976d7001d7b7f03fe01ba182d5920627d70a77a560afb099945dbe196b4
 cp2k/src/qs_dftb_matrices.F : 9abf838714b3bd96b93084b25bf64dea2e1f1d98ab7bdbc1e243c61206f1afb3
-cp2k/src/qs_dftb_parameters.F : parse error
+cp2k/src/qs_dftb_parameters.F : 53feddf023006f044b37953ff69ed1966dcc71eb82e92548fe4409ba0c51916c
 cp2k/src/qs_dftb_types.F : 0f3fc6401b9fb72bd11bfb8061538fb32a87ce7208afdb663635387fa336ed3c
 cp2k/src/qs_dftb_utils.F : 152466a60931537cea91cf8b0b56007024b086a7912f96760570633ec9b1958f
 cp2k/src/qs_diis.F : 5fbc9dbcc9f3d397616ce63c1f192a9c8f210a34d69a4ead59a8e24686a0718e
@@ -1549,7 +1549,7 @@ cp2k/src/qs_electric_field_gradient.F : 0d71fc70dfc4f91ad6e78322e82e36eb0c7885ef
 cp2k/src/qs_energy.F : aa287a7dca7e0086b58739ab3001b794c7e0526988810181e151c15bdcef72e3
 cp2k/src/qs_energy_init.F : 758c6f1777d4a5770fef55dcf32c0afb9ab87fdf518f44dcbc3929e83d571964
 cp2k/src/qs_energy_matrix_w.F : d59d5451cf0cd3f2fdd7d62966aef55b0c4558830c6bf548ed20aa7e4e8cb303
-cp2k/src/qs_energy_types.F : 08b48f7a5b438163688fb847e5a9927a328f44b77523f2ad2e3d9f21380dde81
+cp2k/src/qs_energy_types.F : dd62ff86e060bbad56ed6d11c0618ebd9428eb268a2d652a41aac5c04c793f85
 cp2k/src/qs_energy_utils.F : 54e0a8d01000f8428363e0090cb439c9c3f28e5232f416f8d931417bdc955fdf
 cp2k/src/qs_environment.F : 25c5f6f81b26da1f42a3d2ddda11b70f0033066a58a7afd74071d0db7998908e
 cp2k/src/qs_environment_methods.F : a922939af1439bd3049fde96259da0deac8110eb82ac5efbd80508d9147e1876
@@ -1599,10 +1599,10 @@ cp2k/src/qs_ks_utils.F : a3b559048710168408ffc957151693d22b539e12ead734c58fbdfc9
 cp2k/src/qs_linres_atom_current.F : 9a4ae14c8c25e05f6a83b9cda7f1fa9ea00cd89ab30bd8ac9c46f8c412b14df8
 cp2k/src/qs_linres_current.F : 079bfd8abd5d87928b3d0a2fb5fe988d84694a0c813356968537affad1366e8b
 cp2k/src/qs_linres_current_utils.F : 2296943bed0004e090d7da45dc1313b469e0108c93dfd900147d29c586aedf9e
-cp2k/src/qs_linres_epr_nablavks.F : eab0425d93d0295befe637ef48c5ef5a543086b57d72f44b22e01edb78210bfa
+cp2k/src/qs_linres_epr_nablavks.F : a23a7bc976ccedda0f08d1890741f41661fb61de95e0960746d0146db5275a12
 cp2k/src/qs_linres_epr_ownutils.F : 1bdb3497b85fbbbb7948078b03a62956683ba2579b19578bab547f10f9c6b0cf
 cp2k/src/qs_linres_epr_utils.F : 5ba6b81e72face62327b95e2684fec7c18bdb716b36f657b62304e3674e63cb1
-cp2k/src/qs_linres_issc_utils.F : c70f39d6c61b9c2ba2f0444c3eb5ea65e95157e11c292ba0bb6355fec71b433d
+cp2k/src/qs_linres_issc_utils.F : 870daac180d9b65ac2f6aa6f7fa4c40585965258b1a56985dd6bb930b093e3fd
 cp2k/src/qs_linres_methods.F : 10a3f403751d9cc57f09889ca4bd05dd05cb1e5402b631718f102157c37c8de7
 cp2k/src/qs_linres_module.F : 74349f56473e07859f0d54826826f582cf3a3df40dd2d8395ff0cdf41ac95e11
 cp2k/src/qs_linres_nmr_epr_common_utils.F : 1f34d3f59bd5e4f10f17ab89d30a9dc0ae19ff52555babb8252a62564f665734
@@ -1614,7 +1614,7 @@ cp2k/src/qs_linres_types.F : 6d99256cd34fae303a7e447416f0a83d3bfcef7acd6fcc2ab83
 cp2k/src/qs_loc_methods.F : de52bb1c1629fcb53031ccdd25f21b08ca7b3ec1f16fb0ca1d8a91c7e8f80b50
 cp2k/src/qs_loc_molecules.F : a51fc18e36698c7bd20c433fe14060e25e5495f8205b0efb5d3073ea0bc1102d
 cp2k/src/qs_loc_types.F : 20c2e1c71adc8d3ca283ebc062801cd06e8c4356a92a13a7906ab2ea3a1a0dde
-cp2k/src/qs_loc_utils.F : 8d9e305a84f6bf0afda93c4f87e09874385ffca4e6e9fca762babb176b80c659
+cp2k/src/qs_loc_utils.F : dd3ec916057c2a8ac83a6ac038e3fa3228cd4abb1b7300a305993b1c7e9dc41f
 cp2k/src/qs_local_rho_types.F : c92c17b9a882e155d7e7d34ef26659ba85f135532880ac69c2382c7a28ef476e
 cp2k/src/qs_localization_methods.F : 4563d3f2f09d848b66fb40ae00655ea63c14493e73f713bb73ff65d9ede8f162
 cp2k/src/qs_matrix_pools.F : c3a17fb6111409309985db97caab10971496829dd7b2dedaec93967619864e5f
@@ -1688,8 +1688,8 @@ cp2k/src/restraint.F : bed795eab73359a4915fbe0ac6bcae7e8cd865aa83c5cd1dad618b44c
 cp2k/src/rmsd.F : d7b7de03e144bfd35142d0d37e944fdba6b763661cbec782a39b79bd989a7844
 cp2k/src/rpa_axk_util.F : 44725845fdac3e83609e7759c8575ed8b414d0b57e9a27d39d7710814646bf73
 cp2k/src/rpa_communication.F : b048b2f1a29b27e7a0ac328ba12dcfcf3c9f396bd86985ca151af90a7c4a7ab1
-cp2k/src/rpa_im_time.F : 007633e092eaeb0275f97b42d0cc3881c4e90ba6ffad0322efaa8851d485155e
-cp2k/src/rpa_ri_gpw.F : 928245357dc0437b10db952588714cab0356ad184bbaedb4e1d0e83a0ad6999b
+cp2k/src/rpa_im_time.F : 8b29a32e7d4e918b27b629ca7f4a577c7ab0bf94cbed55d79524c35bff4ea0dc
+cp2k/src/rpa_ri_gpw.F : c436f9cc024b49ac0119e38de06a9353a93f6a9672b4dedda9185be95a330faf
 cp2k/src/rs_pw_interface.F : 20ad57bee3ddf7601c8631233a9a0d71a6f90dbe7c1703d0e83b2ef6a8dda3bd
 cp2k/src/rt_propagation_forces.F : a4ac6fcc9c88af9141eb079563c1cb76cf60029bcb36d021d542b3249f886da9
 cp2k/src/rt_propagation_types.F : 603bdb3476d2693d9b1c7f28485c2b54be053a9d3f863847d0fdba805285c266
@@ -1713,7 +1713,7 @@ cp2k/src/se_fock_matrix_integrals.F : 6da77846d72f4e246c7feedee41d5cdf04f8ecf130
 cp2k/src/semi_empirical_expns3_methods.F : c78968ee6dc8104d6dd7236d845861d93a29c8ac32b68b49174fbc6c5c195dfd
 cp2k/src/semi_empirical_expns3_types.F : 2ceabc6f98432f2890bcfb3445720a0566ffafe91612bf816666148c7b8cd5b7
 cp2k/src/semi_empirical_int3_utils.F : 0ed32ae675f3bc31b292c18d20c55782a34d4708540d213b61797ce4b3647457
-cp2k/src/semi_empirical_int_ana.F : baebf23adaff89ff73967bd7b305756c70294b4915a8d5921e7a3873a60d0b39
+cp2k/src/semi_empirical_int_ana.F : bb2d91cd84203cef447946ae91f92e27eb55a7b8362bd1d8edc9e00e355ae63a
 cp2k/src/semi_empirical_int_arrays.F : 6d134789fc708ca4310539ad754c55ac3a3ac5b9b8ba08fe4088af6c5da4ae84
 cp2k/src/semi_empirical_int_debug.F : 646ee15f039af011fedd2642ebc59b13b1551a941a643ae61735306c2f3774cd
 cp2k/src/semi_empirical_int_gks.F : da4f7dcd5fcebf6a37b833a5725f6c165548402de5132b6fffd7ac0b81f08bec
@@ -1739,10 +1739,10 @@ cp2k/src/splines_types.F : 30bd25f8b652d728b3273c3e11cabdca6e3b013d4f7936b2853e0
 cp2k/src/spme.F : 5e1a3a61f6f4cc9a327bee273937748f8cb78990f14dd28dd05c0f1691edaacc
 cp2k/src/start/cp2k.F : db326710639429b69f225c34e62bbfb0e33852016bc561c1d396e6fd01751791
 cp2k/src/start/cp2k_runs.F : 9b93359dffa6f0847452f1534f3540bf90cb011fd05ea8b8de61ccb84bf54c1a
-cp2k/src/start/cp2k_shell.F : parse error
+cp2k/src/start/cp2k_shell.F : abae9c7dd6525d476fb9920ac8536ebf412b243db82992b47970694f001a3209
 cp2k/src/start/input_cp2k.F : 11e264f1079200b2a9d6b9ad250f54b7b2620f1ddd9046e250411a46a908bbf7
 cp2k/src/start/input_cp2k_motion.F : 07e137a9f67df75d09400ca895011a36d0975fe59dd66cef349ef89764cf3773
-cp2k/src/start/libcp2k.F : parse error
+cp2k/src/start/libcp2k.F : a4d2eb5d82e4c025ad20a8bc9dc71293817809ea7b39a52bc63e744c5399dd73
 cp2k/src/statistical_methods.F : bff23ffaf41e06c4e81510cc0284c8737649a186b23f77a234febb4fc992f1be
 cp2k/src/stm_images.F : af42e925db4c008512e9e6ff17110a77c9227358195979e19a202c1d3c5b0287
 cp2k/src/subcell_types.F : f78adb5d1cfedc48617231f08286abb518a59f8289a7f6c845c033264e933b6a
@@ -1773,7 +1773,7 @@ cp2k/src/swarm/glbopt_minhop.F : 273bf6accd54c88c24bce59e30ba26fbed48cbbf619bbe9
 cp2k/src/swarm/glbopt_worker.F : 4c2763bbe170af67825c3cee483063b97a5d7965dc9edffc56300c3669919fc1
 cp2k/src/swarm/swarm.F : 6313c69d0c65c0d0efe2126a75dd702310747b14c0ce136f59bf9ce295294e2b
 cp2k/src/swarm/swarm_input.F : c6ef9667f13e47b6f9b8c10a89d3b29c909b05f8a4d89753091ec4187fcab93a
-cp2k/src/swarm/swarm_master.F : 49b15ceb10a73a9aa24c8993aabd5219f31b35a8c1f7cac77caf9c6759342ce5
+cp2k/src/swarm/swarm_master.F : 0c210b539f5cb9af878c602a44f09ac11f28db006dbfe62d1f916bf124c8b82d
 cp2k/src/swarm/swarm_message.F : 8f3691e90ff5f3eab47fe342d3155386e4344db70f936e1cbd46d7bbd9505a96
 cp2k/src/swarm/swarm_message_1d_i4.f90 : 240f840d0da06c49bb39bc6afb5a4dc74c88d1c7e1b571402e1692d35ca68a9d
 cp2k/src/swarm/swarm_message_1d_i8.f90 : 5634fa218e66302f8b9a3dbb7a23fe339644787777be0b5a60dd4fed3def9445
@@ -1825,7 +1825,7 @@ cp2k/src/topology_gromos.F : 36c7df026241ebe1fa3cd26ade2aade6c1691bf2f571987e077
 cp2k/src/topology_input.F : 30019d932be78056fc8b959df6b113c59eb07127946b315cfce27b4d16828af9
 cp2k/src/topology_multiple_unit_cell.F : 797c42970f06448a8a25f25fbaf113b664a07064d6876de9caa39db45ead1419
 cp2k/src/topology_pdb.F : 77430b5fd5deeab24f6f5de4902ae7d441c781555645065193c36221b5dd3e89
-cp2k/src/topology_psf.F : parse error
+cp2k/src/topology_psf.F : dbae0644764372a1245b40e770261ea6610c9cb4e4d1123393d720e772c2942e
 cp2k/src/topology_types.F : 2e31986b37be7c32519667797d0017b28c93bbab089d8ca013e8e8c5c6b6d239
 cp2k/src/topology_util.F : e0c62464a69380b8ace8dcdfe590bb7bf10a6c004d7f0424ca69149713666578
 cp2k/src/topology_xtl.F : d51c6de4201f5edd94cf572a0705ff359bfef2007cccafe04d1a6b02908c2efa
@@ -1845,7 +1845,7 @@ cp2k/src/xas_tp_scf.F : 7b29fe62708543fc0e5c9890686fd872a62905613818f12300d79730
 cp2k/src/xc/cp_linked_list_xc_deriv.F : 7fc6bd829ce54799737d8523f39cf16ac74aa7318361ad483dbe3db46a571e39
 cp2k/src/xc/xc.F : 87707112f5d898c2e19fd5d93192f73a988a5a9e14ca6d8e9d08babf457597a7
 cp2k/src/xc/xc_atom.F : ca990ed620a43a19886e4acf4baf8b5f4ff2e666f5e3584903af84bc5bbd1faf
-cp2k/src/xc/xc_b97.F : 9043e844b760f7eb64b60c879b1fbfb0a72bf5bda20769a9d9519bcb6001bc0b
+cp2k/src/xc/xc_b97.F : c91ad9ff7d11f29bba20f301b9fcd6d5bfc90bfa34df097b5866dded3890ddc6
 cp2k/src/xc/xc_cs1.F : 6fd026c72273a95ff099822c34cc00f28d859781057a83d7aef66b38130b83b3
 cp2k/src/xc/xc_derivative_desc.F : cef2ca6fa3db537a419966b5be9d7bd3098b6d773be11062d031bd1fa91dc64b
 cp2k/src/xc/xc_derivative_set_types.F : 4a4b50ce88c82e0d40cfa50a512f8b23cb47d3b9c742612ac4467661b16e2996
@@ -1857,12 +1857,12 @@ cp2k/src/xc/xc_hcth.F : b5437ca41437f667918f89be3d0cceada1171dbb6f233e6f9dc69f17
 cp2k/src/xc/xc_input_constants.F : 4470b0799f3f60e0bf9a0760de036c8ddb9c3bcabf0e0a386598b9e9570f0008
 cp2k/src/xc/xc_ke_gga.F : 6d132d2eb3b2782e4a81d226054a30590f61272b3c0b07c8af323846813cb41e
 cp2k/src/xc/xc_libxc.F : e8cdedf5fdff089c5e32c14c213cdd46babc3db601c1ec32a53b014be9060fe9
-cp2k/src/xc/xc_libxc_wrap.F : e1ee6fbfb03d8214394685ff3743e4ea213aa8841699de76f09f608ec62e74fc
+cp2k/src/xc/xc_libxc_wrap.F : dad934ddca5a82f73b25fae9f13739e5b6de26a734e6ac2d9a271800a5d186af
 cp2k/src/xc/xc_lyp.F : 5353b309524e2c5c9b950721d724f0d9aa0a53e73fc2b224040357cd129eccc6
 cp2k/src/xc/xc_lyp_adiabatic.F : 8c854e0e285a4efdf8180e14ce630e379b4fbbaacdea5899b2bbd556a0e21356
 cp2k/src/xc/xc_optx.F : ecb9cb49a013278d326ad90263765eff534991dfa166a2df46e42de4a8c62a38
 cp2k/src/xc/xc_pade.F : 1f8f934f922dcb16d03d1169a9af904f70a79e53e8552dbdbcaa5a9557945806
-cp2k/src/xc/xc_pbe.F : da897cc64d2d74cca689272cde5b3337c9b15d324632b06f6847a81a00d9d11d
+cp2k/src/xc/xc_pbe.F : be0f3ca6a1a926fcf3b477cfd38979a7c3f95024eb99608260416f664e438a78
 cp2k/src/xc/xc_perdew86.F : 1740dcab2f2b0437a64a913ef02a407c905a2c7749be6b9b3422ea0a31e12efd
 cp2k/src/xc/xc_perdew_wang.F : 825a2b688b998924dac766d1cd89d4c88160dd6eedb7e183915289d0b0b6099f
 cp2k/src/xc/xc_perdew_zunger.F : 86f6d388f7b9e325329529557b0197025ab1b27ad04990fe81a0b3822c1bd115
@@ -1966,7 +1966,7 @@ cp2k/src/dbcsr/dbcsr_api.f90 : 3322a7cd6a5367422f74cf1c86e2092998f285c6f16f5b971
 cp2k/src/dbcsr/dist/dbcsr_mp_operations.f90 : ed854ede4e653e3b070dad440dd3b21b0a0b45ee4a1b9e82e63b1be4aa7f7d8c
 cp2k/src/dbcsr/mm/dbcsr_mm_cannon.f90 : a4bbb277806d9b2d6ad1f07899a0ab0921169e9a1bc9e193e0a67611d3cea244
 cp2k/src/dbcsr/mm/dbcsr_mm_common.f90 : 9240ae32c094d7ec311a53299ac648308afa0e63d7e1b17ef0d0fc4909b4f4bc
-cp2k/src/dbcsr/mm/dbcsr_mm_hostdrv.f90 : 810ecae59488e6b570805b750da78fda98d2cca5e7ecc9f62d6083e64ab198e6
+cp2k/src/dbcsr/mm/dbcsr_mm_hostdrv.f90 : b0f37a9b6b16730a85db4f9a91865d96711b3b77bfede2bcd1eb8185ca48cf00
 cp2k/src/dbcsr/mm/dbcsr_mm_multrec.f90 : 603263a159608befe6ccfd9d1eaef3a917c8a26469db12526a4f5e1e7fde0784
 cp2k/src/dbcsr/ops/dbcsr_operations.f90 : 888ed22be29afd4e055fc925c7a6815c0469c9472aefa4cee2d9ee89a645c11c
 cp2k/src/dbcsr_tensor/dbcsr_tensor_reshape.F : 3a42e2eb00bffc0005a7aaab1566e87121ac4c08936126c782d205933dff181c
@@ -1989,12 +1989,12 @@ cp2k/src/lri_compression.F : 6cd03da02aab40f09811b982be655cb8f20a563adb4b2cfdaa8
 cp2k/src/lri_integrals.F : 3fad815df212033bfc818ba2c7a48e3d3a38b6c3e81b63c5421401b67357d0a9
 cp2k/src/minbas_methods.F : cf20375498e9483cb449743dfdcc38fa847076f7e852891e598a7df0d3c892b2
 cp2k/src/minbas_wfn_analysis.F : 28da64f133274f9a4ea25af82f4549a362e32de7bd4345a6dd15c1c6835d4387
-cp2k/src/mixed_cdft_methods.F : c0201717341ea4942224fcb3311b3bf8266ba9c7b9f389df815bae724877d3f2
+cp2k/src/mixed_cdft_methods.F : cbe57a8b03d45c146af577dba4edaaed2b647980f82d47640681b3e7e27dbab2
 cp2k/src/mixed_cdft_types.F : 3b6864b8161f1c85809b43e5e79346a105e8b7cbb69accf914001aa1333a2d89
 cp2k/src/mixed_cdft_utils.F : 936f0d81da699f807554ec00a2903266aa126096cfc5391f1941d677d7779d3f
 cp2k/src/motion/helium_worm.F : a9c099f759f9c7dd39cd1f0eef7bb7760a5bae639213428bb697a494c700198e
 cp2k/src/motion/pint_qtb.F : fc48f21d1521d3cab250d258febb38b750298693f704dd1fb8c1b7d1a7530ef0
-cp2k/src/mp2_eri.F : a8b28379f44b46f5ac0956a2b46b293b09524d389d4e7252b0312e077786b27d
+cp2k/src/mp2_eri.F : 375c828801287d5f03b063a0d9ecbaa09c7a6d35f94937390a78ec19a34d3ea4
 cp2k/src/mpiwrap/message_passing.f90 : 7a68cfca1a6bb229af37a1856d5587304b6b42157958c944a31a2ef394cb370a
 cp2k/src/negf_alloc_types.F : 4a629eac361d080b956b94a853cc833918f4feca45adae778f9076f6da6c1dda
 cp2k/src/negf_atom_map.F : c57c6f3ef9894934293a8f28e73f2bfe743a98f393c30be054194774146169b2
@@ -2013,7 +2013,7 @@ cp2k/src/negf_subgroup_types.F : c96233333ef8862eada5cab215edaa776c31d363b4df9db
 cp2k/src/negf_vectors.F : 84170068cf9248f50a1da5ce9e0490f45470dbe81a35409ebb3d2ab37ecf6902
 cp2k/src/optimize_embedding_potential.F : 9dded47c3cc8de3d923674d0d8d9cf0880b0135b61de3c943807d07f1ec4e862
 cp2k/src/pw/fast.F : 4cb349d9c85e8277de2bdd51a812f006eb6d2cd26849f52dc91297ce07e03f8f
-cp2k/src/qs_cdft_methods.F : cb7e7f9312751410c873449d730ce53eda401758e63fef70c9b20149a3b38807
+cp2k/src/qs_cdft_methods.F : e38b69110dcc0dedf88ed9e8f835d31a536b9ce445019044a0a9e520fdd777c8
 cp2k/src/qs_cdft_scf_utils.F : 57cf5b3cef55a4570352a8c4c4cd037d00b5fa8320ed16896ca4f64895ce0fcf
 cp2k/src/qs_cdft_types.F : 62dbff78fa47743f5ae31f428e006c7a101dcbd4b8b507f3168a62f5f34fb8d5
 cp2k/src/qs_cdft_utils.F : bd0ca3ae0028ba903d8218443854f050c391fe506e5877d99027074fd8233a73
