@@ -226,11 +226,11 @@ program example_prog
                                             j=6, k=test_function(1, 2*(3*(1 + 1)), str_function(")a!(b['(;=dfe"), &
                                                                  9) + &
                                             test_function(1, 2, 3, 4)), 9, 10) &
-                                     ! test_function(1,2,3,4)),9,10) &
-                            ! +13*str_function('') + str_function('"')
+                ! test_function(1,2,3,4)),9,10) &
+                ! +13*str_function('') + str_function('"')
                 + 13*str_function('') + str_function('"')
       end & ! comment
-                   ! comment
+         ! comment
          do
    endif
 

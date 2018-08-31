@@ -1157,6 +1157,7 @@ def append_comments(lines, comment_lines):
     for pos, (line, comment) in enumerate(zip(lines, comment_lines)):
         if pos < len(lines) - 1:
             has_nl = True  # has next line
+            if not line.strip(): comment = comment.lstrip()
         else:
             has_nl = not re.search(EOL_SC, line)
         lines[pos] = lines[pos].rstrip(' ') + comment + '\n' * has_nl
