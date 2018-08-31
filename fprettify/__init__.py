@@ -108,7 +108,7 @@ EOL_STR = r"\s*;?\s*$"  # end of fortran line
 EOL_SC = r"\s*;\s*$"  # whether line is ended with semicolon
 SOL_STR = r"^\s*"  # start of fortran line
 
-F77_STYLE = re.compile(r"^\s*\d", RE_FLAGS)
+STATEMENT_LABEL_RE = re.compile(r"^\s*(\d+)", RE_FLAGS)
 
 # regular expressions for parsing statements that start, continue or end a
 # subunit:
@@ -550,8 +550,7 @@ def inspect_ffile_format(infile, indent_size, orig_filename=None):
                         adopt original indents
     :orig_filename: filename used for messages
     :returns: [ target indent sizes for each line,
-                indent of first line (offset),
-                whether file is sufficiently modern fortran ]
+                indent of first line (offset) ]
     """
     if not orig_filename:
         orig_filename = infile.name
@@ -563,7 +562,6 @@ def inspect_ffile_format(infile, indent_size, orig_filename=None):
     stream = InputStream(infile, orig_filename)
     prev_offset = 0
     first_indent = -1
-    f77_line_nr = 0
 
     while 1:
         f_line, _, lines = stream.next_fortran_line()
@@ -582,14 +580,7 @@ def inspect_ffile_format(infile, indent_size, orig_filename=None):
             indents[-1] = indent_size
         prev_offset = offset
 
-        if not num_labels and F77_STYLE.search(f_line):
-            num_labels = True
-            f77_line_nr = stream.line_nr
-
-    modern_fortran = not num_labels
-
-    return indents, first_indent, modern_fortran, f77_line_nr
-
+    return indents, first_indent
 
 def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
                         filename, line_nr, auto_format=True):
@@ -916,13 +907,9 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, impose_wh
         orig_filename = infile.name
 
     infile.seek(0)
-    req_indents, first_indent, modern, f77_line_nr = inspect_ffile_format(
+    req_indents, first_indent = inspect_ffile_format(
         infile, indent_size, orig_filename)
     infile.seek(0)
-
-    if not modern:
-        raise FprettifyParseException(
-            "fprettify failed because of fixed format or f77 constructs.", orig_filename, f77_line_nr)
 
     # initialization
 
@@ -964,6 +951,7 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, impose_wh
             lines, comment_lines, in_format_off_block, orig_filename, stream.line_nr)
         f_line, lines, is_omp, is_omp_conditional = preprocess_omp(
             f_line, lines)
+        f_line, lines, label = preprocess_labels(f_line, lines)
 
         lines, do_format, prev_indent, is_blank, is_fypp = preprocess_line(
             f_line, lines, comments, orig_filename, stream.line_nr)
@@ -1017,7 +1005,7 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, impose_wh
         lines = remove_trailing_whitespace(lines)
 
         write_formatted_line(outfile, indent, lines, orig_lines, indent_special,
-                             use_same_line, is_omp_conditional, orig_filename, stream.line_nr)
+                             use_same_line, is_omp_conditional, label, orig_filename, stream.line_nr)
 
         do_indent, use_same_line = pass_defaults_to_next_line(f_line)
 
@@ -1090,6 +1078,20 @@ def preprocess_omp(f_line, lines):
 
     return [f_line, lines, is_omp, is_omp_conditional]
 
+def preprocess_labels(f_line, lines):
+    """remove statement labels"""
+
+    match = STATEMENT_LABEL_RE.search(f_line)
+    if match:
+        label = match.group(1)
+    else:
+        label = ''
+
+    if label:
+        f_line = STATEMENT_LABEL_RE.sub(len(label)*' ', f_line, count=1)
+        lines = [STATEMENT_LABEL_RE.sub(len(label)*' ', l, count=1) for l in lines]
+
+    return [f_line, lines, label]
 
 def preprocess_line(f_line, lines, comments, filename, line_nr):
     """preprocess lines: identification and formatting of special cases"""
@@ -1230,7 +1232,7 @@ def get_manual_alignment(lines):
     return manual_lines_indent
 
 
-def write_formatted_line(outfile, indent, lines, orig_lines, indent_special, use_same_line, is_omp_conditional, filename, line_nr):
+def write_formatted_line(outfile, indent, lines, orig_lines, indent_special, use_same_line, is_omp_conditional, label, filename, line_nr):
     """Write reformatted line to file"""
     for ind, line, orig_line in zip(indent, lines, orig_lines):
 
@@ -1251,14 +1253,17 @@ def write_formatted_line(outfile, indent, lines, orig_lines, indent_special, use
         if CPP_RE.search(line.lstrip()):
             ind_use = 0
 
+        if label:
+            label = label + ' '
+
         if ind_use + line_length <= 133:  # 132 plus 1 newline char
-            outfile.write('!$' * is_omp_conditional +
-                          ' ' * (ind_use - 2 * is_omp_conditional +
+            outfile.write('!$' * is_omp_conditional + label +
+                          ' ' * (ind_use - 2 * is_omp_conditional - len(label) +
                                  len(line) - len(line.lstrip(' '))) +
                           line.lstrip(' '))
         elif line_length <= 133:
-            outfile.write('!$' * is_omp_conditional + ' ' *
-                          (133 - 2 * is_omp_conditional -
+            outfile.write('!$' * is_omp_conditional + label + ' ' *
+                          (133 - 2 * is_omp_conditional - len(label) -
                            len(line.lstrip(' '))) + line.lstrip(' '))
 
             log_message(LINESPLIT_MESSAGE, "warning",
