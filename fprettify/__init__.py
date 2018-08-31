@@ -1017,7 +1017,7 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, impose_wh
 
         # rm subsequent blank lines
         skip_blank = EMPTY_RE.search(
-            f_line) and not any(comments) and not is_omp
+            f_line) and not any(comments) and not is_omp and not label
 
 
 def format_comments(lines, comments, strip_comments):
