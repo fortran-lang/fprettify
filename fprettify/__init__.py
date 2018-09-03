@@ -546,16 +546,13 @@ def inspect_ffile_format(infile, indent_size, orig_filename=None):
     This is mainly for finding aligned blocks of DO/IF statements.
     Also check if it has f77 constructs.
     :param infile: open file
-    :param indent_size: the default indent size, if <= 0,
-                        adopt original indents
+    :param indent_size: the default indent size
     :orig_filename: filename used for messages
     :returns: [ target indent sizes for each line,
                 indent of first line (offset) ]
     """
     if not orig_filename:
         orig_filename = infile.name
-
-    adopt = indent_size <= 0
 
     num_labels = False
     indents = []
@@ -575,10 +572,9 @@ def inspect_ffile_format(infile, indent_size, orig_filename=None):
             first_indent = offset
         indents.append(offset - prev_offset)
 
-        # do not adopt indentations but impose fixed rel. ind.
-        # but don't impose indentation for blocked do/if constructs:
-        if not adopt and (prev_offset != offset or (not IF_RE.search(f_line) and
-                                                    not DO_RE.search(f_line))):
+        # don't impose indentation for blocked do/if constructs:
+        if (prev_offset != offset or (not IF_RE.search(f_line) and
+                                      not DO_RE.search(f_line))):
             indents[-1] = indent_size
         prev_offset = offset
 
