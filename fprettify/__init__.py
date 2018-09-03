@@ -606,15 +606,18 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
     # 4: arithm. operators plus and minus
     # 5: arithm. operators multiply and divide
     # 6: print / read statements
+    # 7: select type components
 
     if whitespace == 0:
-        spacey = [0, 0, 0, 0, 0, 0, 0]
+        spacey = [0, 0, 0, 0, 0, 0, 0, 0]
     elif whitespace == 1:
-        spacey = [1, 1, 1, 1, 0, 0, 1]
+        spacey = [1, 1, 1, 1, 0, 0, 1, 0]
     elif whitespace == 2:
-        spacey = [1, 1, 1, 1, 1, 0, 1]
+        spacey = [1, 1, 1, 1, 1, 0, 1, 0]
     elif whitespace == 3:
-        spacey = [1, 1, 1, 1, 1, 1, 1]
+        spacey = [1, 1, 1, 1, 1, 1, 1, 0]
+    elif whitespace == 4:
+        spacey = [1, 1, 1, 1, 1, 1, 1, 1]
     else:
         raise NotImplementedError("unknown value for whitespace")
 
@@ -742,6 +745,17 @@ def add_whitespace_charwise(line, spacey, filename, line_nr):
             rhs = line_ftd[pos + 1 + offset:]
             line_ftd = lhs.rstrip(' ') + char + ' ' * \
                 spacey[0] + rhs.lstrip(' ')
+            line_ftd = line_ftd.rstrip(' ')
+
+        # format type selector %
+        if char == "%":
+            lhs = line_ftd[:pos + offset]
+            rhs = line_ftd[pos + 1 + offset:]
+            line_ftd = lhs.rstrip(' ') \
+                    + ' ' * spacey[7] \
+                    + char \
+                    + ' ' * spacey[7] \
+                    + rhs.lstrip(' ')
             line_ftd = line_ftd.rstrip(' ')
 
         # format .NOT.
@@ -1318,7 +1332,12 @@ def run(argv=sys.argv):  # pragma: no cover
     parser.add_argument("-i", "--indent", type=int, default=3,
                         help="relative indentation width")
     parser.add_argument("-w", "--whitespace", type=int,
-                        choices=range(0, 4), default=2, help="Amount of whitespace")
+                        choices=range(0, 5), default=2, help="Amount of whitespace - "
+                                                             "   0: minimal whitespace"
+                                                             " | 1: operators (except arithmetic), print/read"
+                                                             " | 2: operators, print/read, plus/minus"
+                                                             " | 3: operators, print/read, plus/minus, muliply/divide"
+                                                             " | 4: operators, print/read, plus/minus, muliply/divide, type component selector")
     parser.add_argument("--disable-indent", action='store_true', default=False, help="don't impose indentation")
     parser.add_argument("--disable-whitespace", action='store_true', default=False, help="don't impose whitespace formatting")
     parser.add_argument("--strip-comments", action='store_true', default=False, help="strip whitespaces before comments")
