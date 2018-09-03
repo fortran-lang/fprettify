@@ -539,7 +539,7 @@ class F90Aligner(object):
         self._level = level
 
 
-def inspect_ffile_format(infile, indent_size, orig_filename=None):
+def inspect_ffile_format(infile, indent_size, strict_indent, orig_filename=None):
     """
     Determine indentation by inspecting original Fortran file.
 
@@ -573,9 +573,12 @@ def inspect_ffile_format(infile, indent_size, orig_filename=None):
         indents.append(offset - prev_offset)
 
         # don't impose indentation for blocked do/if constructs:
-        if (prev_offset != offset or (not IF_RE.search(f_line) and
-                                      not DO_RE.search(f_line))):
+        if (IF_RE.search(f_line) or DO_RE.search(f_line)):
+            if (prev_offset != offset or strict_indent):
+                indents[-1] = indent_size
+        else:
             indents[-1] = indent_size
+
         prev_offset = offset
 
     return indents, first_indent
@@ -911,7 +914,7 @@ def reformat_inplace(filename, stdout=False, **kwargs):  # pragma: no cover
         outfile.write(newfile.getvalue())
 
 
-def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, impose_whitespace=True,
+def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_indent=False, impose_whitespace=True,
                    whitespace=2, strip_comments=False, orig_filename=None):
     """main method to be invoked for formatting a Fortran file."""
 
@@ -920,7 +923,7 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, impose_wh
 
     infile.seek(0)
     req_indents, first_indent = inspect_ffile_format(
-        infile, indent_size, orig_filename)
+        infile, indent_size, strict_indent, orig_filename)
     infile.seek(0)
 
     # initialization
@@ -1334,6 +1337,7 @@ def run(argv=sys.argv):  # pragma: no cover
                                                              " | 2: operators, print/read, plus/minus"
                                                              " | 3: operators, print/read, plus/minus, muliply/divide"
                                                              " | 4: operators, print/read, plus/minus, muliply/divide, type component selector")
+    parser.add_argument("--strict-indent", action='store_true', default=False, help="strictly impose indentation even for nested loops")
     parser.add_argument("--disable-indent", action='store_true', default=False, help="don't impose indentation")
     parser.add_argument("--disable-whitespace", action='store_true', default=False, help="don't impose whitespace formatting")
     parser.add_argument("--strip-comments", action='store_true', default=False, help="strip whitespaces before comments")
@@ -1403,6 +1407,7 @@ def run(argv=sys.argv):  # pragma: no cover
                                  stdout=stdout,
                                  impose_indent=not args.disable_indent,
                                  indent_size=args.indent,
+                                 strict_indent=args.strict_indent,
                                  impose_whitespace=not args.disable_whitespace,
                                  whitespace=args.whitespace,
                                  strip_comments=args.strip_comments)

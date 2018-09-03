@@ -174,6 +174,18 @@ class FPrettifyTestCase(unittest.TestCase):
             args = ['-i', str(ind)]
             self.assert_fprettify_result(args, instring, out)
 
+    def test_nested(self):
+        """test correct indentation of nested loops"""
+        instring = ("integer :: i,j\ndo i=1,2\ndo j=1,3\n"
+                    "print*,i,j,i*j\nend do\nend do")
+        outstring_exp_default = ("integer :: i, j\ndo i = 1, 2\ndo j = 1, 3\n"
+                                 "   print *, i, j, i*j\nend do\nend do")
+        outstring_exp_strict = ("integer :: i, j\ndo i = 1, 2\n   do j = 1, 3\n"
+                                "      print *, i, j, i*j\n   end do\nend do")
+
+        self.assert_fprettify_result([], instring, outstring_exp_default)
+        self.assert_fprettify_result(['--strict-indent'], instring, outstring_exp_strict)
+
     def test_directive(self):
         """
         test deactivate directives '!&' (inline) and '!&<', '!&>' (block)
