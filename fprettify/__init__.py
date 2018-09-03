@@ -705,13 +705,13 @@ def add_whitespace_charwise(line, spacey, filename, line_nr):
                                   line[:pos], RE_FLAGS) or
                         re.search(SOL_STR + r"(\w+\s*:)?\s*DO\s+WHILE\s*$",
                                   line[:pos], RE_FLAGS) or
-                        re.search(SOL_STR + r"(SELECT)?\s*CASE\s*",
+                        re.search(SOL_STR + r"(SELECT)?\s*CASE\s*$",
                                   line[:pos], RE_FLAGS) or
-                        re.search(SOL_STR + r"SELECT\s*TYPE\s*",
+                        re.search(SOL_STR + r"SELECT\s*TYPE\s*$",
                                   line[:pos], RE_FLAGS) or
-                        re.search(SOL_STR + r"CLASS\s*DEFAULT\s*",
+                        re.search(SOL_STR + r"CLASS\s*DEFAULT\s*$",
                                   line[:pos], RE_FLAGS) or
-                        re.search(SOL_STR + r"(TYPE|CLASS)\s+IS\s*",
+                        re.search(SOL_STR + r"(TYPE|CLASS)\s+IS\s*$",
                                   line[:pos], RE_FLAGS) or
                         re.search(r"\b" + INTR_STMTS_PAR + r"\s*$",
                                   line[:pos], RE_FLAGS)):
