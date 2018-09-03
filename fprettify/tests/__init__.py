@@ -149,6 +149,13 @@ class FPrettifyTestCase(unittest.TestCase):
             args = ['-w', str(w)]
             self.assert_fprettify_result(args, instring, out)
 
+    def test_type_selector(self):
+        """test for whitespace formatting option -w 4"""
+        instring = "A%component=func(mytype%a,mytype%abc+mytype%abcd)"
+        outstring_exp = "A % component = func(mytype % a, mytype % abc + mytype % abcd)"
+
+        self.assert_fprettify_result(['-w 4'], instring, outstring_exp)
+
     def test_indent(self):
         """simple test for indent options -i in [0, 3, 4]"""
 
