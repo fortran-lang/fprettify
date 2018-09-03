@@ -207,7 +207,7 @@ RosettaCodeData/Task/Evolutionary-algorithm/Fortran/evolutionary-algorithm-2.f :
 RosettaCodeData/Task/Execute-Brain----/Fortran/execute-brain-----1.f : 2bd2e56f302394056e1714adc459276d766fef5c126505662c495dce83cb3e5d
 RosettaCodeData/Task/Execute-Brain----/Fortran/execute-brain-----2.f : 1f000fc01e0e10fe3c7c1b3688a91aaf0f895008d242c455c1ce83237cb6a2ba
 RosettaCodeData/Task/Execute-Brain----/Fortran/execute-brain-----3.f : 69a7723270c4cfb55f31ef775151f116ad86d54bc8ad1dfe54a03d2a896f5480
-RosettaCodeData/Task/Execute-Brain----/Fortran/execute-brain-----4.f : 2c5b12d43fe1c9a8d4d58b0acf8ca9f1886eaf2282442bb6470895c813ffcef2
+RosettaCodeData/Task/Execute-Brain----/Fortran/execute-brain-----4.f : 41f50aa8d284d881b0326d682d77fde33f41a5ba6929fb8a1b24dcba61772c52
 RosettaCodeData/Task/Execute-a-system-command/Fortran/execute-a-system-command-1.f : 249f01891243585e53ef93239e071e777bf7ba4299430cb456194eb8be248a31
 RosettaCodeData/Task/Execute-a-system-command/Fortran/execute-a-system-command-2.f : 79483676132fb6ddc21c19f0a64ee1352d6ef67c3681f3231f056cdd1b712b31
 RosettaCodeData/Task/Extensible-prime-generator/Fortran/extensible-prime-generator-1.f : 9096d0aee46679b48be032394bd3bd0270153d37df22162008f256e62796a397
@@ -227,7 +227,7 @@ RosettaCodeData/Task/Fibonacci-sequence/Fortran/fibonacci-sequence-2.f : ae1eef0
 RosettaCodeData/Task/Fibonacci-sequence/Fortran/fibonacci-sequence-3.f : 4cc861277a2859987b55db779bd15af9be4418dc01ea1277f5f95e1101d37270
 RosettaCodeData/Task/Fibonacci-sequence/Fortran/fibonacci-sequence-5.f : 70743db8385634abf260dcf089c82ecbf645da4c2e62267bdcdd078629407865
 RosettaCodeData/Task/File-input-output/Fortran/file-input-output.f : 7ca43af47d32a81cdda1b429b76064829bb7c8976eb8676039f6665beff312b7
-RosettaCodeData/Task/File-size/Fortran/file-size.f : cb246eaa9454c27de3e5f798fc2fd5ea20a133a37aca66382dce47e301ae38ec
+RosettaCodeData/Task/File-size/Fortran/file-size.f : ac651b71be127b548cf892543459f8aaf51036bcaafe4732dce34b64e839b2a8
 RosettaCodeData/Task/Filter/Fortran/filter-1.f : 1ee15cec4697c6e8b593daab3b207965da95062c120fa8e3dc9cc48fa4215d50
 RosettaCodeData/Task/Filter/Fortran/filter-2.f : 334084bebb56efc62ecae5be4c3122f6b1df99a9436db6dd0387aca83172ef52
 RosettaCodeData/Task/Find-limit-of-recursion/Fortran/find-limit-of-recursion-1.f : 48d02f8ee889a8aeb50779de2f0536af4cdadff7953f425e21d5ff1fe263b123
@@ -299,7 +299,7 @@ RosettaCodeData/Task/Hello-world-Newline-omission/Fortran/hello-world-newline-om
 RosettaCodeData/Task/Hello-world-Newline-omission/Fortran/hello-world-newline-omission-2.f : 6b6fd5732919638e2dc9d7b9346274c0122d1c66c251e3e3d4bd57e4af1f817f
 RosettaCodeData/Task/Hello-world-Standard-error/Fortran/hello-world-standard-error.f : 911acb9589db869aa7b4772e4c18a2cdc63bb82ec283617b464130217ccf637b
 RosettaCodeData/Task/Hello-world-Text/Fortran/hello-world-text-1.f : 72eded4a9e386a5ddb9430da2bca5b11d851d20cf18c304a4449334bff0e2045
-RosettaCodeData/Task/Hello-world-Text/Fortran/hello-world-text-2.f : 061f685f5143707c22d608b55102e3da3a71dbedae5f2e71f3bc4216fc92073b
+RosettaCodeData/Task/Hello-world-Text/Fortran/hello-world-text-2.f : dd117e9c323640d2521c8877f36437c8fd823c12a3bcd820342c537f3bc2f0d4
 RosettaCodeData/Task/Hello-world-Text/Fortran/hello-world-text-3.f : 32d370f88b797c1b42986192ee6bcbd195e089f0f04975b82cd92f9fadab675f
 RosettaCodeData/Task/Hello-world-Web-server/Fortran/hello-world-web-server.f : 48b637824c93c177eeeffdcda90046614f03e7880859f697cc136f8f2e63bb25
 RosettaCodeData/Task/Here-document/Fortran/here-document.f : internal error
