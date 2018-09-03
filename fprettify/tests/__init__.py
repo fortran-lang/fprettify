@@ -186,6 +186,36 @@ class FPrettifyTestCase(unittest.TestCase):
         self.assert_fprettify_result([], instring, outstring_exp_default)
         self.assert_fprettify_result(['--strict-indent'], instring, outstring_exp_strict)
 
+    def test_disable(self):
+        """test disabling indentation and/or whitespace formatting"""
+        instring = ("if(&\nl==111)&\n then\n   do m   =1,  2\n A=&\nB+C\n    enddo;   endif")
+        outstring_exp_default = ("if ( &\n   l == 111) &\n   then\n   do m = 1, 2\n"
+                                 "      A = &\n         B + C\n   enddo; endif")
+        outstring_exp_nowhitespace = ("if(&\n   l==111)&\n   then\n   do m   =1,  2\n"
+                                      "      A=&\n         B+C\n   enddo; endif")
+        outstring_exp_noindent = ("if ( &\nl == 111) &\n then\n   do m = 1, 2\n"
+                                  " A = &\nB + C\n    enddo;   endif")
+
+        self.assert_fprettify_result([], instring, outstring_exp_default)
+        self.assert_fprettify_result(['--disable-whitespace'], instring, outstring_exp_nowhitespace)
+        self.assert_fprettify_result(['--disable-indent'], instring, outstring_exp_noindent)
+        self.assert_fprettify_result(['--disable-indent', '--disable-whitespace'], instring, instring)
+
+    def test_comments(self):
+        """test options related to comments"""
+        instring = ("TYPE mytype\n!  c1\n  !c2\n   INTEGER :: a   !  c3\n"
+                    "   REAL :: b, &   ! c4\n! c5\n                  ! c6\n"
+                    "           d      ! c7\nEND TYPE  ! c8")
+        outstring_exp_default = ("TYPE mytype\n!  c1\n   !c2\n   INTEGER :: a   !  c3\n"
+                                 "   REAL :: b, &   ! c4\n           ! c5\n           ! c6\n"
+                                 "           d      ! c7\nEND TYPE  ! c8")
+        outstring_exp_strip = ("TYPE mytype\n!  c1\n   !c2\n   INTEGER :: a !  c3\n"
+                               "   REAL :: b, & ! c4\n           ! c5\n           ! c6\n"
+                               "           d ! c7\nEND TYPE ! c8")
+
+        self.assert_fprettify_result([], instring, outstring_exp_default)
+        self.assert_fprettify_result(['--strip-comments'], instring, outstring_exp_strip)
+
     def test_directive(self):
         """
         test deactivate directives '!&' (inline) and '!&<', '!&>' (block)
