@@ -299,7 +299,7 @@ RosettaCodeData/Task/Hello-world-Newline-omission/Fortran/hello-world-newline-om
 RosettaCodeData/Task/Hello-world-Newline-omission/Fortran/hello-world-newline-omission-2.f : 6b6fd5732919638e2dc9d7b9346274c0122d1c66c251e3e3d4bd57e4af1f817f
 RosettaCodeData/Task/Hello-world-Standard-error/Fortran/hello-world-standard-error.f : 911acb9589db869aa7b4772e4c18a2cdc63bb82ec283617b464130217ccf637b
 RosettaCodeData/Task/Hello-world-Text/Fortran/hello-world-text-1.f : 72eded4a9e386a5ddb9430da2bca5b11d851d20cf18c304a4449334bff0e2045
-RosettaCodeData/Task/Hello-world-Text/Fortran/hello-world-text-2.f : 64a47b9c080696c03d7acad49846b54d1cd3936143541f91ef79e831b08b870e
+RosettaCodeData/Task/Hello-world-Text/Fortran/hello-world-text-2.f : 061f685f5143707c22d608b55102e3da3a71dbedae5f2e71f3bc4216fc92073b
 RosettaCodeData/Task/Hello-world-Text/Fortran/hello-world-text-3.f : 32d370f88b797c1b42986192ee6bcbd195e089f0f04975b82cd92f9fadab675f
 RosettaCodeData/Task/Hello-world-Web-server/Fortran/hello-world-web-server.f : 48b637824c93c177eeeffdcda90046614f03e7880859f697cc136f8f2e63bb25
 RosettaCodeData/Task/Here-document/Fortran/here-document.f : internal error
@@ -375,7 +375,7 @@ RosettaCodeData/Task/Loops-For/Fortran/loops-for-5.f : d59a01661b9d48fc7626f8e3e
 RosettaCodeData/Task/Loops-Foreach/Fortran/loops-foreach.f : 5e53df1f3ca97b2279d0df2f343c9f0c8027ab823009ecd3d1c38243e4d53178
 RosettaCodeData/Task/Loops-Infinite/Fortran/loops-infinite-1.f : 529951d244a975d5018a5a8bf0f0ad5529dc4c3ab0695b1fe53665c82e72bd1c
 RosettaCodeData/Task/Loops-Infinite/Fortran/loops-infinite-2.f : 3f371c8f8fdd8c2c3f47f2917f9ee157ae07cfb52a943663da059281e6fff08a
-RosettaCodeData/Task/Loops-Infinite/Fortran/loops-infinite-3.f : d73a38cae70bb9bb415baad646ce71aa88aef96cfd438bfd4c364155bcd797b0
+RosettaCodeData/Task/Loops-Infinite/Fortran/loops-infinite-3.f : 9d987ab5121ae44c3e4f63d325fa905051e7dc35264233b2d0f0d7cbcefd4310
 RosettaCodeData/Task/Loops-N-plus-one-half/Fortran/loops-n-plus-one-half-1.f : f268964dadf3c2ed2b703000e260bf23e16150f4b3bc56d27439f9acf9311fdc
 RosettaCodeData/Task/Loops-N-plus-one-half/Fortran/loops-n-plus-one-half-2.f : 7d366feb4885bdce05fec542b8255d53aae0dff18d8876fdd846525a6185b820
 RosettaCodeData/Task/Loops-Nested/Fortran/loops-nested-1.f : cd5ae50a4107a638bddc457454de3e8f474411b66c1784cd93ed94648302cb4d
@@ -653,7 +653,7 @@ RosettaCodeData/Task/Ulam-spiral--for-primes-/Fortran/ulam-spiral--for-primes--1
 RosettaCodeData/Task/Ulam-spiral--for-primes-/Fortran/ulam-spiral--for-primes--2.f : 11f9fa057b8ac71fb47102389693b5b0f7e94215b4b4059363afd5b933a76987
 RosettaCodeData/Task/Unbias-a-random-generator/Fortran/unbias-a-random-generator.f : a7f3750a5c8d7f32f1a79591a6f4593f491b2cc614462eb487d1909331ea868f
 RosettaCodeData/Task/Undefined-values/Fortran/undefined-values.f : d0dc7860c341dccd9d003e294725d5936fb1ddda739671dae4b67081f37b902f
-RosettaCodeData/Task/Universal-Turing-machine/Fortran/universal-turing-machine-1.f : 932d669e7dcfb05e9444ae7eca5dcfc3f97e39f24a8510fdfe55af47a7860040
+RosettaCodeData/Task/Universal-Turing-machine/Fortran/universal-turing-machine-1.f : 1c5a64acd985a88b60c1560497904946ae0b44c284bbc9e76a711511a6f87d82
 RosettaCodeData/Task/Universal-Turing-machine/Fortran/universal-turing-machine-2.f : 419d7212341e4f6ff97b6956d7923f74bf393488cdbe0e55420babc4810c24d9
 RosettaCodeData/Task/Unix-ls/Fortran/unix-ls-1.f : 81d7765633e501987f5aa39eb47a498bee1ae8935ad98003bef0823b828ad1ad
 RosettaCodeData/Task/Unix-ls/Fortran/unix-ls-2.f : 7b97758996e29333ceabc6e654eedefa32248a8e76af84cfa888684bb8a989c1

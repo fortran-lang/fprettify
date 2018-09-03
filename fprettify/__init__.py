@@ -568,6 +568,8 @@ def inspect_ffile_format(infile, indent_size, orig_filename=None):
         if not lines:
             break
 
+        f_line, lines, label = preprocess_labels(f_line, lines)
+
         offset = len(lines[0]) - len(lines[0].lstrip(' '))
         if f_line.strip() and first_indent == -1:
             first_indent = offset
