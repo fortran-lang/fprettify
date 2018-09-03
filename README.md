@@ -11,9 +11,14 @@ fprettify is an auto-formatter for modern Fortran code that imposes strict white
 * Line continuations are aligned with the previous opening delimiter `(`, `[` or `(/` or with an assignment operator `=` or `=>`. If none of the above is present, a default hanging indent is applied.
 * Consistent amount of whitespace around operators and delimiters.
 * Removal of extraneous whitespace and consecutive blank lines.
-* Works only for modern Fortran (Fortran 90 upwards).
 * Tested for editor integration.
-* By default, fprettify causes changes in the amount of whitespace only and thus preserves revision history.
+* By default, fprettify causes whitespace changes only and thus preserves revision history.
+* fprettify can handle cpp and [fypp](https://github.com/aradi/fypp) preprocessor directives.
+
+
+## Limitations
+
+* Works only for modern Fortran (Fortran 90 upwards).
 * Feature missing? Please create an issue.
 
 
