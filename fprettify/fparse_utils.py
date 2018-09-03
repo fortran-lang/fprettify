@@ -35,6 +35,19 @@ OMP_DIR_RE = re.compile(r"^\s*(!\$omp)", RE_FLAGS)
 OMP_RE = re.compile(r"^\s*(!\$)", RE_FLAGS)
 OMP_SUBS_RE = re.compile(r"^\s*(!\$(omp)?)", RE_FLAGS)
 
+# supported preprocessors
+FYPP_LINE_STR = r"^(#!|#:|\$:|@:)"
+CPP_STR = r"^#[^!:{}]"
+COMMENT_LINE_STR = r"^!"
+FYPP_OPEN_STR = r"(#{|\${|@{)"
+FYPP_CLOSE_STR = r"(}#|}\$|}@)"
+NOTFORTRAN_LINE_RE = re.compile(r"("+FYPP_LINE_STR+r"|"+CPP_STR+r"|"+COMMENT_LINE_STR+r")", RE_FLAGS)
+FYPP_LINE_RE = re.compile(FYPP_LINE_STR, RE_FLAGS)
+FYPP_OPEN_RE = re.compile(FYPP_OPEN_STR, RE_FLAGS)
+FYPP_CLOSE_RE = re.compile(FYPP_CLOSE_STR, RE_FLAGS)
+
+STR_OPEN_RE = re.compile(r"("+FYPP_OPEN_STR+r"|"+r"'|\"|!)", RE_FLAGS)
+CPP_RE = re.compile(CPP_STR, RE_FLAGS)
 
 class FprettifyException(Exception):
     """Base class for all custom exceptions"""
@@ -59,13 +72,25 @@ class FprettifyInternalException(FprettifyException):
 
 class CharFilter(object):
     """
-    An iterator to wrap the iterator returned by `enumerate`
+    An iterator to wrap the iterator returned by `enumerate(string)`
     and ignore comments and characters inside strings
     """
 
-    def __init__(self, it):
-        self._it = it
+    def __init__(self, string, filter_comments=True, filter_strings=True):
+        self._content = string
+        self._it = enumerate(self._content)
         self._instring = ''
+        self._infypp = False
+        self._incomment = ''
+        self._instring = ''
+        self._filter_comments = filter_comments
+        self._filter_strings = filter_strings
+
+    def update(self, string, filter_comments=True, filter_strings=True):
+        self._content = string
+        self._it = enumerate(self._content)
+        self._filter_comments = filter_comments
+        self._filter_strings = filter_strings
 
     def __iter__(self):
         return self
@@ -75,22 +100,53 @@ class CharFilter(object):
         return self.__next__()
 
     def __next__(self):
+
         pos, char = next(self._it)
-        if not self._instring and char == '!':
-            raise StopIteration
 
-        # detect start/end of a string
-        if char in ['"', "'"]:
-            if self._instring == char:
-                self._instring = ''
-            elif not self._instring:
-                self._instring = char
+        try:
+            char2 = self._content[pos:pos+2]
+        except IndexError:
+            char2 = char
 
-        if self._instring:
-            return self.__next__()
+        if not self._instring:
+            if not self._incomment:
+                if FYPP_OPEN_RE.search(char2):
+                    self._instring = char2
+                    self._infypp = True
+                elif (NOTFORTRAN_LINE_RE.search(char2)):
+                    self._incomment = char
+                elif char in ['"', "'"]:
+                    self._instring = char
+        else:
+            if self._infypp:
+                if FYPP_CLOSE_RE.search(char2):
+                    self._instring = ''
+                    self._infypp = False
+                    if self._filter_strings:
+                        self.__next__()
+                        return self.__next__()
+
+            elif char in ['"', "'"]:
+                if self._instring == char:
+                    self._instring = ''
+                    if self._filter_strings:
+                        return self.__next__()
+
+        if self._filter_comments:
+            if self._incomment:
+                raise StopIteration
+
+        if self._filter_strings:
+            if self._instring:
+                return self.__next__()
 
         return (pos, char)
 
+    def filter_all(self):
+        filtered_str = ''
+        for pos, char in self:
+            filtered_str += char
+        return filtered_str
 
 class InputStream(object):
     """Class to read logical Fortran lines from a Fortran file."""
@@ -114,46 +170,59 @@ class InputStream(object):
         comments = []
         lines = []
         continuation = 0
+        fypp_cont = 0
         instring = ''
 
+        string_iter = CharFilter('')
+        fypp_cont = 0
         while 1:
             if not self.line_buffer:
                 line = self.infile.readline().replace("\t", 8 * " ")
                 self.line_nr += 1
                 # convert OMP-conditional fortran statements into normal fortran statements
                 # but remember to convert them back
+
                 what_omp = ''
                 if OMP_SUBS_RE.search(line):
                     what_omp = OMP_SUBS_RE.search(line).group(1)
                     line = line.replace(what_omp, '', 1)
                 line_start = 0
-                for pos, char in enumerate(line):
-                    if not instring and char in ['!', '#']:
-                        self.endpos.append(pos - 1 - line_start)
-                        self.line_buffer.append(line[line_start:])
+
+                pos = -1
+
+                # update instead of CharFilter(line) to account for multiline strings
+                string_iter.update(line)
+                for pos, char in string_iter:
+                    if char == ';' or pos + 1 == len(line):
+                        self.endpos.append(pos - line_start)
+                        self.line_buffer.append(line[line_start:pos + 1])
                         self.what_omp.append(what_omp)
-                        break
-                    if char in ['"', "'"]:
-                        if instring == char:
-                            instring = ''
-                        elif not instring:
-                            instring = char
-                    if not instring:
-                        if char == ';' or pos + 1 == len(line):
-                            self.endpos.append(pos - line_start)
-                            self.line_buffer.append(line[line_start:pos + 1])
-                            self.what_omp.append(what_omp)
-                            what_omp = ''
-                            line_start = pos + 1
+                        what_omp = ''
+                        line_start = pos + 1
 
-                if instring:
-                    raise FprettifyInternalException(
-                        "multline strings not supported", self.filename, self.line_nr)
+                if pos + 1 < len(line):
+                   if fypp_cont:
+                       self.endpos.append(-1)
+                       self.line_buffer.append(line)
+                       self.what_omp.append(what_omp)
+                   else:
+                       for pos_add, char in CharFilter(line[pos+1:], filter_comments=False):
+                           char2 = line[pos+1+pos_add:pos+3+pos_add]
+                           if NOTFORTRAN_LINE_RE.search(char2):
+                               self.endpos.append(pos + pos_add - line_start)
+                               self.line_buffer.append(line[line_start:])
+                               self.what_omp.append(what_omp)
+                               break
 
-            if self.line_buffer:
-                line = self.line_buffer.popleft()
-                endpos = self.endpos.popleft()
-                what_omp = self.what_omp.popleft()
+                if not self.line_buffer:
+                    self.endpos.append(len(line))
+                    self.line_buffer.append(line)
+                    self.what_omp.append('')
+
+
+            line = self.line_buffer.popleft()
+            endpos = self.endpos.popleft()
+            what_omp = self.what_omp.popleft()
 
             if not line:
                 break
@@ -163,7 +232,7 @@ class InputStream(object):
             line_core = line[:endpos + 1]
 
             try:
-                if line[endpos + 1] in ['!', '#']:
+                if NOTFORTRAN_LINE_RE.search(line[endpos+1:endpos+3]) or fypp_cont:
                     line_comments = line[endpos + 1:]
                 else:
                     line_comments = ''
@@ -182,6 +251,12 @@ class InputStream(object):
             if line_core.endswith('&'):
                 continuation = 1
 
+            if line_comments:
+                if (FYPP_LINE_RE.search(line[endpos+1:endpos+3]) or fypp_cont) and line_comments.strip()[-1] == '&':
+                    fypp_cont = 1
+                else:
+                    fypp_cont = 0
+
             line_core = line_core.strip('&')
 
             comments.append(line_comments.rstrip('\n'))
@@ -191,7 +266,7 @@ class InputStream(object):
             else:
                 joined_line = what_omp + line_core + '\n' * newline
 
-            if not continuation:
+            if not (continuation or fypp_cont):
                 break
 
         return (joined_line, comments, lines)

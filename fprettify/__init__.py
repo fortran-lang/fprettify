@@ -90,7 +90,8 @@ except AttributeError:
 
 from .fparse_utils import (VAR_DECL_RE, OMP_RE, OMP_DIR_RE,
                            InputStream, CharFilter,
-                           FprettifyException, FprettifyParseException, FprettifyInternalException, RE_FLAGS)
+                           FprettifyException, FprettifyParseException, FprettifyInternalException,
+                           CPP_RE, NOTFORTRAN_LINE_RE, FYPP_LINE_RE, RE_FLAGS, STR_OPEN_RE)
 
 # recognize fortran files by extension
 FORTRAN_EXTENSIONS = [".f", ".for", ".ftn",
@@ -107,38 +108,38 @@ EOL_STR = r"\s*;?\s*$"  # end of fortran line
 EOL_SC = r"\s*;\s*$"  # whether line is ended with semicolon
 SOL_STR = r"^\s*"  # start of fortran line
 
-F77_STYLE = re.compile(r"^\s*\d", RE_FLAGS)
+STATEMENT_LABEL_RE = re.compile(r"^\s*(\d+)", RE_FLAGS)
 
 # regular expressions for parsing statements that start, continue or end a
 # subunit:
 IF_RE = re.compile(
-    SOL_STR + r"(\w+\s*:)?\s*IF\s*\(.+\)\s*THEN" + EOL_STR, RE_FLAGS)
+    SOL_STR + r"(\w+\s*:)?\s*IF\s*\(.*\)\s*THEN" + EOL_STR, RE_FLAGS)
 ELSE_RE = re.compile(
-    SOL_STR + r"ELSE(\s*IF\s*\(.+\)\s*THEN)?" + EOL_STR, RE_FLAGS)
+    SOL_STR + r"ELSE(\s*IF\s*\(.*\)\s*THEN)?" + EOL_STR, RE_FLAGS)
 ENDIF_RE = re.compile(SOL_STR + r"END\s*IF(\s+\w+)?" + EOL_STR, RE_FLAGS)
 
 DO_RE = re.compile(SOL_STR + r"(\w+\s*:)?\s*DO(" + EOL_STR + r"|\s)", RE_FLAGS)
 ENDDO_RE = re.compile(SOL_STR + r"END\s*DO(\s+\w+)?" + EOL_STR, RE_FLAGS)
 
 SELCASE_RE = re.compile(
-    SOL_STR + r"SELECT\s*(CASE|TYPE)\s*\(.+\)" + EOL_STR, RE_FLAGS)
+    SOL_STR + r"SELECT\s*(CASE|TYPE)\s*\(.*\)" + EOL_STR, RE_FLAGS)
 CASE_RE = re.compile(
-    SOL_STR + r"((CASE|TYPE\s+IS|CLASS\s+IS)\s*(\(.+\)|DEFAULT)|CLASS\s+DEFAULT)" + EOL_STR, RE_FLAGS)
+    SOL_STR + r"((CASE|TYPE\s+IS|CLASS\s+IS)\s*(\(.*\)|DEFAULT)|CLASS\s+DEFAULT)" + EOL_STR, RE_FLAGS)
 ENDSEL_RE = re.compile(SOL_STR + r"END\s*SELECT" + EOL_STR, RE_FLAGS)
 
-ASSOCIATE_RE = re.compile(SOL_STR + r"ASSOCIATE\s*\(.+\)" + EOL_STR, RE_FLAGS)
+ASSOCIATE_RE = re.compile(SOL_STR + r"ASSOCIATE\s*\(.*\)" + EOL_STR, RE_FLAGS)
 ENDASSOCIATE_RE = re.compile(SOL_STR + r"END\s*ASSOCIATE" + EOL_STR, RE_FLAGS)
 
 BLK_RE = re.compile(SOL_STR + r"(\w+\s*:)?\s*BLOCK" + EOL_STR, RE_FLAGS)
 ENDBLK_RE = re.compile(SOL_STR + r"END\s*BLOCK(\s+\w+)?" + EOL_STR, RE_FLAGS)
 
 SUBR_RE = re.compile(
-    r"^([^\"'!]* )?SUBROUTINE\s+\w+\s*(\(.*\))?" + EOL_STR, RE_FLAGS)
+    r"^([^\"']* )?SUBROUTINE\s+\w+\s*(\(.*\))?" + EOL_STR, RE_FLAGS)
 ENDSUBR_RE = re.compile(
     SOL_STR + r"END\s*SUBROUTINE(\s+\w+)?" + EOL_STR, RE_FLAGS)
 
 FCT_RE = re.compile(
-    r"^([^\"'!]* )?FUNCTION\s+\w+\s*(\(.*\))?(\s*RESULT\s*\(\w+\))?" + EOL_STR,
+    r"^([^\"']* )?FUNCTION\s+\w+\s*(\(.*\))?(\s*RESULT\s*\(\w+\))?" + EOL_STR,
     RE_FLAGS)
 ENDFCT_RE = re.compile(
     SOL_STR + r"END\s*FUNCTION(\s+\w+)?" + EOL_STR, RE_FLAGS)
@@ -157,7 +158,7 @@ ENDPROG_RE = re.compile(
     SOL_STR + r"END\s*PROGRAM(\s+\w+)?" + EOL_STR, RE_FLAGS)
 
 INTERFACE_RE = re.compile(
-    r"^([^\"'!]* )?INTERFACE(\s+\w+|\s+(OPERATOR|ASSIGNMENT)\s*\(.*\))?" + EOL_STR, RE_FLAGS)
+    r"^([^\"']* )?INTERFACE(\s+\w+|\s+(OPERATOR|ASSIGNMENT)\s*\(.*\))?" + EOL_STR, RE_FLAGS)
 ENDINTERFACE_RE = re.compile(
     SOL_STR + r"END\s*INTERFACE(\s+\w+)?" + EOL_STR, RE_FLAGS)
 
@@ -201,7 +202,7 @@ DEL_CLOSE_STR = r"(\/?\)|\])"
 DEL_CLOSE_RE = re.compile(r"^" + DEL_CLOSE_STR, RE_FLAGS)
 
 # empty line regex
-EMPTY_RE = re.compile(SOL_STR + r"([!#].*)?$", RE_FLAGS)
+EMPTY_RE = re.compile(SOL_STR + r"$", RE_FLAGS)
 
 # two-sided operators
 LR_OPS_RE = [REL_OP_RE, LOG_OP_RE, PLUSMINUS_RE, MULTDIV_RE, PRINT_RE]
@@ -287,8 +288,12 @@ class F90Indenter(object):
         is_new = False
         valid_new = False
 
+        f_filter = CharFilter(f_line)
+        f_line_filtered = f_filter.filter_all()
+
         for new_n, newre in enumerate(NEW_SCOPE_RE):
-            if newre and newre.search(f_line) and not END_SCOPE_RE[new_n].search(f_line):
+            if newre and newre.search(f_line_filtered) and \
+                not END_SCOPE_RE[new_n].search(f_line_filtered):
                 what_new = new_n
                 is_new = True
                 valid_new = True
@@ -300,7 +305,7 @@ class F90Indenter(object):
         is_con = False
         valid_con = False
         for con_n, conre in enumerate(CONTINUE_SCOPE_RE):
-            if conre and conre.search(f_line):
+            if conre and conre.search(f_line_filtered):
                 what_con = con_n
                 is_con = True
                 if len(scopes) > 0:
@@ -314,7 +319,7 @@ class F90Indenter(object):
         is_end = False
         valid_end = False
         for end_n, endre in enumerate(END_SCOPE_RE):
-            if endre and endre.search(f_line):
+            if endre and endre.search(f_line_filtered):
                 what_end = end_n
                 is_end = True
                 if len(scopes) > 0:
@@ -457,7 +462,7 @@ class F90Aligner(object):
 
         end_of_delim = -1
 
-        for pos, char in CharFilter(enumerate(line)):
+        for pos, char in CharFilter(line):
 
             what_del_open = None
             what_del_close = None
@@ -545,8 +550,7 @@ def inspect_ffile_format(infile, indent_size, orig_filename=None):
                         adopt original indents
     :orig_filename: filename used for messages
     :returns: [ target indent sizes for each line,
-                indent of first line (offset),
-                whether file is sufficiently modern fortran ]
+                indent of first line (offset) ]
     """
     if not orig_filename:
         orig_filename = infile.name
@@ -558,12 +562,13 @@ def inspect_ffile_format(infile, indent_size, orig_filename=None):
     stream = InputStream(infile, orig_filename)
     prev_offset = 0
     first_indent = -1
-    f77_line_nr = 0
 
     while 1:
         f_line, _, lines = stream.next_fortran_line()
         if not lines:
             break
+
+        f_line, lines, label = preprocess_labels(f_line, lines)
 
         offset = len(lines[0]) - len(lines[0].lstrip(' '))
         if f_line.strip() and first_indent == -1:
@@ -577,14 +582,7 @@ def inspect_ffile_format(infile, indent_size, orig_filename=None):
             indents[-1] = indent_size
         prev_offset = offset
 
-        if not num_labels and F77_STYLE.search(f_line):
-            num_labels = True
-            f77_line_nr = stream.line_nr
-
-    modern_fortran = not num_labels
-
-    return indents, first_indent, modern_fortran, f77_line_nr
-
+    return indents, first_indent
 
 def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
                         filename, line_nr, auto_format=True):
@@ -627,6 +625,7 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
     line_orig = line
 
     if auto_format:
+
         line = rm_extra_whitespace(line)
         line = add_whitespace_charwise(line, spacey, filename, line_nr)
         line = add_whitespace_context(line, spacey)
@@ -640,20 +639,26 @@ def rm_extra_whitespace(line):
     """rm all unneeded whitespace chars, except for declarations"""
     line_ftd = ''
     pos_prev = -1
-    for pos, char in CharFilter(enumerate(line)):
+    pos = -1
+    for pos, char in CharFilter(line):
         is_decl = line[pos:].lstrip().startswith('::') or line[
             :pos].rstrip().endswith('::')
 
+        if pos > pos_prev + 1: # skipped string
+            line_ftd = line_ftd + line[pos_prev + 1:pos]
+
         if char == ' ':
             # remove double spaces:
-            if line_ftd and (re.search(r'[\w"]', line_ftd[-1]) or is_decl):
+            if line_ftd and (re.search(r'[\w]', line_ftd[-1]) or is_decl):
                 line_ftd = line_ftd + char
         else:
             if (line_ftd and line_ftd[-1] == ' ' and
-                    (not re.search(r"[\w\"']", char) and not is_decl)):
+                    (not re.search(r'[\w]', char) and not is_decl)):
                 line_ftd = line_ftd[:-1]  # remove spaces except between words
-            line_ftd = line_ftd + line[pos_prev + 1:pos + 1]
+            line_ftd = line_ftd + char
         pos_prev = pos
+
+    line_ftd = line_ftd + line[pos+1:]
     return line_ftd
 
 
@@ -663,7 +668,7 @@ def add_whitespace_charwise(line, spacey, filename, line_nr):
     pos_eq = []
     end_of_delim = -1
     level = 0
-    for pos, char in CharFilter(enumerate(line)):
+    for pos, char in CharFilter(line):
         # offset w.r.t. unformatted line
         offset = len(line_ftd) - len(line)
 
@@ -799,24 +804,25 @@ def add_whitespace_context(line, spacey):
 
 
     pos_prev = -1
+    pos = -1
     line_parts = ['']
-    for pos, char in CharFilter(enumerate(line)):
+    for pos, char in CharFilter(line):
         if pos > pos_prev + 1: # skipped string
-            line_parts.append(line[pos_prev + 1:pos + 1]) # append string
+            line_parts.append(line[pos_prev + 1:pos].strip()) # append string
             line_parts.append('')
-        else:
-            line_parts[-1] += char
+
+        line_parts[-1] += char
 
         pos_prev = pos
 
     if pos + 1 < len(line):
-        line_parts.append(line[pos + 2:])
+        line_parts.append(line[pos + 1:])
 
     # format namelists with spaces around /
     if NML_STMT_RE.match(line):
         for pos, part in enumerate(line_parts):
             # exclude comments, strings:
-            if not re.match(r"['\"!]", part, RE_FLAGS):
+            if not STR_OPEN_RE.match(part):
                 partsplit = NML_RE.split(part)
                 line_parts[pos] = (' '.join(partsplit))
 
@@ -824,7 +830,7 @@ def add_whitespace_context(line, spacey):
     for n_op, lr_re in enumerate(LR_OPS_RE):
         for pos, part in enumerate(line_parts):
             # exclude comments, strings:
-            if not re.search(r"^['\"!]", part, RE_FLAGS):
+            if not STR_OPEN_RE.match(part):
                 # also exclude / if we see a namelist and data statement
                 if not ( NML_STMT_RE.match(line) or DATA_STMT_RE.match(line) ):
                     partsplit = lr_re.split(part)
@@ -917,13 +923,9 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, impose_wh
         orig_filename = infile.name
 
     infile.seek(0)
-    req_indents, first_indent, modern, f77_line_nr = inspect_ffile_format(
+    req_indents, first_indent = inspect_ffile_format(
         infile, indent_size, orig_filename)
     infile.seek(0)
-
-    if not modern:
-        raise FprettifyParseException(
-            "fprettify failed because of fixed format or f77 constructs.", orig_filename, f77_line_nr)
 
     # initialization
 
@@ -951,13 +953,13 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, impose_wh
         if not lines:
             break
 
+        nfl += 1
+        orig_lines = lines
+
         if indent_special != 3:
             indent = [0] * len(lines)
         else:
             indent = [len(l) - len((l.lstrip(' ')).lstrip('&'))  for l in lines]
-
-        nfl += 1
-        orig_lines = lines
 
         comment_lines = format_comments(lines, comments, strip_comments)
 
@@ -965,9 +967,13 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, impose_wh
             lines, comment_lines, in_format_off_block, orig_filename, stream.line_nr)
         f_line, lines, is_omp, is_omp_conditional = preprocess_omp(
             f_line, lines)
+        f_line, lines, label = preprocess_labels(f_line, lines)
 
-        lines, do_format, prev_indent, is_blank = preprocess_line(
+        lines, do_format, prev_indent, is_blank, is_fypp = preprocess_line(
             f_line, lines, comments, orig_filename, stream.line_nr)
+
+        if is_fypp:
+            indent_special = 3
 
         if prev_indent and indent_special == 0:
             indent_special = 2
@@ -976,9 +982,8 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, impose_wh
             continue
         if (not do_format):
             if indent_special == 2:
-                assert len(indent) == 1
                 # inherit indent from previous line
-                indent[0] = indenter.get_fline_indent()
+                indent[:] = [indenter.get_fline_indent()]*len(indent)
             elif indent_special == 0:
                 indent_special = 1
         else:
@@ -1016,11 +1021,11 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, impose_wh
         lines = remove_trailing_whitespace(lines)
 
         write_formatted_line(outfile, indent, lines, orig_lines, indent_special,
-                             use_same_line, is_omp_conditional, orig_filename, stream.line_nr)
+                             use_same_line, is_omp_conditional, label, orig_filename, stream.line_nr)
 
         do_indent, use_same_line = pass_defaults_to_next_line(f_line)
 
-        if indent_special < 3:
+        if impose_indent:
             if do_indent:
                 indent_special = 0
             else:
@@ -1028,7 +1033,7 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, impose_wh
 
         # rm subsequent blank lines
         skip_blank = EMPTY_RE.search(
-            f_line) and not any(comments) and not is_omp
+            f_line) and not any(comments) and not is_omp and not label
 
 
 def format_comments(lines, comments, strip_comments):
@@ -1089,36 +1094,47 @@ def preprocess_omp(f_line, lines):
 
     return [f_line, lines, is_omp, is_omp_conditional]
 
+def preprocess_labels(f_line, lines):
+    """remove statement labels"""
+
+    match = STATEMENT_LABEL_RE.search(f_line)
+    if match:
+        label = match.group(1)
+    else:
+        label = ''
+
+    if label:
+        f_line = STATEMENT_LABEL_RE.sub(len(label)*' ', f_line, count=1)
+        lines = [STATEMENT_LABEL_RE.sub(len(label)*' ', l, count=1) for l in lines]
+
+    return [f_line, lines, label]
 
 def preprocess_line(f_line, lines, comments, filename, line_nr):
     """preprocess lines: identification and formatting of special cases"""
     is_blank = False
     prev_indent = False
     do_format = False
+    is_fypp = False
 
     if OMP_DIR_RE.search(f_line):
         # move '!$OMP' to line start, otherwise don't format omp directives
         lines = ['!$OMP' + (len(l) - len(l.lstrip())) *
                  ' ' + OMP_DIR_RE.sub('', l, count=1) for l in lines]
-    elif lines[0].startswith('#'):  # preprocessor macros
-        if len(lines) != 1:
-            raise FprettifyInternalException(
-                "Continuation lines for preprocessor statement", filename, line_nr)
     elif EMPTY_RE.search(f_line):  # empty lines including comment lines
-        if len(lines) != 1:
-            raise FprettifyInternalException(
-                "Continuation lines for comment lines", filename, line_nr)
         if any(comments):
-            if not lines[0].startswith('!'):
+            if lines[0].startswith(' '):
                 # indent comment lines only if they were not indented before.
                 prev_indent = True
+            is_fypp = FYPP_LINE_RE.search(lines[0].lstrip())
         else:
             is_blank = True
-        lines = [l.strip(' ') for l in lines]
+        if not is_fypp:
+            lines = [l.strip(' ') for l in lines]
+
     else:
         do_format = True
 
-    return [lines, do_format, prev_indent, is_blank]
+    return [lines, do_format, prev_indent, is_blank, is_fypp]
 
 
 def pass_defaults_to_next_line(f_line):
@@ -1157,6 +1173,7 @@ def append_comments(lines, comment_lines):
     for pos, (line, comment) in enumerate(zip(lines, comment_lines)):
         if pos < len(lines) - 1:
             has_nl = True  # has next line
+            if not line.strip(): comment = comment.lstrip()
         else:
             has_nl = not re.search(EOL_SC, line)
         lines[pos] = lines[pos].rstrip(' ') + comment + '\n' * has_nl
@@ -1169,12 +1186,12 @@ def get_linebreak_pos(lines):
     linebreak_pos = []
     for line in lines:
         found = None
-        for char_pos, _ in CharFilter(enumerate(line)):
+        for char_pos, _ in CharFilter(line, filter_strings=False):
             if re.match(LINEBREAK_STR, line[char_pos:], RE_FLAGS):
                 found = char_pos
         if found:
             linebreak_pos.append(found)
-        elif line.lstrip(' ')[0] in ['!','#']:
+        elif NOTFORTRAN_LINE_RE.search(line.lstrip(' ')):
             linebreak_pos.append(0)
 
     linebreak_pos = [sum(linebreak_pos[0:_ + 1]) -
@@ -1232,13 +1249,13 @@ def get_manual_alignment(lines):
     return manual_lines_indent
 
 
-def write_formatted_line(outfile, indent, lines, orig_lines, indent_special, use_same_line, is_omp_conditional, filename, line_nr):
+def write_formatted_line(outfile, indent, lines, orig_lines, indent_special, use_same_line, is_omp_conditional, label, filename, line_nr):
     """Write reformatted line to file"""
     for ind, line, orig_line in zip(indent, lines, orig_lines):
 
         # get actual line length excluding comment:
         line_length = 0
-        for line_length, _ in CharFilter(enumerate(line)):
+        for line_length, _ in CharFilter(line):
             pass
         line_length += 1
 
@@ -1250,17 +1267,20 @@ def write_formatted_line(outfile, indent, lines, orig_lines, indent_special, use
             else:
                 ind_use = 0
 
-        if line.lstrip().startswith('#'):
+        if CPP_RE.search(line.lstrip()):
             ind_use = 0
 
+        if label:
+            label = label + ' '
+
         if ind_use + line_length <= 133:  # 132 plus 1 newline char
-            outfile.write('!$' * is_omp_conditional +
-                          ' ' * (ind_use - 2 * is_omp_conditional +
+            outfile.write('!$' * is_omp_conditional + label +
+                          ' ' * (ind_use - 2 * is_omp_conditional - len(label) +
                                  len(line) - len(line.lstrip(' '))) +
                           line.lstrip(' '))
         elif line_length <= 133:
-            outfile.write('!$' * is_omp_conditional + ' ' *
-                          (133 - 2 * is_omp_conditional -
+            outfile.write('!$' * is_omp_conditional + label + ' ' *
+                          (133 - 2 * is_omp_conditional - len(label) -
                            len(line.lstrip(' '))) + line.lstrip(' '))
 
             log_message(LINESPLIT_MESSAGE, "warning",

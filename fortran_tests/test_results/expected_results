@@ -1,4 +1,4 @@
-example.f90 : 255c56ec48dbb41e4e8911dec421a4fdce7c2622987172f19afd819cd6258ffb
+example.f90 : b5e5fa2b0e98cdeba74dfc359c310e121d0b9577fb56966195f716f815c7bd26
 RosettaCodeData/Task/100-doors/Fortran/100-doors-1.f : b44289edb55a75ca29407be3ca0d997119253d4c7adb5b3dfc1119944036ab0f
 RosettaCodeData/Task/100-doors/Fortran/100-doors-2.f : 263122b2af3e3637a7dab0bc0216dec27d76068b7352e9ab85e420de625408be
 RosettaCodeData/Task/24-game-Solve/Fortran/24-game-solve-1.f : a2e012f58dc96a8c8e1b84064f70e4607d8fd3b720a43f5a11e572efe49f556e
@@ -9,17 +9,17 @@ RosettaCodeData/Task/99-Bottles-of-Beer/Fortran/99-bottles-of-beer-1.f : 8703424
 RosettaCodeData/Task/99-Bottles-of-Beer/Fortran/99-bottles-of-beer-2.f : 263babdb93bd1afcd42282f4a8a0b767f9728df55f440583411f04b3341a8a47
 RosettaCodeData/Task/A+B/Fortran/a+b.f : efa4a3a04b7c89f980398e3312cac13d7260a10d5a58f38af9356028b4dc2a54
 RosettaCodeData/Task/ABC-Problem/Fortran/abc-problem-1.f : 9729c2df9028f998a7fa68cd4e5604c90ba0783010a257cf61e6f20a501a1c81
-RosettaCodeData/Task/ABC-Problem/Fortran/abc-problem-2.f : internal error
+RosettaCodeData/Task/ABC-Problem/Fortran/abc-problem-2.f : b1928fb96edffa010544ecd3576bc60723d69830bf773924c93bb411cea66446
 RosettaCodeData/Task/AKS-test-for-primes/Fortran/aks-test-for-primes.f : 30bfe265a1d87db6a25ddf0bef02d6b14d2b8e26622aa5da148785e1134af8c0
-RosettaCodeData/Task/Abundant,-deficient-and-perfect-number-classifications/Fortran/abundant,-deficient-and-perfect-number-classifications.f : parse error
+RosettaCodeData/Task/Abundant,-deficient-and-perfect-number-classifications/Fortran/abundant,-deficient-and-perfect-number-classifications.f : a54660cd40e8d39317b3f205ec2a5354b6d949aa8c1629aaf3d314ba1143f566
 RosettaCodeData/Task/Ackermann-function/Fortran/ackermann-function.f : 599ed2ad43b48a4fb57831029e4a122a45e380685438bc7a7abead154cfa12f0
 RosettaCodeData/Task/Address-of-a-variable/Fortran/address-of-a-variable.f : 444eca911457166518d7fcc77d9dfbe8097c737055923aa1eac6c64048cef6a0
-RosettaCodeData/Task/Align-columns/Fortran/align-columns.f : parse error
-RosettaCodeData/Task/Aliquot-sequence-classifications/Fortran/aliquot-sequence-classifications.f : parse error
-RosettaCodeData/Task/Amicable-pairs/Fortran/amicable-pairs.f : parse error
+RosettaCodeData/Task/Align-columns/Fortran/align-columns.f : f0cc8c9353edcf6cc9702fe071ef5c7bea77dfe509d239ceda8c782a9ace1206
+RosettaCodeData/Task/Aliquot-sequence-classifications/Fortran/aliquot-sequence-classifications.f : 6133dc83f99a78222155e1ac97a8d84e48e1c4c479deb7946d01d08450493783
+RosettaCodeData/Task/Amicable-pairs/Fortran/amicable-pairs.f : 6141f194c5c5a3789f44d61dd7362a9b27333dc5c92a37761ca3314800f44374
 RosettaCodeData/Task/Animate-a-pendulum/Fortran/animate-a-pendulum.f : 7f59c04d9a1fa07d587609bd45267b915468548e5973dac4e4403ffe1fbb53f2
 RosettaCodeData/Task/Anonymous-recursion/Fortran/anonymous-recursion.f : f9dea9c0fe125cf24b5f28a5f1c1db93193307d4a246caa272802c979e6c1ab7
-RosettaCodeData/Task/Append-a-record-to-the-end-of-a-text-file/Fortran/append-a-record-to-the-end-of-a-text-file.f : parse error
+RosettaCodeData/Task/Append-a-record-to-the-end-of-a-text-file/Fortran/append-a-record-to-the-end-of-a-text-file.f : 0752ae7999c81c2ed176840adb6a96c5d77dcff7fe6e7e3cb11cde5c9442dc9d
 RosettaCodeData/Task/Apply-a-callback-to-an-array/Fortran/apply-a-callback-to-an-array-1.f : ba8198020cea5daecde4096596bc36ce8a14aadba96c7c83b62cccdaad6e2614
 RosettaCodeData/Task/Apply-a-callback-to-an-array/Fortran/apply-a-callback-to-an-array-2.f : ba3e609e609e1672ccef0be13a66dd554bf63ee5eaf409e3ac50998cdb143bc8
 RosettaCodeData/Task/Arbitrary-precision-integers--included-/Fortran/arbitrary-precision-integers--included-.f : 966e75c584ba3c2757adf16d557cd49d0d86c5b3602d2c0ef8276e99543ea0e9
@@ -27,7 +27,7 @@ RosettaCodeData/Task/Arena-storage-pool/Fortran/arena-storage-pool.f : c42d82e03
 RosettaCodeData/Task/Arithmetic-Complex/Fortran/arithmetic-complex-1.f : bcbdca298f0a63a053f4786e1a53bbb8718022b7f2b4d5fd8be720fd837e14db
 RosettaCodeData/Task/Arithmetic-Complex/Fortran/arithmetic-complex-2.f : 5b9fd78375c70c01ff2a773ad7c518af0799bd7a1bbaf8cca6f6b4f9b8da4c76
 RosettaCodeData/Task/Arithmetic-Rational/Fortran/arithmetic-rational-2.f : 079746d2e3fd0f0c0380462e7d0771322c3aa8d0db67d71168be89bfb4b60392
-RosettaCodeData/Task/Arithmetic-geometric-mean/Fortran/arithmetic-geometric-mean.f : parse error
+RosettaCodeData/Task/Arithmetic-geometric-mean/Fortran/arithmetic-geometric-mean.f : ea16c1ff97685c1170891c6bf241abcef8206b9a597ce351b763291e5b4a8e14
 RosettaCodeData/Task/Array-concatenation/Fortran/array-concatenation-1.f : 93c237a5b57ff7f84f9996b5480652ccd48593d2e3733b8d41cecab2799840d3
 RosettaCodeData/Task/Array-concatenation/Fortran/array-concatenation-2.f : e6ab814a7d027597691e78b00055436fea0c71cd95f6c95fe5557b477f23264b
 RosettaCodeData/Task/Arrays/Fortran/arrays-1.f : 56837b02e1ec2d0368d8b98e60ade9e911ba7865602cddc0810f3fb6719d45bb
@@ -80,13 +80,13 @@ RosettaCodeData/Task/Averages-Pythagorean-means/Fortran/averages-pythagorean-mea
 RosettaCodeData/Task/Averages-Root-mean-square/Fortran/averages-root-mean-square.f : c91a4cd3ce7dbb9ce8fa753f767a4ccd3fbe17435415839d44338248d2fb14ff
 RosettaCodeData/Task/Averages-Simple-moving-average/Fortran/averages-simple-moving-average.f : 0d491d70d629b0cf7388399eafc6d795eeba199efd6faf0a408e219273bde08d
 RosettaCodeData/Task/Balanced-brackets/Fortran/balanced-brackets.f : 4f6a094ddd888d2c43075746eae3aa02ca8fe6deba0d9f52079d72d692cf2303
-RosettaCodeData/Task/Benfords-law/Fortran/benfords-law-1.f : parse error
+RosettaCodeData/Task/Benfords-law/Fortran/benfords-law-1.f : 1334aa60953d58dedb3a552f687bc2fafac55988d8d9d64255dcbc47981a492a
 RosettaCodeData/Task/Benfords-law/Fortran/benfords-law-2.f : f67ae0469db659d0b66b97ac3d47d88394d879b9953bc835c6be6c29c68fc2f3
 RosettaCodeData/Task/Binary-digits/Fortran/binary-digits.f : 167851fce02aa6bd48f8e2dcceaec4b25f404d392a1e957f2213d5116d6872d4
 RosettaCodeData/Task/Binary-search/Fortran/binary-search-1.f : 55673449fc1f7030c16bdb8fb4e235c5bb73d8785a31e5150ae224b10ae3a368
 RosettaCodeData/Task/Binary-search/Fortran/binary-search-2.f : 4293403527c92a58af8a73aba528103392b8bd33290a85a4e5df616b893ae515
-RosettaCodeData/Task/Binary-search/Fortran/binary-search-3.f : parse error
-RosettaCodeData/Task/Binary-search/Fortran/binary-search-4.f : parse error
+RosettaCodeData/Task/Binary-search/Fortran/binary-search-3.f : e9daa0ec0f7278f53b88166a8f9431b9b4f95360b8b773edd56e34dfcffccec7
+RosettaCodeData/Task/Binary-search/Fortran/binary-search-4.f : 138c110b2f4950d490c6a98f878c4c4f48aa5ffa8c6177207cefe0889a3c5d00
 RosettaCodeData/Task/Bitmap-B-zier-curves-Cubic/Fortran/bitmap-b-zier-curves-cubic.f : ef2f242214db5b80b44176643c63070ad121e587db6a77712c7838be97a52af2
 RosettaCodeData/Task/Bitmap-B-zier-curves-Quadratic/Fortran/bitmap-b-zier-curves-quadratic.f : 50a1ff91ac7e1dc46a9df8dfbb5de0bcd2215aeebfa61ee9d53bc2fbde652cfc
 RosettaCodeData/Task/Bitmap-Bresenhams-line-algorithm/Fortran/bitmap-bresenhams-line-algorithm-1.f : 1e48875c7a37b40f60f86cc5f249ca2533c300aa5cb5ff7889e59e7be7e3b6b3
@@ -109,10 +109,10 @@ RosettaCodeData/Task/Bulls-and-cows-Player/Fortran/bulls-and-cows-player.f : 610
 RosettaCodeData/Task/Bulls-and-cows/Fortran/bulls-and-cows.f : 8dd6e8d54c35165bfb5030e4077b20f5a54d3b1eef7a5c13996f8524a74e6c3d
 RosettaCodeData/Task/CRC-32/Fortran/crc-32.f : 2c30888815f37a0774cd741bb13de0a15d0d00df77cc9741abc7c9e97b0675a0
 RosettaCodeData/Task/CSV-data-manipulation/Fortran/csv-data-manipulation-1.f : 977efad12430db9c76ddf38a41a8fe3ef4e4976aa4df8bb3f00e901843129207
-RosettaCodeData/Task/CSV-data-manipulation/Fortran/csv-data-manipulation-2.f : parse error
-RosettaCodeData/Task/CSV-to-HTML-translation/Fortran/csv-to-html-translation.f : parse error
+RosettaCodeData/Task/CSV-data-manipulation/Fortran/csv-data-manipulation-2.f : 9650c03adfb9885a3e184122e326c1269dd0e3bf3855fde4bf98fce89c46a637
+RosettaCodeData/Task/CSV-to-HTML-translation/Fortran/csv-to-html-translation.f : 42adb5222735b0f3358700ce186e441b92a1be9f9c84355479c2d463088def2f
 RosettaCodeData/Task/Caesar-cipher/Fortran/caesar-cipher.f : 48904e6ffeee33a2520876db9199d82801a9661b88a4e6b59001a0d24fba34b4
-RosettaCodeData/Task/Calendar---for-REAL-programmers/Fortran/calendar---for-real-programmers.f : parse error
+RosettaCodeData/Task/Calendar---for-REAL-programmers/Fortran/calendar---for-real-programmers.f : 607c06da541590e9c3d353c6e247f4d6c057afbc092f6698f7d9dbcb0a3962db
 RosettaCodeData/Task/Calendar/Fortran/calendar.f : internal error
 RosettaCodeData/Task/Call-a-foreign-language-function/Fortran/call-a-foreign-language-function-1.f : 41ae608960c8611bb800281f609dc393d8b3c523a028bf174255784d4a9f2dac
 RosettaCodeData/Task/Call-a-foreign-language-function/Fortran/call-a-foreign-language-function-2.f : d31a5269a9eb265f9cd569836bc2fef660fff39ebdc7b7e20e02d8b97f5a0850
@@ -141,8 +141,8 @@ RosettaCodeData/Task/Circles-of-given-radius-through-two-points/Fortran/circles-
 RosettaCodeData/Task/Combinations-with-repetitions/Fortran/combinations-with-repetitions.f : e6122e6ad2d8df82990ef22660ae7a6a3ab599b08ad4d81cf8215ac5bd5039b8
 RosettaCodeData/Task/Combinations/Fortran/combinations-1.f : ad06cf46e5663fd9b799358ed2b9d5c89c57273634f337133f0b8374c02644ca
 RosettaCodeData/Task/Combinations/Fortran/combinations-2.f : a67a61776d3c8a088281789b78775501bafe832d2a2c5db85adf0f464e52047d
-RosettaCodeData/Task/Combinations/Fortran/combinations-3.f : parse error
-RosettaCodeData/Task/Comma-quibbling/Fortran/comma-quibbling.f : parse error
+RosettaCodeData/Task/Combinations/Fortran/combinations-3.f : df645c76dfccb1eb91f017d95dfaf7babeb5d00d41790b1d92a707cd81c102cc
+RosettaCodeData/Task/Comma-quibbling/Fortran/comma-quibbling.f : fef4b8cc289a7caa07d3f7fa20d8afbe797916c13068efd91322216ac47e220e
 RosettaCodeData/Task/Command-line-arguments/Fortran/command-line-arguments-1.f : da5232bb85e3d0943a199898f255038f77cc23a5accb3ded1bf5f272cba579c5
 RosettaCodeData/Task/Command-line-arguments/Fortran/command-line-arguments-2.f : internal error
 RosettaCodeData/Task/Comments/Fortran/comments-1.f : 02a9588d797db16de273fbd95b15b232b1d82db6296937068e724855ff7a470f
@@ -158,7 +158,7 @@ RosettaCodeData/Task/Conditional-structures/Fortran/conditional-structures-3.f :
 RosettaCodeData/Task/Conjugate-transpose/Fortran/conjugate-transpose.f : 0c5320ef24a507566c56617637cef9d274e5db1267775e70efa9342b77bda9c6
 RosettaCodeData/Task/Constrained-random-points-on-a-circle/Fortran/constrained-random-points-on-a-circle.f : 1c73e4670b7d36e762071d7c0a776ec677302817bf5e5621c93fb1dfd7abd193
 RosettaCodeData/Task/Continued-fraction/Fortran/continued-fraction.f : c2290f8bacd6bb8bbb7b51e5d8f4dbc13fb4d2e8aeabff1aaba1aac33a72ae23
-RosettaCodeData/Task/Convert-decimal-number-to-rational/Fortran/convert-decimal-number-to-rational.f : parse error
+RosettaCodeData/Task/Convert-decimal-number-to-rational/Fortran/convert-decimal-number-to-rational.f : 09412dbf459c2d449884212a81b541dd5dfd5335f823062738507e5683140d41
 RosettaCodeData/Task/Conways-Game-of-Life/Fortran/conways-game-of-life.f : f77f9291f7066851fb871f041f81cc18eb9946803cc10460db2c68b72b76a99c
 RosettaCodeData/Task/Copy-a-string/Fortran/copy-a-string.f : 4ea80099c87cfa83799cacff9aa41a52ace04b3e2c366cc80b0af6773a77d64c
 RosettaCodeData/Task/Count-in-factors/Fortran/count-in-factors.f : 682dd044dcc769bbddcb7ecf9d2c283222f0f73ca3faffc1f89b4d8b024e43db
@@ -166,7 +166,7 @@ RosettaCodeData/Task/Count-in-octal/Fortran/count-in-octal.f : a8595f6a19be39db1
 RosettaCodeData/Task/Count-occurrences-of-a-substring/Fortran/count-occurrences-of-a-substring.f : decfb7c28f048aeae68f8ef60056ccce79773fca753abbededdd728a7b7a4f79
 RosettaCodeData/Task/Create-a-file/Fortran/create-a-file.f : bee7659309b238dd6229d97b5e76b6ae87cc960b282c083c1295364d88d471aa
 RosettaCodeData/Task/Create-a-two-dimensional-array-at-runtime/Fortran/create-a-two-dimensional-array-at-runtime.f : 8581051c5fffeffc4a719c2db968b3588a6143488b435381556f2da1c9099378
-RosettaCodeData/Task/Create-an-HTML-table/Fortran/create-an-html-table.f : internal error
+RosettaCodeData/Task/Create-an-HTML-table/Fortran/create-an-html-table.f : cc9f400e19edb8db6d6d92ce75b9104e6dc712bb6b816f8a2c3cdae4ab9d124e
 RosettaCodeData/Task/Date-format/Fortran/date-format.f : 95c299523e8946531db74cf7c101e4a8c216aa5aa4d10b223b190c57a8a03c23
 RosettaCodeData/Task/Day-of-the-week/Fortran/day-of-the-week.f : 06ed8363f12c7640a59606824a09167bd2cded19e4fa8b1fb67b655553ead132
 RosettaCodeData/Task/Deal-cards-for-FreeCell/Fortran/deal-cards-for-freecell.f : 4ae9b244cc53377dd5f1899691cfee0782d55a7f904ec0a8742aa7b5dc544fea
@@ -184,7 +184,7 @@ RosettaCodeData/Task/Dot-product/Fortran/dot-product.f : 26f800b2edd9e214b6d6731
 RosettaCodeData/Task/Doubly-linked-list-Definition/Fortran/doubly-linked-list-definition.f : b89738e53c4aa5263b1d07e47e4c23ddbc3ee52d4075bde8d62941390b493b1c
 RosettaCodeData/Task/Doubly-linked-list-Element-definition/Fortran/doubly-linked-list-element-definition.f : 7a7a98feb6d30d5f36df83ad6dc4ebbb9a73aada1a148c1f4ed651420016ae58
 RosettaCodeData/Task/Doubly-linked-list-Element-insertion/Fortran/doubly-linked-list-element-insertion-1.f : 1b49784bec51bf3d7663a04b910bb8be6cd7101d318a5333b6a8db49b8a5d241
-RosettaCodeData/Task/Doubly-linked-list-Element-insertion/Fortran/doubly-linked-list-element-insertion-2.f : parse error
+RosettaCodeData/Task/Doubly-linked-list-Element-insertion/Fortran/doubly-linked-list-element-insertion-2.f : 892bcdcc9185afd349eaddef76b4a8bfc3eef2495eec7a826665650337699cbf
 RosettaCodeData/Task/Doubly-linked-list-Traversal/Fortran/doubly-linked-list-traversal.f : e1a8f43b755478735c3ff1f47abb838d6433526cb9e3f815e90842bf27f58aa5
 RosettaCodeData/Task/Draw-a-clock/Fortran/draw-a-clock.f : 01b170af9c6990bf2bc15954d5aef6a4afc06f3e6891afefa09d188b90b6eede
 RosettaCodeData/Task/Dutch-national-flag-problem/Fortran/dutch-national-flag-problem.f : c643bd95d62a299f3db7b11e644f9b1647af4eb3b8d43375ebe3ebcb44730490
@@ -199,39 +199,39 @@ RosettaCodeData/Task/Equilibrium-index/Fortran/equilibrium-index.f : 23ea1bb443f
 RosettaCodeData/Task/Ethiopian-multiplication/Fortran/ethiopian-multiplication.f : a82160f591eb39bb7609ae6362fd8ad78c1c5593ce1506351c9c8c16425c3306
 RosettaCodeData/Task/Euler-method/Fortran/euler-method.f : 49675f5fcb80d439f482ed265e80de664fdcc609af9eaeddc4349eb4a1a22ff1
 RosettaCodeData/Task/Evaluate-binomial-coefficients/Fortran/evaluate-binomial-coefficients-1.f : 3305f7383cf813b6fcfc38c3cb3ff6cd2b4a6658bb8e7f809beb74d223164e99
-RosettaCodeData/Task/Evaluate-binomial-coefficients/Fortran/evaluate-binomial-coefficients-2.f : parse error
+RosettaCodeData/Task/Evaluate-binomial-coefficients/Fortran/evaluate-binomial-coefficients-2.f : 170fb78405907811f3eeaf101434ccf4acdff7ed7fa581c04b3510718ceabcb1
 RosettaCodeData/Task/Evaluate-binomial-coefficients/Fortran/evaluate-binomial-coefficients.f : 3305f7383cf813b6fcfc38c3cb3ff6cd2b4a6658bb8e7f809beb74d223164e99
 RosettaCodeData/Task/Even-or-odd/Fortran/even-or-odd.f : 0e4cc270e588ce499f8e08cef33339c497b9b87e387cb9c18b7fbbd3a2b856fd
 RosettaCodeData/Task/Evolutionary-algorithm/Fortran/evolutionary-algorithm-1.f : df660fb05aaed3e9f677422655e1e46470dba1be4b30a17775f20133c5d0b0f6
-RosettaCodeData/Task/Evolutionary-algorithm/Fortran/evolutionary-algorithm-2.f : parse error
-RosettaCodeData/Task/Execute-Brain----/Fortran/execute-brain-----1.f : parse error
-RosettaCodeData/Task/Execute-Brain----/Fortran/execute-brain-----2.f : parse error
-RosettaCodeData/Task/Execute-Brain----/Fortran/execute-brain-----3.f : parse error
-RosettaCodeData/Task/Execute-Brain----/Fortran/execute-brain-----4.f : parse error
+RosettaCodeData/Task/Evolutionary-algorithm/Fortran/evolutionary-algorithm-2.f : 8b6eb20fa34089cdb0b9700e02fa6c06c06ac1bf4868e58446d11575ebb51ca9
+RosettaCodeData/Task/Execute-Brain----/Fortran/execute-brain-----1.f : 2bd2e56f302394056e1714adc459276d766fef5c126505662c495dce83cb3e5d
+RosettaCodeData/Task/Execute-Brain----/Fortran/execute-brain-----2.f : 1f000fc01e0e10fe3c7c1b3688a91aaf0f895008d242c455c1ce83237cb6a2ba
+RosettaCodeData/Task/Execute-Brain----/Fortran/execute-brain-----3.f : 69a7723270c4cfb55f31ef775151f116ad86d54bc8ad1dfe54a03d2a896f5480
+RosettaCodeData/Task/Execute-Brain----/Fortran/execute-brain-----4.f : 41f50aa8d284d881b0326d682d77fde33f41a5ba6929fb8a1b24dcba61772c52
 RosettaCodeData/Task/Execute-a-system-command/Fortran/execute-a-system-command-1.f : 249f01891243585e53ef93239e071e777bf7ba4299430cb456194eb8be248a31
 RosettaCodeData/Task/Execute-a-system-command/Fortran/execute-a-system-command-2.f : 79483676132fb6ddc21c19f0a64ee1352d6ef67c3681f3231f056cdd1b712b31
 RosettaCodeData/Task/Extensible-prime-generator/Fortran/extensible-prime-generator-1.f : 9096d0aee46679b48be032394bd3bd0270153d37df22162008f256e62796a397
-RosettaCodeData/Task/Extensible-prime-generator/Fortran/extensible-prime-generator-2.f : internal error
+RosettaCodeData/Task/Extensible-prime-generator/Fortran/extensible-prime-generator-2.f : parse error
 RosettaCodeData/Task/Extensible-prime-generator/Fortran/extensible-prime-generator-3.f : 9c383d1ea3dcccfa3d63f50466b61b604e9d394632569ba9d4e6e7dc0eda64ca
 RosettaCodeData/Task/Extensible-prime-generator/Fortran/extensible-prime-generator-4.f : ab77d8047793a51141c6036baff355bae3f2e7b72b0bfcddf7170055176c127f
 RosettaCodeData/Task/Extreme-floating-point-values/Fortran/extreme-floating-point-values-1.f : 3191912c6da70a661aeaf99e586a791607d60f26de1d5a83f13eca9c70762321
-RosettaCodeData/Task/Extreme-floating-point-values/Fortran/extreme-floating-point-values-2.f : parse error
+RosettaCodeData/Task/Extreme-floating-point-values/Fortran/extreme-floating-point-values-2.f : c81caa3f93fb96d728c337381ee225ce3052e0f1ae8ca25b23f01203a00aca08
 RosettaCodeData/Task/Factorial/Fortran/factorial-1.f : e75d5525ec26d7c2eb11000a514ee3c40b933f8bc7f10a6745519fa61c069fe1
-RosettaCodeData/Task/Factorial/Fortran/factorial-2.f : parse error
+RosettaCodeData/Task/Factorial/Fortran/factorial-2.f : 88ff818552c6fa9dbafa9b6e5136fb07994347575bc5d277e2a2ee7babfbe04e
 RosettaCodeData/Task/Factors-of-a-Mersenne-number/Fortran/factors-of-a-mersenne-number.f : 0cc98ac42809f90552060a5b8cd850849a4629ed97764486dcd55a73f0b62c20
 RosettaCodeData/Task/Factors-of-an-integer/Fortran/factors-of-an-integer.f : e30ace4f19d882d40be0166a5de709821ebd97ebc3db37ca9743c50aae23981d
-RosettaCodeData/Task/Fast-Fourier-transform/Fortran/fast-fourier-transform.f : parse error
+RosettaCodeData/Task/Fast-Fourier-transform/Fortran/fast-fourier-transform.f : a9ce02eca36c53619e108b1ad7bbea9aa7994349a065432fe4495a46b4bd0101
 RosettaCodeData/Task/Fibonacci-n-step-number-sequences/Fortran/fibonacci-n-step-number-sequences.f : 528289e9bb4c9409176a91790eecc170493f0e54d3aa9b811c460f7687e89c6e
-RosettaCodeData/Task/Fibonacci-sequence/Fortran/fibonacci-sequence-1.f : parse error
-RosettaCodeData/Task/Fibonacci-sequence/Fortran/fibonacci-sequence-2.f : parse error
+RosettaCodeData/Task/Fibonacci-sequence/Fortran/fibonacci-sequence-1.f : 34d21e2f408b2d9eaa71d0e02814c2ced34e510c33bf3a430de2474bec8c2798
+RosettaCodeData/Task/Fibonacci-sequence/Fortran/fibonacci-sequence-2.f : ae1eef0f35d6930593970318706826d5983a67972b9724c1db055ae907efd00d
 RosettaCodeData/Task/Fibonacci-sequence/Fortran/fibonacci-sequence-3.f : 4cc861277a2859987b55db779bd15af9be4418dc01ea1277f5f95e1101d37270
 RosettaCodeData/Task/Fibonacci-sequence/Fortran/fibonacci-sequence-5.f : 70743db8385634abf260dcf089c82ecbf645da4c2e62267bdcdd078629407865
 RosettaCodeData/Task/File-input-output/Fortran/file-input-output.f : 7ca43af47d32a81cdda1b429b76064829bb7c8976eb8676039f6665beff312b7
-RosettaCodeData/Task/File-size/Fortran/file-size.f : parse error
+RosettaCodeData/Task/File-size/Fortran/file-size.f : ac651b71be127b548cf892543459f8aaf51036bcaafe4732dce34b64e839b2a8
 RosettaCodeData/Task/Filter/Fortran/filter-1.f : 1ee15cec4697c6e8b593daab3b207965da95062c120fa8e3dc9cc48fa4215d50
 RosettaCodeData/Task/Filter/Fortran/filter-2.f : 334084bebb56efc62ecae5be4c3122f6b1df99a9436db6dd0387aca83172ef52
 RosettaCodeData/Task/Find-limit-of-recursion/Fortran/find-limit-of-recursion-1.f : 48d02f8ee889a8aeb50779de2f0536af4cdadff7953f425e21d5ff1fe263b123
-RosettaCodeData/Task/Find-limit-of-recursion/Fortran/find-limit-of-recursion-2.f : parse error
+RosettaCodeData/Task/Find-limit-of-recursion/Fortran/find-limit-of-recursion-2.f : af08ade6876156cd5697592b405af6505530ccf9442f67bee4a9664b27e73d84
 RosettaCodeData/Task/Find-limit-of-recursion/Fortran/find-limit-of-recursion.f : 48d02f8ee889a8aeb50779de2f0536af4cdadff7953f425e21d5ff1fe263b123
 RosettaCodeData/Task/Find-the-last-Sunday-of-each-month/Fortran/find-the-last-sunday-of-each-month-1.f : 9e18fb74742d541f022717616b163ed5c4491f3dd931761297116241c8331313
 RosettaCodeData/Task/Find-the-last-Sunday-of-each-month/Fortran/find-the-last-sunday-of-each-month-2.f : internal error
@@ -242,20 +242,20 @@ RosettaCodeData/Task/FizzBuzz/Fortran/fizzbuzz-2.f : 0a939708e8f378fbba6774b3b03
 RosettaCodeData/Task/FizzBuzz/Fortran/fizzbuzz-3.f : 84dc4cb33c036a62dde9a4be3bf00a8b2ac1a53faefb8980642497da73be57c0
 RosettaCodeData/Task/Flatten-a-list/Fortran/flatten-a-list-1.f : e568fe4b9944c5a16585269e6ceb4c22561881e1310e2fee600f4e17f18d0d8d
 RosettaCodeData/Task/Flipping-bits-game/Fortran/flipping-bits-game.f : 261cef3b351122c95fd9ed568979e9dfd0c95c8d9e5898d84a856b6c088db01b
-RosettaCodeData/Task/Flow-control-structures/Fortran/flow-control-structures-1.f : parse error
-RosettaCodeData/Task/Flow-control-structures/Fortran/flow-control-structures-2.f : parse error
+RosettaCodeData/Task/Flow-control-structures/Fortran/flow-control-structures-1.f : 2b0fa288a9f512015bcc0776044874e069d577f738f4e09920ebdea6f709fb11
+RosettaCodeData/Task/Flow-control-structures/Fortran/flow-control-structures-2.f : ee4b3124f87d43e354883ae102d7bc870899e4ec0aa6cf44adbada13a144895a
 RosettaCodeData/Task/Flow-control-structures/Fortran/flow-control-structures-4.f : a4a0d8a94c1d56be7973dfd6403080ee4ccb6c86d1babb05eba65d25368f4020
 RosettaCodeData/Task/Floyds-triangle/Fortran/floyds-triangle.f : 53dfa7cdf64da543135411cb589b33fd22efd3f70c3045f8e96b2e71d6054a3c
 RosettaCodeData/Task/Forest-fire/Fortran/forest-fire-1.f : 1ea73259d2e486b10daecb93c72bf3e0aede885a4f0aa8d926d509ab7c513e9b
 RosettaCodeData/Task/Forest-fire/Fortran/forest-fire-2.f : 75fa35e0361227d49d37ce53c5dee4cb981bba52c1bc240f1bc255cabdca9ace
 RosettaCodeData/Task/Formatted-numeric-output/Fortran/formatted-numeric-output-1.f : 0a808fe229ec0e1dfae36a5f9336c4bfd481d30c7323a7ec672b3bf1ee3e0edc
-RosettaCodeData/Task/Formatted-numeric-output/Fortran/formatted-numeric-output-2.f : parse error
+RosettaCodeData/Task/Formatted-numeric-output/Fortran/formatted-numeric-output-2.f : 1776d27ff1ab70f0e19598c6f3bc70a3477f3408637a7aa25cfc731ca38bf8eb
 RosettaCodeData/Task/Forward-difference/Fortran/forward-difference-1.f : ae10ba4f0ec397aee1ee4da630537b2842b5151b291ea68c7fcd1011b0767087
 RosettaCodeData/Task/Forward-difference/Fortran/forward-difference-2.f : c6bd65578b281347a5775080b015d089bbb0b603381f63c0eabe3bb26ef01747
 RosettaCodeData/Task/Four-bit-adder/Fortran/four-bit-adder.f : 15a9191121aa54a86b95eb779e394ee7fa2e42d7677bea89b3fd06394dc71d27
 RosettaCodeData/Task/Fractran/Fortran/fractran-1.f : e6edb356439d3a15d5cc12346c5014c2f327114e7ee2358f934eeab5a292008b
-RosettaCodeData/Task/Fractran/Fortran/fractran-2.f : parse error
-RosettaCodeData/Task/Fractran/Fortran/fractran-3.f : parse error
+RosettaCodeData/Task/Fractran/Fortran/fractran-2.f : e3a9eba9dce516cfe6106d31b86bc02d8c9d77341fddc63766eb258ce37b801d
+RosettaCodeData/Task/Fractran/Fortran/fractran-3.f : 4a58dcbaec5fb1b6e83292f5bca100da3551ce9e0ce3bc182d6146e15797fe7b
 RosettaCodeData/Task/Fractran/Fortran/fractran-4.f : internal error
 RosettaCodeData/Task/Fractran/Fortran/fractran-5.f : e4d41761c6e60849da34612f91621076b3e5aedb9b3f6e0a6a349bfccf1a90da
 RosettaCodeData/Task/Function-composition/Fortran/function-composition.f : 6a9158fad36f33b69695f7aa7c15c0a090b039c6f4e451dab608f8fee0083c93
@@ -269,8 +269,8 @@ RosettaCodeData/Task/Gaussian-elimination/Fortran/gaussian-elimination.f : 85318
 RosettaCodeData/Task/Generate-Chess960-starting-position/Fortran/generate-chess960-starting-position.f : 6eb9f01e47a3db3538a35af543c47552c0a249612e57037039e614f0e804fd80
 RosettaCodeData/Task/Generate-lower-case-ASCII-alphabet/Fortran/generate-lower-case-ascii-alphabet.f : 054853cb8a148332d90ddae446dab181e5656888c2edf9ccb737fb194407510e
 RosettaCodeData/Task/Generic-swap/Fortran/generic-swap.f : f45dd29c881b4aa481a64a9a1e8ebaec6a9db98d30bab16fe85cdf95da7e8cae
-RosettaCodeData/Task/Globally-replace-text-in-several-files/Fortran/globally-replace-text-in-several-files.f : parse error
-RosettaCodeData/Task/Gray-code/Fortran/gray-code.f : parse error
+RosettaCodeData/Task/Globally-replace-text-in-several-files/Fortran/globally-replace-text-in-several-files.f : 92a2baa4b982dd837e117102b26dba68b417d37803421823b8f28d7a4e8e9499
+RosettaCodeData/Task/Gray-code/Fortran/gray-code.f : 50a42162ce71e157dfd5c254c805e79523f86944629dfb10120ab7f4dd8e0e4f
 RosettaCodeData/Task/Grayscale-image/Fortran/grayscale-image-1.f : 0df446255b3ac717802c78098770aaad7241615db778678630f43754cbcb4e5f
 RosettaCodeData/Task/Grayscale-image/Fortran/grayscale-image-2.f : c56bac767c6eb3c1a029bdb4c395496eb59d551dda45f18c4449c55f25b51514
 RosettaCodeData/Task/Grayscale-image/Fortran/grayscale-image-4.f : ef674fa80e7180c6969047ef685608d0d94807172fdde9555e569793fbfd20e6
@@ -285,7 +285,7 @@ RosettaCodeData/Task/Greatest-subsequential-sum/Fortran/greatest-subsequential-s
 RosettaCodeData/Task/Guess-the-number-With-feedback--player-/Fortran/guess-the-number-with-feedback--player-.f : 284ccc92b6f5fde65e43ce529074971fb418055d8072311a1cb75a58f851fdda
 RosettaCodeData/Task/Guess-the-number-With-feedback/Fortran/guess-the-number-with-feedback.f : 661105f97c992730108ac748b9a4dd20e5f726c52ec9a24ad91b4f79db083059
 RosettaCodeData/Task/Guess-the-number/Fortran/guess-the-number.f : 7a2df5abd11f66780892248c6783c5c4842503b110168cf9921688dcb8fdbe90
-RosettaCodeData/Task/HTTPS/Fortran/https.f : internal error
+RosettaCodeData/Task/HTTPS/Fortran/https.f : 757153d0f3735862667ba2856d81ad9db144ca17b5404c8d077f417bf066c463
 RosettaCodeData/Task/Hailstone-sequence/Fortran/hailstone-sequence.f : 4004f858ce5a6cb7259346480311b0406539ddf26aa1fd42ed292c9b5fa7b120
 RosettaCodeData/Task/Hamming-numbers/Fortran/hamming-numbers.f : 240f87447439757653ab747a6204d7cca4ab34f5237acad498387ed1eaa60b02
 RosettaCodeData/Task/Happy-numbers/Fortran/happy-numbers.f : aab1f194326c253eaeac72ca3f10d155aaea5f1fd0f613cb318ea530d9fabffd
@@ -294,60 +294,60 @@ RosettaCodeData/Task/Haversine-formula/Fortran/haversine-formula.f : 9ea7f09cda8
 RosettaCodeData/Task/Hello-world-Graphical/Fortran/hello-world-graphical-1.f : 65a8d9693569d3a437369d9432c3502cffcaccda66f25a25d08b49ad8077eaba
 RosettaCodeData/Task/Hello-world-Graphical/Fortran/hello-world-graphical-2.f : 63652baea5123043fc171b337a2a4d04d62090914eb976485c00a44f3e1fd2e0
 RosettaCodeData/Task/Hello-world-Graphical/Fortran/hello-world-graphical-3.f : 7fed2f5dab08d67967fe06faac8de067121f7905c043caf5bd8770680f338ecb
-RosettaCodeData/Task/Hello-world-Line-printer/Fortran/hello-world-line-printer.f : parse error
+RosettaCodeData/Task/Hello-world-Line-printer/Fortran/hello-world-line-printer.f : 1f801c799b4e4c5dd48cdf2787f103b72055d87b1382b975445e58ca6176338a
 RosettaCodeData/Task/Hello-world-Newline-omission/Fortran/hello-world-newline-omission-1.f : 4ea805315570240c3f7cd9d67baa9bd9eb3bdc576b223349565e40a1f797f7d7
-RosettaCodeData/Task/Hello-world-Newline-omission/Fortran/hello-world-newline-omission-2.f : parse error
+RosettaCodeData/Task/Hello-world-Newline-omission/Fortran/hello-world-newline-omission-2.f : 6b6fd5732919638e2dc9d7b9346274c0122d1c66c251e3e3d4bd57e4af1f817f
 RosettaCodeData/Task/Hello-world-Standard-error/Fortran/hello-world-standard-error.f : 911acb9589db869aa7b4772e4c18a2cdc63bb82ec283617b464130217ccf637b
 RosettaCodeData/Task/Hello-world-Text/Fortran/hello-world-text-1.f : 72eded4a9e386a5ddb9430da2bca5b11d851d20cf18c304a4449334bff0e2045
-RosettaCodeData/Task/Hello-world-Text/Fortran/hello-world-text-2.f : parse error
+RosettaCodeData/Task/Hello-world-Text/Fortran/hello-world-text-2.f : dd117e9c323640d2521c8877f36437c8fd823c12a3bcd820342c537f3bc2f0d4
 RosettaCodeData/Task/Hello-world-Text/Fortran/hello-world-text-3.f : 32d370f88b797c1b42986192ee6bcbd195e089f0f04975b82cd92f9fadab675f
-RosettaCodeData/Task/Hello-world-Web-server/Fortran/hello-world-web-server.f : internal error
+RosettaCodeData/Task/Hello-world-Web-server/Fortran/hello-world-web-server.f : 48b637824c93c177eeeffdcda90046614f03e7880859f697cc136f8f2e63bb25
 RosettaCodeData/Task/Here-document/Fortran/here-document.f : internal error
-RosettaCodeData/Task/Heronian-triangles/Fortran/heronian-triangles.f : parse error
-RosettaCodeData/Task/Hickerson-series-of-almost-integers/Fortran/hickerson-series-of-almost-integers.f : parse error
+RosettaCodeData/Task/Heronian-triangles/Fortran/heronian-triangles.f : f59618e71ae3f0a727344317f6e6554428d2fb8a5f89b4262ad71a189bd2d629
+RosettaCodeData/Task/Hickerson-series-of-almost-integers/Fortran/hickerson-series-of-almost-integers.f : fd1db7ef0f403796072a81df9c444b37d873a21761e37252611b0c24b21e3c77
 RosettaCodeData/Task/Higher-order-functions/Fortran/higher-order-functions-1.f : d2cdc0593b5ad77b5a9dd69ac30ca14d967fd708582c9c72c83b403d021b5ac1
 RosettaCodeData/Task/Higher-order-functions/Fortran/higher-order-functions-2.f : 157c0025438a94fa358c6aca71947b041fcbc598cd8cf4566b9588b0d9523d77
 RosettaCodeData/Task/Hofstadter-Conway-$10,000-sequence/Fortran/hofstadter-conway-$10,000-sequence.f : 08ed8ddf563b7228f96583e5314dfcfcc75cbda172c6015dd13b0338a0fab520
-RosettaCodeData/Task/Hofstadter-Q-sequence/Fortran/hofstadter-q-sequence.f : parse error
+RosettaCodeData/Task/Hofstadter-Q-sequence/Fortran/hofstadter-q-sequence.f : f6e01e28a42c02164adec326e612d4bac36fc4e326251156062e0667eecb4df9
 RosettaCodeData/Task/Horizontal-sundial-calculations/Fortran/horizontal-sundial-calculations.f : 1cc10b9b5439d09b01860539a3d06c486408f16010a1c21ddaa34b8fb06eb5ce
 RosettaCodeData/Task/Horners-rule-for-polynomial-evaluation/Fortran/horners-rule-for-polynomial-evaluation-1.f : e73d019d08ff3f6e421a8577c03368b8320907d58353af35c485e02be768d19d
-RosettaCodeData/Task/Horners-rule-for-polynomial-evaluation/Fortran/horners-rule-for-polynomial-evaluation-3.f : parse error
+RosettaCodeData/Task/Horners-rule-for-polynomial-evaluation/Fortran/horners-rule-for-polynomial-evaluation-3.f : 953357d61c156eaf7781dc7a674dbcfbb50a828edfd470602bda2091b2cf6723
 RosettaCodeData/Task/Host-introspection/Fortran/host-introspection.f : 077e6082513833757c6837aad84e1f01115417b5d2346a4dedd8c33ba735d8d4
 RosettaCodeData/Task/Hostname/Fortran/hostname-1.f : 73f91b7879305a6ea7028d4ff57c3b4a742bc6f7c9baebcfb099e431b8b641a0
 RosettaCodeData/Task/Hostname/Fortran/hostname-2.f : beea9d30b3c4c7e0d6f2547843d591aa81bf7c34d39310c24a81ed5c24aed650
 RosettaCodeData/Task/Huffman-coding/Fortran/huffman-coding.f : 325cdffe3321d032a0a524ef78cf5e5c760ffff9a7da709ef003322904279d67
 RosettaCodeData/Task/I-before-E-except-after-C/Fortran/i-before-e-except-after-c.f : b45c3145a996a492a4f788d2695ea37383efcab92742b6665d0faf651db3dab0
 RosettaCodeData/Task/Identity-matrix/Fortran/identity-matrix-1.f : 1b1a9e29ad1611bb291f2a9a1f7f4cf42dcb311d3c2c0ac55994598c588fba4b
-RosettaCodeData/Task/Identity-matrix/Fortran/identity-matrix-3.f : parse error
+RosettaCodeData/Task/Identity-matrix/Fortran/identity-matrix-3.f : a6e3ae0bbfd1fddfb5fe67fbdec911db1b390c91cb894490fed785ffd94e67b0
 RosettaCodeData/Task/Include-a-file/Fortran/include-a-file.f : f026408800f3bb7aa7cab8cc9e7c7465e2f771b5affb07bde9852bf427ccb60d
 RosettaCodeData/Task/Increment-a-numerical-string/Fortran/increment-a-numerical-string.f : 22fada35c23a1f6538ab08431c27d3435e8aa88fc4fb43f940d6cacacf1aa8ba
 RosettaCodeData/Task/Infinity/Fortran/infinity-1.f : 11b3aff5447c5ad04a7d8d31b5df808e92b9fd531a9635b93d656f5071ff09c4
 RosettaCodeData/Task/Infinity/Fortran/infinity-2.f : 92c6ff71306425af53dc8e98b253df7121fa342d93622fdacbfcaa168ba61153
 RosettaCodeData/Task/Inheritance-Single/Fortran/inheritance-single.f : 3111167f2f5501272f94e4bfee0edcd825c79cc5e41292a5040c9ee4bfeec193
 RosettaCodeData/Task/Input-loop/Fortran/input-loop.f : fa57b2c924d812d05f4a4e368b6c2fc16779bf25c5463a4f09316a4992f81e92
-RosettaCodeData/Task/Integer-comparison/Fortran/integer-comparison-1.f : parse error
+RosettaCodeData/Task/Integer-comparison/Fortran/integer-comparison-1.f : 80624510f659fd2477d19bd80887aded0be4b2b56989488e587c09374ff5f1df
 RosettaCodeData/Task/Integer-comparison/Fortran/integer-comparison-4.f : e1e99a0d2a9a3859b586a719f5e1e2f6ff8388aaa378e7904d7da464055d8377
 RosettaCodeData/Task/Integer-sequence/Fortran/integer-sequence.f : 3bef7b2e0e8f9480d4e939581e2e722f21f558cf9505e63bbe7b0756589dd204
 RosettaCodeData/Task/Inverted-syntax/Fortran/inverted-syntax.f : 97c6463b3079aca08f11b73d95e56357be66b3402fc54f89a18f2b6f4a985b6b
-RosettaCodeData/Task/JSON/Fortran/json.f : internal error
+RosettaCodeData/Task/JSON/Fortran/json.f : 8dc779b76403e4415d7140e3a975a5e32241b3e7a277ec219f9abe3fdda3da4d
 RosettaCodeData/Task/Josephus-problem/Fortran/josephus-problem.f : 4f04283b00b3d5953ea35687692e455a132a06294733d45deec9a01e1c978fa3
 RosettaCodeData/Task/Kaprekar-numbers/Fortran/kaprekar-numbers.f : 2cab0f48c8f182577ab6417eef9b2d151c0e483a1d968c2aa01c889cdcd112dd
-RosettaCodeData/Task/Keyboard-input-Obtain-a-Y-or-N-response/Fortran/keyboard-input-obtain-a-y-or-n-response.f : parse error
+RosettaCodeData/Task/Keyboard-input-Obtain-a-Y-or-N-response/Fortran/keyboard-input-obtain-a-y-or-n-response.f : c554f7c225e11e7c8381a45d4eda8c0200960592769745ee70e9cfdbd37ad0c7
 RosettaCodeData/Task/Knapsack-problem-Continuous/Fortran/knapsack-problem-continuous.f : eca4a5f40501c37754f57ffeccb22e8b8ca1c26b9a16df9843c8c2322c228fbf
 RosettaCodeData/Task/Knapsack-problem-Unbounded/Fortran/knapsack-problem-unbounded.f : 69f5ebff7140b657ce8e4a8cf330893faa2c4dacdff0b175667b4b247ef09f6a
 RosettaCodeData/Task/Knuth-shuffle/Fortran/knuth-shuffle.f : 30dd2bb7ce4a4082f14f5b06700ef500888f39c109fb4688d125dfbfa22a32d7
 RosettaCodeData/Task/Langtons-ant/Fortran/langtons-ant-1.f : a13e535dce619a96d954265b978e73dd3d08bcb5d4b59203da05adfde046e35d
 RosettaCodeData/Task/Langtons-ant/Fortran/langtons-ant-2.f : internal error
-RosettaCodeData/Task/Largest-int-from-concatenated-ints/Fortran/largest-int-from-concatenated-ints.f : parse error
+RosettaCodeData/Task/Largest-int-from-concatenated-ints/Fortran/largest-int-from-concatenated-ints.f : internal error
 RosettaCodeData/Task/Last-Friday-of-each-month/Fortran/last-friday-of-each-month.f : 3e076fc62b18ad4a392b35fe1513f63d4f9249437e86dff380b9b0f6b2f8ee8f
 RosettaCodeData/Task/Leap-year/Fortran/leap-year.f : 11c19a620b178220504813575d06f5dba7dcbe0ce2434f42d41a54ac82712c33
 RosettaCodeData/Task/Least-common-multiple/Fortran/least-common-multiple.f : dc67fa8d1533bc99fc064c62014ff21b38d80b98f837c2ade535f80c7990ad27
-RosettaCodeData/Task/Letter-frequency/Fortran/letter-frequency-1.f : parse error
+RosettaCodeData/Task/Letter-frequency/Fortran/letter-frequency-1.f : ae4fdf2d5c113e0f941e86b90516687af0a9ce4f648892286e5b7ca93f64f48b
 RosettaCodeData/Task/Letter-frequency/Fortran/letter-frequency-2.f : 4c2a5600f7d8a5d97bee3c51e05e88a962566d8b42ebc107b05e7777ff9e3a13
 RosettaCodeData/Task/Linear-congruential-generator/Fortran/linear-congruential-generator.f : 25c60ad0f2bc31df9f7d2dc8e1c3d473d4eac83653143c076638a6fe37c7fe2c
 RosettaCodeData/Task/List-comprehensions/Fortran/list-comprehensions.f : f22fad6aadc2d3016627aba44703bd21fe31751da117079a9943b0466f1c15ec
 RosettaCodeData/Task/Literals-Integer/Fortran/literals-integer.f : 878c4f86ba91b76457f835fb8931fa94c5a5cedc3978804f413d655946fd37b4
-RosettaCodeData/Task/Literals-String/Fortran/literals-string-1.f : parse error
+RosettaCodeData/Task/Literals-String/Fortran/literals-string-1.f : 135b986260c5214c2d048820711e5969c841c975f6b6cb0bc36a387a281ca237
 RosettaCodeData/Task/Literals-String/Fortran/literals-string-2.f : 28d020ad3ffc1e90f8453cf8295489706c47a977f010ce3db1a2e9b73b24103a
 RosettaCodeData/Task/Literals-String/Fortran/literals-string-3.f : b764a7624613724001c171af4bfcc826ec984f7fc2de0af7238594b0ee64ffb7
 RosettaCodeData/Task/Long-multiplication/Fortran/long-multiplication-2.f : 256450f60ef988b316cb985e2651d846ad5764d8c7d86170512342e48ccc5fae
@@ -356,37 +356,37 @@ RosettaCodeData/Task/Look-and-say-sequence/Fortran/look-and-say-sequence-1.f : 3
 RosettaCodeData/Task/Look-and-say-sequence/Fortran/look-and-say-sequence-2.f : 48365cf846ae629338d5d697405f882038d8a5828c18877ce1213ce496631c25
 RosettaCodeData/Task/Loop-over-multiple-arrays-simultaneously/Fortran/loop-over-multiple-arrays-simultaneously.f : f22848c6875a7c18a641c7fb040937632c6d07c1881f2f704b055de8165879fd
 RosettaCodeData/Task/Loops-Break/Fortran/loops-break-1.f : 1a0bdc2b39fc703b761de3bd86b349b7f772de637c65d8cad49fe788b454105b
-RosettaCodeData/Task/Loops-Break/Fortran/loops-break-2.f : internal error
-RosettaCodeData/Task/Loops-Break/Fortran/loops-break-3.f : internal error
+RosettaCodeData/Task/Loops-Break/Fortran/loops-break-2.f : 8a99944b9864fe4c14b8eb126fa82d6ae533fb2ef91a857f6e492fb6013302f6
+RosettaCodeData/Task/Loops-Break/Fortran/loops-break-3.f : 439ce11064d08b04926057667b4002a58156a673c0ba92c0df1b721e88f870a5
 RosettaCodeData/Task/Loops-Continue/Fortran/loops-continue-1.f : 77c054536cf53861d7bd02f247d143bf2d0b823b1febf3f31d025a9387007012
-RosettaCodeData/Task/Loops-Continue/Fortran/loops-continue-2.f : parse error
-RosettaCodeData/Task/Loops-Continue/Fortran/loops-continue-3.f : parse error
+RosettaCodeData/Task/Loops-Continue/Fortran/loops-continue-2.f : d121506b52afd4702d43b7294062c86f19fc13bd74fda551055f6608a6fed06d
+RosettaCodeData/Task/Loops-Continue/Fortran/loops-continue-3.f : 6b2822b5844833ff6c74c3c43d54d74c5723b20d5ce48263d29a0f634d5a3914
 RosettaCodeData/Task/Loops-Do-while/Fortran/loops-do-while-1.f : 86f86df48d8bb90b0baacb89075d36e97d08d0e2e86832fd30af3830af44a3cd
-RosettaCodeData/Task/Loops-Do-while/Fortran/loops-do-while-2.f : parse error
+RosettaCodeData/Task/Loops-Do-while/Fortran/loops-do-while-2.f : 05d5511a8acfa361d3adedfe7bc235898b1809a500bdd9e9fc030548fe7cbbc6
 RosettaCodeData/Task/Loops-Downward-for/Fortran/loops-downward-for-1.f : e7c9ab62fe81d768c40f1c279c9ebfc3c148cc1a665cc221ee2058d07c4322c5
-RosettaCodeData/Task/Loops-Downward-for/Fortran/loops-downward-for-2.f : parse error
+RosettaCodeData/Task/Loops-Downward-for/Fortran/loops-downward-for-2.f : f837baffb048a021597756e3285aa9ce2bc4684510881dc5d8b8671807e8539d
 RosettaCodeData/Task/Loops-For-with-a-specified-step/Fortran/loops-for-with-a-specified-step-1.f : 45e7e262897b27409fa67650561747e85c7ebeb3a88d5215ba56a214d2e18125
-RosettaCodeData/Task/Loops-For-with-a-specified-step/Fortran/loops-for-with-a-specified-step-2.f : parse error
-RosettaCodeData/Task/Loops-For/Fortran/loops-for-1.f : parse error
+RosettaCodeData/Task/Loops-For-with-a-specified-step/Fortran/loops-for-with-a-specified-step-2.f : dcc7d45e633c8138cde2d55973212305a88ffc327f428b0c04f8066b24094151
+RosettaCodeData/Task/Loops-For/Fortran/loops-for-1.f : f7fa0336c359aefbbe15d0b57f22e19e7cf556d447ae0ea07acf5cfa87361232
 RosettaCodeData/Task/Loops-For/Fortran/loops-for-2.f : ae3c3761567b6736333df594d8bdc3f47b60130c052d82681bffbfb082975ef2
 RosettaCodeData/Task/Loops-For/Fortran/loops-for-3.f : 52222e5ad1af373d8d2a19228d6deca88066859d8f97e4a087c1052bf0a6f5ea
-RosettaCodeData/Task/Loops-For/Fortran/loops-for-4.f : parse error
-RosettaCodeData/Task/Loops-For/Fortran/loops-for-5.f : parse error
+RosettaCodeData/Task/Loops-For/Fortran/loops-for-4.f : 19478be17fb8bd0ed6ef4b3eac51b899fce30e98be4d6b82fbd846a03ef6d538
+RosettaCodeData/Task/Loops-For/Fortran/loops-for-5.f : d59a01661b9d48fc7626f8e3e9d5b200b99a79144d22875e4f4ac367c216e23e
 RosettaCodeData/Task/Loops-Foreach/Fortran/loops-foreach.f : 5e53df1f3ca97b2279d0df2f343c9f0c8027ab823009ecd3d1c38243e4d53178
-RosettaCodeData/Task/Loops-Infinite/Fortran/loops-infinite-1.f : parse error
+RosettaCodeData/Task/Loops-Infinite/Fortran/loops-infinite-1.f : 529951d244a975d5018a5a8bf0f0ad5529dc4c3ab0695b1fe53665c82e72bd1c
 RosettaCodeData/Task/Loops-Infinite/Fortran/loops-infinite-2.f : 3f371c8f8fdd8c2c3f47f2917f9ee157ae07cfb52a943663da059281e6fff08a
-RosettaCodeData/Task/Loops-Infinite/Fortran/loops-infinite-3.f : parse error
-RosettaCodeData/Task/Loops-N-plus-one-half/Fortran/loops-n-plus-one-half-1.f : internal error
+RosettaCodeData/Task/Loops-Infinite/Fortran/loops-infinite-3.f : 9d987ab5121ae44c3e4f63d325fa905051e7dc35264233b2d0f0d7cbcefd4310
+RosettaCodeData/Task/Loops-N-plus-one-half/Fortran/loops-n-plus-one-half-1.f : f268964dadf3c2ed2b703000e260bf23e16150f4b3bc56d27439f9acf9311fdc
 RosettaCodeData/Task/Loops-N-plus-one-half/Fortran/loops-n-plus-one-half-2.f : 7d366feb4885bdce05fec542b8255d53aae0dff18d8876fdd846525a6185b820
-RosettaCodeData/Task/Loops-Nested/Fortran/loops-nested-1.f : internal error
+RosettaCodeData/Task/Loops-Nested/Fortran/loops-nested-1.f : cd5ae50a4107a638bddc457454de3e8f474411b66c1784cd93ed94648302cb4d
 RosettaCodeData/Task/Loops-Nested/Fortran/loops-nested-2.f : 215971f4bef4e6e714692c0b54d50c5e6aa9a35441d88e5c45c45ff3a4bdf810
 RosettaCodeData/Task/Loops-While/Fortran/loops-while-1.f : 731dcfea0b3661692b315dba2335b7b6d42411e78387519d31c9ba49322b98ee
-RosettaCodeData/Task/Loops-While/Fortran/loops-while-2.f : parse error
-RosettaCodeData/Task/Loops-While/Fortran/loops-while-3.f : parse error
+RosettaCodeData/Task/Loops-While/Fortran/loops-while-2.f : 35fd953eb158c52127e660ac65fb1a5ce0b0954249f5f380d00d339d3af36910
+RosettaCodeData/Task/Loops-While/Fortran/loops-while-3.f : a24f5df4a8eb660f896c61ee649ec158b68208c582b14a895fea87730201ecab
 RosettaCodeData/Task/Lucas-Lehmer-test/Fortran/lucas-lehmer-test.f : fe6d75a709ebb375ca1084c48ecd544d4c3f5f093ca453d10ba8a5a777aae891
 RosettaCodeData/Task/Ludic-numbers/Fortran/ludic-numbers.f : 64d73eb8f32186bc2ff286bdddb665b99b89d3c0988878ad2da5321f5e407d0e
 RosettaCodeData/Task/Luhn-test-of-credit-card-numbers/Fortran/luhn-test-of-credit-card-numbers.f : 3dd57cbba4702d21ed36b1f24da4516771123649a76d0d0420a48474ce7ca8f8
-RosettaCodeData/Task/MD5/Fortran/md5.f : parse error
+RosettaCodeData/Task/MD5/Fortran/md5.f : bd2f12f17a9f10f355cdee52f4c1b294a374c13f30c2ae7107ec2e42c577a741
 RosettaCodeData/Task/Mad-Libs/Fortran/mad-libs.f : internal error
 RosettaCodeData/Task/Magic-squares-of-odd-order/Fortran/magic-squares-of-odd-order.f : 016bc90bb2cd31c0cd2556875bc2c119185306480c22753c271db8b31d9cdb4f
 RosettaCodeData/Task/Man-or-boy-test/Fortran/man-or-boy-test.f : 88180f8d2f5046219af42e4037635618c0e70430bb823e15bb40f42f567b4be7
@@ -397,11 +397,11 @@ RosettaCodeData/Task/Matrix-multiplication/Fortran/matrix-multiplication-1.f : c
 RosettaCodeData/Task/Matrix-multiplication/Fortran/matrix-multiplication-2.f : 9f8bff7548636773d2a2f79fc86fd444a11593c5cd2a3d4893c5f0212572cc72
 RosettaCodeData/Task/Matrix-transposition/Fortran/matrix-transposition-1.f : f9631a05d1929d71a7a8bf26094223b967e80623bc29132d43d5a906b77474f2
 RosettaCodeData/Task/Matrix-transposition/Fortran/matrix-transposition-2.f : 6661ba3cc147983a6ced61eb5d89765faeb8fbf60b1e5aecad14a62ede477067
-RosettaCodeData/Task/Matrix-transposition/Fortran/matrix-transposition-3.f : parse error
-RosettaCodeData/Task/Maximum-triangle-path-sum/Fortran/maximum-triangle-path-sum.f : parse error
+RosettaCodeData/Task/Matrix-transposition/Fortran/matrix-transposition-3.f : 9e2bbb690963ea5e8a1279b95a062fbf3c488112cc6aac694315cfa5e206f80b
+RosettaCodeData/Task/Maximum-triangle-path-sum/Fortran/maximum-triangle-path-sum.f : ffe22291cf8c135eb648525cc0ad87b1b59a6230934a5840401aadd7c049d585
 RosettaCodeData/Task/Memory-allocation/Fortran/memory-allocation.f : ab733ee6e61a640c740a5b23848c55920e65f55da00209b9d162bb71d82fa1ed
 RosettaCodeData/Task/Memory-layout-of-a-data-structure/Fortran/memory-layout-of-a-data-structure.f : b42f3769b8504b6b951a91d87ed028a6bd319cb1876df4905380db0337305a34
-RosettaCodeData/Task/Menu/Fortran/menu.f : parse error
+RosettaCodeData/Task/Menu/Fortran/menu.f : 578ba4691cf734efea1128d98927513ce478a4019a8b7b146dd6f4daa96faa4c
 RosettaCodeData/Task/Middle-three-digits/Fortran/middle-three-digits.f : c8fb91d49c010f2c5c50ec3242c553cd2c0c6a6580b36f8bff504981540ec889
 RosettaCodeData/Task/Miller-Rabin-primality-test/Fortran/miller-rabin-primality-test-1.f : b9b4aa8759bbda28afc51fb449b1c763fc719f548b3295e9f2769284f089c9d4
 RosettaCodeData/Task/Miller-Rabin-primality-test/Fortran/miller-rabin-primality-test-2.f : 83a9e30511a71ce43764b262ac2ae436f933435ba1f48974b894097618e9695f
@@ -411,19 +411,19 @@ RosettaCodeData/Task/Monty-Hall-problem/Fortran/monty-hall-problem.f : 5ac76371c
 RosettaCodeData/Task/Multifactorial/Fortran/multifactorial.f : edc0320fa1a1e24b90fe751e83eeb3193feecf270238a9eac530fdc98d8796de
 RosettaCodeData/Task/Multiple-distinct-objects/Fortran/multiple-distinct-objects.f : cd2f586b45dac830b75f5d6a06979702ff4d8044f1b690c21c090333ec4824dd
 RosettaCodeData/Task/Multiplication-tables/Fortran/multiplication-tables-1.f : 635b26fabaaf0d1e311a9659e6bcf8c966141d27eb24918ffc16735174651d6b
-RosettaCodeData/Task/Multiplication-tables/Fortran/multiplication-tables-2.f : parse error
-RosettaCodeData/Task/Multiplication-tables/Fortran/multiplication-tables-3.f : parse error
-RosettaCodeData/Task/Multiplication-tables/Fortran/multiplication-tables-4.f : parse error
-RosettaCodeData/Task/Multiplication-tables/Fortran/multiplication-tables-5.f : parse error
-RosettaCodeData/Task/Multiplication-tables/Fortran/multiplication-tables-6.f : parse error
-RosettaCodeData/Task/Multiplication-tables/Fortran/multiplication-tables-7.f : parse error
-RosettaCodeData/Task/Multiplication-tables/Fortran/multiplication-tables-8.f : parse error
+RosettaCodeData/Task/Multiplication-tables/Fortran/multiplication-tables-2.f : 3e29dd14a1d171a46749e1c2554b8250e7ef945a396bb97ce1dc2b8403b39df6
+RosettaCodeData/Task/Multiplication-tables/Fortran/multiplication-tables-3.f : 1476bdcb7aa9d50074a583830022740a2fe8951e367d4a03ef67ae24b29db7b4
+RosettaCodeData/Task/Multiplication-tables/Fortran/multiplication-tables-4.f : b7d77ebfa044749798825f179e443cb66ad04ca760f2969f9b68cb2a0692cbdf
+RosettaCodeData/Task/Multiplication-tables/Fortran/multiplication-tables-5.f : 8eeb1b5a41b8a9d8b845daa145fecd0b9c106a563312b8ee8cc2fb219422116e
+RosettaCodeData/Task/Multiplication-tables/Fortran/multiplication-tables-6.f : e8c4880c8524da620fa781a70c17d80530cb99ef9b8e3f4f595308791a5d30ad
+RosettaCodeData/Task/Multiplication-tables/Fortran/multiplication-tables-7.f : 42f97f96bccce569c8dd2467a7c905a40e7831ac6a90f7d317490d5c0c62a07b
+RosettaCodeData/Task/Multiplication-tables/Fortran/multiplication-tables-8.f : 3f838e7fbb72322775ea6a3c673fc256417a27845b2ff693c9f3d76034873405
 RosettaCodeData/Task/Mutual-recursion/Fortran/mutual-recursion-1.f : 9fac41ce5518eb9cbbd22dc2b040a83ebe605577d4ea285126a04fd65f27dd08
 RosettaCodeData/Task/Mutual-recursion/Fortran/mutual-recursion-2.f : 810e548082249609dfd28b518213500b8bbf093abd450c0454d6fcade3c12307
 RosettaCodeData/Task/N-queens-problem/Fortran/n-queens-problem-1.f : 6b6bec86794da993800ce75a1e5e4a8939cb431f3b8bb0f4b6c5b35fa4450193
-RosettaCodeData/Task/N-queens-problem/Fortran/n-queens-problem-2.f : parse error
+RosettaCodeData/Task/N-queens-problem/Fortran/n-queens-problem-2.f : 98889c25029835e7ef92e8a2eb114e74eecf8a65ec3b39f60cd5ef200eb1cc91
 RosettaCodeData/Task/N-queens-problem/Fortran/n-queens-problem-3.f : 07e51978eed5f22a45bfd653321aed871957f869dab5b8acab83b4452f8c89b1
-RosettaCodeData/Task/N-queens-problem/Fortran/n-queens-problem-4.f : parse error
+RosettaCodeData/Task/N-queens-problem/Fortran/n-queens-problem-4.f : cbff51f62b0100f2252e83b6027aa06049f38a093c84bb66ab95367fc6440c76
 RosettaCodeData/Task/Named-parameters/Fortran/named-parameters-1.f : e89d610bfce251c90a7d079c8af92df19dfd4576eb68bd317406bca73707d265
 RosettaCodeData/Task/Named-parameters/Fortran/named-parameters-2.f : de02a553b7e11ed00104db00977f3a852ce9b18aa771635a2473560ff3bb2b23
 RosettaCodeData/Task/Named-parameters/Fortran/named-parameters-3.f : 02c249e9ce557ac3a7893a603aaa2f5491670ca12ab49aba2c0545d094275dec
@@ -437,15 +437,15 @@ RosettaCodeData/Task/Nth-root/Fortran/nth-root.f : 6d4652e45436a27e2924bb05e975e
 RosettaCodeData/Task/Nth/Fortran/nth.f : 31a60f50b8985674b78bb5c38a187f5f7725a42353bfe3a6f412d122ea5d9fba
 RosettaCodeData/Task/Number-names/Fortran/number-names.f : 1c8a9179f217a9197eeae93851bc35e02da342a94d066047e5639c148a03a6c6
 RosettaCodeData/Task/Number-reversal-game/Fortran/number-reversal-game.f : 10f1fecce8b1106729fdfff17155144fc5eb94e435f12e3b85517223e8169797
-RosettaCodeData/Task/Numeric-error-propagation/Fortran/numeric-error-propagation-1.f : parse error
-RosettaCodeData/Task/Numeric-error-propagation/Fortran/numeric-error-propagation-2.f : parse error
+RosettaCodeData/Task/Numeric-error-propagation/Fortran/numeric-error-propagation-1.f : 9d2992bc4f5165f73e009f38a2bd97755587b3449b43fe67ec86f6bbdac51d10
+RosettaCodeData/Task/Numeric-error-propagation/Fortran/numeric-error-propagation-2.f : 9d5621fe94d1bcacc425b1ad05bd628f99ce9ddcc1516fbe03036794cbaa07c0
 RosettaCodeData/Task/Numeric-error-propagation/Fortran/numeric-error-propagation-3.f : 8ccac454891efb3c16c7d737533059f038e2a7d742e0fff221bc2e2c09d82281
 RosettaCodeData/Task/Numerical-integration-Gauss-Legendre-Quadrature/Fortran/numerical-integration-gauss-legendre-quadrature.f : f2a4f6877d666571bbb0fea09a31a5f22584068b6a7356f68f84b7c2ec635958
 RosettaCodeData/Task/Numerical-integration/Fortran/numerical-integration-1.f : 59edeb052a0b8d751481f94b38682177eead7526a87ee631875570629f79eef4
 RosettaCodeData/Task/Numerical-integration/Fortran/numerical-integration-2.f : c79960659518c621d2d3bd1e1fbc680d855d92eebee9465c923725c24819b418
 RosettaCodeData/Task/Numerical-integration/Fortran/numerical-integration-3.f : 3d557313fecb37d83e871d71283a326746f6af02e8e20ab4e8cdeb05104dd9a1
 RosettaCodeData/Task/Numerical-integration/Fortran/numerical-integration-4.f : ac9722cd3be0f25ae4c73a4fdba86976e38057fd8d82df9dfcd40b8aa33bc8df
-RosettaCodeData/Task/Odd-word-problem/Fortran/odd-word-problem.f : parse error
+RosettaCodeData/Task/Odd-word-problem/Fortran/odd-word-problem.f : 52c99a616f425de2d4fd107fdcc5f14fa35abcd216542a44e004a173bbf87734
 RosettaCodeData/Task/One-dimensional-cellular-automata/Fortran/one-dimensional-cellular-automata.f : deb617c8f4cec726786fa727e28c59e7375a89593b1e2f811609fe55b2d8096e
 RosettaCodeData/Task/Optional-parameters/Fortran/optional-parameters-1.f : 373b121ce4df4685f5aaf1c6fc8430c1c17fafd31ec2a02bae1c7f876d4156ea
 RosettaCodeData/Task/Optional-parameters/Fortran/optional-parameters-2.f : 68c88a290cedc34295951872d2d98f812839c512fe8372adeba8e20ca0b5fe43
@@ -456,9 +456,9 @@ RosettaCodeData/Task/Palindrome-detection/Fortran/palindrome-detection-3.f : 158
 RosettaCodeData/Task/Palindrome-detection/Fortran/palindrome-detection-4.f : 0bd5fc7934fa71af72938715a5f84723bc77847aac814f0cfda76908b9b26067
 RosettaCodeData/Task/Pangram-checker/Fortran/pangram-checker-1.f : 6ddbd50ebfff95ddc53be0f4a6297150be11db28ed446d9a714d74b4d9d9fd3e
 RosettaCodeData/Task/Pangram-checker/Fortran/pangram-checker-2.f : 3428ba4634b8c175ae36e30f3584459d2ce6b228e9916ee61883774a61e8a9a1
-RosettaCodeData/Task/Parsing-RPN-calculator-algorithm/Fortran/parsing-rpn-calculator-algorithm.f : parse error
-RosettaCodeData/Task/Parsing-Shunting-yard-algorithm/Fortran/parsing-shunting-yard-algorithm-1.f : parse error
-RosettaCodeData/Task/Parsing-Shunting-yard-algorithm/Fortran/parsing-shunting-yard-algorithm-2.f : parse error
+RosettaCodeData/Task/Parsing-RPN-calculator-algorithm/Fortran/parsing-rpn-calculator-algorithm.f : 71b1386fe590e0408958375dc18a4469b0eb5f7e200e8e258ea7e8ab0df7ff2d
+RosettaCodeData/Task/Parsing-Shunting-yard-algorithm/Fortran/parsing-shunting-yard-algorithm-1.f : ea2187e16f96137a9ab325f8e0e1e6b9f7940b1b193dedf0f73925b4b1cc620a
+RosettaCodeData/Task/Parsing-Shunting-yard-algorithm/Fortran/parsing-shunting-yard-algorithm-2.f : ced0f1bfee4a82f42ebab7c0d700cd844e5d7f92506586700cc1babd829095aa
 RosettaCodeData/Task/Pascals-triangle/Fortran/pascals-triangle.f : fe4b6230620590087a581c964b0f2ce68587eb648e6488850aeab33c306a5fbe
 RosettaCodeData/Task/Percentage-difference-between-images/Fortran/percentage-difference-between-images.f : e691c73a8b6b53b95f72d4905acdca353ebf2a255a552bfec89109c2105c7098
 RosettaCodeData/Task/Percolation-Mean-run-density/Fortran/percolation-mean-run-density.f : 75fccf70e6c4fef17e5859ffeba4b51db785813baf4e0b5934dfd5c7a859fa86
@@ -466,13 +466,13 @@ RosettaCodeData/Task/Percolation-Site-percolation/Fortran/percolation-site-perco
 RosettaCodeData/Task/Perfect-numbers/Fortran/perfect-numbers.f : 79a3b0069c3b47b37445e5b1a34734712bc4f234078e2f60c8cfe9e26c9de91a
 RosettaCodeData/Task/Permutations/Fortran/permutations-1.f : b3cf1d3f0124abbaaf902dfad91f13a215c901fce785a322bbadab9491e549fa
 RosettaCodeData/Task/Permutations/Fortran/permutations-2.f : d50c5b5d86ed2615c3860fad6f189ab5a14e8219bcdf11d3bdea7955fc615b31
-RosettaCodeData/Task/Permutations/Fortran/permutations-3.f : parse error
+RosettaCodeData/Task/Permutations/Fortran/permutations-3.f : cb0fd1f387b72a9637c4263ac4926e0ec41776d6b13014f83878bfadc75b70ea
 RosettaCodeData/Task/Pernicious-numbers/Fortran/pernicious-numbers.f : 6fe8874399df0da9e2fafaff87e5e960092bc81bf21b0ce8520d75d62be361fb
 RosettaCodeData/Task/Phrase-reversals/Fortran/phrase-reversals-1.f : 7704c22965d7575ab41c9e64dc37ea5d8560b3b3c1b8becb4e567ad9a3a543ae
 RosettaCodeData/Task/Phrase-reversals/Fortran/phrase-reversals-2.f : cbb872f09c23c8f54bd44d6c374edbf9d5247bf3fd5de06805cdd4393dd87176
-RosettaCodeData/Task/Phrase-reversals/Fortran/phrase-reversals-3.f : parse error
+RosettaCodeData/Task/Phrase-reversals/Fortran/phrase-reversals-3.f : c07e81222c4a2528a33a05fc9076b83cff7daf6da5f38f7f3d145459f4f711d3
 RosettaCodeData/Task/Phrase-reversals/Fortran/phrase-reversals-4.f : 209e38a88d67d86de0ef60c2895db1e589421e402f3b65c2eeed862f348931e9
-RosettaCodeData/Task/Pi/Fortran/pi-1.f : parse error
+RosettaCodeData/Task/Pi/Fortran/pi-1.f : bca7d784891310deff04a02019c89e1b5401d01c1506df528a734536e755d84e
 RosettaCodeData/Task/Pi/Fortran/pi-2.f : 8bc1b4c969a31933742b5b438c2c4f388705f65f8809ca5d190c25be12102fef
 RosettaCodeData/Task/Pick-random-element/Fortran/pick-random-element.f : 17c2071402147e05ce5245489d8a04d9fc01218454695600d97608ad5d1b6995
 RosettaCodeData/Task/Playing-cards/Fortran/playing-cards-1.f : 428c33fc25fd857bfd6573960ac6552fc0ece342f0316cfadb56c44c80c10d16
@@ -493,7 +493,7 @@ RosettaCodeData/Task/Polynomial-long-division/Fortran/polynomial-long-division-2
 RosettaCodeData/Task/Polynomial-regression/Fortran/polynomial-regression-1.f : 87c9fb86e2719d0d4c29f80e168191bab97fa8f4534f8023169197b6c3860dae
 RosettaCodeData/Task/Polynomial-regression/Fortran/polynomial-regression-2.f : 4a297f81756c62efb42666578a949ad6bda15419726a03fc904880e31742dfbd
 RosettaCodeData/Task/Price-fraction/Fortran/price-fraction-1.f : d9507f97feb1fc04804729ac3f5a334279c62d8213460d5e96c307d0e2271516
-RosettaCodeData/Task/Price-fraction/Fortran/price-fraction-2.f : parse error
+RosettaCodeData/Task/Price-fraction/Fortran/price-fraction-2.f : 8b40f34401a450dd5fbf33dde72eca185d4504d4038307d247e9ed0a6c195546
 RosettaCodeData/Task/Primality-by-trial-division/Fortran/primality-by-trial-division.f : ec2cf305d046482a0ed27dc9893aa4493fe49190c2f23d453812527144df50a8
 RosettaCodeData/Task/Prime-decomposition/Fortran/prime-decomposition-1.f : bcec46c44468bfa90fbf2c959d5382976a8cdc697f3c67db3b9b8ad8a3b98ff4
 RosettaCodeData/Task/Prime-decomposition/Fortran/prime-decomposition-2.f : 6ed12122a34b32c4d984947bca82f0a2721295eb75f3d2dbf473c9155f404b2c
@@ -505,65 +505,65 @@ RosettaCodeData/Task/Program-termination/Fortran/program-termination.f : 205a670
 RosettaCodeData/Task/Pythagorean-triples/Fortran/pythagorean-triples.f : 0510fcc94247f781c2b50d25c2b7f57244b3216e590e52e433d2a481e105acb6
 RosettaCodeData/Task/Queue-Definition/Fortran/queue-definition.f : 2d1116fecff6c8d22315d30474711a610591702fa1f4fd6b4aec15f85ae84ae0
 RosettaCodeData/Task/Queue-Usage/Fortran/queue-usage.f : 5c046e11e7ef21a440dc8dcbd1e05d465b331a0fb69ba86a38f4018eecce9b7f
-RosettaCodeData/Task/Quickselect-algorithm/Fortran/quickselect-algorithm.f : parse error
+RosettaCodeData/Task/Quickselect-algorithm/Fortran/quickselect-algorithm.f : 0ed24c933657fcc0b1e222d4d0bde08ccef77a22b9315d25ac638fb6e6e1da70
 RosettaCodeData/Task/Quine/Fortran/quine-1.f : 094267d291daec6a0875301a6e96f29cbfbc65083b8bde8a18685c34084142c6
-RosettaCodeData/Task/Quine/Fortran/quine-2.f : parse error
+RosettaCodeData/Task/Quine/Fortran/quine-2.f : b677b57e53db54768b967d623da5b53f45aa1a0bd6310f1781ac0ec97e3e5f5d
 RosettaCodeData/Task/Random-number-generator--device-/Fortran/random-number-generator--device-.f : 14ba86951920bbc599af5a80a53af06a3ccf80b2668ac6085f26a9447b8e026e
 RosettaCodeData/Task/Random-number-generator--included-/Fortran/random-number-generator--included-.f : 33d6e07d91dad6aa2fa5b4771c2626e2211fed5f6cd1bac19d193790043655e4
 RosettaCodeData/Task/Random-numbers/Fortran/random-numbers.f : b2dd988c9e8cd661ff3dc748e5546e64732c426fa3de75a41eb999a85685923b
-RosettaCodeData/Task/Range-expansion/Fortran/range-expansion.f : internal error
-RosettaCodeData/Task/Range-extraction/Fortran/range-extraction.f : parse error
+RosettaCodeData/Task/Range-expansion/Fortran/range-expansion.f : c0d6e4ff98ce827ddc6d51f1074d0362723749ddfda8c89b3293a236d3fcf9d5
+RosettaCodeData/Task/Range-extraction/Fortran/range-extraction.f : e8e21ab8917f5ba07e94eaa4a6ecca4e916a45ba7cabe2c5b8b713d7c3d13ec6
 RosettaCodeData/Task/Ray-casting-algorithm/Fortran/ray-casting-algorithm-1.f : f27eb1c7b49b5f7796c4da1f3b17721c2902a3d5702bba9622e6acb2495bf373
 RosettaCodeData/Task/Ray-casting-algorithm/Fortran/ray-casting-algorithm-2.f : d2fc8970310b579bb3c2c99ea00e29eb590bf6c9d8e22b1794e36777613cfdc0
 RosettaCodeData/Task/Ray-casting-algorithm/Fortran/ray-casting-algorithm-3.f : 3c4b5b2c08dd9da4806fbd44a7dec270f99c1bf444f08963d4931e5151903df7
 RosettaCodeData/Task/Read-a-configuration-file/Fortran/read-a-configuration-file.f : e1000a4492ec67044936fd893f964ca0fbb258ef5cd422c357da8d5e2db951ae
-RosettaCodeData/Task/Read-a-file-line-by-line/Fortran/read-a-file-line-by-line.f : parse error
-RosettaCodeData/Task/Read-a-specific-line-from-a-file/Fortran/read-a-specific-line-from-a-file-1.f : internal error
-RosettaCodeData/Task/Read-a-specific-line-from-a-file/Fortran/read-a-specific-line-from-a-file-2.f : internal error
-RosettaCodeData/Task/Read-a-specific-line-from-a-file/Fortran/read-a-specific-line-from-a-file-3.f : parse error
+RosettaCodeData/Task/Read-a-file-line-by-line/Fortran/read-a-file-line-by-line.f : 33385deadb00004ea12a60346d283f36db311f01d4a04bec05fbe5e19da3a533
+RosettaCodeData/Task/Read-a-specific-line-from-a-file/Fortran/read-a-specific-line-from-a-file-1.f : 27307d7f56c343257cd39e5f34e746ee8ebe785e2a19a29f163019a618a49c28
+RosettaCodeData/Task/Read-a-specific-line-from-a-file/Fortran/read-a-specific-line-from-a-file-2.f : e9f05ac0663f4d6be3b31c8012bc11cbac496aa50291cdcfd0216ff664b312ca
+RosettaCodeData/Task/Read-a-specific-line-from-a-file/Fortran/read-a-specific-line-from-a-file-3.f : 514dca9c73c3e7322f4095410823a64c85e5c070fb5ee92e73524adcfee990bb
 RosettaCodeData/Task/Read-entire-file/Fortran/read-entire-file-1.f : 467b6e68c5b238aa77382b4095e365004f4571af3c859822012a2133c36f3c8a
 RosettaCodeData/Task/Read-entire-file/Fortran/read-entire-file-2.f : 110cf42b881b1c9ed0a301a24cfb412aa87dc804fdaa3a6d854d8f49b61bf246
 RosettaCodeData/Task/Real-constants-and-functions/Fortran/real-constants-and-functions.f : 554e41ed77cd2d40a33afa4487b1dcd127ac3dad744ce2e260471ecbd5a33abf
 RosettaCodeData/Task/Reduced-row-echelon-form/Fortran/reduced-row-echelon-form-1.f : 137efbec17869a18baa7916ddd4089512a84885117e599240b349f5538a0246d
 RosettaCodeData/Task/Reduced-row-echelon-form/Fortran/reduced-row-echelon-form-2.f : 835ce851ca0ff41d345f754621a70918ce822bccfdb8ee8fb387e6d458ef1017
 RosettaCodeData/Task/Remove-duplicate-elements/Fortran/remove-duplicate-elements.f : 9282a4400871bd66a6073d310bf6b1ee4c0f2df1a41ad1fa78d5a62d0b70b346
-RosettaCodeData/Task/Remove-lines-from-a-file/Fortran/remove-lines-from-a-file-1.f : parse error
-RosettaCodeData/Task/Remove-lines-from-a-file/Fortran/remove-lines-from-a-file-2.f : internal error
+RosettaCodeData/Task/Remove-lines-from-a-file/Fortran/remove-lines-from-a-file-1.f : b977f27a15c367d71070989c9b0dea9d00e952f79491f0d9c555c29afeb6d9c0
+RosettaCodeData/Task/Remove-lines-from-a-file/Fortran/remove-lines-from-a-file-2.f : 82ad6c60028e2c0180768822fd20ded03150119809dee627a7ded6569d17645e
 RosettaCodeData/Task/Repeat-a-string/Fortran/repeat-a-string.f : 4d97e4b1da0e2f984ab8011cb7b69366f0b2ae12c270081ccb0808f4167b39fc
 RosettaCodeData/Task/Return-multiple-values/Fortran/return-multiple-values.f : 82dff0d69b2f5c98eabcabc305646335a2c78b419355f30a92fa58553ea11a50
 RosettaCodeData/Task/Reverse-a-string/Fortran/reverse-a-string-1.f : 066ed2e8bd2a95b4f3858490544b0b3c6a7e8dca4aa9798768898d4d911cbc53
 RosettaCodeData/Task/Reverse-a-string/Fortran/reverse-a-string-2.f : 47ab77afb618b5a72fd168d94dfad7db7ff58122b67a9f04975e9ae2c349b725
-RosettaCodeData/Task/Rock-paper-scissors/Fortran/rock-paper-scissors-2.f : internal error
+RosettaCodeData/Task/Rock-paper-scissors/Fortran/rock-paper-scissors-2.f : ba5eee376f4c145ca2ad4deb99f34e63ac64df08a72084258a4b1a1383c8df36
 RosettaCodeData/Task/Roman-numerals-Decode/Fortran/roman-numerals-decode.f : 79763c7857ad072455b8b88ccd7f04449e183bb4e742e5294a72841a6451d1a2
 RosettaCodeData/Task/Roman-numerals-Encode/Fortran/roman-numerals-encode.f : b957ffef80a2c6c573098eab2477f54e18a27e4dce0f3d4d31c6269ee14182b3
 RosettaCodeData/Task/Roots-of-a-function/Fortran/roots-of-a-function-1.f : b216325801f2f853530f84af8921c35f2c6ce14f223bcf380bcbb8de1a5383b4
 RosettaCodeData/Task/Roots-of-a-function/Fortran/roots-of-a-function-2.f : 5d8f0e14a39f1ab0273cd93182ca3941c6f9abcbed36adf421ff1b241c4256ac
 RosettaCodeData/Task/Roots-of-a-quadratic-function/Fortran/roots-of-a-quadratic-function-1.f : e9a50f0915ae1bcbaca2f3108088b1a152fdcbb562c6a73a5c2651e7349080db
-RosettaCodeData/Task/Roots-of-a-quadratic-function/Fortran/roots-of-a-quadratic-function-2.f : parse error
+RosettaCodeData/Task/Roots-of-a-quadratic-function/Fortran/roots-of-a-quadratic-function-2.f : 73d1486c7c36c1935d5d5b099f6b45a7aa6a4a5f0685daedd9b57d2655015524
 RosettaCodeData/Task/Roots-of-unity/Fortran/roots-of-unity-1.f : 9bb32eaae45eb07d74f329b2c2d04e3cde6e789af7ebdadd29aadef5ccf62a71
 RosettaCodeData/Task/Roots-of-unity/Fortran/roots-of-unity-2.f : f5572a1b7e634693ab43cbd9b9067ddb6fba441ecec3af6f65c33d51e918eaf9
 RosettaCodeData/Task/Rot-13/Fortran/rot-13-1.f : 8773f92c86c2482382e2e73ef8480c77796ac8501783457963d01442f949d995
 RosettaCodeData/Task/Rot-13/Fortran/rot-13-2.f : internal error
-RosettaCodeData/Task/Run-length-encoding/Fortran/run-length-encoding.f : internal error
+RosettaCodeData/Task/Run-length-encoding/Fortran/run-length-encoding.f : 71d8d88c74eaff544e817b74f24542142017c24b3c2ff81c0911625233e74f7f
 RosettaCodeData/Task/Runge-Kutta-method/Fortran/runge-kutta-method.f : 71955f0391c340b0fefc2529051e4d03ce7e00f3a2d001a903796275a5077518
 RosettaCodeData/Task/SEDOLs/Fortran/sedols.f : c9b5bd5d5db335a0e99120cb905610c824020ccf8dad1e98cbc81f72b38c5677
-RosettaCodeData/Task/SHA-1/Fortran/sha-1.f : parse error
-RosettaCodeData/Task/SHA-256/Fortran/sha-256.f : parse error
+RosettaCodeData/Task/SHA-1/Fortran/sha-1.f : fbbb8d7a044638f6ffc449c39ade182e3802756023673b6c41f94e4f5a61f47c
+RosettaCodeData/Task/SHA-256/Fortran/sha-256.f : 95864b8f577fd57140c572896e842498a2cdc70816898c19985189a715a2b8ab
 RosettaCodeData/Task/Search-a-list/Fortran/search-a-list.f : 54cae29de889febf2f65d182c756bfcb96196d36543c43be2b1b9ffa4ff587fe
 RosettaCodeData/Task/Secure-temporary-file/Fortran/secure-temporary-file.f : 82aab5f017200c04ec6f345b8f6cd9f3290b1057964afb651677b88b36b8f21e
 RosettaCodeData/Task/Semordnilap/Fortran/semordnilap.f : f4ab40e9d9f2e4c7e7d61eb1f5ded37d97968da1cc84c7a2b9c899bc0cd6bbd6
 RosettaCodeData/Task/Send-email/Fortran/send-email.f : 2db8cfd487ba4099dc245da401fb75ea2cca794e73422c4e220af6a3d973e581
 RosettaCodeData/Task/Sequence-of-non-squares/Fortran/sequence-of-non-squares.f : c1a4894f49b4257ea98b3756691870c73992193309215f36f1fed9a634c9efbc
-RosettaCodeData/Task/Sequence-of-primes-by-Trial-Division/Fortran/sequence-of-primes-by-trial-division.f : parse error
+RosettaCodeData/Task/Sequence-of-primes-by-Trial-Division/Fortran/sequence-of-primes-by-trial-division.f : d64aea9a2b395d43485ebecab00a0c9ff1d7a68eb54477d9a2c1f3f7984f49e8
 RosettaCodeData/Task/Seven-sided-dice-from-five-sided-dice/Fortran/seven-sided-dice-from-five-sided-dice.f : 0ded21ffb0a10d2bc0e5c9be671389b9babe46a563efffcb1714c4dc889b08d9
 RosettaCodeData/Task/Shell-one-liner/Fortran/shell-one-liner.f : 591a447fb1a50c94eb7f6bcc2f11586ae5eb11300f6a67a5ea2e7c3b5e58042d
 RosettaCodeData/Task/Short-circuit-evaluation/Fortran/short-circuit-evaluation.f : 46a20c9ff3c5aacd8bcf53d272ec5e953a2634970fdb780b127da794f333f355
 RosettaCodeData/Task/Sierpinski-carpet/Fortran/sierpinski-carpet.f : db6779f9dde643c9aa799c06b0b113a97837734e72f79607409e5b62c6a3d684
 RosettaCodeData/Task/Sierpinski-triangle/Fortran/sierpinski-triangle.f : db6ef7e8e9191a702164fc8632f072b1d619991b4ab763f0102f2cd8cd9535a7
 RosettaCodeData/Task/Sieve-of-Eratosthenes/Fortran/sieve-of-eratosthenes-1.f : 4a815d51b84d2eec4732a1a7926c699828242ab4a4091d52cb5acae9f2762a1f
-RosettaCodeData/Task/Sieve-of-Eratosthenes/Fortran/sieve-of-eratosthenes-2.f : parse error
+RosettaCodeData/Task/Sieve-of-Eratosthenes/Fortran/sieve-of-eratosthenes-2.f : 077633b4e6ec8e4a5a9cdd9b7cebf8726647ef4c18aaa5c52849f5c5c8303ef2
 RosettaCodeData/Task/Sieve-of-Eratosthenes/Fortran/sieve-of-eratosthenes-3.f : 6966225e3abcfea0fdb2a05befa2e048bf7a57cf4a700173f671b8e7091a49c3
-RosettaCodeData/Task/Sieve-of-Eratosthenes/Fortran/sieve-of-eratosthenes-4.f : parse error
+RosettaCodeData/Task/Sieve-of-Eratosthenes/Fortran/sieve-of-eratosthenes-4.f : 077633b4e6ec8e4a5a9cdd9b7cebf8726647ef4c18aaa5c52849f5c5c8303ef2
 RosettaCodeData/Task/Singly-linked-list-Element-definition/Fortran/singly-linked-list-element-definition.f : 64b32610292200ef6ef47df520e66f813baaab269e6c78b5c97b60144691252f
 RosettaCodeData/Task/Singly-linked-list-Element-insertion/Fortran/singly-linked-list-element-insertion.f : 220591db8a4c4e250acdf9b45b24e913fae02fb934191435e5d4fcad10c45fa0
 RosettaCodeData/Task/Singly-linked-list-Traversal/Fortran/singly-linked-list-traversal-1.f : 7b952fb34d32fad94c97b33303a48965f1326311ca85851347ea01b7feab2f35
@@ -586,7 +586,7 @@ RosettaCodeData/Task/Sorting-algorithms-Gnome-sort/Fortran/sorting-algorithms-gn
 RosettaCodeData/Task/Sorting-algorithms-Heapsort/Fortran/sorting-algorithms-heapsort.f : a3980307584492c69ddb8fe1bbe9e69585f0cf8d750c88672ff53962ee2d799f
 RosettaCodeData/Task/Sorting-algorithms-Insertion-sort/Fortran/sorting-algorithms-insertion-sort-1.f : 544ee9d6eda2605552ccb716e6f13f8e06a5d33582f4767c4c4fb92c80c99a6a
 RosettaCodeData/Task/Sorting-algorithms-Insertion-sort/Fortran/sorting-algorithms-insertion-sort-2.f : 2fef33ac328b480adf3662989e30228a4db7e7a5b8ea671ffb210c54cd8228ac
-RosettaCodeData/Task/Sorting-algorithms-Insertion-sort/Fortran/sorting-algorithms-insertion-sort-3.f : parse error
+RosettaCodeData/Task/Sorting-algorithms-Insertion-sort/Fortran/sorting-algorithms-insertion-sort-3.f : 5cc6b6d035dfb0c89f2c087be929d3bb4f59b1e034958671aaf1acf739b65eca
 RosettaCodeData/Task/Sorting-algorithms-Merge-sort/Fortran/sorting-algorithms-merge-sort.f : d670a30b68d1e8bc899ded09d0a70728982a32f54fa91cb4a42dc098c11ac044
 RosettaCodeData/Task/Sorting-algorithms-Pancake-sort/Fortran/sorting-algorithms-pancake-sort.f : 3e18adadc247bf0ab6c72ff5311ad83f552a76a375b34e77c24aefc0400fcb5f
 RosettaCodeData/Task/Sorting-algorithms-Quicksort/Fortran/sorting-algorithms-quicksort.f : 3a7643dc62ee50cf7b144c8263a0e86602a507fc3f2fc4595e28e5fe99fd9c66
@@ -597,17 +597,17 @@ RosettaCodeData/Task/Spiral-matrix/Fortran/spiral-matrix.f : 7212b7d1e0a8f6485c7
 RosettaCodeData/Task/Stack/Fortran/stack.f : 6ee53c603a055238364f854780cf7c26f5ddffd1c607f4dc73204dd69e04523f
 RosettaCodeData/Task/Stair-climbing-puzzle/Fortran/stair-climbing-puzzle.f : 958036614c5795880f1b765adb0ecc762ef66afd6d049dfbb8cc7a9ba9e2199d
 RosettaCodeData/Task/Standard-deviation/Fortran/standard-deviation-1.f : 892b1475e05d07a9c7ab4778e31f7caeff485435efed30e81369c6c6cc78d974
-RosettaCodeData/Task/Standard-deviation/Fortran/standard-deviation-2.f : parse error
+RosettaCodeData/Task/Standard-deviation/Fortran/standard-deviation-2.f : e7b7c075cdfaa04c12d8caef58d4995f49906b5fc4ab848dd9073a5b909d4de7
 RosettaCodeData/Task/Statistics-Basic/Fortran/statistics-basic.f : 4cd95177bc33bf1741a245aa4cffe14060c32c3978a7809cdb7a570be4b63568
-RosettaCodeData/Task/Stem-and-leaf-plot/Fortran/stem-and-leaf-plot.f : parse error
+RosettaCodeData/Task/Stem-and-leaf-plot/Fortran/stem-and-leaf-plot.f : 95461759acdd064efd2a45b50017015a1c14b2ec118871c581dc2895b39bbc92
 RosettaCodeData/Task/String-append/Fortran/string-append.f : 056a01c77971f05c7509ea89e70334cc896b853a1500d9c2cefb98ee5928f50c
 RosettaCodeData/Task/String-case/Fortran/string-case-1.f : 2fedbb9e1a1871757d3b5be200b84ca1b88ff8a4818790aa377c54fec62b1b12
 RosettaCodeData/Task/String-concatenation/Fortran/string-concatenation.f : 064a391ae091fb948480e706026d6e6bdc143cb10f7bec999e198502abbcf59c
 RosettaCodeData/Task/String-interpolation--included-/Fortran/string-interpolation--included-.f : ece1e7f9f43607f9cd763e76a0591c609ea962d818eb241af947662bf5fd0e00
 RosettaCodeData/Task/String-matching/Fortran/string-matching-2.f : ff3f9bc8b6f89932388ada5a4d1e418def274d50c2f54aeb89e148ab78fca60b
-RosettaCodeData/Task/String-prepend/Fortran/string-prepend-1.f : parse error
+RosettaCodeData/Task/String-prepend/Fortran/string-prepend-1.f : aeba10da5699d238dee923f2154d185faf13a5fec0c1dfef92843e69b6626dd4
 RosettaCodeData/Task/Strip-a-set-of-characters-from-a-string/Fortran/strip-a-set-of-characters-from-a-string.f : 28dfcff79514f16ceb8f881adbed7ae1f7e54f3e9b1e21518dbfabeebb1e6ff1
-RosettaCodeData/Task/Strip-block-comments/Fortran/strip-block-comments.f : parse error
+RosettaCodeData/Task/Strip-block-comments/Fortran/strip-block-comments.f : b7db37bd736ab966f48521d3a04d6dfb08d86cb0483eb94bf553dbae24b878c8
 RosettaCodeData/Task/Strip-comments-from-a-string/Fortran/strip-comments-from-a-string.f : edbba72e937718b78caecff2b1373f25bb27035ba12e90f9476a8ac7e21bf57e
 RosettaCodeData/Task/Strip-control-codes-and-extended-characters-from-a-string/Fortran/strip-control-codes-and-extended-characters-from-a-string.f : 3ef15d9e9287fb014efd5bcb274bd4b41fb38f7d8caa272d920be500efadb2e6
 RosettaCodeData/Task/Substring-Top-and-tail/Fortran/substring-top-and-tail.f : 35fe860396905f96e8c26f5e03d20dd9fe2e49c2dc1e3d8a72795d79a1a96bf2
@@ -616,7 +616,7 @@ RosettaCodeData/Task/Subtractive-generator/Fortran/subtractive-generator.f : 96d
 RosettaCodeData/Task/Sudoku/Fortran/sudoku.f : f35629cb293bd9fb968dc34caf239823c805e369ec1670f4a80c971ec958757b
 RosettaCodeData/Task/Sum-and-product-of-an-array/Fortran/sum-and-product-of-an-array.f : cfdba8035de05ff8d0421add9e61f9d5b0a57d4d85e7c3f0bbe2ce1d3bea61e7
 RosettaCodeData/Task/Sum-digits-of-an-integer/Fortran/sum-digits-of-an-integer.f : 2355332320d986e3e1eed748e44ae08b82caec498010ea4d6839e2f358324755
-RosettaCodeData/Task/Sum-multiples-of-3-and-5/Fortran/sum-multiples-of-3-and-5.f : parse error
+RosettaCodeData/Task/Sum-multiples-of-3-and-5/Fortran/sum-multiples-of-3-and-5.f : 6920a157d9c475bce78edd0a8a7961cb5e806d85967724865427640a246fccc4
 RosettaCodeData/Task/Sum-of-a-series/Fortran/sum-of-a-series.f : 79200df738e03e57ea74d39014d867affb9e6533f5679e983f22650949de4f77
 RosettaCodeData/Task/Sum-of-squares/Fortran/sum-of-squares.f : 13defb1695a79de8aaaaba516305d19b3cc5a54624a31b235a46ac29b46a8e8e
 RosettaCodeData/Task/Sutherland-Hodgman-polygon-clipping/Fortran/sutherland-hodgman-polygon-clipping.f : c9660e7029c319f1f2e04cbae1f62db10ddb48be30d81a85418c9e24a2c9b4e5
@@ -630,35 +630,35 @@ RosettaCodeData/Task/Terminal-control-Clear-the-screen/Fortran/terminal-control-
 RosettaCodeData/Task/Terminal-control-Coloured-text/Fortran/terminal-control-coloured-text.f : b8f551f25b05db4cad5d5dfed090e1befe14c2aec5523495ae9d9638c91c478e
 RosettaCodeData/Task/Terminal-control-Cursor-positioning/Fortran/terminal-control-cursor-positioning.f : b05bd1bf50b2c55c1b00bad9ebfe2541610fdaa98c753ea9039987781def3231
 RosettaCodeData/Task/Ternary-logic/Fortran/ternary-logic.f : 7e71b71202d894d0b87021b51d8451d44dd3f24c1979fdcaef6d70d23130d2c7
-RosettaCodeData/Task/Text-processing-1/Fortran/text-processing-1.f : internal error
-RosettaCodeData/Task/Text-processing-2/Fortran/text-processing-2.f : parse error
-RosettaCodeData/Task/The-Twelve-Days-of-Christmas/Fortran/the-twelve-days-of-christmas.f : parse error
+RosettaCodeData/Task/Text-processing-1/Fortran/text-processing-1.f : a6df0a5ae9cf04cc24fca0b988521b70af25276429c9117154990813b2148c72
+RosettaCodeData/Task/Text-processing-2/Fortran/text-processing-2.f : fdd3402a530a27dc65d82bfa6bb5084d9df7f4384bda8fffe8ec4db7180b8724
+RosettaCodeData/Task/The-Twelve-Days-of-Christmas/Fortran/the-twelve-days-of-christmas.f : 4a7bb19b1fe0216a1866a21d6707bef8fa794aea7f3fdcad39be26ac12ce5aa2
 RosettaCodeData/Task/Tokenize-a-string/Fortran/tokenize-a-string.f : 257ef2534efba4fbab8ffc88150718a7742f85c35419e248ea42e4c6adcd2edd
-RosettaCodeData/Task/Topological-sort/Fortran/topological-sort-1.f : parse error
-RosettaCodeData/Task/Topological-sort/Fortran/topological-sort-2.f : parse error
+RosettaCodeData/Task/Topological-sort/Fortran/topological-sort-1.f : 3803fc0c3aa9538429180a24a65ffbc810eb4e08d25a6b57ea7ad117f349c751
+RosettaCodeData/Task/Topological-sort/Fortran/topological-sort-2.f : 41393091a4c9249e75df4d6c84f78a10e14d263e5d37aec638e372ede1e07c9b
 RosettaCodeData/Task/Topological-sort/Fortran/topological-sort-3.f : 0f203040cd30b7510a7191c71ca042d195e9f74ba0b2e6f389f57c91c11fab23
 RosettaCodeData/Task/Topswops/Fortran/topswops.f : 9ed385ab9f5b9ad81a397c20203bac87c4649d8fd18e18e7b5dfdf2bb138a259
 RosettaCodeData/Task/Towers-of-Hanoi/Fortran/towers-of-hanoi.f : e441ca44259d547b6dedf2f44f7a4b14fb829d4531fbec3ba973e9bf6b9bdb60
 RosettaCodeData/Task/Trabb-Pardo-Knuth-algorithm/Fortran/trabb-pardo-knuth-algorithm-1.f : 98eab5f1ab57237fac6dcee3cc9d4447f8366616cabaa4b644fa00790e4205e8
-RosettaCodeData/Task/Trabb-Pardo-Knuth-algorithm/Fortran/trabb-pardo-knuth-algorithm-2.f : parse error
+RosettaCodeData/Task/Trabb-Pardo-Knuth-algorithm/Fortran/trabb-pardo-knuth-algorithm-2.f : b5ad5413f9a99c5b256a4919b736d6c91486ca602fc7675de454a101c3c131d1
 RosettaCodeData/Task/Tree-traversal/Fortran/tree-traversal-1.f : 3cfc4d81a9a992626414f67604b1ae42d8d9650521a9af5df8bcbb37602f734f
 RosettaCodeData/Task/Tree-traversal/Fortran/tree-traversal-2.f : b88c5330540b5dbb89337a2b20a6bf466710cfd5980997b1a24731f2f6508b39
-RosettaCodeData/Task/Tree-traversal/Fortran/tree-traversal-3.f : parse error
+RosettaCodeData/Task/Tree-traversal/Fortran/tree-traversal-3.f : 1972db4a87abf4ba8c6efa4b07500bdeddce2d8430f67d734f57fe98bc5f2edb
 RosettaCodeData/Task/Trigonometric-functions/Fortran/trigonometric-functions-1.f : be86858806f39499d0e1c8e05851cb47851788d4e2722d89d4b2c4478601fd47
 RosettaCodeData/Task/Trigonometric-functions/Fortran/trigonometric-functions-2.f : a66141bec0566bc4479d231170742ba965320a9a87533a3df494ba15aaa64fea
-RosettaCodeData/Task/Trigonometric-functions/Fortran/trigonometric-functions-3.f : parse error
+RosettaCodeData/Task/Trigonometric-functions/Fortran/trigonometric-functions-3.f : 503c280cdc88fea5c395ee141fb4c65c4ab61fedb0d08dbd596717138050a793
 RosettaCodeData/Task/Truncatable-primes/Fortran/truncatable-primes.f : aad0cb9e1d478dd1324f87e9b981089fe85d0edeafb63655059208c8b6218393
-RosettaCodeData/Task/Truncate-a-file/Fortran/truncate-a-file.f : parse error
+RosettaCodeData/Task/Truncate-a-file/Fortran/truncate-a-file.f : ed6463981163fce353f70900526956d82f6a85b0d0d3da9ad59e762f93740a60
 RosettaCodeData/Task/Ulam-spiral--for-primes-/Fortran/ulam-spiral--for-primes--1.f : d72533ae5191daf1eb5ae38d6f658b558f98d4b37d2bf8606197352f60bdfe8d
-RosettaCodeData/Task/Ulam-spiral--for-primes-/Fortran/ulam-spiral--for-primes--2.f : internal error
+RosettaCodeData/Task/Ulam-spiral--for-primes-/Fortran/ulam-spiral--for-primes--2.f : 11f9fa057b8ac71fb47102389693b5b0f7e94215b4b4059363afd5b933a76987
 RosettaCodeData/Task/Unbias-a-random-generator/Fortran/unbias-a-random-generator.f : a7f3750a5c8d7f32f1a79591a6f4593f491b2cc614462eb487d1909331ea868f
 RosettaCodeData/Task/Undefined-values/Fortran/undefined-values.f : d0dc7860c341dccd9d003e294725d5936fb1ddda739671dae4b67081f37b902f
-RosettaCodeData/Task/Universal-Turing-machine/Fortran/universal-turing-machine-1.f : parse error
-RosettaCodeData/Task/Universal-Turing-machine/Fortran/universal-turing-machine-2.f : internal error
-RosettaCodeData/Task/Unix-ls/Fortran/unix-ls-1.f : parse error
+RosettaCodeData/Task/Universal-Turing-machine/Fortran/universal-turing-machine-1.f : 1c5a64acd985a88b60c1560497904946ae0b44c284bbc9e76a711511a6f87d82
+RosettaCodeData/Task/Universal-Turing-machine/Fortran/universal-turing-machine-2.f : 419d7212341e4f6ff97b6956d7923f74bf393488cdbe0e55420babc4810c24d9
+RosettaCodeData/Task/Unix-ls/Fortran/unix-ls-1.f : 81d7765633e501987f5aa39eb47a498bee1ae8935ad98003bef0823b828ad1ad
 RosettaCodeData/Task/Unix-ls/Fortran/unix-ls-2.f : 7b97758996e29333ceabc6e654eedefa32248a8e76af84cfa888684bb8a989c1
-RosettaCodeData/Task/Update-a-configuration-file/Fortran/update-a-configuration-file-1.f : parse error
-RosettaCodeData/Task/Update-a-configuration-file/Fortran/update-a-configuration-file-2.f : parse error
+RosettaCodeData/Task/Update-a-configuration-file/Fortran/update-a-configuration-file-1.f : 0e48005444517e5980d9df3ead33f7ff82d81e332f083d455b9f53e42efde568
+RosettaCodeData/Task/Update-a-configuration-file/Fortran/update-a-configuration-file-2.f : bd01beeb767ead78cb1f8d3cd84c41fe2034659cdb487adf26e459c63ac3fb28
 RosettaCodeData/Task/User-input-Text/Fortran/user-input-text.f : 32694410e865c6af19fc9fed255cc0582493703b5d9c29c52a4fad194cba71f0
 RosettaCodeData/Task/Variable-size-Get/Fortran/variable-size-get.f : f8b17d7b79878db710279af15656c8031a0cfcc430eb4a2f02037eaec4c4d177
 RosettaCodeData/Task/Variable-size-Set/Fortran/variable-size-set.f : fa0cc90661de5f5eaed51764d4e42d12f5332a90bea4228950e3b234aec4e2c1
@@ -671,8 +671,8 @@ RosettaCodeData/Task/Verify-distribution-uniformity-Naive/Fortran/verify-distrib
 RosettaCodeData/Task/Vigen-re-cipher/Fortran/vigen-re-cipher.f : 65c9bc24e9fb80718570b10c722109717511830db1e6a59c3c98cda3a8106f20
 RosettaCodeData/Task/Wireworld/Fortran/wireworld.f : 5f2ea51efa19dc9ce0fe69e292355c8cae1044b8066d77d2e64292c8adaba33c
 RosettaCodeData/Task/Word-wrap/Fortran/word-wrap-1.f : 95097b84353ef86eb93e9380683a8ff02fefab40fd3f396e3bc2c570c9d73297
-RosettaCodeData/Task/Word-wrap/Fortran/word-wrap-2.f : internal error
-RosettaCodeData/Task/Write-float-arrays-to-a-text-file/Fortran/write-float-arrays-to-a-text-file-1.f : parse error
+RosettaCodeData/Task/Word-wrap/Fortran/word-wrap-2.f : 46cfe7b49e0777836c14f7d6eb613b7640a056dd213d47e00fe391d88c323328
+RosettaCodeData/Task/Write-float-arrays-to-a-text-file/Fortran/write-float-arrays-to-a-text-file-1.f : 3f397154daec5ff5381bcfb6edf1206ff8abc45103437945e064e41002515047
 RosettaCodeData/Task/Write-float-arrays-to-a-text-file/Fortran/write-float-arrays-to-a-text-file-2.f : 14568d07952459593d44455e40f2c5a962ec7d8075401619d8a7aa7982cd4ba8
 RosettaCodeData/Task/XML-Input/Fortran/xml-input-1.f : 81bb08ddea6cb9fcb348124109e4b6d48fc40dbac4c48b98759cf34a2b8bd78b
 RosettaCodeData/Task/XML-Input/Fortran/xml-input-2.f : 3250b7be528be17553321b7b04786fa4147760109fd3dc2262198a88334b04a2
@@ -681,7 +681,7 @@ RosettaCodeData/Task/Zig-zag-matrix/Fortran/zig-zag-matrix.f : 40be9bab9ec902b89
 RosettaCodeData/Task/Gamma-function/Fortran/gamma-function.f : ef1a4b36734fbb7bba079a248e1e7bc33bd6ede96aa0dd5a4de33efc58f5c977
 RosettaCodeData/Task/Rock-paper-scissors/Fortran/rock-paper-scissors-1.f : b48e78f562c1b99e8b4d0528536a35161776a061b503b03d805b5a3bc046062e
 cp2k/src/acc/acc_device.F : 36f2085806db6cb52ee32b339f619b5f8145590108ea963242d738113de2dc43
-cp2k/src/acc/acc_devmem.F : 88d01a55180e737a2ff5ed84a3289c21a22e5452590c5205598036dd62199f34
+cp2k/src/acc/acc_devmem.F : bd0ba46a1f99d7496f2681d54f104af39447e8985fd0bf48e256b255b490aa17
 cp2k/src/acc/acc_devmem_c4.f90 : 97e44ffcbf67b0e4ab682637ce0dac5698603631f3f11fe5b4c1f1c94ffce84b
 cp2k/src/acc/acc_devmem_c8.f90 : ff877afcb2876d50f0a7844d925d8bcbbc4c366570bca5f63a2519ff30e335e5
 cp2k/src/acc/acc_devmem_i4.f90 : a094be7fcd35a3a153c13aa8bf139a4f5964fb79406a3c16706e7666366647f2
@@ -689,7 +689,7 @@ cp2k/src/acc/acc_devmem_i8.f90 : 5887081c7abaa3f71c824a8b12bb019a5e354553a9e6d5f
 cp2k/src/acc/acc_devmem_r4.f90 : 140e48228d15b603abc34b24dd32a6e3eba98f12907c7f22616c043365fc22ff
 cp2k/src/acc/acc_devmem_r8.f90 : cace665dbe682a26353c4bc5407fdffb25b02a97611e56962804208728582426
 cp2k/src/acc/acc_event.F : b84c3a83d03a202bb05046c09306b0f17da71917545260c982dddfcab2826611
-cp2k/src/acc/acc_hostmem.F : 405a660e9d294a45069ebe68fd94dd99febaffa62b654291294a0a549d990555
+cp2k/src/acc/acc_hostmem.F : f7f27ffe91d149bbcb6967172910c0e5a9bf91f84941c503133e98f3e0297204
 cp2k/src/acc/acc_hostmem_c.f90 : b4852f0ca357aa6a1ac09934137efac529b543f6468f181609b81983dac807ab
 cp2k/src/acc/acc_hostmem_d.f90 : 8c8adb2f348fdbe473cddab98f77cb07357a9246807097aa2ea1bdc3a104a2d7
 cp2k/src/acc/acc_hostmem_i.f90 : 6fd1ba2bac3194716d8f8399bda57f5a4cedd97423fcec4ac34ddadc357222b9
@@ -700,17 +700,17 @@ cp2k/src/acc/acc_kinds.F : c222a6888e9ab8d385c81a7dd8e15939b5eb05013c86dac081f26
 cp2k/src/acc/acc_stream.F : ded3ba323c0eee896fa7732bcf3513d8ef04fbe0a18807ad6c91c53bdad08a1e
 cp2k/src/admm_dm_methods.F : 37f5a2e1c0daf84a9e521e3f760f0afd5eb4fd49749a3d542c19a74c54c05d4b
 cp2k/src/admm_dm_types.F : 27e2dfa41f6d49411bcd51b170977a050bcbd0640d41b3d9ab465111910ab769
-cp2k/src/admm_methods.F : 329d571086ad8131934bff0c72a3be5e5b4321d38454d3d301ad0e3cf0047353
+cp2k/src/admm_methods.F : 8ccbd4a3609035a8f5ba1beaa46b0851e8d8cf350ef2ce200203517ee73fb850
 cp2k/src/admm_types.F : da9694ee4f5f071b83c8e4a970b100b29e998dd5d5f9601781303e577cb6b7ed
 cp2k/src/admm_utils.F : af3c6597a4ecfee2568459d0a68f610a88b93cd9d56f7fda307a3fd3e6528dd7
 cp2k/src/al_system_types.F : c9df9da0959ea8a6d30aac6d764dc6ad671df34e784fedfe202c529712b3e1e1
-cp2k/src/almo_scf.F : 1a99983484510e88ade7ebe124f177613c026eca4415907b8f03092bac9258c1
+cp2k/src/almo_scf.F : 1af52ee3bfddfd87e2a2398abbbdbbf0c40d59a5b8ead2af8808efaac045a306
 cp2k/src/almo_scf_diis_types.F : 7cb466b7fac9400601fe842bdb5d23c250bde46808c62f64846cd9c50c809482
 cp2k/src/almo_scf_env_methods.F : 5ac5acbdba903392c95ae791312eebcac82c7ca5f067bc4cdafe64fa1185d9e6
-cp2k/src/almo_scf_methods.F : db78b2c873f7280a99c633aefc6d8e56fcc45299a4e11e5e98e330bdf16f786a
-cp2k/src/almo_scf_optimizer.F : 18a11790b61c408d29a9cbd912f3a307b10d2aef5d2540d9d1a2bdecb4248a21
+cp2k/src/almo_scf_methods.F : ad63a9064a6236fdbfb757a53394c677f4a27250d80108b570e267e201e5e42c
+cp2k/src/almo_scf_optimizer.F : 8bcd469638d4ecd08c96bd795296901b04bb3247ad30b4f844e69b01c42a2258
 cp2k/src/almo_scf_qs.F : 1d1a377b605cdc59ecf90bed060f13b7cf022684e236cc500832680b0ba38298
-cp2k/src/almo_scf_types.F : ca27c2032a0bdca041aaa30d6070a134e3ee46005bcb8325a2c7332a612b231e
+cp2k/src/almo_scf_types.F : 7d99895baee4ac4cad9ffedbda9fa846ecc93b0491a17107857a790dcef08ed2
 cp2k/src/aobasis/ai_angmom.F : b124ea5beccd9ac5cf28e7d11fa8716876fb5d8dfe6666b96cb0aba0cb605fb6
 cp2k/src/aobasis/ai_contraction.F : 6ade3269ca3a43d4dfa143167f477da1869645b0ef43af7a31f1bc9cf72ff23d
 cp2k/src/aobasis/ai_contraction_sphi.F : 6ee62f99ed8fe5bb2dc90027503da73d9e520f5b712dfee11aefd3548037fb13
@@ -740,7 +740,7 @@ cp2k/src/aobasis/basis_set_container_types.F : 9eb7bd481a0d04cfecd12f38661210ac1
 cp2k/src/aobasis/basis_set_types.F : 3723a08e9820d4ef7f7cd9e27090d75b5cfbb6bad49d0b68995e323290fd4cd1
 cp2k/src/aobasis/orbital_pointers.F : 6e40fdec3470e77ca4ef8828806709385aacb7a97b5e93b043361a682804aec3
 cp2k/src/aobasis/orbital_symbols.F : a749c79edd86db38e7290dc9c8c397025efa2fecd62825890281f583a4346352
-cp2k/src/aobasis/orbital_transformation_matrices.F : bf5207a65c5af308d3f447df9d3c66a5a840cc7815497515dfd6c2087d402420
+cp2k/src/aobasis/orbital_transformation_matrices.F : ae6e94662d43b490e047f775ca101563906c49ea036c91b3c21d317b017fcd35
 cp2k/src/aobasis/soft_basis_set.F : 18c53450a9d1099734890ab0cc87e34b68d09c4ac6fdd8f8a9984375f4ac5bbe
 cp2k/src/aobasis/sto_ng.F : 20d45e2346c274304a8651a521a2a7dd1e54093ebea66d2eb981738f268ce7ed
 cp2k/src/arnoldi/arnoldi_api.F : 9ad2ba9c57b1a5fc31be6723d537f4ad0dc76e16ead9337a4e3e0b94e0b64f43
@@ -754,7 +754,7 @@ cp2k/src/arnoldi/arnoldi_data_selection_d.f90 : 0ce5c37156a305d4d7f4a2e905216691
 cp2k/src/arnoldi/arnoldi_data_selection_s.f90 : 9329958163bf894e542106e6e3c7ba99e6482f1511f858ad9eecb82759bda302
 cp2k/src/arnoldi/arnoldi_data_selection_z.f90 : b3dd99d308069805a41aefc7ac447679058ec83c7d32bc3ce72212897f9ac2f6
 cp2k/src/arnoldi/arnoldi_geev.F : 963a6f7050c9f70e026ea9beae3f8b5f83364b93307779e3bd4e9f019e4e9acf
-cp2k/src/arnoldi/arnoldi_methods.F : a8d3688e3ce6b6c5b3ff8e50d10ec3136f6083e18c8128c082eb7f3d235e4f7e
+cp2k/src/arnoldi/arnoldi_methods.F : 0ad54e33da09c490c1891dc011c3c6231f860f43ec085dc7e9745a68fc071b27
 cp2k/src/arnoldi/arnoldi_methods_low_c.f90 : 4e263ed2b6507cee84183dc1f7eb21833ba4394c9e84707863e94a654bb70901
 cp2k/src/arnoldi/arnoldi_methods_low_d.f90 : ba76617affa461029ce58a72f82729b2559cc5684f88adb7979e59b253eea9a4
 cp2k/src/arnoldi/arnoldi_methods_low_s.f90 : c9872cdc1fd7414e36f48f4aa165710e962ffef0cf99ea894bd62074b5341942
@@ -781,10 +781,10 @@ cp2k/src/atoms_input.F : e4f7ce0c345acb9fa4a74037e64512418ff2203366550c339b7453e
 cp2k/src/base/base_hooks.F : 3a56ddfe8f2f43a99e48c4593049440f6a627be83c5b1a088b13c0acf4ea2c17
 cp2k/src/base/base_uses.f90 : 96a2979790fda71d8458740fd35eeee2313c5132c57b77e1f9f7480411d7f328
 cp2k/src/base/kinds.F : ed85bbcb4c5c841ed819fbbcaf4e50293a4d8f7ccc03d2ba4c5e0142c281c849
-cp2k/src/base/machine.F : parse error
+cp2k/src/base/machine.F : 1021f4063145858b6a18f51c9d376e56b980bdbc4914b902e5b1881d4a20219a
 cp2k/src/base/machine_internal.F : bd7861ece3b782ce7916ebc6a5d5b4b83cd3936e07a85845f93683751a10a1a8
-cp2k/src/base/machine_posix.f90 : parse error
-cp2k/src/beta_gamma_psi.F : parse error
+cp2k/src/base/machine_posix.f90 : 524740b6f1e793ae17e56e0e41a67fda5fdc662a5f0d1d23f81cca230ff6cf04
+cp2k/src/beta_gamma_psi.F : 03116029c8e485df7ac7635cca54f8928dca5a341ddab3c4821aa3b348d5dc42
 cp2k/src/block_p_types.F : 2e6bb1626848bd12fb8f7e832062a3768ac29e8779a922c7a2a8bc04d88fa0e0
 cp2k/src/bsse.F : df5f77e2315b4569de7dcb649ca534057088e6473d24707abc6d2a106f22de59
 cp2k/src/call_collocate.f90 : c0590386746df2100a5c2c4651117e273737a4dc5ed8abc413bc6dd12aa9d252
@@ -823,12 +823,12 @@ cp2k/src/common/cp_result_methods.F : 1314f9dbb5aa262bff75531d9b47ef3c8fb9bc21a2
 cp2k/src/common/cp_result_types.F : 6d36dd0a50d759a2a46f2e1ad32c7e760274747a9e8a97f48a3dbe2f2155b12d
 cp2k/src/common/cp_units.F : 5e530a9b2bc0660e39d3cc46ceac4f12c02a7eb36d7267cd32e9be3d6e9e8e48
 cp2k/src/common/cuda_profiling.F : 43dc8763dc377ad9170a8710e087564251ce660705c823a3af2e6015e7fe375a
-cp2k/src/common/dict.F : 1782f55b9728f0030b0dea700eb9573ad2d755f488ecf025d324bb582022d9fd
+cp2k/src/common/dict.F : fc8dcb4bad13485a8d6ff5a258120b7e897760288effed45627f83a662de9354
 cp2k/src/common/dict_i4tuple_callstat.F : edf916b5dc896d478ad0f817166d4aeb4091791a4b8f35e7cba66b13073c3531
 cp2k/src/common/dict_str_i4.F : 44a9c3714ea10036f131e5b14e4d10a8675d1ddebea1683394e91cbded9e972e
 cp2k/src/common/distribution_1d_types.F : fcfb1695327582838a9eac7503cf68c825134ff1e54123794ea889c2791f4d99
 cp2k/src/common/eigenvalueproblems.F : 701b161f16e2286579c2b3160f4f2d0615707605e64e3dbd5da3f6ebaf688faa
-cp2k/src/common/erf_fn.F : parse error
+cp2k/src/common/erf_fn.F : e8fd5a9efa0b1783316fd6d798ad4c0f477ad1f96b542da5a94a5a31dc14c20d
 cp2k/src/common/fparser.F : 50ee8f5bcfa5158c1db69359251d1ca3127b622b1fb94a2323d9799055bb873a
 cp2k/src/common/gamma.F : 1bfd29e05868bcdd863253e3c4e214f9996de72d9a4a4dff996ca9f4f1ea1eef
 cp2k/src/common/glob_matching.F : 002e808634f1164a89b4dc2d682b0488dd73e48569c447143a52287ba8f08f74
@@ -836,24 +836,24 @@ cp2k/src/common/kahan_sum.F : 7ee6678b7c0c5829bd8b2c0d07caa5e9d23713301e2b93cfd2
 cp2k/src/common/lapack.F : 6a53f16ae8a8dd2b5d058bda2596db4ac775d452dd588b2e189ca802f2cced12
 cp2k/src/common/lebedev.F : 8edae87eb0553213e9250ad73bf45dedf5af16f8b3cc296805ca898c0eff8ab5
 cp2k/src/common/linear_systems.F : 39fabbc020b66507c400b8b326f7a54ae938348ea2e2dc6a03ffdd1e831a527c
-cp2k/src/common/list.F : 8a5a12021472bf9c42843a7f8c6bb4bf58484439c7603bf4167936a4b01e6de0
-cp2k/src/common/list_callstackentry.F : a37d0201ba5a51dff44e3193cff29020fb8adf75f2233277444a5c445c517236
-cp2k/src/common/list_routinereport.F : 5870f5bc117f61a66f71676005417e529c6ebd6a198131661e85bfe5138cae19
-cp2k/src/common/list_routinestat.F : e5bdf4defcb29960ea133bece6d24f1501f5c8156cdd035cb8bfb947276b199f
-cp2k/src/common/list_timerenv.F : 26a28294c2ba21950c494ad57fa7a0e898303f303d56fd90b5acafb7884c12f1
+cp2k/src/common/list.F : 33918e6c628dd7fdd0bee699f1b4e76b77a3e8c44da6017af267389f3df440ed
+cp2k/src/common/list_callstackentry.F : 67ca4c56e29d54cfee4abba9cb6e639441d20cdb467039f0b53f4f457baad9ce
+cp2k/src/common/list_routinereport.F : 998a4978d3fb52b2555de4cb36dc51e8b3f024b1976b32020071d0f73a234d7a
+cp2k/src/common/list_routinestat.F : 26d5528c2af5f21c6e1c6baa7899b4c3e748548a9f7ec510f25bd604fa15809a
+cp2k/src/common/list_timerenv.F : cee1b358b337511adabb2b9013d03c6eaadba448b5ebf0f73f8f162fa2734547
 cp2k/src/common/mathconstants.F : 587070faf5fc83e5c240aaab5b00423a65b0bd49dc26a266e71478555469b73b
 cp2k/src/common/mathlib.F : 0e78ad70397872ac1a89c66aa53534d0f0f93dc057f25814999185184a527488
-cp2k/src/common/memory_utilities.F : 025e05264a5e0faf4f90274b17c396136c0917e7ec7597526d112dbe98bef9c7
+cp2k/src/common/memory_utilities.F : 40fba9dce265e65ed69d14798b8da770d8c1c2ba6dd35db7620b1b4e202a0b8b
 cp2k/src/common/parallel_rng_types.F : 05970b66121983caec2fbeb3ed4ad00db5ed4ee699d003e73fcb3e78838635d8
 cp2k/src/common/periodic_table.F : c9c11715f03152dcc4086294cdf78ce53152068fc2c336d9abe157562c0b55a9
 cp2k/src/common/physcon.F : b463f6535f0f94d5aa10da6723aa25ab304a42dafad704ef20479610cad154aa
-cp2k/src/common/powell.F : parse error
+cp2k/src/common/powell.F : ca759cb53564b33cd5f931d58e04092e8a866996e919c823bf8cdc342c0e5a04
 cp2k/src/common/reallocate_1.f90 : 5a716326c286ff710f8e19a0a01854fdb75394557f65b12151909e5d6cdeb221
 cp2k/src/common/reallocate_2.f90 : 9c4de06321bd5f4384b3948445557caddf02f826839ccc2184fb71e9117826f6
 cp2k/src/common/reallocate_3.f90 : b7e842503105477422bab4caf0ae4623bb2d24eaa7bf608112f1e46319af7522
 cp2k/src/common/reallocate_4.f90 : 6a8f03058ed4482c4673b37cea76b37def75a902455b2eaf60a332955ebb08ac
 cp2k/src/common/reallocate_5.f90 : 1aed8fab9d01796820e445567cd990d76c559fd8b451ee73214dae22687e52a3
-cp2k/src/common/reference_manager.F : parse error
+cp2k/src/common/reference_manager.F : 866cde382b865773ea82a08b97ce3f6f68b3d956a0cd03629d44c9c044691925
 cp2k/src/common/sort_m.f90 : f0a9cc1a999a8e594da079433371adead19ac5958e360fb8192c6bb123d316e4
 cp2k/src/common/spherical_harmonics.F : 4ccfab8876d3ee4e2b321a8ab412205151c9c624acc15d11833262f637040f64
 cp2k/src/common/string_table.F : d9e39b69a878271fe6f2954649e36d3194dbb14758bb2ba95caf260b1ca328d0
@@ -887,7 +887,7 @@ cp2k/src/cp_control_utils.F : 9317f8fa6877a8b8adb92bbf45d09a458a052c32253eca77ff
 cp2k/src/cp_dbcsr_cholesky.F : 8c0aa58afcc37b7420ac87905dffdd25ac97c64d1f4e5a4bc7145190639a9298
 cp2k/src/cp_dbcsr_cp2k_link.F : ed82fdacf215573450a959ee43460e43b88560e7af049c58aec888c6e0a1a58c
 cp2k/src/cp_dbcsr_diag.F : 9622944bcb67bb7f46911a109a5453255b680e98bdc00502b949473df86b2eca
-cp2k/src/cp_dbcsr_operations.F : parse error
+cp2k/src/cp_dbcsr_operations.F : 04aca63dc9fd9da3734875cd7c8dbba012d7c5dac60b43f1862d2a6e2e139fff
 cp2k/src/cp_dbcsr_output.F : 13f922bd2269a9066ce2d09987add419f36c0ee202800b01298420c61590adbe
 cp2k/src/cp_ddapc.F : 0cd76504bdfcee99e110c42dbf75f68fc76b49b61fb44e3b1c81c4faf7dab3ad
 cp2k/src/cp_ddapc_forces.F : 694730a88b35340207c0fd05812004d5267b2b998496256a15e25855a7ed4df8
@@ -905,7 +905,7 @@ cp2k/src/cp_subsys_methods.F : b61c04ae9f6c1c7cf8b03db20943c5a1e30af8e9a7680f6a6
 cp2k/src/cp_symmetry.F : 1ddd29793bbd680fa5da30bd7454f61c28c14a02f29342b823e1e5eea1548527
 cp2k/src/csvr_system_types.F : 0e5cd0a8d68128d95f6142c4eee2aa013c9c68e5e61b5919f61a7c0c54f7f7b9
 cp2k/src/csvr_system_utils.F : 139b691eecfc4a81cbcfefa3ad8897c0341e833a6aef47beba6a83570ede80e5
-cp2k/src/ct_methods.F : 692d32aba2c8aafec570317081704eb9175921f60619bd8d2d6f44ab9f3182c8
+cp2k/src/ct_methods.F : 294e7766195b234d82d562d1620c42d025610ae2130bf45120288d1339ee0b2d
 cp2k/src/ct_types.F : b6dc35098219abdfd6e39bec7a5bd2b21f44ee7a0eb5f72aa30dd4fb7f3da55a
 cp2k/src/d3_poly.F : 8af3af3b62d12c818bae7bbcb6052e142f8f48f3ddcb3ebe1cf0387e9f710c3b
 cp2k/src/dbcsr/base/array_types.F : bc5fb292e0bfb1d7b491dfaae8cfe1d2ef678bdd4d6859cad236e68c74689db5
@@ -982,7 +982,7 @@ cp2k/src/dbcsr/dist/dbcsr_mp_operations_c.f90 : 555914b3af7ff84bc566a00a8181994b
 cp2k/src/dbcsr/dist/dbcsr_mp_operations_d.f90 : 9065294c60146a59d033340eb98b3f1b07ce8a4b8e8da83cedc2be1357bd222c
 cp2k/src/dbcsr/dist/dbcsr_mp_operations_s.f90 : 83c8905af7cd2c9e9e4372a6767fd91bfee6c8a96c72d49b87ec635856cba0a4
 cp2k/src/dbcsr/dist/dbcsr_mp_operations_z.f90 : 62ba123fa32cd1eedf6fefb7ab11dcfab71af00452a9293573c91367a3461aa9
-cp2k/src/dbcsr/dist/dbcsr_util.F : parse error
+cp2k/src/dbcsr/dist/dbcsr_util.F : 2b8d74c42865635ac9b17d38a8a9ae358f69d9f34d073e0ff67b87a59f63f3d4
 cp2k/src/dbcsr/mm/dbcsr_acc_operations.F : 43e5e2791a27f4bff20893613b08747cf681017e0f597ba7cee0db4fb9d23699
 cp2k/src/dbcsr/mm/dbcsr_mm.F : 5315999857bdc3ad3eb90d11fe9fb06d120928a0210156bb606feada6e83ba3c
 cp2k/src/dbcsr/mm/dbcsr_mm_3d.F : 3d56b9d9bc8088e9c4ea323a7950525ce232c592923c432e286f9328ade73cf6
@@ -991,7 +991,7 @@ cp2k/src/dbcsr/mm/dbcsr_mm_3d_d.f90 : 264804976d0ecf52617d648cf5a917a95dc971e259
 cp2k/src/dbcsr/mm/dbcsr_mm_3d_s.f90 : 27347edfe37aedc56a185e3ba275edd75cbf5a14b65b2336d5b05530f36ade72
 cp2k/src/dbcsr/mm/dbcsr_mm_3d_z.f90 : 7d829622684c2563f665b9aee30c5a880c44f6a44635b21470a7acd826327403
 cp2k/src/dbcsr/mm/dbcsr_mm_accdrv.F : df685e2bdba84f9ada7c7ee8bd4325b7c54b1ec7d8a62b441ab0b1f5b4009c73
-cp2k/src/dbcsr/mm/dbcsr_mm_cannon.F : eafee850b0fec5df14e0ed5f23aa4d76b5c50f1c8c542b1de9f51a0075a083c4
+cp2k/src/dbcsr/mm/dbcsr_mm_cannon.F : d9e7ad96c60905862cbd7d8d3be463d7b86762944c1124ddabf94ff6dc2e4501
 cp2k/src/dbcsr/mm/dbcsr_mm_cannon_c.f90 : 689a5b55fc53b2cf26db3a8f908b064811427135f906fb3f9c66d1d860eb7f0f
 cp2k/src/dbcsr/mm/dbcsr_mm_cannon_d.f90 : 90bf45ebb6fa1086610bd433d9c209373b24a335543fe0eac67b6a5edecfa17e
 cp2k/src/dbcsr/mm/dbcsr_mm_cannon_s.f90 : b6a0d1354ad4dc32e81a1b768fe96a2a2c17563b676829344649668d809261ef
@@ -1010,26 +1010,26 @@ cp2k/src/dbcsr/mm/dbcsr_mm_types.F : 3541e39dd1d3ff7a2fadf53d889a0c71b9691ec9443
 cp2k/src/dbcsr/mm/dbcsr_multiply_api.F : b95dbb7fdcf61debb8934c3a0029df720ef0a8547c4d27ca4df8b36c4a765b3a
 cp2k/src/dbcsr/ops/dbcsr_blas_operations.F : 78e8239f0740e0e3b7de8ae3dbd0239355e0740e335842c987aa264e7daad11c
 cp2k/src/dbcsr/ops/dbcsr_csr_conversions.F : 0d56f812550f49a97ea871ff7864df4bdda81c91ea0bf22eee68ddd2e626e552
-cp2k/src/dbcsr/ops/dbcsr_io.F : 4a27dd941b2efbbfca50a49c6510ed50def8e8701de4046d54bcbbddedc25b04
+cp2k/src/dbcsr/ops/dbcsr_io.F : 6704817e816ee099f2c22eb6f0e62392647bbafd800dc12f0a567a799cbfd13c
 cp2k/src/dbcsr/ops/dbcsr_operations.F : 34fb1ca448818b99915195c79a977f969af58c8a1229189679eef31434589d0d
 cp2k/src/dbcsr/ops/dbcsr_operations_c.f90 : 01b1d8e68ee0f42ceb1d0203ab65c12aad0b907f5491abf51ef6f91dcd1f637d
 cp2k/src/dbcsr/ops/dbcsr_operations_d.f90 : 34d36f3a8f240734bc94fc44c8822be99fa679266ade0c69b50d228df531c91d
 cp2k/src/dbcsr/ops/dbcsr_operations_s.f90 : f73e1edc043ea4638813a42ae1a04e7998987ee4bc4230812c58b380f30705db
 cp2k/src/dbcsr/ops/dbcsr_operations_z.f90 : 0c5cd41cf265842f241599eea7445fbeaaa9aa386bff4db4469dc231ce088210
-cp2k/src/dbcsr/ops/dbcsr_transformations.F : parse error
+cp2k/src/dbcsr/ops/dbcsr_transformations.F : 1c5af6335637d635a2a471cb27dbc6ee9361d78fb27bab14eb54f21ffabc66fe
 cp2k/src/dbcsr/vec/dbcsr_vector_operations.F : 92c40c62477a969768f53a5fe856b04c0236f83b4ba826c82439991f7ab07995
 cp2k/src/dbcsr/vec/dbcsr_vector_operations_low.F : ed8ce822c71714cecdcde28fda12c7f8e78b592be0cb1b093e88cacac588129d
 cp2k/src/dbcsr/vec/dbcsr_vector_operations_low_c.f90 : 1bd97a2219cfda46992c6a419087a54cea7a7a2525247e0fb7ebc668b1cb6474
 cp2k/src/dbcsr/vec/dbcsr_vector_operations_low_d.f90 : 307b46c61c9be3df7cd614720ba18671755608a1be1b5198c56ebb2feb193a99
 cp2k/src/dbcsr/vec/dbcsr_vector_operations_low_s.f90 : 133ab555a8c8b29c750ec5138790f01ba5b15c1e7cd9083b3a4965d22d2450db
 cp2k/src/dbcsr/vec/dbcsr_vector_operations_low_z.f90 : 525ad3ef4931f40c471463809b974ff9411444a7fe4cb308ab485ada92d1e9d7
-cp2k/src/dbcsr_tensor/allocate_wrap.F : b84ad960c2730040c2a7a391f9c0afd26e87ee2d3b1af517bc18e622b7bff796
-cp2k/src/dbcsr_tensor/array_list_methods.F : f75e669aa5f9ff63c20a7694b70a4d458099e86ba77b5cbd9cfc4d1cb7938e5f
-cp2k/src/dbcsr_tensor/dbcsr_tensor.F : 7ea73002e19dc8fb141fcf8c4fcc29e31b96dc3c4d3c4d69229e6052890e51f6
-cp2k/src/dbcsr_tensor/dbcsr_tensor_block.F : 3af8c3be19af6c4d13376e74b431c99fa903dad33f525e7338edb25c59f15ac1
+cp2k/src/dbcsr_tensor/allocate_wrap.F : a7585afc82cfe8c5c0f7f47aca7f69f4879cb5d9a6b9219d0eed92949cfa06a4
+cp2k/src/dbcsr_tensor/array_list_methods.F : e64ec0142b2ed6b778f53e62fb8b334160215a8a211e24ccb6a42dd21b1f0cf0
+cp2k/src/dbcsr_tensor/dbcsr_tensor.F : 2ddb31aac51401db59e61606a904a99d8bd38a410cf0d83a94223f9523817d26
+cp2k/src/dbcsr_tensor/dbcsr_tensor_block.F : e7a074df7b902c096322ca20b684e11471a9fa0e5f066c210d2c93c486ac0446
 cp2k/src/dbcsr_tensor/dbcsr_tensor_index.F : 0b18b86a8957bd732755a83f35dc83aeadf4a720c58e9360c0193a690000f886
-cp2k/src/dbcsr_tensor/dbcsr_tensor_test.F : 8f9a03904a5cf0ac38c064a668175c4c9d8e10a7d92d7ace246963acbd88d3aa
-cp2k/src/dbcsr_tensor/dbcsr_tensor_types.F : bda3f3ca313c8f96d257eec02755f1bac3b57cf0b97061245d476b3e257cfa74
+cp2k/src/dbcsr_tensor/dbcsr_tensor_test.F : 0fdffdf8f2d61de9ae283a02dd3ec0cf9c27ad18d119a846f938986a6f67345b
+cp2k/src/dbcsr_tensor/dbcsr_tensor_types.F : 9943d068f0bda67764f3c87211c47d0fc00a8c32fff59ed6ebff94a23572bccb
 cp2k/src/dbcsr_tensor/dbcsr_tensor_unittest.F : ade926e0f8a0e054691d2d27d6e2787cc44be2a57ca7830641299a25200574ad
 cp2k/src/dbcsrwrap/cp_dbcsr_interface.F : f2b49e35640ca62613eb99a9a89a8af0778a658ac3824ecf6b0fad242e9078c1
 cp2k/src/dbcsrwrap/cp_dbcsr_interface_c.f90 : 7a8921f92bbe32e019085a9f6c66c38ca2747265083c540c148a1447a299aac3
@@ -1042,7 +1042,7 @@ cp2k/src/distribution_2d_types.F : 938b628dfea190438708b1ba638eba80d7bd602b5fb28
 cp2k/src/distribution_methods.F : 89e5b4c2216017dd346646ab43944f0c90e940eef4ff795f81c38647170bb027
 cp2k/src/dkh_main.F : 57a6685f5b063a78e0cdaaed02c28faeded97e5703dbc9c6318c79fefc9d1548
 cp2k/src/dm_ls_chebyshev.F : 11f0a5668df0dc48c0aabc68e653c9f047b16cf0b824c6f365a6bf83b41d37dd
-cp2k/src/dm_ls_scf.F : d3f74f953673a22e13274793b6be254ac51779f423c6d5715acf01a0baa10410
+cp2k/src/dm_ls_scf.F : 24dfbc0cd7d46efb253c457e6f575a3e9d50a4248bb65f541134bf2d4108b720
 cp2k/src/dm_ls_scf_create.F : 7995fbacac7c90943b86f224144a55019c4b7af4f693504caa143ab69dc42e7e
 cp2k/src/dm_ls_scf_curvy.F : 2526858c8204c32234d37e4d021486c0618993b7bdc0ad4c1625276e19cb1402
 cp2k/src/dm_ls_scf_methods.F : 9641bc28edcb08b614cf6e18c6d533bdc23f7acf5dad68ac9eca2c847464d0e2
@@ -1053,7 +1053,7 @@ cp2k/src/domain_submatrix_types.F : 564cf9bfd6d6b68cc5ff382f008fbcffd6242deea252
 cp2k/src/efield_utils.F : 9d61aeb7d032529a1ba039ffe9dd43ad117c24886bd4d13181094d23f9ca5761
 cp2k/src/eip_environment.F : 2a4a89bdf52ca596d596cdfdcfe6d607ca23791b788804e1a299d81259663daf
 cp2k/src/eip_environment_types.F : 7006e649ed2d2b409554e6b6d197c7ab10d62c69ab4c3297af454a62b1b13cf0
-cp2k/src/eip_silicon.F : parse error
+cp2k/src/eip_silicon.F : 5fb4b514e08a0c9b6ef82250081b14eb493116ce166d9296cc436f1797cfa9de
 cp2k/src/emd/rt_delta_pulse.F : ed5b98a39cd66641ecae3299c18f4ad7615aa1f986c5f37a0b6bfb87f3c50ff7
 cp2k/src/emd/rt_hfx_utils.F : ff01b25f0affd71b44c8c37d837e16eafee01cec7bf9075eb321b65f997bf241
 cp2k/src/emd/rt_make_propagators.F : 272864357d308f163cb4f3169da9cacd4a1c29bef478b6f7e463840e00de36c7
@@ -1076,7 +1076,7 @@ cp2k/src/ewald_pw_methods.F : d92862d8df92ce936b497e3457356ee19f78febb4e470279db
 cp2k/src/ewald_pw_types.F : a58258f50b5eeb01552d90a3531b5d79923e2198e1a8b7a63d6aa91cc210a72b
 cp2k/src/ewald_spline_util.F : 92cac6248075a196f2959e946ff78dcfb28a81cec5a196f3e56004cd6461ace9
 cp2k/src/ewalds.F : 6dd4283b811050cf76331c2e66d21a57d4250bac284377da23b7a4b0754df294
-cp2k/src/ewalds_multipole.F : f3cb19853d7f040403a8b3ef2a5323e49d012e0112e08dbea32d09f666fa6c68
+cp2k/src/ewalds_multipole.F : 5e033f4405af1b826d5e95dd24ca1e05f4bbc5885191a167f098ff288bf06a38
 cp2k/src/ewalds_multipole_debug.F : 0ab04a1493ee8e53cf1d7d735157654c7d0972e98acea9be2e7953add72be0b6
 cp2k/src/ewalds_multipole_sr_erf.f90 : 21ba8860addf29b059d51821be014bb0e132a0d52f64e2f97ce78c3dbb008c6d
 cp2k/src/ewalds_multipole_sr_erfc.f90 : f91f9b33deda83c24ad8f8e43005ac211c9e8eba8c37118dc7b04c359ffbe8c8
@@ -1113,7 +1113,7 @@ cp2k/src/fm/cp_fm_pool_types.F : 6e9f8f1c4cbe94e9212f1a06d017fcfbcde91f3a9af0354
 cp2k/src/fm/cp_fm_struct.F : 967d48fab2b83a4d791c444487c2cfbf5b58122422dc5c610a4065593e0d5470
 cp2k/src/fm/cp_fm_types.F : ecec38da2c825e9903d86a2e96ef61dc43452bd414ac6beef7e2874a6a1dac22
 cp2k/src/fm/cp_fm_vect.F : 893f2b88eab88d9ca3e6112eee6ab7a763dd024e52f5c2081931f7de92e93624
-cp2k/src/fm/cp_linked_list_fm.F : cef85aae73a90ccb185b1558ea0cc7a2f229411a5f6af91bb0183d292b4cd3d6
+cp2k/src/fm/cp_linked_list_fm.F : 15813c746f639cd03fa7baba5da464b225d2cb325e62f7dee7130a0c741d6422
 cp2k/src/force_env_methods.F : a1da5fdcd729c31f0fee153283e6fa6da95ab8455f364a33e35da92751d57f06
 cp2k/src/force_env_types.F : c883fd77cf3ba5aca43b69bbc42a98a964a9a9bda839a3084ab90d577fa75827
 cp2k/src/force_env_utils.F : b07fc2ae52f6e6071ecc8268e33244f3a96b9fbdd7a891a4ae06140d64b6d85d
@@ -1126,12 +1126,12 @@ cp2k/src/force_fields_util.F : 61fb7adcc082d5014d85f10204b18d2c279e5d0d370d5d5fc
 cp2k/src/fp_methods.F : 881de2d26c755e8f2c35760c686eeb67849725bb6b13f114dd9bd71bcfe25909
 cp2k/src/fp_types.F : 5ee9e047e347adf019d056c2740a10310a0b96489ba47301c7b0e7542428e26b
 cp2k/src/free_energy_types.F : 9cef4ba633f984a011b85d83e9ecef7a84920d0d62f0ad0d56d5848d8ab1964a
-cp2k/src/gauss_colloc.F : 43008a4f5ae96eab9b370687fa396442b99c852fac5bc8c5e6872ba6f04ad853
+cp2k/src/gauss_colloc.F : b7d03741bde097e5135f5e1d911ca62660ccc8942709b0fed725db1244f2a9af
 cp2k/src/gaussian_gridlevels.F : 0850d459defc67ab4d44fdbb7e146b1dad63bdcdf0fd9827e7919536c3c35f5b
 cp2k/src/generic_os_integrals.F : 2c829f6a441745c7b79e3b8a4c3962b7b43a42d447d91fde8e1bbcf602392eea
 cp2k/src/gle_system_types.F : 19be2eac7a480902814e0f97e69c1cb200c8a8b7532566a757412c35aeb2ed55
 cp2k/src/global_types.F : dd02953ce05674741454215925b4c562c14f2c69480846be6c888e74fdfb1190
-cp2k/src/graphcon.F : parse error
+cp2k/src/graphcon.F : c3156d3e355a84bd907033b3f952aa391ba42dcb01918e7d30c307595fc37a6e
 cp2k/src/grid/collocate_fast.f90 : ad1e3e7f7d170cf786d42b89127bee120d871bafcb5d73ce6f591a91d961705c
 cp2k/src/grid/collocate_fast_1.f90 : e3da918ab76d952e1ce4aaee8587c07ffd4a924ba3355a48a9784c4da8ae1d8c
 cp2k/src/grid/collocate_fast_2.f90 : d43d6fc9dac09ddeaed2b982ebb994272332ca52c9ccbf3a7c54e8cf292de48f
@@ -1148,7 +1148,7 @@ cp2k/src/grid/integrate_fast_3.f90 : 890f72045599f99866b5a4e199e80b15886153fce57
 cp2k/src/grid/integrate_fast_4.f90 : 8cbdb09756c249ec640d8600baec498620813d02f30f2e79b88cbb97ff802669
 cp2k/src/grid/integrate_fast_5.f90 : 4dea42ae1c24c3babc33a37924ba7db3a063fbc969bf6d75e90a1426542697f7
 cp2k/src/grid/integrate_fast_6.f90 : 63206824475dcfb490f35613bb1f259698973fbed268282b87e0e71abb61ea60
-cp2k/src/grid/xyz_to_vab_optimised.F : 79421da83cb350721ed399c3fd91c6c42743cae145d5516bad10babdd46ad1a2
+cp2k/src/grid/xyz_to_vab_optimised.F : 05c9db650dc511c6d62f4436f5a2950a23311ea5d8724d816852ec6fd6b860a9
 cp2k/src/hartree_local_methods.F : 4cd4e78d03056df1b2a226dda567a9f33bbee5a2a644db7ba204d9c661abd9fa
 cp2k/src/hartree_local_types.F : f6857f042d9fb9dd907be509df05f4a9603fa61b71e311d1995c05571fb30d6e
 cp2k/src/header.F : 6d5eb431a977cd2b7da007b656cb38cad568a544c70b944df695bd03b4707baf
@@ -1191,12 +1191,12 @@ cp2k/src/input/input_parsing.F : d5e76f3a4b88b55a9dc6d7ece7a02564ab53c5acdba5ff6
 cp2k/src/input/input_section_types.F : f52992407d0cbd2f6333aa5e30841fe069b5bc06c8b04976795f88d9d7e54095
 cp2k/src/input/input_val_types.F : f69212610cdae4331f6ee88f74fa6518b9b1d413db8647640ce128aa0b13914e
 cp2k/src/input_constants.F : 2038a5e7c10296161e8f3f1eab8d0cff5a80cd4044a4e3061293ce548c72d156
-cp2k/src/input_cp2k_almo.F : 5f5848c11aa07a11981f266661a27da5234cef2a204c6e2666efeb31b6379676
+cp2k/src/input_cp2k_almo.F : 1e344b8d877f28ad59e30ce391dae73b322a1042f19a0c4c38c0d77217120a37
 cp2k/src/input_cp2k_atom.F : faccb06ffd188a8ff6141a5a9f4389bf37399db6d805e01c90aa8f250ad6e9f9
 cp2k/src/input_cp2k_atprop.F : 0cebb1bdfc0dd2ecb59c85aaafd32389622d437720f31cee7c13c677edbf42b8
 cp2k/src/input_cp2k_binary_restarts.F : 47e8c352b9a44452c928b54efa79af8c904dd108b2e73e9dc67c19c2488a4a12
 cp2k/src/input_cp2k_check.F : 37d062584c93ab6b97a2d288b5853c2380bd89a825a48300fb42ff28fd934493
-cp2k/src/input_cp2k_colvar.F : 4fe06972574400f43fe54eba0909bbfebc48c2784fd6d06de7f309870579babc
+cp2k/src/input_cp2k_colvar.F : 11311731765233a669275474ec64dea8e18b0422f48e2fba955ff00b3ee7d2f9
 cp2k/src/input_cp2k_constraints.F : 2b272974c23b1f2d234c13587a96415abe6dab1d4e743eba98d8b3577aec80a0
 cp2k/src/input_cp2k_dft.F : 49ac0800c741dd06a095fab218d74b4f43ff06dd86bbd8a976b437f4e3db156b
 cp2k/src/input_cp2k_distribution.F : bef5cefde803319bfb8b46c15b623b765da3ed8b549b6384643b96389b169354
@@ -1260,17 +1260,17 @@ cp2k/src/mao_methods.F : 15aeccd44084419781b733b30c39bd268c00cd6686f2ad099f672d9
 cp2k/src/mao_optimizer.F : 620239661010917d91079cbaeef906a5f93c2e70233a75881516f0e61d3c53f7
 cp2k/src/mao_types.F : 243a7757700b6c7b3629b822c65026c1adc4f7e1e087374fd1c014d41558396f
 cp2k/src/mao_wfn_analysis.F : cc9fb05c51fab5708d26d975f35ac2a52eb9417ba22a426e0975c38f8fd33a6c
-cp2k/src/matrix_exp.F : ef850cd82ca47da67da5b97d4f14bc1ca00b191daf2b722eb66e09eaf723a93c
+cp2k/src/matrix_exp.F : c792fe9cc96d4b85b964153505fa1bf354130f258362f1f89610f12a5bc17479
 cp2k/src/mdctrl_types.F : 065be5edf6cf3592db87959f2019be4ace83451108e46e2f236e3f3e2d30359e
-cp2k/src/metadyn_tools/graph.F : parse error
+cp2k/src/metadyn_tools/graph.F : 2bdf8555dfb028205a7bf35a5d88b0c1619c16dd0b8440bd0008f18bb9d3da7b
 cp2k/src/metadyn_tools/graph_methods.F : f3e74ab5f12b754bb27352e39d22caf13f780f19cfa2acc7b52ed16a8efd7348
-cp2k/src/metadyn_tools/graph_utils.F : parse error
+cp2k/src/metadyn_tools/graph_utils.F : d056c62f4d99692f1d185747757bfdb6625967275aab8d966bc5b6fd267d14e9
 cp2k/src/metadynamics.F : 788385008dfce7c070f37708d252ae475f88c5b88f696d365d54d56b710ce67b
 cp2k/src/metadynamics_types.F : b94c2e2c9fe6caa733390766f2e54ee71b9c75196a18e1d819213afad0042d87
 cp2k/src/metadynamics_utils.F : b2eb04705c2dd6757c99e9c82a834769de27a55ba6a85b853d65894f024a3447
 cp2k/src/minimax/minimax_exp.F : bf93f4f9e2ae18b6002270273ff50eb1e2efe285b51841e721293b7ba0476f0a
 cp2k/src/minimax/minimax_exp_k15.F : 7e00cb04bf878cbedbb5ff2e358c4cfd8273ffa878fe447507100e8b1bbed1a5
-cp2k/src/minimax/minimax_exp_k53.F : acc5d297636183130705ccdb9023b48b0e05b39572fe282c46a5c8d7fb0bfd43
+cp2k/src/minimax/minimax_exp_k53.F : bf3ae69b3acccbc481eea53d507bd65136ab7f942218a19038a883c2943c254a
 cp2k/src/minimax/minimax_rpa.F : 73fcb9e9fe9cc16d99bf7627bc2966f34eba613ed248ad324856f64906789aa6
 cp2k/src/mixed_energy_types.F : 862f50490cdbf1be35d6295894749b708c7ed641caf16a387e53b425d05ac43d
 cp2k/src/mixed_environment.F : c6f05cd2479e2f202421e294b5872cbe037068255e24ffcab1f9bb5a55bb2946
@@ -1286,7 +1286,7 @@ cp2k/src/molecular_states.F : 3fbb8335e79ab1c22419e394a773602586955024eca0dbfba7
 cp2k/src/molsym.F : 8ff4c7c33d06e598f882b4562e06a64314562b909b07d9e485d0d0bbd5771f52
 cp2k/src/moments_utils.F : dfaef3ec40d7ea6c519a50709962bfb69fd8fd859724b746c1d72e23ed311153
 cp2k/src/motion/averages_types.F : 2ff863be0d41fc125f8f447399f652af70c8e5c96a11c2779f440c2cd27799c5
-cp2k/src/motion/bfgs_optimizer.F : parse error
+cp2k/src/motion/bfgs_optimizer.F : ad771677b21e988286ea805642e16236eedad172af1294fb12696144a0ac03df
 cp2k/src/motion/cell_opt.F : 61e7c6a54e65007c214994ae778f4370312f7ec2f8255a15e1e3cc93819c44aa
 cp2k/src/motion/cell_opt_types.F : d4cd7671b367eff7fe172d326bbcd035ab52f480f99fb60f4bd517f5bf0f16a6
 cp2k/src/motion/cell_opt_utils.F : 50488c45b14f9558e8a605e87a0e46946c62cd5eb28e99b911279194725fa956
@@ -1314,7 +1314,7 @@ cp2k/src/motion/helium_types.F : f9c3460a3bf615ee57e168928d26b40ebc6b4dff00cb500
 cp2k/src/motion/input_cp2k_md.F : 6273902fa3138816cbbb8b27e34cc7db7d1134e19f5f86e619d93f97e614ea2d
 cp2k/src/motion/input_cp2k_restarts.F : c86db2a704ff9ffffe3ff813cb443ec21ada0499f77814f0b8cf2535386a4f55
 cp2k/src/motion/input_cp2k_vib.F : 4215dc1f00161bdd1557f595319ddf178a2e8adce2e64cdf6f7bc8a3802a0646
-cp2k/src/motion/integrator.F : parse error
+cp2k/src/motion/integrator.F : 721784050d29447135430e317b069a07cb5a00dbeb75b8463220e35e4ec04e0a
 cp2k/src/motion/integrator_utils.F : f096d6d2aa61a8dbdc2f344f2593481a66a028b63d000c140039cb315b9795e2
 cp2k/src/motion/mc/mc_control.F : e4fff81424e95a4cee50fef737c53fb2c2a1e17d9cdd95273f99ac5518de5395
 cp2k/src/motion/mc/mc_coordinates.F : 1e73f656a56beca980c0b8db514ed94e263b4ce8a5116aa74e18d02c9540d93d
@@ -1322,7 +1322,7 @@ cp2k/src/motion/mc/mc_ensembles.F : 440144a4dc4b6e7d937479da699227f6b88bbc5bb2f9
 cp2k/src/motion/mc/mc_environment_types.F : fbab01be5aedbfcb0ee13d9f4ecd49b9059a600009a079869a779fb1525d29f3
 cp2k/src/motion/mc/mc_ge_moves.F : ccb4f1455f85b7a39d17c8b642c3752bd0064c2b69a72d79ca2854ce7d11e827
 cp2k/src/motion/mc/mc_misc.F : ebd9e9a9c7c3c1b6291218e2535b702124e1a5867787a61ff2982f6e591f6b9e
-cp2k/src/motion/mc/mc_move_control.F : parse error
+cp2k/src/motion/mc/mc_move_control.F : 3a13401b7023de39a40ca76d644a7e173f576a6e411c0347ef8f645919f01614
 cp2k/src/motion/mc/mc_moves.F : 83ad48f8af75ce1da1dd8036d0f6601238ebe14525b50a1993abb992d6b82d2d
 cp2k/src/motion/mc/mc_run.F : 0dd9cb716cbc22c15bc93baabf518b605ba0aee0ed3b625fac0beb08f57371c9
 cp2k/src/motion/mc/mc_types.F : 5c5a9524dd06d2afe7cf3216d362e837a87190300af8edfd565b23b77972a578
@@ -1352,7 +1352,7 @@ cp2k/src/motion/pint_staging.F : 4fe5062930f7defb5b465e4addee0c640746d1067235510
 cp2k/src/motion/pint_transformations.F : a599967b551ae3f6bb56e9a82263ef0a94f0a626b6d9add1965746ad03e73cc6
 cp2k/src/motion/pint_types.F : 303dab6e0987f27a6899e4cf723160fdc2a022daa81f47d6f6c59a42fb2c95c5
 cp2k/src/motion/reftraj_types.F : 3fcd1b34a169b3de0bf1257e08e87640aa111a4a80bb579c7ccfbd655de78f44
-cp2k/src/motion/reftraj_util.F : parse error
+cp2k/src/motion/reftraj_util.F : f21103b287250e40307194c87332c2dadc09e26cc0e247637e9792f858cf3953
 cp2k/src/motion/rt_propagation.F : a2249516d4531b42185e2bd05ba7230884577200ca2830e53f369ef9a906b91e
 cp2k/src/motion/shell_opt.F : 70ccd164e63f0b89c44c77a6bc8649b4165f58a8084589a79751686ec95b0865
 cp2k/src/motion/simpar_methods.F : 3fa85acde9f083fe9230b935a135469bf28d1607daac7d68a8e79ea2018e4fd8
@@ -1406,7 +1406,7 @@ cp2k/src/optbas_opt_utils.F : 2d9390ce9b543cccaaa427f0d3b6d094da6b15af1cdd954246
 cp2k/src/optimize_basis.F : 46aefec5c6900590f6bc2d431ecaf38cda4c3e8394bdb57534860e3ea035b64e
 cp2k/src/optimize_basis_types.F : c6dc74b7a58eecc730d3cb6922e6efdff1ff99ec012b1c5b8bbbcdd0777bc7b9
 cp2k/src/optimize_basis_utils.F : e9ea108b18852576905665dc949e7f3c298ce2ae20e7ebeb3038131f8da0ec8b
-cp2k/src/optimize_input.F : parse error
+cp2k/src/optimize_input.F : 5b96bcf0b5ad544e0c4323e683eecb59493592f8b2d72c086db61f2e01cd3708
 cp2k/src/pair_potential.F : 723b6cc6a31fce44324bdbb005fa85ad6dfac1a6ffa6faf75f72d95229185ac6
 cp2k/src/pair_potential_coulomb.F : ab31ece7ad7ad0915a1cf2304a17d731a4d93a1de87f2a07cc32452890ce18b1
 cp2k/src/pair_potential_types.F : 8c9862b14ab5b76fa093f5f4da080d6ab76eb3d77fb2c6cd51e5826d20fceb47
@@ -1445,7 +1445,7 @@ cp2k/src/preconditioner_solvers.F : f93067e2e93157e334e19125056653a2b54199b5899a
 cp2k/src/preconditioner_types.F : 3a0a7d2dffa6f73e44fa37ff6a1de25a8c6d3be0f2deb36200e104e0e4d2e592
 cp2k/src/prep.f90 : df5e9a7a3f66a503ed34f68798cca53cbc1a81d2ea26b13fb8f597b07fa71d43
 cp2k/src/pw/cp_linked_list_3d_r.F : 11b456b22585ae1b43da43c2aa944df4f69eb89cf5f631e9b88605c243b40040
-cp2k/src/pw/cp_linked_list_pw.F : 4fbe05fa9e230ca15ee6a62cb53f338940d8a3d7efaf54af9148685da82e7a03
+cp2k/src/pw/cp_linked_list_pw.F : 3d4b0f718f2b5dc513be5b86b6e5be58db437974ed8101432227dc189497c6f2
 cp2k/src/pw/cp_linked_list_rs.F : 23377e63a6deaaf92f5167e368fda1189e58312acdb36ce3781c41b49e534d59
 cp2k/src/pw/cube_utils.F : 7b8c3c56876e9084e17c07f71937c92b1820b11253a51cf05ba9b948bb598b23
 cp2k/src/pw/dct.F : eb4a124768c7ca9bdff92fc29a55642655c0f9de93617d3e47141f2e426f2ef6
@@ -1460,7 +1460,7 @@ cp2k/src/pw/fft/fft_kinds.F : 534ad3825753d96a33d652f8d5f55a39db5b60a7ac529fec22
 cp2k/src/pw/fft/fft_lib.F : 101afaa199288e9ca0da9635467260769369f10921b4c90a23d1d0e29e01febf
 cp2k/src/pw/fft/fft_plan.F : 376cb581e4f59d19668eb9db3b2bd255e6134d84b1ac9122382f033cf1ef934a
 cp2k/src/pw/fft/fftsg_lib.F : f332f7155c217b393ad234d4f09597ea46b9c951062df8961876e7299a3ff460
-cp2k/src/pw/fft/fftw3_lib.F : parse error
+cp2k/src/pw/fft/fftw3_lib.F : c221ebdad8f90ec575eecb57dd1d2018ecaa6ac7b8fc0850e94407d8ac81cb73
 cp2k/src/pw/fft/mltfftsg_tools.F : 88614f76b60a63f9c316b08cf1b3bcd0c755f21a8a3a59f94055bd995de5ac6b
 cp2k/src/pw/fft_tools.F : 30142424c09a64cebf7ab6198a0069604d117ed9ad51f094f3d81659fbffe361
 cp2k/src/pw/lazy.F : dc2d3fc3146506f7ebdc0c9065c3c344c88aa41a4fb70374a543ca9607e4ef1e
@@ -1469,8 +1469,8 @@ cp2k/src/pw/mt_util.F : 10ce51e6715fbb6336d50f1ce8d40cc2e94f1e14d9de4862a2451b0b
 cp2k/src/pw/ps_implicit_methods.F : 1c72f33703f64e5873e47b3bf015a948cd22bb2197f9cdb3413c081bcf76f963
 cp2k/src/pw/ps_implicit_types.F : 61882787149f5ac12977347c755780920fa9db8e2523095fb99b853ea40db5f4
 cp2k/src/pw/ps_wavelet_base.F : bdf441a050b23fd8b29d3641b84529a78318cc12cdf21efb2d3243cebddf350a
-cp2k/src/pw/ps_wavelet_fft3d.F : parse error
-cp2k/src/pw/ps_wavelet_kernel.F : parse error
+cp2k/src/pw/ps_wavelet_fft3d.F : 10f5859855eae0ecb07548c1a13dcb9ecc0b7adb36e7adf5d7ba9e6da2e71113
+cp2k/src/pw/ps_wavelet_kernel.F : 167720c262b15eea97381958ba94d887a4519e0a76e2d4de7226a865f66f896b
 cp2k/src/pw/ps_wavelet_methods.F : eae8b175c4434e757a377fe373304c2497baaab986fea317b702e30a15ba743d
 cp2k/src/pw/ps_wavelet_scaling_function.F : 12d78792bb0b7ba82f883677e4a262410fae5306cb6c70975ec7068a1887bb04
 cp2k/src/pw/ps_wavelet_types.F : f05f01d6cb9b382f0d4e3b910949d5fa309eee9ddb1c8d55395b790469fb0b48
@@ -1500,7 +1500,7 @@ cp2k/src/qmmm_gaussian_init.F : b5f133fe48035f08681799229ca6a2c4438dfdbb4de5f85d
 cp2k/src/qmmm_gaussian_input.F : 514aece84a32c21b14509cb2a5d65507a659de4edaa85a65e13fcea8b4276bd1
 cp2k/src/qmmm_gaussian_types.F : feb04f1521118988897212c79b14f18e8bc0cb7f6fc88dda5759694f063d9589
 cp2k/src/qmmm_gpw_energy.F : 33d3bc528f49e0510674790d45bbe4933d4c5d6f72c23f8e33dbbdb19a178cdd
-cp2k/src/qmmm_gpw_forces.F : parse error
+cp2k/src/qmmm_gpw_forces.F : 64bd9a0770db9521181f3fdf3252e20f5d59109283852668d82674a9f99c0eb5
 cp2k/src/qmmm_image_charge.F : 703b2fe34c3df3f3219e01e685ef2d96a5628ac29743ede2bf9224e1d43e1ba7
 cp2k/src/qmmm_init.F : 80541ac18860ed1a256d0d6e422a4bc00641034cbec7219616ee304512ea861c
 cp2k/src/qmmm_links_methods.F : 608cfcaaec8814985bdd5bcbbb0122cf44bf75a403047274052961886ca3823c
@@ -1523,7 +1523,7 @@ cp2k/src/qs_band_structure.F : faff5b2917e87666abd3bff33d418c2beba309e5d16c3b8a8
 cp2k/src/qs_basis_gradient.F : b0ac78358aef351858b6c194557eb9796768f8d050a0169e52f8d62cc9e2a4af
 cp2k/src/qs_block_davidson_types.F : f4b15678ef3b0f4911046d5ce2dcd624383c64121d08b5e1ce4269c6b8163ace
 cp2k/src/qs_charges_types.F : 6eb5c3231d1c84067a40e33d0460416671883467a9ae05cadadfe1e5055c013f
-cp2k/src/qs_collocate_density.F : cc4e5f5d9ef6f2d566628b1244d864443906c9ce9d9810dc841cd602a009d928
+cp2k/src/qs_collocate_density.F : 042d07180b030d3e4aff278fd70d1ddeb6e23925d238d13cea9e10d04b807a93
 cp2k/src/qs_commutators.F : 307a3d309e3f9118dad4c179008f6d0a9cb2adb81cecf5153d97d53e3620be69
 cp2k/src/qs_condnum.F : 64a0667b3f237b9011b5d0134892c89fbc5c15ed2e6f5b42ac67cad49b15050b
 cp2k/src/qs_core_energies.F : dcc3fc0fed0172b2ceb033c929c7ac58b3534449c16f6435eed00a7e3ea0d4c0
@@ -1533,7 +1533,7 @@ cp2k/src/qs_dftb3_methods.F : 79659cdbfc59022af871ef89aa51720b8e1520f6e447317181
 cp2k/src/qs_dftb_coulomb.F : 1a8e0a39b68f4ed9532024704c75494d1c523e22681b2b3f659dafa5d21eba8b
 cp2k/src/qs_dftb_dispersion.F : a24e8976d7001d7b7f03fe01ba182d5920627d70a77a560afb099945dbe196b4
 cp2k/src/qs_dftb_matrices.F : 9abf838714b3bd96b93084b25bf64dea2e1f1d98ab7bdbc1e243c61206f1afb3
-cp2k/src/qs_dftb_parameters.F : parse error
+cp2k/src/qs_dftb_parameters.F : 53feddf023006f044b37953ff69ed1966dcc71eb82e92548fe4409ba0c51916c
 cp2k/src/qs_dftb_types.F : 0f3fc6401b9fb72bd11bfb8061538fb32a87ce7208afdb663635387fa336ed3c
 cp2k/src/qs_dftb_utils.F : 152466a60931537cea91cf8b0b56007024b086a7912f96760570633ec9b1958f
 cp2k/src/qs_diis.F : 5fbc9dbcc9f3d397616ce63c1f192a9c8f210a34d69a4ead59a8e24686a0718e
@@ -1549,7 +1549,7 @@ cp2k/src/qs_electric_field_gradient.F : 0d71fc70dfc4f91ad6e78322e82e36eb0c7885ef
 cp2k/src/qs_energy.F : aa287a7dca7e0086b58739ab3001b794c7e0526988810181e151c15bdcef72e3
 cp2k/src/qs_energy_init.F : 758c6f1777d4a5770fef55dcf32c0afb9ab87fdf518f44dcbc3929e83d571964
 cp2k/src/qs_energy_matrix_w.F : d59d5451cf0cd3f2fdd7d62966aef55b0c4558830c6bf548ed20aa7e4e8cb303
-cp2k/src/qs_energy_types.F : 08b48f7a5b438163688fb847e5a9927a328f44b77523f2ad2e3d9f21380dde81
+cp2k/src/qs_energy_types.F : dd62ff86e060bbad56ed6d11c0618ebd9428eb268a2d652a41aac5c04c793f85
 cp2k/src/qs_energy_utils.F : 54e0a8d01000f8428363e0090cb439c9c3f28e5232f416f8d931417bdc955fdf
 cp2k/src/qs_environment.F : 25c5f6f81b26da1f42a3d2ddda11b70f0033066a58a7afd74071d0db7998908e
 cp2k/src/qs_environment_methods.F : a922939af1439bd3049fde96259da0deac8110eb82ac5efbd80508d9147e1876
@@ -1599,10 +1599,10 @@ cp2k/src/qs_ks_utils.F : a3b559048710168408ffc957151693d22b539e12ead734c58fbdfc9
 cp2k/src/qs_linres_atom_current.F : 9a4ae14c8c25e05f6a83b9cda7f1fa9ea00cd89ab30bd8ac9c46f8c412b14df8
 cp2k/src/qs_linres_current.F : 079bfd8abd5d87928b3d0a2fb5fe988d84694a0c813356968537affad1366e8b
 cp2k/src/qs_linres_current_utils.F : 2296943bed0004e090d7da45dc1313b469e0108c93dfd900147d29c586aedf9e
-cp2k/src/qs_linres_epr_nablavks.F : eab0425d93d0295befe637ef48c5ef5a543086b57d72f44b22e01edb78210bfa
+cp2k/src/qs_linres_epr_nablavks.F : a23a7bc976ccedda0f08d1890741f41661fb61de95e0960746d0146db5275a12
 cp2k/src/qs_linres_epr_ownutils.F : 1bdb3497b85fbbbb7948078b03a62956683ba2579b19578bab547f10f9c6b0cf
 cp2k/src/qs_linres_epr_utils.F : 5ba6b81e72face62327b95e2684fec7c18bdb716b36f657b62304e3674e63cb1
-cp2k/src/qs_linres_issc_utils.F : c70f39d6c61b9c2ba2f0444c3eb5ea65e95157e11c292ba0bb6355fec71b433d
+cp2k/src/qs_linres_issc_utils.F : 870daac180d9b65ac2f6aa6f7fa4c40585965258b1a56985dd6bb930b093e3fd
 cp2k/src/qs_linres_methods.F : 10a3f403751d9cc57f09889ca4bd05dd05cb1e5402b631718f102157c37c8de7
 cp2k/src/qs_linres_module.F : 74349f56473e07859f0d54826826f582cf3a3df40dd2d8395ff0cdf41ac95e11
 cp2k/src/qs_linres_nmr_epr_common_utils.F : 1f34d3f59bd5e4f10f17ab89d30a9dc0ae19ff52555babb8252a62564f665734
@@ -1614,7 +1614,7 @@ cp2k/src/qs_linres_types.F : 6d99256cd34fae303a7e447416f0a83d3bfcef7acd6fcc2ab83
 cp2k/src/qs_loc_methods.F : de52bb1c1629fcb53031ccdd25f21b08ca7b3ec1f16fb0ca1d8a91c7e8f80b50
 cp2k/src/qs_loc_molecules.F : a51fc18e36698c7bd20c433fe14060e25e5495f8205b0efb5d3073ea0bc1102d
 cp2k/src/qs_loc_types.F : 20c2e1c71adc8d3ca283ebc062801cd06e8c4356a92a13a7906ab2ea3a1a0dde
-cp2k/src/qs_loc_utils.F : 8d9e305a84f6bf0afda93c4f87e09874385ffca4e6e9fca762babb176b80c659
+cp2k/src/qs_loc_utils.F : dd3ec916057c2a8ac83a6ac038e3fa3228cd4abb1b7300a305993b1c7e9dc41f
 cp2k/src/qs_local_rho_types.F : c92c17b9a882e155d7e7d34ef26659ba85f135532880ac69c2382c7a28ef476e
 cp2k/src/qs_localization_methods.F : 4563d3f2f09d848b66fb40ae00655ea63c14493e73f713bb73ff65d9ede8f162
 cp2k/src/qs_matrix_pools.F : c3a17fb6111409309985db97caab10971496829dd7b2dedaec93967619864e5f
@@ -1688,8 +1688,8 @@ cp2k/src/restraint.F : bed795eab73359a4915fbe0ac6bcae7e8cd865aa83c5cd1dad618b44c
 cp2k/src/rmsd.F : d7b7de03e144bfd35142d0d37e944fdba6b763661cbec782a39b79bd989a7844
 cp2k/src/rpa_axk_util.F : 44725845fdac3e83609e7759c8575ed8b414d0b57e9a27d39d7710814646bf73
 cp2k/src/rpa_communication.F : b048b2f1a29b27e7a0ac328ba12dcfcf3c9f396bd86985ca151af90a7c4a7ab1
-cp2k/src/rpa_im_time.F : 007633e092eaeb0275f97b42d0cc3881c4e90ba6ffad0322efaa8851d485155e
-cp2k/src/rpa_ri_gpw.F : 928245357dc0437b10db952588714cab0356ad184bbaedb4e1d0e83a0ad6999b
+cp2k/src/rpa_im_time.F : 8b29a32e7d4e918b27b629ca7f4a577c7ab0bf94cbed55d79524c35bff4ea0dc
+cp2k/src/rpa_ri_gpw.F : c436f9cc024b49ac0119e38de06a9353a93f6a9672b4dedda9185be95a330faf
 cp2k/src/rs_pw_interface.F : 20ad57bee3ddf7601c8631233a9a0d71a6f90dbe7c1703d0e83b2ef6a8dda3bd
 cp2k/src/rt_propagation_forces.F : a4ac6fcc9c88af9141eb079563c1cb76cf60029bcb36d021d542b3249f886da9
 cp2k/src/rt_propagation_types.F : 603bdb3476d2693d9b1c7f28485c2b54be053a9d3f863847d0fdba805285c266
@@ -1709,11 +1709,11 @@ cp2k/src/se_fock_matrix.F : 41c03c0e497287bd1209093de818d8c2da4b8d646faa73c44993
 cp2k/src/se_fock_matrix_coulomb.F : ee403e1614478929ea722cab72b4c7ededdc8e1ae30e1ddf2edec98cd31f4150
 cp2k/src/se_fock_matrix_dbg.F : 0bcfcca7e246f63fd2d7e7e28a624c61d82bc1dbeb9a395028fd08bdbd5c42f6
 cp2k/src/se_fock_matrix_exchange.F : 4a8088e1367a82b842bf1ec92678b610fd59668a92255d2d4d1bfe7ed2f07271
-cp2k/src/se_fock_matrix_integrals.F : 0ca9bad6c2cdb3b807a7d892c8ccad7e097c7b986979a4796d8d5dd14d413e23
+cp2k/src/se_fock_matrix_integrals.F : 6da77846d72f4e246c7feedee41d5cdf04f8ecf1302cac35f119a21d96cd9725
 cp2k/src/semi_empirical_expns3_methods.F : c78968ee6dc8104d6dd7236d845861d93a29c8ac32b68b49174fbc6c5c195dfd
 cp2k/src/semi_empirical_expns3_types.F : 2ceabc6f98432f2890bcfb3445720a0566ffafe91612bf816666148c7b8cd5b7
 cp2k/src/semi_empirical_int3_utils.F : 0ed32ae675f3bc31b292c18d20c55782a34d4708540d213b61797ce4b3647457
-cp2k/src/semi_empirical_int_ana.F : baebf23adaff89ff73967bd7b305756c70294b4915a8d5921e7a3873a60d0b39
+cp2k/src/semi_empirical_int_ana.F : bb2d91cd84203cef447946ae91f92e27eb55a7b8362bd1d8edc9e00e355ae63a
 cp2k/src/semi_empirical_int_arrays.F : 6d134789fc708ca4310539ad754c55ac3a3ac5b9b8ba08fe4088af6c5da4ae84
 cp2k/src/semi_empirical_int_debug.F : 646ee15f039af011fedd2642ebc59b13b1551a941a643ae61735306c2f3774cd
 cp2k/src/semi_empirical_int_gks.F : da4f7dcd5fcebf6a37b833a5725f6c165548402de5132b6fffd7ac0b81f08bec
@@ -1739,14 +1739,14 @@ cp2k/src/splines_types.F : 30bd25f8b652d728b3273c3e11cabdca6e3b013d4f7936b2853e0
 cp2k/src/spme.F : 5e1a3a61f6f4cc9a327bee273937748f8cb78990f14dd28dd05c0f1691edaacc
 cp2k/src/start/cp2k.F : db326710639429b69f225c34e62bbfb0e33852016bc561c1d396e6fd01751791
 cp2k/src/start/cp2k_runs.F : 9b93359dffa6f0847452f1534f3540bf90cb011fd05ea8b8de61ccb84bf54c1a
-cp2k/src/start/cp2k_shell.F : parse error
+cp2k/src/start/cp2k_shell.F : abae9c7dd6525d476fb9920ac8536ebf412b243db82992b47970694f001a3209
 cp2k/src/start/input_cp2k.F : 11e264f1079200b2a9d6b9ad250f54b7b2620f1ddd9046e250411a46a908bbf7
 cp2k/src/start/input_cp2k_motion.F : 07e137a9f67df75d09400ca895011a36d0975fe59dd66cef349ef89764cf3773
-cp2k/src/start/libcp2k.F : parse error
+cp2k/src/start/libcp2k.F : a4d2eb5d82e4c025ad20a8bc9dc71293817809ea7b39a52bc63e744c5399dd73
 cp2k/src/statistical_methods.F : bff23ffaf41e06c4e81510cc0284c8737649a186b23f77a234febb4fc992f1be
 cp2k/src/stm_images.F : af42e925db4c008512e9e6ff17110a77c9227358195979e19a202c1d3c5b0287
 cp2k/src/subcell_types.F : f78adb5d1cfedc48617231f08286abb518a59f8289a7f6c845c033264e933b6a
-cp2k/src/subsys/atomic_kind_list_types.F : ece96c7761e4f10b76ee08b6699fc92521d8a6a03eaaaecd8a6f68af614533df
+cp2k/src/subsys/atomic_kind_list_types.F : 586bc2aa6f35b2c617b00eb3e8df1291194df9556fd93293511c832d30b56875
 cp2k/src/subsys/atomic_kind_types.F : 7ca9ff7b7625dbb7e0a66c05c1109d4ee602f0c208fc22211541cb0d59fa9e9a
 cp2k/src/subsys/atprop_types.F : 152c7b52678af8bd3abaab1af13f3ee99fe0e08f40a009074a814a9ed48185f8
 cp2k/src/subsys/cell_types.F : 159c33b8eec54372e3195a471607a96a3578ba703c640caf03327432cffec7df
@@ -1760,7 +1760,7 @@ cp2k/src/subsys/mol_new_list_types.F : e185020ae50742ff19444d2e124bc1a80d58e54fa
 cp2k/src/subsys/molecule_kind_types.F : 2c4586d0c57a5c45939fd0b4760599f8ab5fffa05184b0e7f975265ff55389f0
 cp2k/src/subsys/molecule_types_new.F : c27532f407e39cc691f6c6ec07ea0e4b1f38b70b753f58dca84797b9da491222
 cp2k/src/subsys/multipole_types.F : c26c8e6afa06d27abf108d575ac3825f25219b7ba769d852219a66006a71fa05
-cp2k/src/subsys/particle_list_types.F : a44b452b386de2512c2b3614e7cce62df63f0f60f8c7bc01253d926edcc96b8f
+cp2k/src/subsys/particle_list_types.F : c830f6444814fc883f062b0729db6fc4441a8b6c605655bda9271b763285b397
 cp2k/src/subsys/particle_types.F : 54b411ce74d2de8977a9513fd489df8c0fd44e949147a3f34a0def4c84ec30a9
 cp2k/src/subsys/shell_potential_types.F : 85c09dcc0736cf630e3572a8bd58dd7fdea64c4180e9f393709bbb507733a209
 cp2k/src/subsys/virial_types.F : 0c0ea7c0076a24d8c1f145b03798d2fe09fde7451438deb860cef763a5e713c5
@@ -1773,8 +1773,8 @@ cp2k/src/swarm/glbopt_minhop.F : 273bf6accd54c88c24bce59e30ba26fbed48cbbf619bbe9
 cp2k/src/swarm/glbopt_worker.F : 4c2763bbe170af67825c3cee483063b97a5d7965dc9edffc56300c3669919fc1
 cp2k/src/swarm/swarm.F : 6313c69d0c65c0d0efe2126a75dd702310747b14c0ce136f59bf9ce295294e2b
 cp2k/src/swarm/swarm_input.F : c6ef9667f13e47b6f9b8c10a89d3b29c909b05f8a4d89753091ec4187fcab93a
-cp2k/src/swarm/swarm_master.F : 49b15ceb10a73a9aa24c8993aabd5219f31b35a8c1f7cac77caf9c6759342ce5
-cp2k/src/swarm/swarm_message.F : a649bff651da1e6909f1671792c04b66e84a68a7cd16b51c016284d6df52a1ec
+cp2k/src/swarm/swarm_master.F : 0c210b539f5cb9af878c602a44f09ac11f28db006dbfe62d1f916bf124c8b82d
+cp2k/src/swarm/swarm_message.F : 8f3691e90ff5f3eab47fe342d3155386e4344db70f936e1cbd46d7bbd9505a96
 cp2k/src/swarm/swarm_message_1d_i4.f90 : 240f840d0da06c49bb39bc6afb5a4dc74c88d1c7e1b571402e1692d35ca68a9d
 cp2k/src/swarm/swarm_message_1d_i8.f90 : 5634fa218e66302f8b9a3dbb7a23fe339644787777be0b5a60dd4fed3def9445
 cp2k/src/swarm/swarm_message_1d_r4.f90 : 263254e50ccc60ca499a675cdcbf0f11be384a29c53798df1161a21887b376e2
@@ -1825,7 +1825,7 @@ cp2k/src/topology_gromos.F : 36c7df026241ebe1fa3cd26ade2aade6c1691bf2f571987e077
 cp2k/src/topology_input.F : 30019d932be78056fc8b959df6b113c59eb07127946b315cfce27b4d16828af9
 cp2k/src/topology_multiple_unit_cell.F : 797c42970f06448a8a25f25fbaf113b664a07064d6876de9caa39db45ead1419
 cp2k/src/topology_pdb.F : 77430b5fd5deeab24f6f5de4902ae7d441c781555645065193c36221b5dd3e89
-cp2k/src/topology_psf.F : parse error
+cp2k/src/topology_psf.F : dbae0644764372a1245b40e770261ea6610c9cb4e4d1123393d720e772c2942e
 cp2k/src/topology_types.F : 2e31986b37be7c32519667797d0017b28c93bbab089d8ca013e8e8c5c6b6d239
 cp2k/src/topology_util.F : e0c62464a69380b8ace8dcdfe590bb7bf10a6c004d7f0424ca69149713666578
 cp2k/src/topology_xtl.F : d51c6de4201f5edd94cf572a0705ff359bfef2007cccafe04d1a6b02908c2efa
@@ -1842,10 +1842,10 @@ cp2k/src/xas_env_types.F : 56361f691e479bc5e34ac58470c5189db631390c32201cc988c7b
 cp2k/src/xas_methods.F : aaccd82ad4c63f875e44aa4f094b3c495f06a7b9094af3d1e4faef33198c505c
 cp2k/src/xas_restart.F : 8ac7e487f77bea65bded1a5d39a5c0fcfe491395966245981646cca9eb66e5bc
 cp2k/src/xas_tp_scf.F : 7b29fe62708543fc0e5c9890686fd872a62905613818f12300d79730cecd281f
-cp2k/src/xc/cp_linked_list_xc_deriv.F : 08a83222ea1d92d81bd9c55b9bc5ccc106980bc66caa0b22ef71c77f1fd5f33b
+cp2k/src/xc/cp_linked_list_xc_deriv.F : 7fc6bd829ce54799737d8523f39cf16ac74aa7318361ad483dbe3db46a571e39
 cp2k/src/xc/xc.F : 87707112f5d898c2e19fd5d93192f73a988a5a9e14ca6d8e9d08babf457597a7
 cp2k/src/xc/xc_atom.F : ca990ed620a43a19886e4acf4baf8b5f4ff2e666f5e3584903af84bc5bbd1faf
-cp2k/src/xc/xc_b97.F : 9043e844b760f7eb64b60c879b1fbfb0a72bf5bda20769a9d9519bcb6001bc0b
+cp2k/src/xc/xc_b97.F : c91ad9ff7d11f29bba20f301b9fcd6d5bfc90bfa34df097b5866dded3890ddc6
 cp2k/src/xc/xc_cs1.F : 6fd026c72273a95ff099822c34cc00f28d859781057a83d7aef66b38130b83b3
 cp2k/src/xc/xc_derivative_desc.F : cef2ca6fa3db537a419966b5be9d7bd3098b6d773be11062d031bd1fa91dc64b
 cp2k/src/xc/xc_derivative_set_types.F : 4a4b50ce88c82e0d40cfa50a512f8b23cb47d3b9c742612ac4467661b16e2996
@@ -1857,12 +1857,12 @@ cp2k/src/xc/xc_hcth.F : b5437ca41437f667918f89be3d0cceada1171dbb6f233e6f9dc69f17
 cp2k/src/xc/xc_input_constants.F : 4470b0799f3f60e0bf9a0760de036c8ddb9c3bcabf0e0a386598b9e9570f0008
 cp2k/src/xc/xc_ke_gga.F : 6d132d2eb3b2782e4a81d226054a30590f61272b3c0b07c8af323846813cb41e
 cp2k/src/xc/xc_libxc.F : e8cdedf5fdff089c5e32c14c213cdd46babc3db601c1ec32a53b014be9060fe9
-cp2k/src/xc/xc_libxc_wrap.F : e1ee6fbfb03d8214394685ff3743e4ea213aa8841699de76f09f608ec62e74fc
+cp2k/src/xc/xc_libxc_wrap.F : dad934ddca5a82f73b25fae9f13739e5b6de26a734e6ac2d9a271800a5d186af
 cp2k/src/xc/xc_lyp.F : 5353b309524e2c5c9b950721d724f0d9aa0a53e73fc2b224040357cd129eccc6
 cp2k/src/xc/xc_lyp_adiabatic.F : 8c854e0e285a4efdf8180e14ce630e379b4fbbaacdea5899b2bbd556a0e21356
 cp2k/src/xc/xc_optx.F : ecb9cb49a013278d326ad90263765eff534991dfa166a2df46e42de4a8c62a38
 cp2k/src/xc/xc_pade.F : 1f8f934f922dcb16d03d1169a9af904f70a79e53e8552dbdbcaa5a9557945806
-cp2k/src/xc/xc_pbe.F : da897cc64d2d74cca689272cde5b3337c9b15d324632b06f6847a81a00d9d11d
+cp2k/src/xc/xc_pbe.F : be0f3ca6a1a926fcf3b477cfd38979a7c3f95024eb99608260416f664e438a78
 cp2k/src/xc/xc_perdew86.F : 1740dcab2f2b0437a64a913ef02a407c905a2c7749be6b9b3422ea0a31e12efd
 cp2k/src/xc/xc_perdew_wang.F : 825a2b688b998924dac766d1cd89d4c88160dd6eedb7e183915289d0b0b6099f
 cp2k/src/xc/xc_perdew_zunger.F : 86f6d388f7b9e325329529557b0197025ab1b27ad04990fe81a0b3822c1bd115
@@ -1941,36 +1941,36 @@ FLAP/src/tests/test_string.f90 : 4453392627353a368ddf7f27304db6234de737a8fc4bb23
 test_invalid.f90 : 898b97788ca1df5c70f76e08561aa07172f1fb0ddc0e67de4cbb9cab18195426
 test_namelist_block_select.f90 : 90257fe1108c8689002b470e2e2620c2a0652ca6465ba1a5bbbd6667e2339be0
 cp2k/src/aobasis/aux_basis_set.F : 2a481416285b7a8e9e533812838684efd6d41a1ba6397fedb6eb08726ebe3787
-cp2k/src/arnoldi/arnoldi_data_manipulation.f90 : 21cb56dfbb5671690fe94c9372e075c432979f91395b68008f047de48130c161
-cp2k/src/arnoldi/arnoldi_data_selection.f90 : 2d4fa91321d4c80c4323589a3b84d0c55cdd0d2aee1d963bd339675c2d8fbaab
+cp2k/src/arnoldi/arnoldi_data_manipulation.f90 : 0a8cec412754f0ae0c3953e31d0c8489e90b727d9b3500329f50bb79e7bccf11
+cp2k/src/arnoldi/arnoldi_data_selection.f90 : fa7d08ed74ed4c29e72cf690413411ba4668d1c35e06267cb1e3595dd56c27ab
 cp2k/src/atom_sgp.F : a3d433ac76c6c806c3a314fbc7996f3cd9af2e1e5ab740f071ed8d5eb6fcd24a
 cp2k/src/auto_basis.F : b41b451ae6d5e379d3af97f9fbdd01d267289e6d71df3109241318276ab014e6
 cp2k/src/basis_set_output.F : 7858d2c1faf88968b24fa70284082cebd0f6b83d9c8b6aff020f4b47c08c9891
 cp2k/src/bse.F : 03cc076e02dfde3308b5879afaef888d8e530b032cebba98d984b8476abbb96e
-cp2k/src/common/cp_array_sort.F : aee22da5dcd7fbdabc9a4ec1b5c0330737887eed3eb9dff1aee991539b67a57d
-cp2k/src/common/cp_array_utils.F : a5269fa85f3153f4c0250980740a01ff1008aeece0dafb2bbda06440a8343f07
+cp2k/src/common/cp_array_sort.F : d54aa10d74771b0acb9090ae2b5405e24dfa18f141924ada1e6126be932f7e87
+cp2k/src/common/cp_array_utils.F : 82a17f05c08a77a0693e168e3915744dc9766da9fea5280b679e329eaf7bf570
 cp2k/src/common/print_messages.F : dac247979e9267699cef6961834e0b6f7f6d805a21b53cadfd8cd2f3e45f7b4c
 cp2k/src/common/splines.F : 9483ee597d05ce5135ea3a21816d1b7fd42cb26c9a4680a15acdfbc139f3ef36
 cp2k/src/cryssym.F : 014ad021498a265e6c364df2a2c7c7118d11aef7a4c4067e0cb8465bd188db9d
-cp2k/src/dbcsr/base/btree.F : 1a7bb13822987a600c2e8fe8212287a4d191ceea961a6aeb57d50b6241222909
-cp2k/src/dbcsr/base/dbcsr_array_sort.F : 78fc5b0aa92c73bf9bf7eaa041074568954ce35f9a04af3e8576018f7ceb1d4b
+cp2k/src/dbcsr/base/btree.F : 2639cc168593518edccaf98bf0814b4ea328f041f8c2a62bfaa8294118b3608e
+cp2k/src/dbcsr/base/dbcsr_array_sort.F : b901582d39b0cf110158accb36c11032ed5c52f593a41e3a12178ffec5af1b0e
 cp2k/src/dbcsr/base/dbcsr_hash_table.f90 : fcb9d16554914dd1292d4698997a99ba04fb10f726e17a1d685a57e2e2462fee
 cp2k/src/dbcsr/base/dbcsr_hash_table_types.f90 : b95451ee9710e1f3569aea34197ede390eec326153a2498d7c60f0505a159371
-cp2k/src/dbcsr/block/dbcsr_block_access.f90 : 582281d6d11e45405fcd345637f03f73add2a446cdf8f88d4cbd19a264ea46c4
-cp2k/src/dbcsr/block/dbcsr_block_operations.f90 : caecfa08de83d041cec65cc24542a4c7f8063ec3d4b79617888f866ed664cf71
-cp2k/src/dbcsr/block/dbcsr_iterator_operations.f90 : d483fb3bd8ac2ab2e644ea3a288521717abb656b51fda39180697be599321f13
-cp2k/src/dbcsr/block/dbcsr_work_operations.f90 : f75a2358561f31a7463954a10b73daa72c5265ecdc58e680aa413d6fa939f5c4
-cp2k/src/dbcsr/data/dbcsr_data_methods_low.f90 : 04eea89b481f9bb48a7c404221203cb53297d991fdf1f1f497d91faf61c681c7
-cp2k/src/dbcsr/data/dbcsr_ptr_util.f90 : 4a7fd91e0d34d3e2d21f2ae0e5f29efc11192d73da118d0ade5b039af8cf6822
-cp2k/src/dbcsr/dbcsr_api.f90 : 6205b42264bee4e66799492fe66dff56ee4403d5d6e3cc37cc07dac3082c143c
-cp2k/src/dbcsr/dist/dbcsr_mp_operations.f90 : dbc3a0b3eb16ff5933757cce32d01af7331a8fde9b8d417b34b48cd3ce9179ed
-cp2k/src/dbcsr/mm/dbcsr_mm_cannon.f90 : e0167e9033aede76053863aa075c48c76864c6fe6c8fd0a94e99dd6940efc250
-cp2k/src/dbcsr/mm/dbcsr_mm_common.f90 : da2ffccf2928cf3ec6fd577226265cf2110348be343393671bac93fedc2f725a
-cp2k/src/dbcsr/mm/dbcsr_mm_hostdrv.f90 : 60d454b05ce5dc6760d0ae827b827cbb0cf3c8edef8751f7c401540653eedaac
-cp2k/src/dbcsr/mm/dbcsr_mm_multrec.f90 : 5c9d7eb4343d83b0677d77a7d0199c10c78bf6612daac8aad2639cb154adeb75
-cp2k/src/dbcsr/ops/dbcsr_operations.f90 : 8e225bbd6402138b0d783c3613a6c3adcd0159369c834f96f496aa3c7b5fac8d
-cp2k/src/dbcsr_tensor/dbcsr_tensor_reshape.F : 921e93bdf96118df69bed8814f46a4689a910ebedc20a208d36706898041fed7
-cp2k/src/dbcsrx/dbcsr_vector.F : fc251461aa628a5e78de91f1531d9bf292417ef8a9a8e0015d3146c401c9dcd5
+cp2k/src/dbcsr/block/dbcsr_block_access.f90 : 2e0e2a819521aea6083d5beb96353567bd23994c8bf100ec61a754397b2d4ce9
+cp2k/src/dbcsr/block/dbcsr_block_operations.f90 : 571acf776a5988f0151fa985cca28f657e2a620629fd5a911093fcc08acea209
+cp2k/src/dbcsr/block/dbcsr_iterator_operations.f90 : b6238e98f681013faecae115b6fc74ec64b945586b624915f177651511f07609
+cp2k/src/dbcsr/block/dbcsr_work_operations.f90 : 9fb40c8602001377aea999012924f57a2e2f3b0e0bbb484ab70e2983fe3678f4
+cp2k/src/dbcsr/data/dbcsr_data_methods_low.f90 : c3716133000ca94bb4d8efde745ed85b3bd11dba2d0e8440a231db06149e0560
+cp2k/src/dbcsr/data/dbcsr_ptr_util.f90 : 2ac293f6537b56783e866f77fcfeec54ecb9eca7ff04a319af83a016679960a1
+cp2k/src/dbcsr/dbcsr_api.f90 : 3322a7cd6a5367422f74cf1c86e2092998f285c6f16f5b9713c2de1aba3ec02a
+cp2k/src/dbcsr/dist/dbcsr_mp_operations.f90 : ed854ede4e653e3b070dad440dd3b21b0a0b45ee4a1b9e82e63b1be4aa7f7d8c
+cp2k/src/dbcsr/mm/dbcsr_mm_cannon.f90 : a4bbb277806d9b2d6ad1f07899a0ab0921169e9a1bc9e193e0a67611d3cea244
+cp2k/src/dbcsr/mm/dbcsr_mm_common.f90 : 9240ae32c094d7ec311a53299ac648308afa0e63d7e1b17ef0d0fc4909b4f4bc
+cp2k/src/dbcsr/mm/dbcsr_mm_hostdrv.f90 : b0f37a9b6b16730a85db4f9a91865d96711b3b77bfede2bcd1eb8185ca48cf00
+cp2k/src/dbcsr/mm/dbcsr_mm_multrec.f90 : 603263a159608befe6ccfd9d1eaef3a917c8a26469db12526a4f5e1e7fde0784
+cp2k/src/dbcsr/ops/dbcsr_operations.f90 : 888ed22be29afd4e055fc925c7a6815c0469c9472aefa4cee2d9ee89a645c11c
+cp2k/src/dbcsr_tensor/dbcsr_tensor_reshape.F : 3a42e2eb00bffc0005a7aaab1566e87121ac4c08936126c782d205933dff181c
+cp2k/src/dbcsrx/dbcsr_vector.F : d662a1d283346b9c8045083da3348e38f26d5f49b43b2cf403e6062d1d0198a4
 cp2k/src/dbcsrx/hash_table.f90 : fcb9d16554914dd1292d4698997a99ba04fb10f726e17a1d685a57e2e2462fee
 cp2k/src/dbcsrx/hash_table_types.f90 : b95451ee9710e1f3569aea34197ede390eec326153a2498d7c60f0505a159371
 cp2k/src/embed_environment.F : cab5a2888194f37aea887ab540c8ab36cc559bce9db3c8515010f9d4f2c15781
@@ -1980,8 +1980,8 @@ cp2k/src/et_coupling_proj.F : ec2e06ae682ce8b6c1c769d406105489f7a22f8b467ceca87e
 cp2k/src/fist_efield_methods.F : 07c584c6ecc58f9e9ea0cd4480267d9fef81d59c2e4b92542e8839f6186fb903
 cp2k/src/fist_efield_types.F : e9a1fadcf56aa9137e9450110e52fd71d139dc24d5e81cc4ce0e71f2ea26e120
 cp2k/src/fm/cp_fm_diag_utils.F : e148bf9bcbdfa3571f332d5424f121192b1767f7b447cb0e2bde7625a51b3b27
-cp2k/src/fm/cp_fm_elpa.F : 2daa0264580ddad7f0f7a4c29fdab4c61b6cc70dba30d3f84b75a24dc5fb29c6
-cp2k/src/input/cp_linked_list_input.F : 99823671b5e4fe04a9cde95b305bb949b76bf7f11c2731417a26e4c89e54b9e9
+cp2k/src/fm/cp_fm_elpa.F : 4790b9d5555dc1d7379429f5154233a0c23f16a9a91724e567af4506aed64d27
+cp2k/src/input/cp_linked_list_input.F : 014751a077f1cda5170a329d8c8bbc37ec397461724be52849acbbd48607e891
 cp2k/src/input_cp2k_embed.F : 623a4df6c1f753241613566e3cfb8709fb03c4796dd8b50883746c7c7dce8b20
 cp2k/src/input_cp2k_field.F : ce348d85f05bd2266d511425d7c85c794d46d4402c289e347adce589ec519cfd
 cp2k/src/input_cp2k_negf.F : 24a322cc1de2837a224fdac4155c2330fc1c72f9501057db7282559784c94bb9
@@ -1989,13 +1989,13 @@ cp2k/src/lri_compression.F : 6cd03da02aab40f09811b982be655cb8f20a563adb4b2cfdaa8
 cp2k/src/lri_integrals.F : 3fad815df212033bfc818ba2c7a48e3d3a38b6c3e81b63c5421401b67357d0a9
 cp2k/src/minbas_methods.F : cf20375498e9483cb449743dfdcc38fa847076f7e852891e598a7df0d3c892b2
 cp2k/src/minbas_wfn_analysis.F : 28da64f133274f9a4ea25af82f4549a362e32de7bd4345a6dd15c1c6835d4387
-cp2k/src/mixed_cdft_methods.F : c0201717341ea4942224fcb3311b3bf8266ba9c7b9f389df815bae724877d3f2
+cp2k/src/mixed_cdft_methods.F : cbe57a8b03d45c146af577dba4edaaed2b647980f82d47640681b3e7e27dbab2
 cp2k/src/mixed_cdft_types.F : 3b6864b8161f1c85809b43e5e79346a105e8b7cbb69accf914001aa1333a2d89
 cp2k/src/mixed_cdft_utils.F : 936f0d81da699f807554ec00a2903266aa126096cfc5391f1941d677d7779d3f
 cp2k/src/motion/helium_worm.F : a9c099f759f9c7dd39cd1f0eef7bb7760a5bae639213428bb697a494c700198e
 cp2k/src/motion/pint_qtb.F : fc48f21d1521d3cab250d258febb38b750298693f704dd1fb8c1b7d1a7530ef0
-cp2k/src/mp2_eri.F : ff7e0c58d111468c74930347d1bf5c4f8fd00344bbcc90d6a1a387f44ad5ab8b
-cp2k/src/mpiwrap/message_passing.f90 : 2b02d6a43d2d2c40ef02a30e48b8731adf4ef5ae7586f5bf16c06d113d0db780
+cp2k/src/mp2_eri.F : 375c828801287d5f03b063a0d9ecbaa09c7a6d35f94937390a78ec19a34d3ea4
+cp2k/src/mpiwrap/message_passing.f90 : 7a68cfca1a6bb229af37a1856d5587304b6b42157958c944a31a2ef394cb370a
 cp2k/src/negf_alloc_types.F : 4a629eac361d080b956b94a853cc833918f4feca45adae778f9076f6da6c1dda
 cp2k/src/negf_atom_map.F : c57c6f3ef9894934293a8f28e73f2bfe743a98f393c30be054194774146169b2
 cp2k/src/negf_control_types.F : 9f4ecf4edfd3fce76f174ca981b1202dfbf85b63a4093050051dd426d3f9197b
@@ -2004,7 +2004,7 @@ cp2k/src/negf_green_cache.F : 0aec5ee3fdaeeff42d24bf144a68874c59db3ac7fbee3539d5
 cp2k/src/negf_green_methods.F : d615335a9e966ecec3b4c432d3ca11068e1da9995211f3eacbf1f45610297ee3
 cp2k/src/negf_integr_cc.F : beb441c11ffa09568f5e22272939fca91519007887cb4e575acd1c75019adbf9
 cp2k/src/negf_integr_simpson.F : c2d8592c15e0a4b6817fb9e4a99d8aedf0d0fb24e48f3f66f8578be68dc91533
-cp2k/src/negf_integr_utils.F : 2654aec7a6a1bcb150aa629c572f8bd111ca8c642e491e162a6d3315e86f9ff9
+cp2k/src/negf_integr_utils.F : 353f16796e18be9ee24602554999408a9989fe97fb2766acfed54613ee0ea33b
 cp2k/src/negf_matrix_utils.F : c586725137ea4247b7c357df7eb0108ba77b74e2419df791a3ad3bdf6780b999
 cp2k/src/negf_methods.F : a9540cdad9113ac84b5e8a8506333b7d44edb5a55594afb43ac25269108f54b8
 cp2k/src/negf_qs_env_methods.F : 680b79a3e33510cc489afd035aef69e39d314bed37baee2e7a49f9967a1afc69
@@ -2013,7 +2013,7 @@ cp2k/src/negf_subgroup_types.F : c96233333ef8862eada5cab215edaa776c31d363b4df9db
 cp2k/src/negf_vectors.F : 84170068cf9248f50a1da5ce9e0490f45470dbe81a35409ebb3d2ab37ecf6902
 cp2k/src/optimize_embedding_potential.F : 9dded47c3cc8de3d923674d0d8d9cf0880b0135b61de3c943807d07f1ec4e862
 cp2k/src/pw/fast.F : 4cb349d9c85e8277de2bdd51a812f006eb6d2cd26849f52dc91297ce07e03f8f
-cp2k/src/qs_cdft_methods.F : cb7e7f9312751410c873449d730ce53eda401758e63fef70c9b20149a3b38807
+cp2k/src/qs_cdft_methods.F : e38b69110dcc0dedf88ed9e8f835d31a536b9ce445019044a0a9e520fdd777c8
 cp2k/src/qs_cdft_scf_utils.F : 57cf5b3cef55a4570352a8c4c4cd037d00b5fa8320ed16896ca4f64895ce0fcf
 cp2k/src/qs_cdft_types.F : 62dbff78fa47743f5ae31f428e006c7a101dcbd4b8b507f3168a62f5f34fb8d5
 cp2k/src/qs_cdft_utils.F : bd0ca3ae0028ba903d8218443854f050c391fe506e5877d99027074fd8233a73
@@ -2022,6 +2022,7 @@ cp2k/src/qs_o3c_types.F : 2dc876b48fff8e7f436353d55d29131d8b4b2025d2d03a8f5cd3fa
 cp2k/src/qs_tddfpt2_subgroups.F : 87ced61db8a83de9648b3b9b59d3f666ca17af53bb4b3268384980f623f604de
 cp2k/src/ri_environment_methods.F : c993dd64f517d1997a1d0cee7f8f4629517f1599b8d2be45b92cba8e31d98871
 cp2k/src/spglib_f08.F : 51fb26d46a100171d8c3a6c336d52799c52913b49e4faa884782ce06b3937962
-cp2k/src/subsys/molecule_kind_list_types.F : d620005cb5cf5aed7c4f5ec6d04854a24513877abd4f6afc5c83c9c6143df39d
-cp2k/src/subsys/molecule_list_types.F : 4e1e64180e8f5c40ab78efec02bdbc853a8a12aea8431eedd5ab78057ff512ff
+cp2k/src/subsys/molecule_kind_list_types.F : 6958517d47f47df55ada585bfa37f658c24b40a8cfb90fad3f09f60457546a26
+cp2k/src/subsys/molecule_list_types.F : 9d9d1aee6ae931d523b686d908eefc5e4541ac833663f2acc7049eafd82613f4
 cp2k/src/subsys/molecule_types.F : 68121eba2ec59638594638a3652afbe9c4568cea337513cbe67c8440c5a2c6a4
+test_fypp.f90 : 640604e591b2711e08b52b48dc91bc6653e66b541f1551d5de60770418c3ad23
