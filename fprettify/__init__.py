@@ -1250,6 +1250,7 @@ def get_manual_alignment(lines):
 
 def write_formatted_line(outfile, indent, lines, orig_lines, indent_special, use_same_line, is_omp_conditional, label, filename, line_nr):
     """Write reformatted line to file"""
+
     for ind, line, orig_line in zip(indent, lines, orig_lines):
 
         # get actual line length excluding comment:
@@ -1270,16 +1271,19 @@ def write_formatted_line(outfile, indent, lines, orig_lines, indent_special, use
             ind_use = 0
 
         if label:
-            label = label + ' '
+            label_use = label + ' '
+            label = '' # no label for continuation lines
+        else:
+            label_use = ''
 
         if ind_use + line_length <= 133:  # 132 plus 1 newline char
-            outfile.write('!$' * is_omp_conditional + label +
-                          ' ' * (ind_use - 2 * is_omp_conditional - len(label) +
+            outfile.write('!$' * is_omp_conditional + label_use +
+                          ' ' * (ind_use - 2 * is_omp_conditional - len(label_use) +
                                  len(line) - len(line.lstrip(' '))) +
                           line.lstrip(' '))
         elif line_length <= 133:
-            outfile.write('!$' * is_omp_conditional + label + ' ' *
-                          (133 - 2 * is_omp_conditional - len(label) -
+            outfile.write('!$' * is_omp_conditional + label_use + ' ' *
+                          (133 - 2 * is_omp_conditional - len(label_use) -
                            len(line.lstrip(' '))) + line.lstrip(' '))
 
             log_message(LINESPLIT_MESSAGE, "warning",
