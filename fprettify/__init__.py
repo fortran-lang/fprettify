@@ -193,7 +193,7 @@ REL_OP_RE = re.compile(
     r"(?<!\()\s*(\.(?:EQ|NE|LT|LE|GT|GE)\.|(?:==|\/=|<(?!=)|<=|(?<!=)>(?!=)|>=))\s*(?!\))",
     RE_FLAGS)
 LOG_OP_RE = re.compile(r"\s*(\.(?:AND|OR|EQV|NEQV)\.)\s*", RE_FLAGS)
-PRINT_RE = re.compile(r"(?:(?<=print)|(?<=read))\s*(\*,?)\s*", RE_FLAGS)
+PRINT_RE = re.compile(r"(?:(?<=\bPRINT)|(?<=\bREAD))\s*(\*,?)\s*", RE_FLAGS)
 
 # regular expressions for parsing delimiters
 DEL_OPEN_STR = r"(\(\/?|\[)"
