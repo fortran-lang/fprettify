@@ -103,10 +103,7 @@ class CharFilter(object):
 
         pos, char = next(self._it)
 
-        try:
-            char2 = self._content[pos:pos+2]
-        except IndexError:
-            char2 = char
+        char2 = self._content[pos:pos+2]
 
         if not self._instring:
             if not self._incomment:
@@ -231,12 +228,9 @@ class InputStream(object):
 
             line_core = line[:endpos + 1]
 
-            try:
-                if NOTFORTRAN_LINE_RE.search(line[endpos+1:endpos+3]) or fypp_cont:
-                    line_comments = line[endpos + 1:]
-                else:
-                    line_comments = ''
-            except IndexError:
+            if NOTFORTRAN_LINE_RE.search(line[endpos+1:endpos+3]) or fypp_cont:
+                line_comments = line[endpos + 1:]
+            else:
                 line_comments = ''
 
             if line_core:
