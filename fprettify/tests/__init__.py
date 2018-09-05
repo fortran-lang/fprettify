@@ -39,7 +39,7 @@ try:
     sys.stderr = io.TextIOWrapper(
         sys.stderr.detach(), encoding='UTF-8', line_buffering=True)
 
-except AttributeError:
+except AttributeError: # pragma: no cover
     # python 2
     import codecs
     utf8_writer = codecs.getwriter('UTF-8')
@@ -394,7 +394,7 @@ def addtestmethod(testcase, fpath, ffile):
     # however it gives optimal test output
     try:
         testmethod.__name__ = ("test " + joinpath(fpath, ffile))
-    except TypeError:
+    except TypeError: # pragma: no cover
         # need to encode in python 2 since we are using unicode strings
         testmethod.__name__ = (
             "test " + joinpath(fpath, ffile)).encode('utf-8')

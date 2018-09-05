@@ -80,7 +80,7 @@ try:
         sys.stdin.detach(), encoding='UTF-8', line_buffering=True)
     sys.stdout = io.TextIOWrapper(
         sys.stdout.detach(), encoding='UTF-8', line_buffering=True)
-except AttributeError:
+except AttributeError: # pragma: no cover
     # python 2
     import codecs
     utf8_reader = codecs.getreader('UTF-8')
