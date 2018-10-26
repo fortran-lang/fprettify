@@ -297,8 +297,17 @@ class FPrettifyTestCase(unittest.TestCase):
     def test_multi_alias(self):
         """test for issue #11 (multiple alias and alignment)"""
         instring="use A,only:B=>C,&\nD=>E"
-        outstring="use A, only: B => C, &\n   D => E"
+        outstring="use A, only: B => C, &\n             D => E"
         self.assert_fprettify_result([], instring, outstring)
+
+    def test_use(self):
+        """test for alignment of use statements"""
+        instring1="use A,only:B,C,&\nD,E"
+        instring2="use A,only:&\nB,C,D,E"
+        outstring1="use A, only: B, C, &\n             D, E"
+        outstring2="use A, only: &\n   B, C, D, E"
+        self.assert_fprettify_result([], instring1, outstring1)
+        self.assert_fprettify_result([], instring2, outstring2)
 
 def addtestmethod(testcase, fpath, ffile):
     """add a test method for each example."""

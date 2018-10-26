@@ -428,9 +428,10 @@ class F90Aligner(object):
         self.__init_line(line_nr)
 
         is_decl = VAR_DECL_RE.search(f_line) or PUBLIC_RE.search(f_line) or PRIVATE_RE.match(f_line)
+        is_use = USE_RE.search(f_line)
         for pos, line in enumerate(lines):
             self.__align_line_continuations(
-                line, is_decl, rel_ind, self._line_nr + pos)
+                line, is_decl, is_use, rel_ind, self._line_nr + pos)
             if pos + 1 < len(lines):
                 self._line_indents.append(self._br_indent_list[-1])
 
@@ -442,7 +443,7 @@ class F90Aligner(object):
         """after processing, retrieve the indents of all line parts."""
         return self._line_indents
 
-    def __align_line_continuations(self, line, is_decl, indent_size, line_nr):
+    def __align_line_continuations(self, line, is_decl, is_use, indent_size, line_nr):
         """align continuation lines."""
 
         indent_list = self._br_indent_list
@@ -524,6 +525,8 @@ class F90Aligner(object):
                         pos_eq + 1 + is_pointer + indent_list[-1])
             elif is_decl and line[pos:pos + 2] == '::' and not re.search(r"::\s*" + LINEBREAK_STR, line, RE_FLAGS):
                 indent_list.append(pos + 3 + indent_list[-1])
+            elif is_use and line[pos] == ':' and not re.search(r":\s*" + LINEBREAK_STR, line, RE_FLAGS):
+                indent_list.append(pos + 2 + indent_list[-1])
 
         # Don't align if delimiter opening directly before line break
         if level and re.search(DEL_OPEN_STR + r"\s*" + LINEBREAK_STR, line,
@@ -837,11 +840,11 @@ def add_whitespace_context(line, spacey):
 
     line = ''.join(line_parts)
 
-    # format ':' for labels and use only statements
     for newre in NEW_SCOPE_RE[0:2]:
         if newre.search(line) and re.search(SOL_STR + r"\w+\s*:", line):
             line = ': '.join(_.strip() for _ in line.split(':', 1))
 
+    # format ':' for labels and use only statements
     if USE_RE.search(line):
         line = re.sub(r'(only)\s*:\s*', r'\g<1>:' + ' ' *
                       spacey[0], line, flags=RE_FLAGS)
