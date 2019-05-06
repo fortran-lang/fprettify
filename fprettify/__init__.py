@@ -609,10 +609,10 @@ def replace_relational_single_fline(f_line, cstyle):
             line = re.sub(r"(?<!\()\s*(\.(?:EQ)\.)\s*(?!\))", "==", line, flags=RE_FLAGS)
             line = re.sub(r"(?<!\()\s*(\.(?:NE)\.)\s*(?!\))", "/=", line, flags=RE_FLAGS)
         else:
-            line = re.sub(r"(?<!\()\s*(?:<)\s*(?!\))", ".lt.", line, flags=RE_FLAGS)
             line = re.sub(r"(?<!\()\s*(?:<=)\s*(?!\))", ".le.", line, flags=RE_FLAGS)
-            line = re.sub(r"(?<!\()\s*(?:>)\s*(?!\))", ".gt.", line, flags=RE_FLAGS)
+            line = re.sub(r"(?<!\()\s*(?:<)\s*(?!\))", ".lt.", line, flags=RE_FLAGS)
             line = re.sub(r"(?<!\()\s*(?:>=)\s*(?!\))", ".ge.", line, flags=RE_FLAGS)
+            line = re.sub(r"(?<!\()\s*(?:>)\s*(?!\))", ".gt.", line, flags=RE_FLAGS)
             # we treat the match of == differently since it may appear in a text or comment string
             # (think of underlining a heading or alike) which we do not replace
             matcheqeq = re.search(r"(?<!\()\s*(?:==)\s*(?!\))", line)
