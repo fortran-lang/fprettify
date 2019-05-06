@@ -586,6 +586,31 @@ def inspect_ffile_format(infile, indent_size, strict_indent, orig_filename=None)
 
     return indents, first_indent
 
+def replace_relational_single_fline(f_line):
+    """
+    format a single Fortran line - replaces scalar relational
+    operators in logical expressions.
+    .lt.  -->  <
+    .le.  -->  <=
+    .gt.  -->  >
+    .ge.  -->  >=
+    .eq.  -->  ==
+    .ne.  -->  /=
+    """
+
+    line = f_line
+
+    if REL_OP_RE.search(line):
+        line = re.sub(r"(?<!\()\s*(\.(?:LT)\.)", "<", line, flags=RE_FLAGS)
+        line = re.sub(r"(?<!\()\s*(\.(?:LE)\.)", "<=", line, flags=RE_FLAGS)
+        line = re.sub(r"(?<!\()\s*(\.(?:GT)\.)", ">", line, flags=RE_FLAGS)
+        line = re.sub(r"(?<!\()\s*(\.(?:GE)\.)", ">=", line, flags=RE_FLAGS)
+        line = re.sub(r"(?<!\()\s*(\.(?:EQ)\.)", "==", line, flags=RE_FLAGS)
+        line = re.sub(r"(?<!\()\s*(\.(?:NE)\.)", "/=", line, flags=RE_FLAGS)
+
+    return line
+
+
 def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
                         filename, line_nr, auto_format=True):
     """
@@ -918,7 +943,7 @@ def reformat_inplace(filename, stdout=False, **kwargs):  # pragma: no cover
 
 
 def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_indent=False, impose_whitespace=True,
-                   whitespace=2, strip_comments=False, orig_filename=None):
+                   impose_replacements=False, whitespace=2, strip_comments=False, orig_filename=None):
     """main method to be invoked for formatting a Fortran file."""
 
     if not orig_filename:
@@ -1001,6 +1026,9 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
             linebreak_pos = get_linebreak_pos(lines)
 
             f_line = f_line.strip(' ')
+
+            if impose_replacements:
+                f_line = replace_relational_single_fline(f_line)
 
             if impose_whitespace:
                 lines = format_single_fline(
@@ -1347,6 +1375,7 @@ def run(argv=sys.argv):  # pragma: no cover
     parser.add_argument("--strict-indent", action='store_true', default=False, help="strictly impose indentation even for nested loops")
     parser.add_argument("--disable-indent", action='store_true', default=False, help="don't impose indentation")
     parser.add_argument("--disable-whitespace", action='store_true', default=False, help="don't impose whitespace formatting")
+    parser.add_argument("--enable-replacements", action='store_true', default=False, help="replace relational operators (e.g. '.lt.' -> '<')")
     parser.add_argument("--strip-comments", action='store_true', default=False, help="strip whitespaces before comments")
     parser.add_argument("-s", "--stdout", action='store_true', default=False,
                         help="Write to stdout instead of formatting inplace")
@@ -1416,6 +1445,7 @@ def run(argv=sys.argv):  # pragma: no cover
                                  indent_size=args.indent,
                                  strict_indent=args.strict_indent,
                                  impose_whitespace=not args.disable_whitespace,
+                                 impose_replacements=args.enable_replacements,
                                  whitespace=args.whitespace,
                                  strip_comments=args.strip_comments)
             except FprettifyException as e:
