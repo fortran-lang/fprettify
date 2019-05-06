@@ -586,27 +586,42 @@ def inspect_ffile_format(infile, indent_size, strict_indent, orig_filename=None)
 
     return indents, first_indent
 
-def replace_relational_single_fline(f_line):
+def replace_relational_single_fline(f_line, cstyle):
     """
     format a single Fortran line - replaces scalar relational
-    operators in logical expressions.
-    .lt.  -->  <
-    .le.  -->  <=
-    .gt.  -->  >
-    .ge.  -->  >=
-    .eq.  -->  ==
-    .ne.  -->  /=
+    operators in logical expressions to either Fortran or C-style.
+    .lt.  <-->  <
+    .le.  <-->  <=
+    .gt.  <-->  >
+    .ge.  <-->  >=
+    .eq.  <-->  ==
+    .ne.  <-->  /=
     """
 
     line = f_line
 
     if REL_OP_RE.search(line):
-        line = re.sub(r"(?<!\()\s*(\.(?:LT)\.)", "<", line, flags=RE_FLAGS)
-        line = re.sub(r"(?<!\()\s*(\.(?:LE)\.)", "<=", line, flags=RE_FLAGS)
-        line = re.sub(r"(?<!\()\s*(\.(?:GT)\.)", ">", line, flags=RE_FLAGS)
-        line = re.sub(r"(?<!\()\s*(\.(?:GE)\.)", ">=", line, flags=RE_FLAGS)
-        line = re.sub(r"(?<!\()\s*(\.(?:EQ)\.)", "==", line, flags=RE_FLAGS)
-        line = re.sub(r"(?<!\()\s*(\.(?:NE)\.)", "/=", line, flags=RE_FLAGS)
+        if cstyle:
+            line = re.sub(r"(?<!\()\s*(\.(?:LT)\.)\s*(?!\))", "<", line, flags=RE_FLAGS)
+            line = re.sub(r"(?<!\()\s*(\.(?:LE)\.)\s*(?!\))", "<=", line, flags=RE_FLAGS)
+            line = re.sub(r"(?<!\()\s*(\.(?:GT)\.)\s*(?!\))", ">", line, flags=RE_FLAGS)
+            line = re.sub(r"(?<!\()\s*(\.(?:GE)\.)\s*(?!\))", ">=", line, flags=RE_FLAGS)
+            line = re.sub(r"(?<!\()\s*(\.(?:EQ)\.)\s*(?!\))", "==", line, flags=RE_FLAGS)
+            line = re.sub(r"(?<!\()\s*(\.(?:NE)\.)\s*(?!\))", "/=", line, flags=RE_FLAGS)
+        else:
+            line = re.sub(r"(?<!\()\s*(?:<)\s*(?!\))", ".lt.", line, flags=RE_FLAGS)
+            line = re.sub(r"(?<!\()\s*(?:<=)\s*(?!\))", ".le.", line, flags=RE_FLAGS)
+            line = re.sub(r"(?<!\()\s*(?:>)\s*(?!\))", ".gt.", line, flags=RE_FLAGS)
+            line = re.sub(r"(?<!\()\s*(?:>=)\s*(?!\))", ".ge.", line, flags=RE_FLAGS)
+            # we treat the match of == differently since it may appear in a text or comment string
+            # (think of underlining a heading or alike) which we do not replace
+            matcheqeq = re.search(r"(?<!\()\s*(?:==)\s*(?!\))", line)
+            if  matcheqeq:
+                short_line = line[:matcheqeq.start()]
+                # if we have an uneven number of quotes or a ! before == we are inside a string or comment
+                if (len(re.findall("\"", short_line))+len(re.findall("'", short_line))+len(re.findall("\!", short_line))) % 2 == 0:
+                    line = re.sub(r"(?<!\()\s*(?:==)\s*(?!\))", ".eq.", line, flags=RE_FLAGS)
+            line = re.sub(r"(?<!\()\s*(?:\/=)\s*(?!\))", ".ne.", line, flags=RE_FLAGS)
 
     return line
 
@@ -943,7 +958,7 @@ def reformat_inplace(filename, stdout=False, **kwargs):  # pragma: no cover
 
 
 def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_indent=False, impose_whitespace=True,
-                   impose_replacements=False, whitespace=2, strip_comments=False, orig_filename=None):
+                   impose_replacements=False, cstyle=False, whitespace=2, strip_comments=False, orig_filename=None):
     """main method to be invoked for formatting a Fortran file."""
 
     if not orig_filename:
@@ -1028,7 +1043,7 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
             f_line = f_line.strip(' ')
 
             if impose_replacements:
-                f_line = replace_relational_single_fline(f_line)
+                f_line = replace_relational_single_fline(f_line, cstyle)
 
             if impose_whitespace:
                 lines = format_single_fline(
@@ -1376,6 +1391,7 @@ def run(argv=sys.argv):  # pragma: no cover
     parser.add_argument("--disable-indent", action='store_true', default=False, help="don't impose indentation")
     parser.add_argument("--disable-whitespace", action='store_true', default=False, help="don't impose whitespace formatting")
     parser.add_argument("--enable-replacements", action='store_true', default=False, help="replace relational operators (e.g. '.lt.' -> '<')")
+    parser.add_argument("--c-relations", action='store_true', default=False, help="C-style relational operators ('<', '<=', ...)")
     parser.add_argument("--strip-comments", action='store_true', default=False, help="strip whitespaces before comments")
     parser.add_argument("-s", "--stdout", action='store_true', default=False,
                         help="Write to stdout instead of formatting inplace")
@@ -1446,6 +1462,7 @@ def run(argv=sys.argv):  # pragma: no cover
                                  strict_indent=args.strict_indent,
                                  impose_whitespace=not args.disable_whitespace,
                                  impose_replacements=args.enable_replacements,
+                                 cstyle=args.c_relations,
                                  whitespace=args.whitespace,
                                  strip_comments=args.strip_comments)
             except FprettifyException as e:
