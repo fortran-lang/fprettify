@@ -619,9 +619,9 @@ def replace_relational_single_fline(f_line, cstyle):
             if  matcheqeq:
                 short_line = line[:matcheqeq.start()]
                 # if we have an uneven number of quotes or a ! before == we are inside a string or comment
-                if ( len(re.findall("\"", short_line)) % 2 == 0
-                        or len(re.findall("'", short_line)) % 2 == 0
-                        or len(re.findall("\!", short_line)) % 2 == 0 ):
+                if not ( len(re.findall("\"", short_line)) % 2 == 1
+                        or len(re.findall("'", short_line)) % 2 == 1
+                        or len(re.findall("\!", short_line)) % 2 == 1 ):
                     line = re.sub(r"(?<!\()\s*(?:==)\s*(?!\))", ".eq.", line, flags=RE_FLAGS)
             line = re.sub(r"(?<!\()\s*(?:\/=)\s*(?!\))", ".ne.", line, flags=RE_FLAGS)
 
