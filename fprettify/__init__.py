@@ -604,15 +604,15 @@ def format_single_fline(f_line, whitespace, whitespace_dict, linebreak_pos,
 
     # define whether to put whitespaces around operators:
     mapping = {
-            'comma': 0,            # 0: comma, semicolon
-            'assignments' : 1,     # 1: assignment operators
-            'relational' : 2,      # 2: relational operators
-            'logical' : 3,         # 3: logical operators
-            'plusminus' : 4,       # 4: arithm. operators plus and minus
-            'multdiv' : 5,         # 5: arithm. operators multiply and divide
-            'print' : 6,           # 6: print / read statements
-            'type' : 7,            # 7: select type components
-            'intrinsics' : 8       # 8: intrinsics
+            'comma': 0,           # 0: comma, semicolon
+            'assignments': 1,     # 1: assignment operators
+            'relational': 2,      # 2: relational operators
+            'logical': 3,         # 3: logical operators
+            'plusminus': 4,       # 4: arithm. operators plus and minus
+            'multdiv': 5,         # 5: arithm. operators multiply and divide
+            'print': 6,           # 6: print / read statements
+            'type': 7,            # 7: select type components
+            'intrinsics': 8       # 8: intrinsics
             }
 
     if whitespace == 0:
@@ -628,12 +628,13 @@ def format_single_fline(f_line, whitespace, whitespace_dict, linebreak_pos,
     else:
         raise NotImplementedError("unknown value for whitespace")
 
-    # iterate over dictionary and override settings for 'spacey'
-    for setting in mapping:
-        if whitespace_dict[setting] == True:
-            spacey[mapping[setting]] = 1
-        elif whitespace_dict[setting] == False:
-            spacey[mapping[setting]] = 0
+    if whitespace_dict:
+        # iterate over dictionary and override settings for 'spacey'
+        for key, value in mapping.items():
+            if whitespace_dict[key] == True:
+                spacey[value] = 1
+            elif whitespace_dict[key] == False:
+                spacey[value] = 0
 
     line = f_line
     line_orig = line
