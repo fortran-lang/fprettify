@@ -1338,7 +1338,7 @@ def run(argv=sys.argv):  # pragma: no cover
     parser.add_argument("-i", "--indent", type=int, default=3,
                         help="relative indentation width")
     parser.add_argument("-l", "--line-length", type=int, default=132,
-                        help="column after which a line should end (default: 132), viz. -ffree-line-length-n for GCC")
+                        help="column after which a line should end, viz. -ffree-line-length-n for GCC")
     parser.add_argument("-w", "--whitespace", type=int,
                         choices=range(0, 5), default=2, help="Amount of whitespace - "
                                                              "   0: minimal whitespace"
