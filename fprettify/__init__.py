@@ -1392,7 +1392,7 @@ def run(argv=sys.argv):  # pragma: no cover
     parser.add_argument("--strict-indent", action='store_true', default=False, help="strictly impose indentation even for nested loops")
     parser.add_argument("--disable-indent", action='store_true', default=False, help="don't impose indentation")
     parser.add_argument("--disable-whitespace", action='store_true', default=False, help="don't impose whitespace formatting")
-    parser.add_argument("--enable-replacements", action='store_true', default=False, help="replace relational operators (e.g. '.lt.' -> '<')")
+    parser.add_argument("--enable-replacements", action='store_true', default=False, help="replace relational operators (e.g. '.lt.' <--> '<')")
     parser.add_argument("--c-relations", action='store_true', default=False, help="C-style relational operators ('<', '<=', ...)")
     parser.add_argument("--strip-comments", action='store_true', default=False, help="strip whitespaces before comments")
     parser.add_argument("-s", "--stdout", action='store_true', default=False,
