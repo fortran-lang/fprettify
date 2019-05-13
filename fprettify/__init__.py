@@ -101,7 +101,7 @@ FORTRAN_EXTENSIONS += [_.upper() for _ in FORTRAN_EXTENSIONS]
 # constants, mostly regular expressions:
 FORMATTER_ERROR_MESSAGE = (" Wrong usage of formatting-specific directives"
                            " '&', '!&', '!&<' or '!&>'.")
-LINESPLIT_MESSAGE = ("auto indentation failed due to 132 chars limit, "
+LINESPLIT_MESSAGE = ("auto indentation failed due to chars limit, "
                      "line should be split")
 
 EOL_STR = r"\s*;?\s*$"  # end of fortran line
@@ -918,7 +918,7 @@ def reformat_inplace(filename, stdout=False, **kwargs):  # pragma: no cover
 
 
 def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_indent=False, impose_whitespace=True,
-                   whitespace=2, strip_comments=False, orig_filename=None):
+                   whitespace=2, llength=132, strip_comments=False, orig_filename=None):
     """main method to be invoked for formatting a Fortran file."""
 
     if not orig_filename:
@@ -1022,7 +1022,7 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
 
         lines = remove_trailing_whitespace(lines)
 
-        write_formatted_line(outfile, indent, lines, orig_lines, indent_special,
+        write_formatted_line(outfile, indent, lines, orig_lines, indent_special, llength,
                              use_same_line, is_omp_conditional, label, orig_filename, stream.line_nr)
 
         do_indent, use_same_line = pass_defaults_to_next_line(f_line)
@@ -1251,7 +1251,7 @@ def get_manual_alignment(lines):
     return manual_lines_indent
 
 
-def write_formatted_line(outfile, indent, lines, orig_lines, indent_special, use_same_line, is_omp_conditional, label, filename, line_nr):
+def write_formatted_line(outfile, indent, lines, orig_lines, indent_special, llength, use_same_line, is_omp_conditional, label, filename, line_nr):
     """Write reformatted line to file"""
 
     for ind, line, orig_line in zip(indent, lines, orig_lines):
@@ -1279,21 +1279,21 @@ def write_formatted_line(outfile, indent, lines, orig_lines, indent_special, use
         else:
             label_use = ''
 
-        if ind_use + line_length <= 133:  # 132 plus 1 newline char
+        if ind_use + line_length <= (llength+1):  # llength (default 132) plus 1 newline char
             outfile.write('!$' * is_omp_conditional + label_use +
                           ' ' * (ind_use - 2 * is_omp_conditional - len(label_use) +
                                  len(line) - len(line.lstrip(' '))) +
                           line.lstrip(' '))
-        elif line_length <= 133:
+        elif line_length <= (llength+1):
             outfile.write('!$' * is_omp_conditional + label_use + ' ' *
-                          (133 - 2 * is_omp_conditional - len(label_use) -
+                          ((llength+1) - 2 * is_omp_conditional - len(label_use) -
                            len(line.lstrip(' '))) + line.lstrip(' '))
 
-            log_message(LINESPLIT_MESSAGE, "warning",
+            log_message(LINESPLIT_MESSAGE+" (limit: "+str(llength)+")", "warning",
                         filename, line_nr)
         else:
             outfile.write(orig_line)
-            log_message(LINESPLIT_MESSAGE, "warning",
+            log_message(LINESPLIT_MESSAGE+" (limit: "+str(llength)+")", "warning",
                         filename, line_nr)
 
 
@@ -1339,6 +1339,8 @@ def run(argv=sys.argv):  # pragma: no cover
                                      formatter_class=configargparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("-i", "--indent", type=int, default=3,
                         help="relative indentation width")
+    parser.add_argument("-l", "--line-length", type=int, default=132,
+                        help="column after which a line should end, viz. -ffree-line-length-n for GCC")
     parser.add_argument("-w", "--whitespace", type=int,
                         choices=range(0, 5), default=2, help="Amount of whitespace - "
                                                              "   0: minimal whitespace"
@@ -1419,6 +1421,7 @@ def run(argv=sys.argv):  # pragma: no cover
                                  strict_indent=args.strict_indent,
                                  impose_whitespace=not args.disable_whitespace,
                                  whitespace=args.whitespace,
+                                 llength=1024 if args.line_length == 0 else args.line_length,
                                  strip_comments=args.strip_comments)
             except FprettifyException as e:
                 log_exception(e, "Fatal error occured")
