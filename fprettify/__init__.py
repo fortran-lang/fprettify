@@ -187,8 +187,9 @@ LINEBREAK_STR = r"(&)[\s]*(?:!.*)?$"
 PLUSMINUS_RE = re.compile(
     r"(?<=[\w\)\]])(?<![\d\.][de])\s*(\+|-)\s*", RE_FLAGS)
 # Note: ** or // (or any multiples of * or /) are ignored
+#       we also ignore any * or / before a :: because we may be seeing 'real*8'
 MULTDIV_RE = re.compile(
-    r"(?<=[\w\)\]])\s*((?<!\*)\*(?!\*)|(?<!/)/(?!/))(?=[\s\w\(])", RE_FLAGS)
+    r"(?<=[\w\)\]])\s*((?<!\*)\*(?!\*)|(?<!/)/(?!/))(?=[\s\w\(])(?!.*::)", RE_FLAGS)
 REL_OP_RE = re.compile(
     r"(?<!\()\s*(\.(?:EQ|NE|LT|LE|GT|GE)\.|(?:==|\/=|<(?!=)|<=|(?<!=)>(?!=)|>=))\s*(?!\))",
     RE_FLAGS)
