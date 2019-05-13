@@ -175,8 +175,9 @@ PRIVATE_RE = re.compile(SOL_STR + r"PRIVATE\s*::", RE_FLAGS)
 PUBLIC_RE = re.compile(SOL_STR + r"PUBLIC\s*::", RE_FLAGS)
 
 # intrinsic statements with parenthesis notation that are not functions
-INTR_STMTS_PAR = (r"(ALLOCATE|DEALLOCATE|REWIND|BACKSPACE|INQUIRE|"
+INTR_STMTS_PAR = (r"(ALLOCATE|DEALLOCATE|"
                   r"OPEN|CLOSE|READ|WRITE|"
+                  r"FLUSH|ENDFILE|REWIND|BACKSPACE|INQUIRE|"
                   r"FORALL|WHERE|ASSOCIATE|NULLIFY)")
 
 # regular expressions for parsing linebreaks
