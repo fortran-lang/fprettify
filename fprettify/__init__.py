@@ -1335,7 +1335,7 @@ def run(argv=sys.argv):  # pragma: no cover
 
     parser = configargparse.ArgumentParser(prog=argv[0],
                                      description='Auto-format modern Fortran source files.',
-                                     default_config_files=['./.fprettify.rc', '~/.fprettify.rc'],
+                                     default_config_files=['.fprettify.rc', '~/.fprettify.rc'],
                                      formatter_class=configargparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("-i", "--indent", type=int, default=3,
                         help="relative indentation width")
