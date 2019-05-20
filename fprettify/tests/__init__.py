@@ -320,7 +320,7 @@ class FPrettifyTestCase(unittest.TestCase):
                      "INTEGER*4 :: c, i  !  some integers",
                      "INTEGER*4 :: c, i  !  some integers"]
 
-        for i in range(0, 4):
+        for i in range(0, len(instring)):
             self.assert_fprettify_result([], instring[i], outstring[i])
 
     def test_new_intrinsics(self):
@@ -332,31 +332,31 @@ class FPrettifyTestCase(unittest.TestCase):
                      "BACKSPACE (13)",
                      "INQUIRE (14)"]
 
-        for i in range(0, 3):
+        for i in range(0, len(instring)):
             self.assert_fprettify_result([], instring[i], outstring[i])
 
     def test_line_length(self):
         """test line length option"""
         instring = ["REAL(KIND=4) :: r,f  !  some reals",
                     "if(   min == max.and.min .eq. thres  )",
-                    "INQUIRE(14)",
-                    "if( min == max.and.min .eq. thres ) one_really_long_function_call_to_hit_the_line_limit(parameter1, parameter2,parameter3,parameter4,parameter5,err) ! this line would be too long"]
+                    "INQUIRE(14)"]
+        instring_ = "if( min == max.and.min .eq. thres ) one_really_long_function_call_to_hit_the_line_limit(parameter1, parameter2,parameter3,parameter4,parameter5,err) ! this line would be too long"
         outstring = ["REAL(KIND=4) :: r, f  !  some reals",
                      "REAL(KIND=4) :: r,f  !  some reals",
                      "if (min == max .and. min .eq. thres)",
                      "if(   min == max.and.min .eq. thres  )",
                      "INQUIRE (14)",
-                     "INQUIRE (14)",
-                     "if( min == max.and.min .eq. thres ) one_really_long_function_call_to_hit_the_line_limit(parameter1, parameter2,parameter3,parameter4,parameter5,err) ! this line would be too long",
-                     "if (min == max .and. min .eq. thres) one_really_long_function_call_to_hit_the_line_limit(parameter1, parameter2, parameter3, parameter4, parameter5, err) ! this line would be too long"]
+                     "INQUIRE (14)"]
+        outstring_ = ["if( min == max.and.min .eq. thres ) one_really_long_function_call_to_hit_the_line_limit(parameter1, parameter2,parameter3,parameter4,parameter5,err) ! this line would be too long",
+                      "if (min == max .and. min .eq. thres) one_really_long_function_call_to_hit_the_line_limit(parameter1, parameter2, parameter3, parameter4, parameter5, err) ! this line would be too long"]
 
         # test shorter lines first, after all the actual length doesn't matter
-        for i in range(0, 3):
+        for i in range(0, len(instring)):
             self.assert_fprettify_result(['-S'], instring[i], outstring[2*i])
             self.assert_fprettify_result(['-S', '-l 20'], instring[i], outstring[2*i + 1])
         # now test a long line
-        self.assert_fprettify_result(['-S'], instring[3], outstring[6])
-        self.assert_fprettify_result(['-S', '-l 0'], instring[3], outstring[7])
+        self.assert_fprettify_result(['-S'], instring_, outstring_[0])
+        self.assert_fprettify_result(['-S', '-l 0'], instring_, outstring_[1])
 
     def test_relation_replacement(self):
         """test relacement of relational statements"""
@@ -365,7 +365,9 @@ class FPrettifyTestCase(unittest.TestCase):
                     "if (   min == max .and. min .eq. thres  )",
                     "if(min /= max .and. min .ne. thres)",
                     "if(min >= max .and. min .ge. thres )",
-                    "if( min <= max .and. min .le. thres)"]
+                    "if( min <= max .and. min .le. thres)",
+                    "'==== heading",
+                    "'(\"</Collection>\","]
         outstring = ["if (min < max .and. min < thres)",
                      "if (min .lt. max .and. min .lt. thres)",
                      "if (min > max .and. min > thres)",
@@ -377,9 +379,13 @@ class FPrettifyTestCase(unittest.TestCase):
                      "if (min >= max .and. min >= thres)",
                      "if (min .ge. max .and. min .ge. thres)",
                      "if (min <= max .and. min <= thres)",
-                     "if (min .le. max .and. min .le. thres)"]
+                     "if (min .le. max .and. min .le. thres)",
+                    "'==== heading",
+                    "'==== heading",
+                     "'(\"</Collection>\",",
+                     "'(\"</Collection>\","]
 
-        for i in range(0, 6):
+        for i in range(0, len(instring)):
             self.assert_fprettify_result(['--enable-replacements', '--c-relations'], instring[i], outstring[2*i])
             self.assert_fprettify_result(['--enable-replacements'], instring[i], outstring[2*i + 1])
 
