@@ -643,7 +643,7 @@ def replace_relational_single_fline(f_line, cstyle):
 
             line_parts[pos] = part
 
-    new_line = ''.join(line_parts)
+        new_line = ''.join(line_parts)
 
     return new_line
 
