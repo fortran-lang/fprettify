@@ -149,7 +149,7 @@ ENDMOD_RE = re.compile(SOL_STR + r"END\s*MODULE(\s+\w+)?" + EOL_STR, RE_FLAGS)
 
 TYPE_RE = re.compile(
     SOL_STR +
-    r"TYPE(\s*,\s*(BIND\s*\(\s*C\s*\)|EXTENDS\s*\(.*\)|ABSTRACT))?(\s*,\s*(PUBLIC|PRIVATE))?(\s*::\s*|\s+)\w+" + EOL_STR,
+    r"TYPE(\s*,\s*(BIND\s*\(\s*C\s*\)|EXTENDS\s*\(.*\)|ABSTRACT|PUBLIC|PRIVATE))*(\s*,\s*)?(\s*::\s*|\s+)\w+" + EOL_STR,
     RE_FLAGS)
 ENDTYPE_RE = re.compile(SOL_STR + r"END\s*TYPE(\s+\w+)?" + EOL_STR, RE_FLAGS)
 
