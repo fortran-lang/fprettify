@@ -605,36 +605,45 @@ def replace_relational_single_fline(f_line, cstyle):
 
     # only act on lines that do contain a relation
     if REL_OP_RE.search(f_line):
-        prev_pos = 0
-        new_line = ''
         # check that relation is not inside quotes, a string, or commented
         # (think of underlining a heading with === or things like markup being printed which we do not replace)
-        for match in REL_OP_RE.finditer(f_line):
-            line_till_match = f_line[:match.start()]
-            new_rel = match.group(0)
-            # if we have an uneven number of quotes or a ! before the relation, we are inside a string or comment
-            if not ( len(re.findall("\"", line_till_match)) % 2 == 1
-                    or len(re.findall("'", line_till_match)) % 2 == 1
-                    or len(re.findall("\!", line_till_match)) % 2 == 1 ):
-                if cstyle:
-                    new_rel = re.sub(r"\s*\.LT\.\s*", "<",  match.group(0), flags=RE_FLAGS)
-                    new_rel = re.sub(r"\s*\.LE\.\s*", "<=", new_rel, flags=RE_FLAGS)
-                    new_rel = re.sub(r"\s*\.GT\.\s*", ">",  new_rel, flags=RE_FLAGS)
-                    new_rel = re.sub(r"\s*\.GE\.\s*", ">=", new_rel, flags=RE_FLAGS)
-                    new_rel = re.sub(r"\s*\.EQ\.\s*", "==", new_rel, flags=RE_FLAGS)
-                    new_rel = re.sub(r"\s*\.NE\.\s*", "/=", new_rel, flags=RE_FLAGS)
-                else:
-                    new_rel = re.sub(r"\s*<=\s*",  ".le.", match.group(0), flags=RE_FLAGS)
-                    new_rel = re.sub(r"\s*<\s*",   ".lt.", new_rel, flags=RE_FLAGS)
-                    new_rel = re.sub(r"\s*>=\s*",  ".ge.", new_rel, flags=RE_FLAGS)
-                    new_rel = re.sub(r"\s*>\s*",   ".gt.", new_rel, flags=RE_FLAGS)
-                    new_rel = re.sub(r"\s*==\s*",  ".eq.", new_rel, flags=RE_FLAGS)
-                    new_rel = re.sub(r"\s*\/=\s*", ".ne.", new_rel, flags=RE_FLAGS)
+        pos_prev = -1
+        pos = -1
+        line_parts = ['']
+        for pos, char in CharFilter(f_line):
+            if pos > pos_prev + 1: # skipped string
+                line_parts.append(f_line[pos_prev + 1:pos].strip()) # append string
+                line_parts.append('')
 
-            new_line += f_line[prev_pos:match.start()]
-            new_line += new_rel
-            prev_pos = match.end()
-        new_line += f_line[prev_pos:]
+            line_parts[-1] += char
+
+            pos_prev = pos
+
+        if pos + 1 < len(f_line):
+            line_parts.append(f_line[pos + 1:])
+
+        for pos, part in enumerate(line_parts):
+            # exclude comments, strings:
+            if not STR_OPEN_RE.match(part):
+                # also exclude / if we see a namelist and data statement
+                if cstyle:
+                    part = re.sub(r"\s*\.LT\.\s*", "<",  part, flags=RE_FLAGS)
+                    part = re.sub(r"\s*\.LE\.\s*", "<=", part, flags=RE_FLAGS)
+                    part = re.sub(r"\s*\.GT\.\s*", ">",  part, flags=RE_FLAGS)
+                    part = re.sub(r"\s*\.GE\.\s*", ">=", part, flags=RE_FLAGS)
+                    part = re.sub(r"\s*\.EQ\.\s*", "==", part, flags=RE_FLAGS)
+                    part = re.sub(r"\s*\.NE\.\s*", "/=", part, flags=RE_FLAGS)
+                else:
+                    part = re.sub(r"\s*<=\s*",  ".le.", part, flags=RE_FLAGS)
+                    part = re.sub(r"\s*<\s*",   ".lt.", part, flags=RE_FLAGS)
+                    part = re.sub(r"\s*>=\s*",  ".ge.", part, flags=RE_FLAGS)
+                    part = re.sub(r"\s*>\s*",   ".gt.", part, flags=RE_FLAGS)
+                    part = re.sub(r"\s*==\s*",  ".eq.", part, flags=RE_FLAGS)
+                    part = re.sub(r"\s*\/=\s*", ".ne.", part, flags=RE_FLAGS)
+
+            line_parts[pos] = part
+
+    new_line = ''.join(line_parts)
 
     return new_line
 
