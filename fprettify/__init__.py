@@ -601,34 +601,42 @@ def replace_relational_single_fline(f_line, cstyle):
     .ne.  <-->  /=
     """
 
-    line = f_line
+    new_line = f_line
 
     # only act on lines that do contain a relation
-    if REL_OP_RE.search(line):
+    if REL_OP_RE.search(f_line):
+        prev_pos = 0
+        new_line = ''
         # check that relation is not inside quotes, a string, or commented
         # (think of underlining a heading with === or things like markup being printed which we do not replace)
-        matcheqeq = REL_OP_RE.search(line)
-        short_line = line[:matcheqeq.start()]
-        # if we have an uneven number of quotes or a ! before the relation, we are inside a string or comment
-        if not ( len(re.findall("\"", short_line)) % 2 == 1
-                or len(re.findall("'", short_line)) % 2 == 1
-                or len(re.findall("\!", short_line)) % 2 == 1 ):
-            if cstyle:
-                line = re.sub(r"(?<!\()\s*(\.(?:LT)\.)\s*(?!\))", "<", line, flags=RE_FLAGS)
-                line = re.sub(r"(?<!\()\s*(\.(?:LE)\.)\s*(?!\))", "<=", line, flags=RE_FLAGS)
-                line = re.sub(r"(?<!\()\s*(\.(?:GT)\.)\s*(?!\))", ">", line, flags=RE_FLAGS)
-                line = re.sub(r"(?<!\()\s*(\.(?:GE)\.)\s*(?!\))", ">=", line, flags=RE_FLAGS)
-                line = re.sub(r"(?<!\()\s*(\.(?:EQ)\.)\s*(?!\))", "==", line, flags=RE_FLAGS)
-                line = re.sub(r"(?<!\()\s*(\.(?:NE)\.)\s*(?!\))", "/=", line, flags=RE_FLAGS)
-            else:
-                line = re.sub(r"(?<!\()\s*(?:<=)\s*(?!\))", ".le.", line, flags=RE_FLAGS)
-                line = re.sub(r"(?<!\()\s*(?:<)\s*(?!\))", ".lt.", line, flags=RE_FLAGS)
-                line = re.sub(r"(?<!\()\s*(?:>=)\s*(?!\))", ".ge.", line, flags=RE_FLAGS)
-                line = re.sub(r"(?<!\()\s*(?:>)\s*(?!\))", ".gt.", line, flags=RE_FLAGS)
-                line = re.sub(r"(?<!\()\s*(?:==)\s*(?!\))", ".eq.", line, flags=RE_FLAGS)
-                line = re.sub(r"(?<!\()\s*(?:\/=)\s*(?!\))", ".ne.", line, flags=RE_FLAGS)
+        for match in REL_OP_RE.finditer(f_line):
+            line_till_match = f_line[:match.start()]
+            new_rel = match.group(0)
+            # if we have an uneven number of quotes or a ! before the relation, we are inside a string or comment
+            if not ( len(re.findall("\"", line_till_match)) % 2 == 1
+                    or len(re.findall("'", line_till_match)) % 2 == 1
+                    or len(re.findall("\!", line_till_match)) % 2 == 1 ):
+                if cstyle:
+                    new_rel = re.sub(r"\s*\.LT\.\s*", "<",  match.group(0), flags=RE_FLAGS)
+                    new_rel = re.sub(r"\s*\.LE\.\s*", "<=", new_rel, flags=RE_FLAGS)
+                    new_rel = re.sub(r"\s*\.GT\.\s*", ">",  new_rel, flags=RE_FLAGS)
+                    new_rel = re.sub(r"\s*\.GE\.\s*", ">=", new_rel, flags=RE_FLAGS)
+                    new_rel = re.sub(r"\s*\.EQ\.\s*", "==", new_rel, flags=RE_FLAGS)
+                    new_rel = re.sub(r"\s*\.NE\.\s*", "/=", new_rel, flags=RE_FLAGS)
+                else:
+                    new_rel = re.sub(r"\s*<=\s*",  ".le.", match.group(0), flags=RE_FLAGS)
+                    new_rel = re.sub(r"\s*<\s*",   ".lt.", new_rel, flags=RE_FLAGS)
+                    new_rel = re.sub(r"\s*>=\s*",  ".ge.", new_rel, flags=RE_FLAGS)
+                    new_rel = re.sub(r"\s*>\s*",   ".gt.", new_rel, flags=RE_FLAGS)
+                    new_rel = re.sub(r"\s*==\s*",  ".eq.", new_rel, flags=RE_FLAGS)
+                    new_rel = re.sub(r"\s*\/=\s*", ".ne.", new_rel, flags=RE_FLAGS)
 
-    return line
+            new_line += f_line[prev_pos:match.start()]
+            new_line += new_rel
+            prev_pos = match.end()
+        new_line += f_line[prev_pos:]
+
+    return new_line
 
 
 def format_single_fline(f_line, whitespace, whitespace_dict, linebreak_pos,

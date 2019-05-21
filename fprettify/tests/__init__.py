@@ -367,27 +367,30 @@ class FPrettifyTestCase(unittest.TestCase):
                     "if(min >= max .and. min .ge. thres )",
                     "if( min <= max .and. min .le. thres)",
                     "'==== heading",
+                    "if (vtk%my_rank .eq. 0) write (vtk%filehandle_par, '(\"<DataArray",
                     "'(\"</Collection>\","]
-        outstring = ["if (min < max .and. min < thres)",
-                     "if (min .lt. max .and. min .lt. thres)",
-                     "if (min > max .and. min > thres)",
+        f_outstring = ["if (min .lt. max .and. min .lt. thres)",
                      "if (min .gt. max .and. min .gt. thres)",
-                     "if (min == max .and. min == thres)",
                      "if (min .eq. max .and. min .eq. thres)",
-                     "if (min /= max .and. min /= thres)",
                      "if (min .ne. max .and. min .ne. thres)",
-                     "if (min >= max .and. min >= thres)",
                      "if (min .ge. max .and. min .ge. thres)",
-                     "if (min <= max .and. min <= thres)",
                      "if (min .le. max .and. min .le. thres)",
                     "'==== heading",
+                    "if (vtk%my_rank .eq. 0) write (vtk%filehandle_par, '(\"<DataArray",
+                     "'(\"</Collection>\","]
+        c_outstring = ["if (min < max .and. min < thres)",
+                     "if (min > max .and. min > thres)",
+                     "if (min == max .and. min == thres)",
+                     "if (min /= max .and. min /= thres)",
+                     "if (min >= max .and. min >= thres)",
+                     "if (min <= max .and. min <= thres)",
                     "'==== heading",
-                     "'(\"</Collection>\",",
+                    "if (vtk%my_rank == 0) write (vtk%filehandle_par, '(\"<DataArray",
                      "'(\"</Collection>\","]
 
         for i in range(0, len(instring)):
-            self.assert_fprettify_result(['--enable-replacements', '--c-relations'], instring[i], outstring[2*i])
-            self.assert_fprettify_result(['--enable-replacements'], instring[i], outstring[2*i + 1])
+            self.assert_fprettify_result(['--enable-replacements', '--c-relations'], instring[i], c_outstring[i])
+            self.assert_fprettify_result(['--enable-replacements'], instring[i], f_outstring[i])
 
 def addtestmethod(testcase, fpath, ffile):
     """add a test method for each example."""
