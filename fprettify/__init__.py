@@ -71,7 +71,7 @@ import sys
 import logging
 import os
 import io
-import argparse
+import configargparse
 
 # allow for unicode for stdin / stdout, it's a mess
 try:
@@ -101,7 +101,7 @@ FORTRAN_EXTENSIONS += [_.upper() for _ in FORTRAN_EXTENSIONS]
 # constants, mostly regular expressions:
 FORMATTER_ERROR_MESSAGE = (" Wrong usage of formatting-specific directives"
                            " '&', '!&', '!&<' or '!&>'.")
-LINESPLIT_MESSAGE = ("auto indentation failed due to 132 chars limit, "
+LINESPLIT_MESSAGE = ("auto indentation failed due to chars limit, "
                      "line should be split")
 
 EOL_STR = r"\s*;?\s*$"  # end of fortran line
@@ -175,8 +175,9 @@ PRIVATE_RE = re.compile(SOL_STR + r"PRIVATE\s*::", RE_FLAGS)
 PUBLIC_RE = re.compile(SOL_STR + r"PUBLIC\s*::", RE_FLAGS)
 
 # intrinsic statements with parenthesis notation that are not functions
-INTR_STMTS_PAR = (r"(ALLOCATE|DEALLOCATE|REWIND|BACKSPACE|INQUIRE|"
+INTR_STMTS_PAR = (r"(ALLOCATE|DEALLOCATE|"
                   r"OPEN|CLOSE|READ|WRITE|"
+                  r"FLUSH|ENDFILE|REWIND|BACKSPACE|INQUIRE|"
                   r"FORALL|WHERE|ASSOCIATE|NULLIFY)")
 
 # regular expressions for parsing linebreaks
@@ -187,8 +188,9 @@ LINEBREAK_STR = r"(&)[\s]*(?:!.*)?$"
 PLUSMINUS_RE = re.compile(
     r"(?<=[\w\)\]])(?<![\d\.][de])\s*(\+|-)\s*", RE_FLAGS)
 # Note: ** or // (or any multiples of * or /) are ignored
+#       we also ignore any * or / before a :: because we may be seeing 'real*8'
 MULTDIV_RE = re.compile(
-    r"(?<=[\w\)\]])\s*((?<!\*)\*(?!\*)|(?<!/)/(?!/))(?=[\s\w\(])", RE_FLAGS)
+    r"(?<=[\w\)\]])\s*((?<!\*)\*(?!\*)|(?<!/)/(?!/))(?=[\s\w\(])(?!.*::)", RE_FLAGS)
 REL_OP_RE = re.compile(
     r"(?<!\()\s*(\.(?:EQ|NE|LT|LE|GT|GE)\.|(?:==|\/=|<(?!=)|<=|(?<!=)>(?!=)|>=))\s*(?!\))",
     RE_FLAGS)
@@ -586,8 +588,51 @@ def inspect_ffile_format(infile, indent_size, strict_indent, orig_filename=None)
 
     return indents, first_indent
 
-def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
-                        filename, line_nr, auto_format=True):
+
+def replace_relational_single_fline(f_line, cstyle):
+    """
+    format a single Fortran line - replaces scalar relational
+    operators in logical expressions to either Fortran or C-style.
+    .lt.  <-->  <
+    .le.  <-->  <=
+    .gt.  <-->  >
+    .ge.  <-->  >=
+    .eq.  <-->  ==
+    .ne.  <-->  /=
+    """
+
+    line = f_line
+
+    # only act on lines that do contain a relation
+    if REL_OP_RE.search(line):
+        # check that relation is not inside quotes, a string, or commented
+        # (think of underlining a heading with === or things like markup being printed which we do not replace)
+        matcheqeq = REL_OP_RE.search(line)
+        short_line = line[:matcheqeq.start()]
+        # if we have an uneven number of quotes or a ! before the relation, we are inside a string or comment
+        if not ( len(re.findall("\"", short_line)) % 2 == 1
+                or len(re.findall("'", short_line)) % 2 == 1
+                or len(re.findall("\!", short_line)) % 2 == 1 ):
+            if cstyle:
+                line = re.sub(r"(?<!\()\s*(\.(?:LT)\.)\s*(?!\))", "<", line, flags=RE_FLAGS)
+                line = re.sub(r"(?<!\()\s*(\.(?:LE)\.)\s*(?!\))", "<=", line, flags=RE_FLAGS)
+                line = re.sub(r"(?<!\()\s*(\.(?:GT)\.)\s*(?!\))", ">", line, flags=RE_FLAGS)
+                line = re.sub(r"(?<!\()\s*(\.(?:GE)\.)\s*(?!\))", ">=", line, flags=RE_FLAGS)
+                line = re.sub(r"(?<!\()\s*(\.(?:EQ)\.)\s*(?!\))", "==", line, flags=RE_FLAGS)
+                line = re.sub(r"(?<!\()\s*(\.(?:NE)\.)\s*(?!\))", "/=", line, flags=RE_FLAGS)
+            else:
+                line = re.sub(r"(?<!\()\s*(?:<=)\s*(?!\))", ".le.", line, flags=RE_FLAGS)
+                line = re.sub(r"(?<!\()\s*(?:<)\s*(?!\))", ".lt.", line, flags=RE_FLAGS)
+                line = re.sub(r"(?<!\()\s*(?:>=)\s*(?!\))", ".ge.", line, flags=RE_FLAGS)
+                line = re.sub(r"(?<!\()\s*(?:>)\s*(?!\))", ".gt.", line, flags=RE_FLAGS)
+                line = re.sub(r"(?<!\()\s*(?:==)\s*(?!\))", ".eq.", line, flags=RE_FLAGS)
+                line = re.sub(r"(?<!\()\s*(?:\/=)\s*(?!\))", ".ne.", line, flags=RE_FLAGS)
+
+    return line
+
+
+def format_single_fline(f_line, whitespace, whitespace_dict, linebreak_pos,
+                        ampersand_sep, filename, line_nr, auto_format=True):
     """
     format a single Fortran line - imposes white space formatting
     and inserts linebreaks.
@@ -597,31 +642,44 @@ def format_single_fline(f_line, whitespace, linebreak_pos, ampersand_sep,
     `filename` and `line_nr` just for error messages.
     The higher `whitespace`, the more white space characters inserted -
     whitespace = 0, 1, 2, 3 are currently supported.
+    whitespace formatting can additionally controlled more fine-grained
+    via a dictionary of bools (whitespace_dict)
     auto formatting can be turned off by setting `auto_format` to False.
     """
 
     # define whether to put whitespaces around operators:
-    # 0: comma, semicolon
-    # 1: assignment operators
-    # 2: relational operators
-    # 3: logical operators
-    # 4: arithm. operators plus and minus
-    # 5: arithm. operators multiply and divide
-    # 6: print / read statements
-    # 7: select type components
+    mapping = {
+            'comma': 0,           # 0: comma, semicolon
+            'assignments': 1,     # 1: assignment operators
+            'relational': 2,      # 2: relational operators
+            'logical': 3,         # 3: logical operators
+            'plusminus': 4,       # 4: arithm. operators plus and minus
+            'multdiv': 5,         # 5: arithm. operators multiply and divide
+            'print': 6,           # 6: print / read statements
+            'type': 7,            # 7: select type components
+            'intrinsics': 8       # 8: intrinsics
+            }
 
     if whitespace == 0:
-        spacey = [0, 0, 0, 0, 0, 0, 0, 0]
+        spacey = [0, 0, 0, 0, 0, 0, 0, 0, 0]
     elif whitespace == 1:
-        spacey = [1, 1, 1, 1, 0, 0, 1, 0]
+        spacey = [1, 1, 1, 1, 0, 0, 1, 0, 1]
     elif whitespace == 2:
-        spacey = [1, 1, 1, 1, 1, 0, 1, 0]
+        spacey = [1, 1, 1, 1, 1, 0, 1, 0, 1]
     elif whitespace == 3:
-        spacey = [1, 1, 1, 1, 1, 1, 1, 0]
+        spacey = [1, 1, 1, 1, 1, 1, 1, 0, 1]
     elif whitespace == 4:
-        spacey = [1, 1, 1, 1, 1, 1, 1, 1]
+        spacey = [1, 1, 1, 1, 1, 1, 1, 1, 1]
     else:
         raise NotImplementedError("unknown value for whitespace")
+
+    if whitespace_dict:
+        # iterate over dictionary and override settings for 'spacey'
+        for key, value in mapping.items():
+            if whitespace_dict[key] == True:
+                spacey[value] = 1
+            elif whitespace_dict[key] == False:
+                spacey[value] = 0
 
     line = f_line
     line_orig = line
@@ -717,7 +775,7 @@ def add_whitespace_charwise(line, spacey, filename, line_nr):
                                   line[:pos], RE_FLAGS) or
                         re.search(r"\b" + INTR_STMTS_PAR + r"\s*$",
                                   line[:pos], RE_FLAGS)):
-                    sep1 = 1
+                    sep1 = 1 * spacey[8]
 
             # format closing delimiters
             else:
@@ -918,7 +976,8 @@ def reformat_inplace(filename, stdout=False, **kwargs):  # pragma: no cover
 
 
 def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_indent=False, impose_whitespace=True,
-                   whitespace=2, strip_comments=False, orig_filename=None):
+                   impose_replacements=False, cstyle=False, whitespace=2, whitespace_dict={}, llength=132,
+                   strip_comments=False, orig_filename=None):
     """main method to be invoked for formatting a Fortran file."""
 
     if not orig_filename:
@@ -1002,9 +1061,12 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
 
             f_line = f_line.strip(' ')
 
+            if impose_replacements:
+                f_line = replace_relational_single_fline(f_line, cstyle)
+
             if impose_whitespace:
                 lines = format_single_fline(
-                    f_line, whitespace, linebreak_pos, ampersand_sep,
+                    f_line, whitespace, whitespace_dict, linebreak_pos, ampersand_sep,
                     orig_filename, stream.line_nr, auto_format)
 
                 lines = append_comments(lines, comment_lines)
@@ -1022,7 +1084,7 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
 
         lines = remove_trailing_whitespace(lines)
 
-        write_formatted_line(outfile, indent, lines, orig_lines, indent_special,
+        write_formatted_line(outfile, indent, lines, orig_lines, indent_special, llength,
                              use_same_line, is_omp_conditional, label, orig_filename, stream.line_nr)
 
         do_indent, use_same_line = pass_defaults_to_next_line(f_line)
@@ -1251,7 +1313,7 @@ def get_manual_alignment(lines):
     return manual_lines_indent
 
 
-def write_formatted_line(outfile, indent, lines, orig_lines, indent_special, use_same_line, is_omp_conditional, label, filename, line_nr):
+def write_formatted_line(outfile, indent, lines, orig_lines, indent_special, llength, use_same_line, is_omp_conditional, label, filename, line_nr):
     """Write reformatted line to file"""
 
     for ind, line, orig_line in zip(indent, lines, orig_lines):
@@ -1279,21 +1341,21 @@ def write_formatted_line(outfile, indent, lines, orig_lines, indent_special, use
         else:
             label_use = ''
 
-        if ind_use + line_length <= 133:  # 132 plus 1 newline char
+        if ind_use + line_length <= (llength+1):  # llength (default 132) plus 1 newline char
             outfile.write('!$' * is_omp_conditional + label_use +
                           ' ' * (ind_use - 2 * is_omp_conditional - len(label_use) +
                                  len(line) - len(line.lstrip(' '))) +
                           line.lstrip(' '))
-        elif line_length <= 133:
+        elif line_length <= (llength+1):
             outfile.write('!$' * is_omp_conditional + label_use + ' ' *
-                          (133 - 2 * is_omp_conditional - len(label_use) -
+                          ((llength+1) - 2 * is_omp_conditional - len(label_use) -
                            len(line.lstrip(' '))) + line.lstrip(' '))
 
-            log_message(LINESPLIT_MESSAGE, "warning",
+            log_message(LINESPLIT_MESSAGE+" (limit: "+str(llength)+")", "warning",
                         filename, line_nr)
         else:
             outfile.write(orig_line)
-            log_message(LINESPLIT_MESSAGE, "warning",
+            log_message(LINESPLIT_MESSAGE+" (limit: "+str(llength)+")", "warning",
                         filename, line_nr)
 
 
@@ -1333,20 +1395,54 @@ def log_message(message, level, filename, line_nr):
 def run(argv=sys.argv):  # pragma: no cover
     """Command line interface"""
 
-    parser = argparse.ArgumentParser(prog=argv[0],
-                                     description='Auto-format modern Fortran source files.', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    def str2bool(str):
+        """helper function to convert strings to bool"""
+        if str.lower() in ('yes', 'true', 't', 'y', '1'):
+            return True
+        elif str.lower() in ('no', 'false', 'f', 'n', '0'):
+            return False
+        else:
+            return None
+
+    parser = configargparse.ArgumentParser(prog=argv[0],
+                                     description='Auto-format modern Fortran source files.',
+                                     default_config_files=['.fprettify.rc', '~/.fprettify.rc'],
+                                     formatter_class=configargparse.ArgumentDefaultsHelpFormatter)
+
     parser.add_argument("-i", "--indent", type=int, default=3,
                         help="relative indentation width")
+    parser.add_argument("-l", "--line-length", type=int, default=132,
+                        help="column after which a line should end, viz. -ffree-line-length-n for GCC")
     parser.add_argument("-w", "--whitespace", type=int,
-                        choices=range(0, 5), default=2, help="Amount of whitespace - "
+                        choices=range(0, 5), default=2, help="Presets for the amount of whitespace - "
                                                              "   0: minimal whitespace"
                                                              " | 1: operators (except arithmetic), print/read"
                                                              " | 2: operators, print/read, plus/minus"
                                                              " | 3: operators, print/read, plus/minus, muliply/divide"
                                                              " | 4: operators, print/read, plus/minus, muliply/divide, type component selector")
+    parser.add_argument("--whitespace-comma", type=str2bool, nargs="?", default="None", const=True,
+            help="boolean, en-/disable whitespace for comma/semicolons")
+    parser.add_argument("--whitespace-assignment", type=str2bool, nargs="?", default="None", const=True,
+            help="boolean, en-/disable whitespace for assignments")
+    parser.add_argument("--whitespace-relational", type=str2bool, nargs="?", default="None", const=True,
+            help="boolean, en-/disable whitespace for relational operators")
+    parser.add_argument("--whitespace-logical", type=str2bool, nargs="?", default="None", const=True,
+            help="boolean, en-/disable whitespace for logical operators")
+    parser.add_argument("--whitespace-plusminus", type=str2bool, nargs="?", default="None", const=True,
+            help="boolean, en-/disable whitespace for plus/minus arithmetic")
+    parser.add_argument("--whitespace-multdiv", type=str2bool, nargs="?", default="None", const=True,
+            help="boolean, en-/disable whitespace for multiply/divide arithmetic")
+    parser.add_argument("--whitespace-print", type=str2bool, nargs="?", default="None", const=True,
+            help="boolean, en-/disable whitespace for print/read statements")
+    parser.add_argument("--whitespace-type", type=str2bool, nargs="?", default="None", const=True,
+            help="boolean, en-/disable whitespace for select type components")
+    parser.add_argument("--whitespace-intrinsics", type=str2bool, nargs="?", default="None", const=True,
+            help="boolean, en-/disable whitespace for intrinsics like if/write/close")
     parser.add_argument("--strict-indent", action='store_true', default=False, help="strictly impose indentation even for nested loops")
     parser.add_argument("--disable-indent", action='store_true', default=False, help="don't impose indentation")
     parser.add_argument("--disable-whitespace", action='store_true', default=False, help="don't impose whitespace formatting")
+    parser.add_argument("--enable-replacements", action='store_true', default=False, help="replace relational operators (e.g. '.lt.' <--> '<')")
+    parser.add_argument("--c-relations", action='store_true', default=False, help="C-style relational operators ('<', '<=', ...)")
     parser.add_argument("--strip-comments", action='store_true', default=False, help="strip whitespaces before comments")
     parser.add_argument("-s", "--stdout", action='store_true', default=False,
                         help="Write to stdout instead of formatting inplace")
@@ -1355,7 +1451,7 @@ def run(argv=sys.argv):  # pragma: no cover
     group.add_argument("-S", "--silent", "--no-report-errors", action='store_true',
                        default=False, help="Don't write any errors or warnings to stderr")
     group.add_argument("-D", "--debug", action='store_true',
-                       default=False, help=argparse.SUPPRESS)
+                       default=False, help=configargparse.SUPPRESS)
     parser.add_argument("path", type=str, nargs='*',
                         help="Paths to files to be formatted inplace. If no paths are given, stdin (-) is used by default. Path can be a directory if --recursive is used.", default=['-'])
     parser.add_argument('-r', '--recursive', action='store_true',
@@ -1366,6 +1462,18 @@ def run(argv=sys.argv):  # pragma: no cover
                         version='%(prog)s 0.3.3')
 
     args = parser.parse_args(argv[1:])
+
+    # build whitespace dictionary
+    ws_dict = {}
+    ws_dict['comma'] = args.whitespace_comma
+    ws_dict['assignments'] = args.whitespace_assignment
+    ws_dict['relational'] = args.whitespace_relational
+    ws_dict['logical'] = args.whitespace_logical
+    ws_dict['plusminus'] = args.whitespace_plusminus
+    ws_dict['multdiv'] = args.whitespace_multdiv
+    ws_dict['print'] = args.whitespace_print
+    ws_dict['type'] = args.whitespace_type
+    ws_dict['intrinsics'] = args.whitespace_intrinsics
 
     # support legacy input:
     if 'stdin' in args.path and not os.path.isfile('stdin'):
@@ -1416,7 +1524,11 @@ def run(argv=sys.argv):  # pragma: no cover
                                  indent_size=args.indent,
                                  strict_indent=args.strict_indent,
                                  impose_whitespace=not args.disable_whitespace,
+                                 impose_replacements=args.enable_replacements,
+                                 cstyle=args.c_relations,
                                  whitespace=args.whitespace,
+                                 whitespace_dict=ws_dict,
+                                 llength=1024 if args.line_length == 0 else args.line_length,
                                  strip_comments=args.strip_comments)
             except FprettifyException as e:
                 log_exception(e, "Fatal error occured")
