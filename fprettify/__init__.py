@@ -326,10 +326,12 @@ class F90Indenter(object):
                 is_end = True
                 if len(scopes) > 0:
                     what = scopes.pop()
-                    if what == what_end:
+                    if what == what_end or (END_SCOPE_RE[what_end] == ENDANY_RE):
                         valid_end = True
                         log_message("{}: {}".format(
                             what_end, f_line), "debug", filename, line_nr)
+                else:
+                    valid_end = True
 
         # deal with line breaks
         if not manual_lines_indent:
@@ -355,15 +357,15 @@ class F90Indenter(object):
             valid = valid_con if is_con else valid_end
 
             if not valid:
+                line_indents = [ind + indents[-1] for ind in line_indents]
                 log_message('invalid scope closing statement',
                             "info", filename, line_nr)
-            try:
-                line_indents = [ind + indents[-2 + self._initial]
-                                for ind in line_indents]
-            except IndexError:
-                assert not valid
+            else:
+                if len(indents) > 1 or self._initial:
+                    line_indents = [ind + indents[-2 + self._initial]
+                                    for ind in line_indents]
 
-            if is_end:
+            if is_end and valid:
                 if len(indents) > 1:
                     indents.pop()
                 else:

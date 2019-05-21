@@ -222,7 +222,7 @@ RosettaCodeData/Task/Factors-of-a-Mersenne-number/Fortran/factors-of-a-mersenne-
 RosettaCodeData/Task/Factors-of-an-integer/Fortran/factors-of-an-integer.f : e30ace4f19d882d40be0166a5de709821ebd97ebc3db37ca9743c50aae23981d
 RosettaCodeData/Task/Fast-Fourier-transform/Fortran/fast-fourier-transform.f : a9ce02eca36c53619e108b1ad7bbea9aa7994349a065432fe4495a46b4bd0101
 RosettaCodeData/Task/Fibonacci-n-step-number-sequences/Fortran/fibonacci-n-step-number-sequences.f : 528289e9bb4c9409176a91790eecc170493f0e54d3aa9b811c460f7687e89c6e
-RosettaCodeData/Task/Fibonacci-sequence/Fortran/fibonacci-sequence-1.f : 34d21e2f408b2d9eaa71d0e02814c2ced34e510c33bf3a430de2474bec8c2798
+RosettaCodeData/Task/Fibonacci-sequence/Fortran/fibonacci-sequence-1.f : 066048954e8b3ec3e4ab7a978947e3e8353a008e5ddd292de07127612f8f5c25
 RosettaCodeData/Task/Fibonacci-sequence/Fortran/fibonacci-sequence-2.f : ae1eef0f35d6930593970318706826d5983a67972b9724c1db055ae907efd00d
 RosettaCodeData/Task/Fibonacci-sequence/Fortran/fibonacci-sequence-3.f : 4cc861277a2859987b55db779bd15af9be4418dc01ea1277f5f95e1101d37270
 RosettaCodeData/Task/Fibonacci-sequence/Fortran/fibonacci-sequence-5.f : 70743db8385634abf260dcf089c82ecbf645da4c2e62267bdcdd078629407865
@@ -303,7 +303,7 @@ RosettaCodeData/Task/Hello-world-Text/Fortran/hello-world-text-2.f : dd117e9c323
 RosettaCodeData/Task/Hello-world-Text/Fortran/hello-world-text-3.f : 32d370f88b797c1b42986192ee6bcbd195e089f0f04975b82cd92f9fadab675f
 RosettaCodeData/Task/Hello-world-Web-server/Fortran/hello-world-web-server.f : 48b637824c93c177eeeffdcda90046614f03e7880859f697cc136f8f2e63bb25
 RosettaCodeData/Task/Here-document/Fortran/here-document.f : internal error
-RosettaCodeData/Task/Heronian-triangles/Fortran/heronian-triangles.f : f59618e71ae3f0a727344317f6e6554428d2fb8a5f89b4262ad71a189bd2d629
+RosettaCodeData/Task/Heronian-triangles/Fortran/heronian-triangles.f : 140742694498790304d5cd8c79a3508498416501d176ff5ff84b845b087ba81d
 RosettaCodeData/Task/Hickerson-series-of-almost-integers/Fortran/hickerson-series-of-almost-integers.f : fd1db7ef0f403796072a81df9c444b37d873a21761e37252611b0c24b21e3c77
 RosettaCodeData/Task/Higher-order-functions/Fortran/higher-order-functions-1.f : d2cdc0593b5ad77b5a9dd69ac30ca14d967fd708582c9c72c83b403d021b5ac1
 RosettaCodeData/Task/Higher-order-functions/Fortran/higher-order-functions-2.f : 157c0025438a94fa358c6aca71947b041fcbc598cd8cf4566b9588b0d9523d77
@@ -518,7 +518,7 @@ RosettaCodeData/Task/Ray-casting-algorithm/Fortran/ray-casting-algorithm-2.f : d
 RosettaCodeData/Task/Ray-casting-algorithm/Fortran/ray-casting-algorithm-3.f : 3c4b5b2c08dd9da4806fbd44a7dec270f99c1bf444f08963d4931e5151903df7
 RosettaCodeData/Task/Read-a-configuration-file/Fortran/read-a-configuration-file.f : e1000a4492ec67044936fd893f964ca0fbb258ef5cd422c357da8d5e2db951ae
 RosettaCodeData/Task/Read-a-file-line-by-line/Fortran/read-a-file-line-by-line.f : 33385deadb00004ea12a60346d283f36db311f01d4a04bec05fbe5e19da3a533
-RosettaCodeData/Task/Read-a-specific-line-from-a-file/Fortran/read-a-specific-line-from-a-file-1.f : 27307d7f56c343257cd39e5f34e746ee8ebe785e2a19a29f163019a618a49c28
+RosettaCodeData/Task/Read-a-specific-line-from-a-file/Fortran/read-a-specific-line-from-a-file-1.f : bfdbc562bb555ed15a1cddafdaa4e6a4eed3da2db46c962e3eddfcfc2ac242c3
 RosettaCodeData/Task/Read-a-specific-line-from-a-file/Fortran/read-a-specific-line-from-a-file-2.f : e9f05ac0663f4d6be3b31c8012bc11cbac496aa50291cdcfd0216ff664b312ca
 RosettaCodeData/Task/Read-a-specific-line-from-a-file/Fortran/read-a-specific-line-from-a-file-3.f : 514dca9c73c3e7322f4095410823a64c85e5c070fb5ee92e73524adcfee990bb
 RosettaCodeData/Task/Read-entire-file/Fortran/read-entire-file-1.f : 467b6e68c5b238aa77382b4095e365004f4571af3c859822012a2133c36f3c8a
@@ -1938,7 +1938,7 @@ FLAP/src/tests/test_hidden.f90 : f22260fc1c809d6ffdb2a7b5d34e5653f585e417e965295
 FLAP/src/tests/test_minimal.f90 : 7b9e4ac87db0e524aaa10071940ab023c27579975fc9a84a84fb744a658a60d5
 FLAP/src/tests/test_nested.f90 : a528deb334d0bcf7ba65019913a269902602ba78274a1480678b1357b96c80e8
 FLAP/src/tests/test_string.f90 : 4453392627353a368ddf7f27304db6234de737a8fc4bb23d11922e211b258255
-test_invalid.f90 : 898b97788ca1df5c70f76e08561aa07172f1fb0ddc0e67de4cbb9cab18195426
+test_invalid.f90 : 90a4b76d560da52f7ca3db50db78bd4cb46f0014b5d9f11bb0224452ec9c6a30
 test_namelist_block_select.f90 : 90257fe1108c8689002b470e2e2620c2a0652ca6465ba1a5bbbd6667e2339be0
 cp2k/src/aobasis/aux_basis_set.F : 57e0f1074768932eb07087a07a9b214549286d3585510687423e4fc715baaa29
 cp2k/src/arnoldi/arnoldi_data_manipulation.f90 : 0a8cec412754f0ae0c3953e31d0c8489e90b727d9b3500329f50bb79e7bccf11
