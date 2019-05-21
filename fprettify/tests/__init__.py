@@ -392,6 +392,12 @@ class FPrettifyTestCase(unittest.TestCase):
             self.assert_fprettify_result(['--enable-replacements', '--c-relations'], instring[i], c_outstring[i])
             self.assert_fprettify_result(['--enable-replacements'], instring[i], f_outstring[i])
 
+    def test_do(self):
+        """test correct parsing of do statement"""
+        instring = "do = 1\nb = 2"
+
+        self.assert_fprettify_result([], instring, instring)
+
 def addtestmethod(testcase, fpath, ffile):
     """add a test method for each example."""
 
