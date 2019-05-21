@@ -165,7 +165,7 @@ ENDINTERFACE_RE = re.compile(
 CONTAINS_RE = re.compile(SOL_STR + r"CONTAINS" + EOL_STR, RE_FLAGS)
 
 ENUM_RE = re.compile(
-    SOL_STR + r"ENUM(\s*,\s*(BIND\s*\(\s*C\s*\)))?(\s*::\s*|\s+)\w+" + EOL_STR,
+    SOL_STR + r"ENUM(\s*,\s*(BIND\s*\(\s*C\s*\)))?((\s*::\s*|\s+)\w+)?" + EOL_STR,
     RE_FLAGS)
 ENDENUM_RE = re.compile(SOL_STR + r"END\s*ENUM(\s+\w+)?" + EOL_STR, RE_FLAGS)
 
