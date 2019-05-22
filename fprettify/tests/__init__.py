@@ -398,6 +398,26 @@ class FPrettifyTestCase(unittest.TestCase):
 
         self.assert_fprettify_result([], instring, instring)
 
+    def test_omp(self):
+        """test formatting of omp directives"""
+        instring = ("PROGRAM test_omp\n"
+                    " !$OMP    PARALLEL DO\n"
+                    "b=4\n"
+                    "!$a=b\n"
+                    "   !$    c=b\n"
+                    "!$OMP END  PARALLEL DO\n"
+                    "END PROGRAM")
+        outstring = ("PROGRAM test_omp\n"
+                     "   !$OMP    PARALLEL DO\n"
+                     "   b = 4\n"
+                     "!$ a = b\n"
+                     "!$ c = b\n"
+                     "!$OMP END  PARALLEL DO\n"
+                     "END PROGRAM")
+
+        self.assert_fprettify_result([], instring, outstring)
+
+
 def addtestmethod(testcase, fpath, ffile):
     """add a test method for each example."""
 

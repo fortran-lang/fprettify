@@ -180,8 +180,8 @@ class InputStream(object):
                 # but remember to convert them back
 
                 what_omp = ''
-                if OMP_SUBS_RE.search(line):
-                    what_omp = OMP_SUBS_RE.search(line).group(1)
+                if OMP_RE.search(line) and not OMP_DIR_RE.search(line):
+                    what_omp = OMP_RE.search(line).group(1)
                     line = line.replace(what_omp, '', 1)
                 line_start = 0
 

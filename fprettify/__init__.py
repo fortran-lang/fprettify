@@ -1212,11 +1212,7 @@ def preprocess_line(f_line, lines, comments, filename, line_nr):
     do_format = False
     is_fypp = False
 
-    if OMP_DIR_RE.search(f_line):
-        # move '!$OMP' to line start, otherwise don't format omp directives
-        lines = ['!$OMP' + (len(l) - len(l.lstrip())) *
-                 ' ' + OMP_DIR_RE.sub('', l, count=1) for l in lines]
-    elif EMPTY_RE.search(f_line):  # empty lines including comment lines
+    if EMPTY_RE.search(f_line):  # empty lines including comment lines
         if any(comments):
             if lines[0].startswith(' '):
                 # indent comment lines only if they were not indented before.
