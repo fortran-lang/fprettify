@@ -783,7 +783,7 @@ cp2k/src/base/base_uses.f90 : 755c061a725ce1a9c1611651c59f8f59b64252a25d88557892
 cp2k/src/base/kinds.F : 27c753631b26e7e739309385b0c25d0f2ba46e13f6cacb4865cf4b85bdf59949
 cp2k/src/base/machine.F : afa2607087771066c540e262e6dcca0c646c91c7999c1d44a870bc4063688392
 cp2k/src/base/machine_internal.F : 4e2d0fb45bf1f779ffd2bbdd17151f6b086e6226afabb1d465a96af11e9528a7
-cp2k/src/base/machine_posix.f90 : 876c4c01f6a1c70f83fbe444a5e8a907a37241844cfabfc9297517bfcbf8f7b3
+cp2k/src/base/machine_posix.f90 : 0db67cf492217a158e77fa180e0c35f76f492d703b25e143a214181cf08c8b97
 cp2k/src/beta_gamma_psi.F : 3dcae1a6ddc58b7397ee8d12e2a26222be49cb8ebc5dd61b26fa808b630b54b6
 cp2k/src/block_p_types.F : cf4e314a6e04b37c89326884161d2445c3235f936b2f60c90481d902fb24c638
 cp2k/src/bsse.F : 3e99589acf765ca539be97899edf5732b22098cbc556f8208ce6e9b03ea569d2
@@ -1412,7 +1412,7 @@ cp2k/src/pair_potential_coulomb.F : ee8dbee9d393441a9fbea44d79c649c025288f36069b
 cp2k/src/pair_potential_types.F : b2fb36b758ec604dd8672a270341f5f3b38cd6fdaf8e4f8f803b62162e61a7b3
 cp2k/src/pair_potential_util.F : ac75a41d33c94c8469380281f47ee058035808e0fff08a01f0d791e9c42ecda0
 cp2k/src/pao_input.F : dcb416860553f2425cc66cc6fb84cdbed9ceeca8895c8468e8efd1395d14f4aa
-cp2k/src/pao_io.F : 87a941102881b8be7d1e0681060ebf6c44d8a3324ffc0ca731fca6cbadded428
+cp2k/src/pao_io.F : 6aab6bb6a38b623757e885f72162110bbb14e8ab697102f2f38e97c0005c05d7
 cp2k/src/pao_linpot_full.F : f99c79ffb09ef13950a5b4933c933edbec3b22ec54aab7f2c13ae1365508aa94
 cp2k/src/pao_linpot_rotinv.F : 740f6d41e5722cd7da80c99400d22463c9f4f627a49ef6b66033679eea370792
 cp2k/src/pao_main.F : b31935c75d732fb4c2f972e3ff416818cb70a7a4f9f7e5abac64eaaac7eee079
@@ -1460,7 +1460,7 @@ cp2k/src/pw/fft/fft_kinds.F : 4a1b682fd14cad90dadd89bcd9b76144cd21604f617cd520a1
 cp2k/src/pw/fft/fft_lib.F : 142b6350a99e52eb59d1c01c9ae3844b05bf165563c76c0c4c57712f3e87478b
 cp2k/src/pw/fft/fft_plan.F : 5b1f2f152c141a414118f519b78df4b3c82ef8f56f0e809eac49fac7c18c51b4
 cp2k/src/pw/fft/fftsg_lib.F : 7785ccba6746c1dcab9be3e544beb7ee0ad361367431465732d4374ad4faeb5e
-cp2k/src/pw/fft/fftw3_lib.F : 90a4166b2406f1004e9a286c91999e81c8375200859227a3fe257491a627ff0d
+cp2k/src/pw/fft/fftw3_lib.F : f1352189e033b35ddc4e0fc91ec47e6b2e6d4f11a8c30b8bffff6eaa8745fdd6
 cp2k/src/pw/fft/mltfftsg_tools.F : 7ea71359254fc6c6593c03b87e6745eb6d1bc2f57972290e7cc5bf94de76a3e9
 cp2k/src/pw/fft_tools.F : 8f534fe528d8488a063d87760c506cdabcc74093ba255fc8f5407a75e6fce129
 cp2k/src/pw/lazy.F : ac950c4c5cf93c2c3c1b0ca7e36561ff4b2b2f5db9ec3f3fd6169c8de6b7e6ed
@@ -1469,8 +1469,8 @@ cp2k/src/pw/mt_util.F : 0832c4c9cead32df8821cf7f921f0f643d5553002dee674c0c3b0c04
 cp2k/src/pw/ps_implicit_methods.F : 26ad91257c542f5feb8bf5850dfe4f1e54d155e783406a02c99a530c09b736b4
 cp2k/src/pw/ps_implicit_types.F : 1e6712c8cdb333e37683744869d18b7c4488e3de24a35ba2a88e2baa3d7e42fe
 cp2k/src/pw/ps_wavelet_base.F : 2ce737a5dda461089b3b98d5c623c9c4503fdf10a65e649261c9646fbac83dac
-cp2k/src/pw/ps_wavelet_fft3d.F : 75c3b4405e867e65ac1b028c27d3bd3d43aea710db096b98b12582f1a12dffb9
-cp2k/src/pw/ps_wavelet_kernel.F : 10a96615f6428ef7ac857df9ae28a8d4868aa865fc3bdafb06ec3ae2a48971e9
+cp2k/src/pw/ps_wavelet_fft3d.F : 3f51923885d01eeaa2191190961e65b8aae1c3dac081d462ddf165bad5347ba8
+cp2k/src/pw/ps_wavelet_kernel.F : b6c1c856d3b356ec0728132446cd49a9c31a0ce92ebb0705f3d5730d2934c4bf
 cp2k/src/pw/ps_wavelet_methods.F : d4aeecd400eaca4e79da0c6ee8b678be67f00cf1dc1d4acdf4f885ea11c67d6e
 cp2k/src/pw/ps_wavelet_scaling_function.F : ca3ed4cc842dd08ee10912ce2764fd4a1776b7b2f11f5a344ea601a4449a69e9
 cp2k/src/pw/ps_wavelet_types.F : e4dcd1283b9d2afeaebd8f3da6c8e314a2bd01f5b167862b3268be13824f752a
@@ -1800,7 +1800,7 @@ cp2k/src/tmc/tmc_dot_tree.F : 2f0865bb1a308f9d1f6184672c635aada1eb8e01c69c93dfd4
 cp2k/src/tmc/tmc_file_io.F : 48fbabd859ff4673412a74b62104102f4d760b4ac825b08803217b400296594c
 cp2k/src/tmc/tmc_master.F : 26a8a9cddd6f71629d0f86ca50cedf478685385bf176c0062054bcc51dd3df46
 cp2k/src/tmc/tmc_messages.F : ddf3f4cab75d086429279330f596014268ba595e959be692a6c8c059e458112d
-cp2k/src/tmc/tmc_move_handle.F : aa44322653a06143d900b0730c9a038cea5df178f1e17cbb668f8e8da4c37461
+cp2k/src/tmc/tmc_move_handle.F : 1984d419be2688e370b21cee2501849195d43fb774c75e9de55d4f5e66c3ad9c
 cp2k/src/tmc/tmc_move_types.F : df7d56559f5dc648e1ddb0e003c624583986c6281149682808103065f46b4014
 cp2k/src/tmc/tmc_moves.F : 64472cf11ab31c11f4aa6cc29ed2f7434cad8e62a3edcdad1d974f2dfa5952e7
 cp2k/src/tmc/tmc_setup.F : f7031e61abae6422fa4c4b3aaa179939694820986cd170ea5779405c412dc23b
