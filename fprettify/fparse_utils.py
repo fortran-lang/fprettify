@@ -30,10 +30,7 @@ RE_FLAGS = re.IGNORECASE | re.UNICODE
 VAR_DECL_RE = re.compile(
     r"^ *(?P<type>integer(?: *\* *[0-9]+)?|logical|character(?: *\* *[0-9]+)?|real(?: *\* *[0-9]+)?|complex(?: *\* *[0-9]+)?|type) *(?P<parameters>\((?:[^()]+|\((?:[^()]+|\([^()]*\))*\))*\))? *(?P<attributes>(?: *, *[a-zA-Z_0-9]+(?: *\((?:[^()]+|\((?:[^()]+|\([^()]*\))*\))*\))?)+)? *(?P<dpnt>::)?(?P<vars>[^\n]+)\n?", RE_FLAGS)
 
-# FIXME: unify omp regular expressions
-OMP_DIR_RE = re.compile(r"^\s*(!\$omp)", RE_FLAGS)
-OMP_RE = re.compile(r"^\s*(!\$)", RE_FLAGS)
-OMP_SUBS_RE = re.compile(r"^\s*(!\$(omp)?)", RE_FLAGS)
+OMP_COND_RE = re.compile(r"^\s*(!\$ )", RE_FLAGS)
 
 # supported preprocessors
 FYPP_LINE_STR = r"^(#!|#:|\$:|@:)"
@@ -179,9 +176,14 @@ class InputStream(object):
                 # convert OMP-conditional fortran statements into normal fortran statements
                 # but remember to convert them back
 
-                what_omp = ''
-                if OMP_RE.search(line) and not OMP_DIR_RE.search(line):
-                    what_omp = OMP_RE.search(line).group(1)
+                what_omp = OMP_COND_RE.search(line)
+
+                if what_omp:
+                    what_omp = what_omp.group(1)
+                else:
+                    what_omp = ''
+
+                if what_omp:
                     line = line.replace(what_omp, '', 1)
                 line_start = 0
 

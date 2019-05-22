@@ -88,7 +88,7 @@ except AttributeError: # pragma: no cover
     sys.stdin = utf8_reader(sys.stdin)
     sys.stdout = utf8_writer(sys.stdout)
 
-from .fparse_utils import (VAR_DECL_RE, OMP_RE, OMP_DIR_RE,
+from .fparse_utils import (VAR_DECL_RE, OMP_COND_RE,
                            InputStream, CharFilter,
                            FprettifyException, FprettifyParseException, FprettifyInternalException,
                            CPP_RE, NOTFORTRAN_LINE_RE, FYPP_LINE_RE, RE_FLAGS, STR_OPEN_RE)
@@ -1058,7 +1058,7 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
 
         auto_align, auto_format, in_format_off_block = parse_fprettify_directives(
             lines, comment_lines, in_format_off_block, orig_filename, stream.line_nr)
-        f_line, lines, is_omp, is_omp_conditional = preprocess_omp(
+        f_line, lines, is_omp_conditional = preprocess_omp(
             f_line, lines)
         f_line, lines, label = preprocess_labels(f_line, lines)
 
@@ -1129,7 +1129,7 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
 
         # rm subsequent blank lines
         skip_blank = EMPTY_RE.search(
-            f_line) and not any(comments) and not is_omp and not label
+            f_line) and not any(comments) and not is_omp_conditional and not label
 
 
 def format_comments(lines, comments, strip_comments):
@@ -1182,13 +1182,12 @@ def parse_fprettify_directives(lines, comment_lines, in_format_off_block, filena
 def preprocess_omp(f_line, lines):
     """convert omp conditional to normal fortran"""
 
-    is_omp = OMP_RE.search(f_line)
-    is_omp_conditional = bool(is_omp and not OMP_DIR_RE.search(f_line))
+    is_omp_conditional = bool(OMP_COND_RE.search(f_line))
     if is_omp_conditional:
-        f_line = OMP_RE.sub('  ', f_line, count=1)
-        lines = [OMP_RE.sub('  ', l, count=1) for l in lines]
+        f_line = OMP_COND_RE.sub('   ', f_line, count=1)
+        lines = [OMP_COND_RE.sub('   ', l, count=1) for l in lines]
 
-    return [f_line, lines, is_omp, is_omp_conditional]
+    return [f_line, lines, is_omp_conditional]
 
 def preprocess_labels(f_line, lines):
     """remove statement labels"""
@@ -1370,13 +1369,13 @@ def write_formatted_line(outfile, indent, lines, orig_lines, indent_special, lle
             label_use = ''
 
         if ind_use + line_length <= (llength+1):  # llength (default 132) plus 1 newline char
-            outfile.write('!$' * is_omp_conditional + label_use +
-                          ' ' * (ind_use - 2 * is_omp_conditional - len(label_use) +
+            outfile.write('!$ ' * is_omp_conditional + label_use +
+                          ' ' * (ind_use - 3 * is_omp_conditional - len(label_use) +
                                  len(line) - len(line.lstrip(' '))) +
                           line.lstrip(' '))
         elif line_length <= (llength+1):
-            outfile.write('!$' * is_omp_conditional + label_use + ' ' *
-                          ((llength+1) - 2 * is_omp_conditional - len(label_use) -
+            outfile.write('!$ ' * is_omp_conditional + label_use + ' ' *
+                          ((llength+1) - 3 * is_omp_conditional - len(label_use) -
                            len(line.lstrip(' '))) + line.lstrip(' '))
 
             log_message(LINESPLIT_MESSAGE+" (limit: "+str(llength)+")", "warning",

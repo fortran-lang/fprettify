@@ -404,14 +404,18 @@ class FPrettifyTestCase(unittest.TestCase):
                     " !$OMP    PARALLEL DO\n"
                     "b=4\n"
                     "!$a=b\n"
+                    "!$  a=b\n"
                     "   !$    c=b\n"
+                    "!$acc parallel loop\n"
                     "!$OMP END  PARALLEL DO\n"
                     "END PROGRAM")
         outstring = ("PROGRAM test_omp\n"
                      "   !$OMP    PARALLEL DO\n"
                      "   b = 4\n"
+                     "!$a=b\n"
                      "!$ a = b\n"
                      "!$ c = b\n"
+                     "!$acc parallel loop\n"
                      "!$OMP END  PARALLEL DO\n"
                      "END PROGRAM")
 
