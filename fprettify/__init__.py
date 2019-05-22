@@ -990,8 +990,21 @@ def reformat_inplace(filename, stdout=False, **kwargs):  # pragma: no cover
     if stdout:
         sys.stdout.write(newfile.getvalue())
     else:
-        outfile = io.open(filename, 'w', encoding='utf-8')
-        outfile.write(newfile.getvalue())
+        outfile = io.open(filename, 'r', encoding='utf-8')
+
+        # write to outfile only if content has changed
+
+        import hashlib
+        hash_new = hashlib.md5()
+        hash_new.update(newfile.getvalue().encode('utf-8'))
+        hash_old = hashlib.md5()
+        hash_old.update(outfile.read().encode('utf-8'))
+
+        outfile.close()
+
+        if hash_new.digest() != hash_old.digest():
+            outfile = io.open(filename, 'w', encoding='utf-8')
+            outfile.write(newfile.getvalue())
 
 
 def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_indent=False, impose_whitespace=True,
