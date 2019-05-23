@@ -71,7 +71,6 @@ import sys
 import logging
 import os
 import io
-import configargparse
 
 # allow for unicode for stdin / stdout, it's a mess
 try:
@@ -1422,6 +1421,11 @@ def log_message(message, level, filename, line_nr):
 def run(argv=sys.argv):  # pragma: no cover
     """Command line interface"""
 
+    try:
+        import configargparse as argparse
+    except ImportError:
+        import argparse
+
     def str2bool(str):
         """helper function to convert strings to bool"""
         if str.lower() in ('yes', 'true', 't', 'y', '1'):
@@ -1431,10 +1435,14 @@ def run(argv=sys.argv):  # pragma: no cover
         else:
             return None
 
-    parser = configargparse.ArgumentParser(prog=argv[0],
-                                     description='Auto-format modern Fortran source files.',
-                                     default_config_files=['.fprettify.rc', '~/.fprettify.rc'],
-                                     formatter_class=configargparse.ArgumentDefaultsHelpFormatter)
+    arguments = {'prog': argv[0],
+                 'description': 'Auto-format modern Fortran source files.',
+                 'formatter_class': argparse.ArgumentDefaultsHelpFormatter}
+
+    if argparse.__name__ == "configargparse":
+        arguments['default_config_files'] = ['.fprettify.rc', '~/.fprettify.rc']
+
+    parser = argparse.ArgumentParser(**arguments)
 
     parser.add_argument("-i", "--indent", type=int, default=3,
                         help="relative indentation width")
@@ -1478,7 +1486,7 @@ def run(argv=sys.argv):  # pragma: no cover
     group.add_argument("-S", "--silent", "--no-report-errors", action='store_true',
                        default=False, help="Don't write any errors or warnings to stderr")
     group.add_argument("-D", "--debug", action='store_true',
-                       default=False, help=configargparse.SUPPRESS)
+                       default=False, help=argparse.SUPPRESS)
     parser.add_argument("path", type=str, nargs='*',
                         help="Paths to files to be formatted inplace. If no paths are given, stdin (-) is used by default. Path can be a directory if --recursive is used.", default=['-'])
     parser.add_argument('-r', '--recursive', action='store_true',
