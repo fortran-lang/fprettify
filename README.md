@@ -24,7 +24,8 @@ fprettify is an auto-formatter for modern Fortran code that imposes strict white
 
 ## Requirements
 
-Python 2.7 or Python 3.x
+* Python 2.7 or Python 3.x
+* [ConfigArgParse](https://pypi.org/project/ConfigArgParse): optional, enables use of config file
 
 
 ## Examples
