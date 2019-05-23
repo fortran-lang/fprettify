@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ###############################################################################
 #    This file is part of fprettify.
-#    Copyright (C) 2016-2018 Patrick Seewald, CP2K developers group
+#    Copyright (C) 2016-2019 Patrick Seewald, CP2K developers group
 #
 #    fprettify is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
