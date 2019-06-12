@@ -851,13 +851,15 @@ def replace_keywords_single_fline(f_line, case_dict):
     line_parts = [re.split('(\W)',a) for a in line_parts]  # problem, split "."
     line_parts = [b for a in line_parts for b in a]
 
+    swapcase = lambda s, a: s.lower() if a else s.upper()
+
     nbparts = len(line_parts)
     for pos, part in enumerate(line_parts):
         # exclude comments, strings:
         if part.strip() and not (part == '\n' or STR_OPEN_RE.match(part)):
             #print(len(line_parts),pos,repr(part))
             if F90_KEYWORDS_RE.match(part):
-                part = case_dict['keywords'](part)
+                part = swapcase(part, case_dict['keywords'])
             elif F90_PROCEDURES_RE.match(part):
                 ok = False
                 for pos2 in range(pos+1, nbparts):
@@ -866,18 +868,18 @@ def replace_keywords_single_fline(f_line, case_dict):
                         ok = (part2 == '(')
                         break
                 if ok:
-                    part = case_dict['procedures'](part)
+                    part = swapcase(part, case_dict['procedures'])
             elif F90_OPERATORS_RE.match(part):
                 pos1 = max(0, pos-1)
                 pos2 = min(pos+1, nbparts-1)
                 if line_parts[pos1] == line_parts[pos2] == '.':
-                    part = case_dict['operators'](part)
+                    part = swapcase(part, case_dict['operators'])
             elif F90_HPF_KEYWORDS_RE.match(part):
-                part = case_dict['keywords'](part)
+                part = swapcase(part, case_dict['keywords'])
             elif F90_CONSTANTS_RE.match(part):
-                part = case_dict['constants'](part)
+                part = swapcase(part, case_dict['constants'])
             elif F90_CONSTANTS_TYPES_RE.match(part):
-                part = case_dict['constants'](part)
+                part = swapcase(part, case_dict['constants'])
 
             line_parts[pos] = part
 
@@ -1754,11 +1756,13 @@ def run(argv=sys.argv):  # pragma: no cover
     ws_dict['intrinsics'] = args.whitespace_intrinsics
 
     # build swap case dictionary, could add option to select case
+    SWAP_TO_LOWER = True
+    SWAP_TO_UPPER = False
     case_dict = {
-        'keywords' : unicode.lower,
-        'procedures' : unicode.lower,
-        'operators' : unicode.lower,
-        'constants' : unicode.upper,
+        'keywords' : SWAP_TO_LOWER,
+        'procedures' : SWAP_TO_LOWER,
+        'operators' : SWAP_TO_LOWER,
+        'constants' : SWAP_TO_UPPER,
         }
 
     # support legacy input:
