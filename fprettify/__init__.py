@@ -228,6 +228,182 @@ NML_RE = re.compile(r"(/\w+/)", RE_FLAGS)
 NML_STMT_RE = re.compile(SOL_STR + r"NAMELIST.*/.*/", RE_FLAGS)
 DATA_STMT_RE = re.compile(SOL_STR + r"DATA\s+\w", RE_FLAGS)
 
+## Regexp for f90 keywords'
+F90_KEYWORDS_RE = re.compile(r"\b(" + "|".join((
+    "allocatable", "allocate", "assign", "assignment", "backspace",
+    "block", "call", "case", "character", "close", "common", "complex",
+    "contains", "continue", "cycle", "data", "deallocate",
+    "dimension", "do", "double", "else", "elseif", "elsewhere", "end",
+    "enddo", "endfile", "endif", "entry", "equivalence", "exit",
+    "external", "forall", "format", "function", "goto", "if",
+    "implicit", "include", "inquire", "integer", "intent",
+    "interface", "intrinsic", "logical", "module", "namelist", "none",
+    "nullify", "only", "open", "operator", "optional", "parameter",
+    "pause", "pointer", "precision", "print", "private", "procedure",
+    "program", "public", "read", "real", "recursive", "result", "return",
+    "rewind", "save", "select", "sequence", "stop", "subroutine",
+    "target", "then", "type", "use", "where", "while", "write",
+    ## F95 keywords.
+    "elemental", "pure",
+    ## F2003
+    "abstract", "associate", "asynchronous", "bind", "class",
+    "deferred", "enum", "enumerator", "extends", "extends_type_of",
+    "final", "generic", "import", "non_intrinsic", "non_overridable",
+    "nopass", "pass", "protected", "same_type_as", "value", "volatile",
+    ## F2008.
+    "contiguous", "submodule", "concurrent", "codimension",
+    "sync all", "sync memory", "critical", "image_index"
+    )) + r")\b", RE_FLAGS)
+
+## Regexp whose first part matches F90 intrinsic procedures.
+## Add a parenthesis to avoid catching non-procedures.
+F90_PROCEDURES_RE = re.compile(r"\b(" + "|".join((
+    "abs", "achar", "acos", "adjustl", "adjustr", "aimag", "aint",
+    "all", "allocated", "anint", "any", "asin", "associated",
+    "atan", "atan2", "bit_size", "btest", "ceiling", "char", "cmplx",
+    "conjg", "cos", "cosh", "count", "cshift", "date_and_time", "dble",
+    "digits", "dim", "dot_product", "dprod", "eoshift", "epsilon",
+    "exp", "exponent", "floor", "fraction", "huge", "iachar", "iand",
+    "ibclr", "ibits", "ibset", "ichar", "ieor", "index", "int", "ior",
+    "ishft", "ishftc", "kind", "lbound", "len", "len_trim", "lge", "lgt",
+    "lle", "llt", "log", "log10", "logical", "matmul", "max",
+    "maxexponent", "maxloc", "maxval", "merge", "min", "minexponent",
+    "minloc", "minval", "mod", "modulo", "mvbits", "nearest", "nint",
+    "not", "pack", "precision", "present", "product", "radix",
+    ## Real is taken out here to avoid highlighting declarations.
+    "random_number", "random_seed", "range", ## "real"
+    "repeat", "reshape", "rrspacing", "scale", "scan",
+    "selected_int_kind", "selected_real_kind", "set_exponent",
+    "shape", "sign", "sin", "sinh", "size", "spacing", "spread", "sqrt",
+    "sum", "system_clock", "tan", "tanh", "tiny", "transfer",
+    "transpose", "trim", "ubound", "unpack", "verify",
+    ## F95 intrinsic functions.
+    "null", "cpu_time",
+    ## F2003.
+    "move_alloc", "command_argument_count", "get_command",
+    "get_command_argument", "get_environment_variable",
+    "selected_char_kind", "wait", "flush", "new_line",
+    "extends", "extends_type_of", "same_type_as", "bind",
+    ## F2003 ieee_arithmetic intrinsic module.
+    "ieee_support_underflow_control", "ieee_get_underflow_mode",
+    "ieee_set_underflow_mode",
+    ## F2003 iso_c_binding intrinsic module.
+    "c_loc", "c_funloc", "c_associated", "c_f_pointer",
+    "c_f_procpointer",
+    ## F2008.
+    "bge", "bgt", "ble", "blt", "dshiftl", "dshiftr", "leadz", "popcnt",
+    "poppar", "trailz", "maskl", "maskr", "shifta", "shiftl", "shiftr",
+    "merge_bits", "iall", "iany", "iparity", "storage_size",
+    "bessel_j0", "bessel_j1", "bessel_jn",
+    "bessel_y0", "bessel_y1", "bessel_yn",
+    "erf", "erfc", "erfc_scaled", "gamma", "hypot", "log_gamma",
+    "norm2", "parity", "findloc", "is_contiguous",
+    "sync images", "lock", "unlock", "image_index",
+    "lcobound", "ucobound", "num_images", "this_image",
+    ## F2008 iso_fortran_env module.
+    "compiler_options", "compiler_version",
+    ## F2008 iso_c_binding module.
+    "c_sizeof"
+    )) + r")\b", RE_FLAGS)
+
+## Regexp matching intrinsic operators
+## F90_OPERATORS_RE = re.compile(r"\b\.(" + "|".join((
+##     "and", "eq", "eqv", "false", "ge", "gt", "le", "lt", "ne",
+##     "neqv", "not", "or", "true"
+##     )) + r")\.\b", RE_FLAGS)
+F90_OPERATORS_RE = re.compile(r"\b(" + "|".join((
+    "and", "eq", "eqv", "false", "ge", "gt", "le", "lt", "ne",
+    "neqv", "not", "or", "true"
+    )) + r")\b", RE_FLAGS)
+
+## Regexp for all HPF keywords, procedures and directives.
+F90_HPF_KEYWORDS_RE = re.compile(r"\b(" + "|".join((
+    ## Intrinsic procedures.
+    "all_prefix", "all_scatter", "all_suffix", "any_prefix",
+    "any_scatter", "any_suffix", "copy_prefix", "copy_scatter",
+    "copy_suffix", "count_prefix", "count_scatter", "count_suffix",
+    "grade_down", "grade_up",
+    "hpf_alignment", "hpf_distribution", "hpf_template", "iall", "iall_prefix",
+    "iall_scatter", "iall_suffix", "iany", "iany_prefix", "iany_scatter",
+    "iany_suffix", "ilen", "iparity", "iparity_prefix",
+    "iparity_scatter", "iparity_suffix", "leadz", "maxval_prefix",
+    "maxval_scatter", "maxval_suffix", "minval_prefix", "minval_scatter",
+    "minval_suffix", "number_of_processors", "parity",
+    "parity_prefix", "parity_scatter", "parity_suffix", "popcnt", "poppar",
+    "processors_shape", "product_prefix", "product_scatter",
+    "product_suffix", "sum_prefix", "sum_scatter", "sum_suffix",
+    ## Directives.
+    "align", "distribute", "dynamic", "independent", "inherit", "processors",
+    "realign", "redistribute", "template",
+    ## Keywords.
+    "block", "cyclic", "extrinsic", "new", "onto", "pure", "with"
+    )) + r")\b", RE_FLAGS)
+
+## Regexp for Fortran intrinsic constants
+F90_CONSTANTS_RE = re.compile(r"\b(" + "|".join((
+    ## F2003 iso_fortran_env constants.
+    "iso_fortran_env",
+    "input_unit", "output_unit", "error_unit",
+    "iostat_end", "iostat_eor",
+    "numeric_storage_size", "character_storage_size",
+    "file_storage_size",
+    ## F2003 iso_c_binding constants.
+    "iso_c_binding",
+    "c_int", "c_short", "c_long", "c_long_long", "c_signed_char",
+    "c_size_t",
+    "c_int8_t", "c_int16_t", "c_int32_t", "c_int64_t",
+    "c_int_least8_t", "c_int_least16_t", "c_int_least32_t",
+    "c_int_least64_t",
+    "c_int_fast8_t", "c_int_fast16_t", "c_int_fast32_t",
+    "c_int_fast64_t",
+    "c_intmax_t", "c_intptr_t",
+    "c_float", "c_double", "c_long_double",
+    "c_float_complex", "c_double_complex", "c_long_double_complex",
+    "c_bool", "c_char",
+    "c_null_char", "c_alert", "c_backspace", "c_form_feed",
+    "c_new_line", "c_carriage_return", "c_horizontal_tab",
+    "c_vertical_tab",
+    "c_ptr", "c_funptr", "c_null_ptr", "c_null_funptr",
+    "ieee_exceptions",
+    "ieee_arithmetic",
+    "ieee_features",
+    ## F2008 iso_fortran_env constants.
+    "character_kinds", "int8", "int16", "int32", "int64",
+    "integer_kinds", "iostat_inquire_internal_unit",
+    "logical_kinds", "real_kinds", "real32", "real64", "real128",
+    "lock_type", "atomic_int_kind", "atomic_logical_kind",
+    )) + r")\b", RE_FLAGS)
+
+F90_INT_RE = r"[-+]?[0-9]+"
+F90_FLOAT_RE = r"[-+]?([0-9]+\.[0-9]*|\.[0-9]+)"
+F90_NUMBER_RE = "(" + F90_INT_RE + "|" + F90_FLOAT_RE + ")"
+F90_FLOAT_EXP_RE = F90_NUMBER_RE + r"[eEdD]" + F90_NUMBER_RE
+F90_NUMBER_ALL_RE = "(" + F90_NUMBER_RE + "|" + F90_FLOAT_EXP_RE + ")"
+
+## F90_CONSTANTS_TYPES_RE = re.compile(r"\b" + F90_NUMBER_ALL_RE + "_(" + "|".join([a + r"\b" for a in (
+F90_CONSTANTS_TYPES_RE = re.compile(
+    r"(" + F90_NUMBER_ALL_RE + ")*_(" + "|".join((
+    ## F2003 iso_fortran_env constants.
+    ## F2003 iso_c_binding constants.
+    "c_int", "c_short", "c_long", "c_long_long", "c_signed_char",
+    "c_size_t",
+    "c_int8_t", "c_int16_t", "c_int32_t", "c_int64_t",
+    "c_int_least8_t", "c_int_least16_t", "c_int_least32_t",
+    "c_int_least64_t",
+    "c_int_fast8_t", "c_int_fast16_t", "c_int_fast32_t",
+    "c_int_fast64_t",
+    "c_intmax_t", "c_intptr_t",
+    "c_float", "c_double", "c_long_double",
+    "c_float_complex", "c_double_complex", "c_long_double_complex",
+    "c_bool", "c_char",
+    ## F2008 iso_fortran_env constants.
+    "character_kinds", "int8", "int16", "int32", "int64",
+    "integer_kinds",
+    "logical_kinds", "real_kinds", "real32", "real64", "real128",
+    "lock_type", "atomic_int_kind", "atomic_logical_kind",
+    )) + r")\b", RE_FLAGS)
+
+
 class F90Indenter(object):
     """
     Parses encapsulation of subunits / scopes line by line
@@ -649,6 +825,67 @@ def replace_relational_single_fline(f_line, cstyle):
     return new_line
 
 
+def replace_keywords_single_fline(f_line, case_dict):
+    """
+    format a single Fortran line - change case of keywords
+    """
+
+    new_line = f_line
+
+    # Collect words list
+    pos_prev = -1
+    pos = -1
+    line_parts = ['']
+    for pos, char in CharFilter(f_line):
+        if pos > pos_prev + 1: # skipped string
+            line_parts.append(f_line[pos_prev + 1:pos].strip()) # append string
+            line_parts.append('')
+
+        line_parts[-1] += char
+
+        pos_prev = pos
+
+    if pos + 1 < len(f_line):
+        line_parts.append(f_line[pos + 1:])
+
+    line_parts = [re.split('(\W)',a) for a in line_parts]  # problem, split "."
+    line_parts = [b for a in line_parts for b in a]
+
+    nbparts = len(line_parts)
+    for pos, part in enumerate(line_parts):
+        # exclude comments, strings:
+        if part.strip() and not (part == '\n' or STR_OPEN_RE.match(part)):
+            #print(len(line_parts),pos,repr(part))
+            if F90_KEYWORDS_RE.match(part):
+                part = case_dict['keywords'](part)
+            elif F90_PROCEDURES_RE.match(part):
+                ok = False
+                for pos2 in range(pos+1, nbparts):
+                    part2 = line_parts[pos2]
+                    if part2.strip() and not (part2 == '\n' or STR_OPEN_RE.match(part2)):
+                        ok = (part2 == '(')
+                        break
+                if ok:
+                    part = case_dict['procedures'](part)
+            elif F90_OPERATORS_RE.match(part):
+                pos1 = max(0, pos-1)
+                pos2 = min(pos+1, nbparts-1)
+                if line_parts[pos1] == line_parts[pos2] == '.':
+                    part = case_dict['operators'](part)
+            elif F90_HPF_KEYWORDS_RE.match(part):
+                part = case_dict['keywords'](part)
+            elif F90_CONSTANTS_RE.match(part):
+                part = case_dict['constants'](part)
+            elif F90_CONSTANTS_TYPES_RE.match(part):
+                part = case_dict['constants'](part)
+
+            line_parts[pos] = part
+
+    new_line = ''.join(line_parts)
+
+    return new_line
+
+
 def format_single_fline(f_line, whitespace, whitespace_dict, linebreak_pos,
                         ampersand_sep, filename, line_nr, auto_format=True):
     """
@@ -1007,6 +1244,7 @@ def reformat_inplace(filename, stdout=False, **kwargs):  # pragma: no cover
 
 
 def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_indent=False, impose_whitespace=True,
+                   impose_case=False, case_dict={},
                    impose_replacements=False, cstyle=False, whitespace=2, whitespace_dict={}, llength=132,
                    strip_comments=False, orig_filename=None):
     """main method to be invoked for formatting a Fortran file."""
@@ -1094,6 +1332,9 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
 
             if impose_replacements:
                 f_line = replace_relational_single_fline(f_line, cstyle)
+
+            if impose_case:
+                f_line = replace_keywords_single_fline(f_line, case_dict)
 
             if impose_whitespace:
                 lines = format_single_fline(
@@ -1478,6 +1719,8 @@ def run(argv=sys.argv):  # pragma: no cover
     parser.add_argument("--disable-whitespace", action='store_true', default=False, help="don't impose whitespace formatting")
     parser.add_argument("--enable-replacements", action='store_true', default=False, help="replace relational operators (e.g. '.lt.' <--> '<')")
     parser.add_argument("--c-relations", action='store_true', default=False, help="C-style relational operators ('<', '<=', ...)")
+    parser.add_argument("--enable-swap-case", action='store_true', default=False, help="replace character case formating for known keywords and constants")
+
     parser.add_argument("--strip-comments", action='store_true', default=False, help="strip whitespaces before comments")
     parser.add_argument("-s", "--stdout", action='store_true', default=False,
                         help="Write to stdout instead of formatting inplace")
@@ -1509,6 +1752,14 @@ def run(argv=sys.argv):  # pragma: no cover
     ws_dict['print'] = args.whitespace_print
     ws_dict['type'] = args.whitespace_type
     ws_dict['intrinsics'] = args.whitespace_intrinsics
+
+    # build swap case dictionary, could add option to select case
+    case_dict = {
+        'keywords' : unicode.lower,
+        'procedures' : unicode.lower,
+        'operators' : unicode.lower,
+        'constants' : unicode.upper,
+        }
 
     # support legacy input:
     if 'stdin' in args.path and not os.path.isfile('stdin'):
@@ -1561,6 +1812,8 @@ def run(argv=sys.argv):  # pragma: no cover
                                  impose_whitespace=not args.disable_whitespace,
                                  impose_replacements=args.enable_replacements,
                                  cstyle=args.c_relations,
+                                 impose_case=args.enable_swap_case,
+                                 case_dict=case_dict,
                                  whitespace=args.whitespace,
                                  whitespace_dict=ws_dict,
                                  llength=1024 if args.line_length == 0 else args.line_length,
