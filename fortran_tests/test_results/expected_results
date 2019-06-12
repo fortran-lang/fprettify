@@ -2177,3 +2177,4 @@ cp2k/src/xtb_coulomb.F : 1e5c4012509646e2b297fb2613978a86a834c14f48eae9757ce39fb
 cp2k/src/xtb_matrices.F : 0010210bbf4f670a0896b1ec96a37956567c85aa42f4342f026e37dc3ceebddd
 cp2k/src/xtb_parameters.F : 68f97eb0b60f8e3369c61a62aacd3f42e760b02f56c9e97fad48aa3f97d643de
 cp2k/src/xtb_types.F : e6301d8bafef54dab303d3f05e3ab05ae5a68ed70f078c681293a662eac5e0ad
+example_swapcase.f90 : aa4e030c700835a586a852d6ba3ae43fc72b22a1b6114f5d74d84ed719285bc8
