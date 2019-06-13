@@ -375,8 +375,8 @@ class FPrettifyTestCase(unittest.TestCase):
                      "if (min .ne. max .and. min .ne. thres)",
                      "if (min .ge. max .and. min .ge. thres)",
                      "if (min .le. max .and. min .le. thres)",
-                    "'==== heading",
-                    "if (vtk%my_rank .eq. 0) write (vtk%filehandle_par, '(\"<DataArray",
+                     "'==== heading",
+                     "if (vtk%my_rank .eq. 0) write (vtk%filehandle_par, '(\"<DataArray",
                      "'(\"</Collection>\","]
         c_outstring = ["if (min < max .and. min < thres)",
                      "if (min > max .and. min > thres)",
@@ -384,13 +384,61 @@ class FPrettifyTestCase(unittest.TestCase):
                      "if (min /= max .and. min /= thres)",
                      "if (min >= max .and. min >= thres)",
                      "if (min <= max .and. min <= thres)",
-                    "'==== heading",
-                    "if (vtk%my_rank == 0) write (vtk%filehandle_par, '(\"<DataArray",
+                     "'==== heading",
+                     "if (vtk%my_rank == 0) write (vtk%filehandle_par, '(\"<DataArray",
                      "'(\"</Collection>\","]
 
         for i in range(0, len(instring)):
             self.assert_fprettify_result(['--enable-replacements', '--c-relations'], instring[i], c_outstring[i])
             self.assert_fprettify_result(['--enable-replacements'], instring[i], f_outstring[i])
+
+    def test_swap_case(self):
+        """test relacement of keyword character case"""
+        instring = (
+            "MODULE exAmple",
+            "INTEGER,   PARAMETER :: SELECTED_REAL_KIND = 1*2",
+            "INTEGER,   PARAMETER :: dp1 = SELECTED_REAL_KIND ( 15 , 307)",
+            'CHARACTER(LEN=*), PARAMETER :: a = "INTEGER,   PARAMETER" // "b"',
+            "CHARACTER(LEN=*), PARAMETER :: a = 'INTEGER,   PARAMETER' // 'b'",
+            "INTEGER(kind=int64), PARAMETER :: l64 = 2_int64",
+            "REAL(kind=real64), PARAMETER :: r64a = 2._real64",
+            "REAL(kind=real64), PARAMETER :: r64b = 2.0_real64",
+            "REAL(kind=real64), PARAMETER :: r64c = .0_real64",
+            "REAL(kind=real64), PARAMETER :: r64a = 2.e3_real64",
+            "REAL(kind=real64), PARAMETER :: r64b = 2.0e3_real64",
+            "REAL(kind=real64), PARAMETER :: r64c = .0e3_real64",
+            "REAL, PARAMETER :: r32 = 2.e3",
+            "REAL, PARAMETER :: r32 = 2.0d3",
+            "REAL, PARAMETER :: r32 = .2e3",
+            "USE iso_fortran_env, only: int64",
+            "INTEGER, INTENT(IN) :: r, i, j, k",
+            "IF (l.EQ.2) l=MAX  (l64, 2_int64)",
+            "PURE SUBROUTINE mypure()"
+            )
+        outstring = (
+            "module exAmple",
+            "integer, parameter :: SELECTED_REAL_KIND = 1*2",
+            "integer, parameter :: dp1 = selected_real_kind(15, 307)",
+            'character(LEN=*), parameter :: a = "INTEGER,   PARAMETER"//"b"',
+            "character(LEN=*), parameter :: a = 'INTEGER,   PARAMETER'//'b'",
+            "integer(kind=INT64), parameter :: l64 = 2_INT64",
+            "real(kind=REAL64), parameter :: r64a = 2._REAL64",
+            "real(kind=REAL64), parameter :: r64b = 2.0_REAL64",
+            "real(kind=REAL64), parameter :: r64c = .0_REAL64",
+            "real(kind=REAL64), parameter :: r64a = 2.E3_REAL64",
+            "real(kind=REAL64), parameter :: r64b = 2.0E3_REAL64",
+            "real(kind=REAL64), parameter :: r64c = .0E3_REAL64",
+            "real, parameter :: r32 = 2.E3",
+            "real, parameter :: r32 = 2.0D3",
+            "real, parameter :: r32 = .2E3",
+            "use ISO_FORTRAN_ENV, only: INT64",
+            "integer, intent(IN) :: r, i, j, k",
+            "if (l .eq. 2) l = max(l64, 2_INT64)",
+            "pure subroutine mypure()"
+            )
+        for i in range(len(instring)):
+            self.assert_fprettify_result(['--enable-swap-case'],
+                                         instring[i], outstring[i])
 
     def test_do(self):
         """test correct parsing of do statement"""

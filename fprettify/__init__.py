@@ -307,14 +307,10 @@ F90_PROCEDURES_RE = re.compile(r"\b(" + "|".join((
     )) + r")\b", RE_FLAGS)
 
 ## Regexp matching intrinsic operators
-## F90_OPERATORS_RE = re.compile(r"\b\.(" + "|".join((
-##     "and", "eq", "eqv", "false", "ge", "gt", "le", "lt", "ne",
-##     "neqv", "not", "or", "true"
-##     )) + r")\.\b", RE_FLAGS)
-F90_OPERATORS_RE = re.compile(r"\b(" + "|".join((
+F90_OPERATORS_RE = re.compile(r"(" + "|".join([r"\." + a + r"\." for a in (
     "and", "eq", "eqv", "false", "ge", "gt", "le", "lt", "ne",
     "neqv", "not", "or", "true"
-    )) + r")\b", RE_FLAGS)
+    )]) + r")", RE_FLAGS)
 
 ## Regexp for all HPF keywords, procedures and directives.
 F90_HPF_KEYWORDS_RE = re.compile(r"\b(" + "|".join((
@@ -379,6 +375,7 @@ F90_FLOAT_RE = r"[-+]?([0-9]+\.[0-9]*|\.[0-9]+)"
 F90_NUMBER_RE = "(" + F90_INT_RE + "|" + F90_FLOAT_RE + ")"
 F90_FLOAT_EXP_RE = F90_NUMBER_RE + r"[eEdD]" + F90_NUMBER_RE
 F90_NUMBER_ALL_RE = "(" + F90_NUMBER_RE + "|" + F90_FLOAT_EXP_RE + ")"
+F90_NUMBER_ALL_REC = re.compile(F90_NUMBER_ALL_RE, RE_FLAGS)
 
 ## F90_CONSTANTS_TYPES_RE = re.compile(r"\b" + F90_NUMBER_ALL_RE + "_(" + "|".join([a + r"\b" for a in (
 F90_CONSTANTS_TYPES_RE = re.compile(
@@ -848,7 +845,15 @@ def replace_keywords_single_fline(f_line, case_dict):
     if pos + 1 < len(f_line):
         line_parts.append(f_line[pos + 1:])
 
-    line_parts = [re.split('(\W)',a) for a in line_parts]  # problem, split "."
+    line_parts = [[a] if STR_OPEN_RE.match(a) else re.split(F90_OPERATORS_RE,a)
+                  for a in line_parts]  # problem, split "."
+    line_parts = [b for a in line_parts for b in a]
+
+    ## line_parts = [[a] if STR_OPEN_RE.match(a) else re.split('(\W)',a)
+    ##               for a in line_parts]  # problem, split "."
+    line_parts = [[a] if STR_OPEN_RE.match(a)
+                  else re.split('([^a-zA-Z0-9_.])',a)
+                  for a in line_parts]
     line_parts = [b for a in line_parts for b in a]
 
     swapcase = lambda s, a: s.lower() if a else s.upper()
@@ -856,8 +861,7 @@ def replace_keywords_single_fline(f_line, case_dict):
     nbparts = len(line_parts)
     for pos, part in enumerate(line_parts):
         # exclude comments, strings:
-        if part.strip() and not (part == '\n' or STR_OPEN_RE.match(part)):
-            #print(len(line_parts),pos,repr(part))
+        if part.strip() and not STR_OPEN_RE.match(part):
             if F90_KEYWORDS_RE.match(part):
                 part = swapcase(part, case_dict['keywords'])
             elif F90_PROCEDURES_RE.match(part):
@@ -870,15 +874,14 @@ def replace_keywords_single_fline(f_line, case_dict):
                 if ok:
                     part = swapcase(part, case_dict['procedures'])
             elif F90_OPERATORS_RE.match(part):
-                pos1 = max(0, pos-1)
-                pos2 = min(pos+1, nbparts-1)
-                if line_parts[pos1] == line_parts[pos2] == '.':
-                    part = swapcase(part, case_dict['operators'])
+                part = swapcase(part, case_dict['operators'])
             elif F90_HPF_KEYWORDS_RE.match(part):
                 part = swapcase(part, case_dict['keywords'])
             elif F90_CONSTANTS_RE.match(part):
                 part = swapcase(part, case_dict['constants'])
             elif F90_CONSTANTS_TYPES_RE.match(part):
+                part = swapcase(part, case_dict['constants'])
+            elif F90_NUMBER_ALL_REC.match(part):
                 part = swapcase(part, case_dict['constants'])
 
             line_parts[pos] = part
