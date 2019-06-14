@@ -368,7 +368,8 @@ class FPrettifyTestCase(unittest.TestCase):
                     "if( min <= max .and. min .le. thres)",
                     "'==== heading",
                     "if (vtk%my_rank .eq. 0) write (vtk%filehandle_par, '(\"<DataArray",
-                    "'(\"</Collection>\","]
+                    "'(\"</Collection>\",",
+                    "if (abc(1) .lt. -bca .or. &\n qwe .gt. ewq) then"]
         f_outstring = ["if (min .lt. max .and. min .lt. thres)",
                      "if (min .gt. max .and. min .gt. thres)",
                      "if (min .eq. max .and. min .eq. thres)",
@@ -377,7 +378,8 @@ class FPrettifyTestCase(unittest.TestCase):
                      "if (min .le. max .and. min .le. thres)",
                     "'==== heading",
                     "if (vtk%my_rank .eq. 0) write (vtk%filehandle_par, '(\"<DataArray",
-                     "'(\"</Collection>\","]
+                    "'(\"</Collection>\",",
+                    "if (abc(1) .lt. -bca .or. &\n    qwe .gt. ewq) then"]
         c_outstring = ["if (min < max .and. min < thres)",
                      "if (min > max .and. min > thres)",
                      "if (min == max .and. min == thres)",
@@ -386,8 +388,8 @@ class FPrettifyTestCase(unittest.TestCase):
                      "if (min <= max .and. min <= thres)",
                     "'==== heading",
                     "if (vtk%my_rank == 0) write (vtk%filehandle_par, '(\"<DataArray",
-                     "'(\"</Collection>\","]
-
+                     "'(\"</Collection>\",",
+                    "if (abc(1) < -bca .or. &\n    qwe > ewq) then"]
         for i in range(0, len(instring)):
             self.assert_fprettify_result(['--enable-replacements', '--c-relations'], instring[i], c_outstring[i])
             self.assert_fprettify_result(['--enable-replacements'], instring[i], f_outstring[i])
