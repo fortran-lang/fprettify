@@ -464,6 +464,259 @@ class FPrettifyTestCase(unittest.TestCase):
         for i in range(len(instring)):
             self.assert_fprettify_result(['--case', '1', '1', '1', '2'],
                                          instring[i], outstring[i])
+    def test_whitespace_comma(self):
+        """test whitespace options around commas"""
+        instring = ["""c,3
+c, 3
+c,  3
+c,   3
+c ,3
+c  ,3
+c   ,3
+(c),3
+(c), 3
+(c),  3
+(c),   3
+(c) ,3
+(c)  ,3
+(c)   ,3"""]
+        outstring_t = ["""c, 3
+c, 3
+c, 3
+c, 3
+c, 3
+c, 3
+c, 3
+(c), 3
+(c), 3
+(c), 3
+(c), 3
+(c), 3
+(c), 3
+(c), 3"""]
+        outstring_f = ["""c,3
+c,3
+c,3
+c,3
+c,3
+c,3
+c,3
+(c),3
+(c),3
+(c),3
+(c),3
+(c),3
+(c),3
+(c),3"""]
+        outstring_a = instring
+        outstring_01 = ["""c,3
+c, 3
+c, 3
+c, 3
+c ,3
+c ,3
+c ,3
+(c),3
+(c), 3
+(c), 3
+(c), 3
+(c) ,3
+(c) ,3
+(c) ,3"""]
+        outstring_ra = ["""c,3
+c, 3
+c,  3
+c,   3
+c,3
+c,3
+c,3
+(c),3
+(c), 3
+(c),  3
+(c),   3
+(c),3
+(c),3
+(c),3"""]
+        outstring_r01 = ["""c,3
+c, 3
+c, 3
+c, 3
+c,3
+c,3
+c,3
+(c),3
+(c), 3
+(c), 3
+(c), 3
+(c),3
+(c),3
+(c),3"""]
+        for i in range(0, len(instring)):
+            self.assert_fprettify_result(['--whitespace-comma', 't'], instring[i], outstring_t[i])
+            self.assert_fprettify_result(['--whitespace-comma', 'f'], instring[i], outstring_f[i])
+            self.assert_fprettify_result(['--whitespace-comma', 'asis'], instring[i], outstring_a[i])
+            self.assert_fprettify_result(['--whitespace-comma', '0or1'], instring[i], outstring_01[i])
+            self.assert_fprettify_result(['--whitespace-comma', 'r_asis'], instring[i], outstring_ra[i])
+            self.assert_fprettify_result(['--whitespace-comma', 'r_0or1'], instring[i], outstring_r01[i])
+
+
+    def test_whitespace_plusminus(self):
+        """test whitespace options around plusminus"""
+        for c in list("+-"):
+            self._test_whitespace_plusminus(c)
+
+    def _test_whitespace_plusminus(self, c):
+        """test whitespace options around plusminus"""
+        instring = [a.replace('+', c) for a in ["+0",
+                    ## "+0e+1", "+0e +1", "+0e+ 1",
+        """c+3
+c+ 3
+c+  3
+c+   3
+c +3
+c  +3
+c   +3
+(c)+3
+(c)+ 3
+(c)+  3
+(c)+   3
+(c) +3
+(c)  +3
+(c)   +3"""]]
+        outstring_t = [a.replace('+', c) for a in ["+0",
+                    ## "+0e+1", "+0e+1", "+0e+1",
+        """c + 3
+c + 3
+c + 3
+c + 3
+c + 3
+c + 3
+c + 3
+(c) + 3
+(c) + 3
+(c) + 3
+(c) + 3
+(c) + 3
+(c) + 3
+(c) + 3"""]]
+        outstring_f = [a.replace('+', c) for a in ["+0",
+                    ## "+0e+1", "+0e+1", "+0e+1",
+        """c+3
+c+3
+c+3
+c+3
+c+3
+c+3
+c+3
+(c)+3
+(c)+3
+(c)+3
+(c)+3
+(c)+3
+(c)+3
+(c)+3"""]]
+        outstring_a = instring
+        outstring_01 = [a.replace('+', c) for a in ["+0",
+                    ## "+0e+1", "+0e+1", "+0e+1",
+        """c+3
+c+ 3
+c+ 3
+c+ 3
+c +3
+c +3
+c +3
+(c)+3
+(c)+ 3
+(c)+ 3
+(c)+ 3
+(c) +3
+(c) +3
+(c) +3"""]]
+
+        for i in range(0, len(instring)):
+            self.assert_fprettify_result(['--whitespace-plusminus', 't'], instring[i], outstring_t[i])
+            self.assert_fprettify_result(['--whitespace-plusminus', 'f'], instring[i], outstring_f[i])
+            self.assert_fprettify_result(['--whitespace-plusminus', 'asis'], instring[i], outstring_a[i])
+            self.assert_fprettify_result(['--whitespace-plusminus', '0or1'], instring[i], outstring_01[i])
+
+    def test_whitespace_multdiv(self):
+        """test whitespace options around multdiv"""
+        for c in list("*/"):
+            self._test_whitespace_multdiv(c)
+
+    def _test_whitespace_multdiv(self, c):
+        """test whitespace options around multdiv"""
+        instring = [a.replace('*', c) for a in ["""c*3
+c* 3
+c*  3
+c*   3
+c *3
+c  *3
+c   *3
+(c)*3
+(c)* 3
+(c)*  3
+(c)*   3
+(c) *3
+(c)  *3
+(c)   *3
+c**3
+(c)**3"""]]
+        outstring_t = [a.replace('*', c) for a in ["""c * 3
+c * 3
+c * 3
+c * 3
+c * 3
+c * 3
+c * 3
+(c) * 3
+(c) * 3
+(c) * 3
+(c) * 3
+(c) * 3
+(c) * 3
+(c) * 3
+c**3
+(c)**3"""]]
+        outstring_f = [a.replace('*', c) for a in ["""c*3
+c*3
+c*3
+c*3
+c*3
+c*3
+c*3
+(c)*3
+(c)*3
+(c)*3
+(c)*3
+(c)*3
+(c)*3
+(c)*3
+c**3
+(c)**3"""]]
+        outstring_a = instring
+        outstring_01 = [a.replace('*', c) for a in ["""c*3
+c* 3
+c* 3
+c* 3
+c *3
+c *3
+c *3
+(c)*3
+(c)* 3
+(c)* 3
+(c)* 3
+(c) *3
+(c) *3
+(c) *3
+c**3
+(c)**3"""]]
+
+        for i in range(0, len(instring)):
+            self.assert_fprettify_result(['--whitespace-multdiv', 't'], instring[i], outstring_t[i])
+            self.assert_fprettify_result(['--whitespace-multdiv', 'f'], instring[i], outstring_f[i])
+            self.assert_fprettify_result(['--whitespace-multdiv', 'asis'], instring[i], outstring_a[i])
+            self.assert_fprettify_result(['--whitespace-multdiv', '0or1'], instring[i], outstring_01[i])
 
     def test_do(self):
         """test correct parsing of do statement"""
