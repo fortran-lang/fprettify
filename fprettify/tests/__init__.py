@@ -718,6 +718,66 @@ c**3
             self.assert_fprettify_result(['--whitespace-multdiv', 'asis'], instring[i], outstring_a[i])
             self.assert_fprettify_result(['--whitespace-multdiv', '0or1'], instring[i], outstring_01[i])
 
+    def test_whitespace_unary(self):
+        """test whitespace options around unary"""
+        instring = [""".not.a
+.not.1
+(.not.a)
+(.not.1)
+(.not.(a))
+(.not.(1))
+.not.a
+.not.1
+( .not.a)
+( .not.1)
+( .not.(a))
+( .not.(1))
+.not.  a
+.not.  1
+(.not.  a)
+(.not.  1)
+(.not.  (a))
+(.not.  (1))"""]
+        outstring_t = [""".not. a
+.not. 1
+(.not. a)
+(.not. 1)
+(.not. (a))
+(.not. (1))
+.not. a
+.not. 1
+(.not. a)
+(.not. 1)
+(.not. (a))
+(.not. (1))
+.not. a
+.not. 1
+(.not. a)
+(.not. 1)
+(.not. (a))
+(.not. (1))"""]
+        outstring_f = [""".not.a
+.not.1
+(.not.a)
+(.not.1)
+(.not.(a))
+(.not.(1))
+.not.a
+.not.1
+(.not.a)
+(.not.1)
+(.not.(a))
+(.not.(1))
+.not.a
+.not.1
+(.not.a)
+(.not.1)
+(.not.(a))
+(.not.(1))"""]
+        for i in range(0, len(instring)):
+            self.assert_fprettify_result(['--whitespace-unary', 't'], instring[i], outstring_t[i])
+            self.assert_fprettify_result(['--whitespace-unary', 'f'], instring[i], outstring_f[i])
+
     def test_do(self):
         """test correct parsing of do statement"""
         instring = "do = 1\nb = 2"
