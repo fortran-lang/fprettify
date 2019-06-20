@@ -444,7 +444,7 @@ class FPrettifyTestCase(unittest.TestCase):
             "real, parameter :: r32 = 2.E3",
             "real, parameter :: r32 = 2.0D3",
             "real, parameter :: r32 = .2E3",
-            "use ISO_FORTRAN_ENV, only: INT64",
+            "use iso_fortran_env, only: INT64",
             "integer, intent(IN) :: r, i, j, k",
             "if (l .eq. 2) l = max(l64, 2_INT64)",
             "pure subroutine mypure()"
