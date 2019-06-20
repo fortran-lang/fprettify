@@ -336,19 +336,23 @@ F90_HPF_KEYWORDS_RE = re.compile(r"\b(" + "|".join((
     "align", "distribute", "dynamic", "independent", "inherit", "processors",
     "realign", "redistribute", "template",
     ## Keywords.
-    "block", "cyclic", "extrinsic", "new", "onto", "pure", "with"
+    "block", "cyclic", "extrinsic", "new", "onto", "pure", "with",
+    ## F2003/F2008 module names
+    "iso_fortran_env",
+    "iso_c_binding",
+    "ieee_exceptions",
+    "ieee_arithmetic",
+    "ieee_features"
     )) + r")\b", RE_FLAGS)
 
 ## Regexp for Fortran intrinsic constants
 F90_CONSTANTS_RE = re.compile(r"\b(" + "|".join((
     ## F2003 iso_fortran_env constants.
-    "iso_fortran_env",
     "input_unit", "output_unit", "error_unit",
     "iostat_end", "iostat_eor",
     "numeric_storage_size", "character_storage_size",
     "file_storage_size",
     ## F2003 iso_c_binding constants.
-    "iso_c_binding",
     "c_int", "c_short", "c_long", "c_long_long", "c_signed_char",
     "c_size_t",
     "c_int8_t", "c_int16_t", "c_int32_t", "c_int64_t",
@@ -364,9 +368,6 @@ F90_CONSTANTS_RE = re.compile(r"\b(" + "|".join((
     "c_new_line", "c_carriage_return", "c_horizontal_tab",
     "c_vertical_tab",
     "c_ptr", "c_funptr", "c_null_ptr", "c_null_funptr",
-    "ieee_exceptions",
-    "ieee_arithmetic",
-    "ieee_features",
     ## F2008 iso_fortran_env constants.
     "character_kinds", "int8", "int16", "int32", "int64",
     "integer_kinds", "iostat_inquire_internal_unit",
