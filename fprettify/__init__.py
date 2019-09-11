@@ -791,7 +791,7 @@ def add_whitespace_charwise(line, spacey, filename, line_nr):
                                   line[:pos], RE_FLAGS) or
                         re.search(SOL_STR + r"(TYPE|CLASS)\s+IS\s*$",
                                   line[:pos], RE_FLAGS) or
-                        re.search(r"\b" + INTR_STMTS_PAR + r"\s*$",
+                        re.search(r"(?<!%)\b" + INTR_STMTS_PAR + r"\s*$",
                                   line[:pos], RE_FLAGS)):
                     sep1 = 1 * spacey[8]
 
