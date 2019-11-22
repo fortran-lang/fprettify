@@ -246,7 +246,7 @@ class FPrettifyTestCase(unittest.TestCase):
         p1 = subprocess.Popen(
             args, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
         outstring = p1.communicate(instring.encode(
-            'UTF-8'))[0].decode('UTF-8').strip()
+            'UTF-8'))[0].decode('UTF-8').rstrip()
         self.assertEqual(outstring_exp, outstring)
 
     def test_io(self):
@@ -423,6 +423,20 @@ class FPrettifyTestCase(unittest.TestCase):
 
         self.assert_fprettify_result([], instring, outstring)
 
+    def test_ford(self):
+        """test formatting of ford comments"""
+        instring =  ("   a = b\n"
+                     "     !!  ford docu\n"
+                     "b=c\n"
+                     "  !! ford docu"
+                     )
+        outstring = ("   a = b\n"
+                     "     !!  ford docu\n"
+                     "   b = c\n"
+                     "  !! ford docu"
+                     )
+
+        self.assert_fprettify_result([], instring, outstring)
 
 def addtestmethod(testcase, fpath, ffile):
     """add a test method for each example."""

@@ -1061,10 +1061,10 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
             f_line, lines)
         f_line, lines, label = preprocess_labels(f_line, lines)
 
-        lines, do_format, prev_indent, is_blank, is_fypp = preprocess_line(
+        lines, do_format, prev_indent, is_blank, is_fypp, is_ford = preprocess_line(
             f_line, lines, comments, orig_filename, stream.line_nr)
 
-        if is_fypp:
+        if is_fypp or is_ford:
             indent_special = 3
 
         if prev_indent and indent_special == 0:
@@ -1209,22 +1209,25 @@ def preprocess_line(f_line, lines, comments, filename, line_nr):
     prev_indent = False
     do_format = False
     is_fypp = False
+    is_ford = False
 
     if EMPTY_RE.search(f_line):  # empty lines including comment lines
         if any(comments):
             if lines[0].startswith(' '):
                 # indent comment lines only if they were not indented before.
                 prev_indent = True
-            is_fypp = FYPP_LINE_RE.search(lines[0].lstrip())
+            line_strip = lines[0].lstrip()
+            is_fypp = FYPP_LINE_RE.search(line_strip)
+            is_ford = line_strip.startswith('!!')
         else:
             is_blank = True
-        if not is_fypp:
+        if not is_fypp and not is_ford:
             lines = [l.strip(' ') for l in lines]
 
     else:
         do_format = True
 
-    return [lines, do_format, prev_indent, is_blank, is_fypp]
+    return [lines, do_format, prev_indent, is_blank, is_fypp, is_ford]
 
 
 def pass_defaults_to_next_line(f_line):
