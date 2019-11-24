@@ -428,12 +428,18 @@ class FPrettifyTestCase(unittest.TestCase):
         instring =  ("   a = b\n"
                      "     !!  ford docu\n"
                      "b=c\n"
-                     "  !! ford docu"
+                     "  !! ford docu\n"
+                     "subroutine test(a,b,&\n"
+                     "  !! ford docu\n"
+                     "  c, d, e)"
                      )
         outstring = ("   a = b\n"
                      "     !!  ford docu\n"
                      "   b = c\n"
-                     "  !! ford docu"
+                     "  !! ford docu\n"
+                     "   subroutine test(a, b, &\n"
+                     "  !! ford docu\n"
+                     "                   c, d, e)"
                      )
 
         self.assert_fprettify_result([], instring, outstring)

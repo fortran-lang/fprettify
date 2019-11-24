@@ -318,3 +318,12 @@ end function maxRelError_${RANK}$_${PREC}$
 
 end module errorcalc
 
+! tests for fypp directives inside Fortran continuation lines
+call test(arg1, &
+          ${a if a  > b else b}$, arg3, &
+ #:if c>d
+          c, &
+ #:else
+          d, &
+ #:endif
+          arg4)

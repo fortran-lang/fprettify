@@ -1061,10 +1061,10 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
             f_line, lines)
         f_line, lines, label = preprocess_labels(f_line, lines)
 
-        lines, do_format, prev_indent, is_blank, is_fypp, is_ford = preprocess_line(
+        lines, do_format, prev_indent, is_blank, is_special = preprocess_line(
             f_line, lines, comments, orig_filename, stream.line_nr)
 
-        if is_fypp or is_ford:
+        if is_special[0]:
             indent_special = 3
 
         if prev_indent and indent_special == 0:
@@ -1100,7 +1100,7 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
                     f_line, whitespace, whitespace_dict, linebreak_pos, ampersand_sep,
                     orig_filename, stream.line_nr, auto_format)
 
-                lines = append_comments(lines, comment_lines)
+                lines = append_comments(lines, comment_lines, is_special)
 
             # target indent for next line
             rel_indent = req_indents[nfl] if nfl < len(req_indents) else 0
@@ -1110,6 +1110,13 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
                     f_line, lines, rel_indent, indent_size,
                     stream.line_nr, manual_lines_indent)
                 indent = indenter.get_lines_indent()
+
+            # use actual indents if line is special
+            if any(is_special):
+                for pos, line in enumerate(lines):
+                    if is_special[pos]:
+                        indent[pos] = len(line) - len(line.lstrip(' '))
+                        lines[pos] = line.lstrip(' ')
 
             lines, indent = prepend_ampersands(lines, indent, pre_ampersand)
 
@@ -1208,26 +1215,30 @@ def preprocess_line(f_line, lines, comments, filename, line_nr):
     is_blank = False
     prev_indent = False
     do_format = False
-    is_fypp = False
-    is_ford = False
+
+    # is_special: special directives that should not be treated as Fortran
+    # currently supported: fypp preprocessor directives or comments for FORD documentation
+    is_special = [False]*len(lines)
+
+    for pos, line in enumerate(lines):
+        line_strip = line.lstrip()
+        is_special[pos] = FYPP_LINE_RE.search(line_strip) or line_strip.startswith('!!')
+
+    # if first line is special, all lines should be special
+    if is_special[0]: is_special = [True]*len(lines)
 
     if EMPTY_RE.search(f_line):  # empty lines including comment lines
         if any(comments):
             if lines[0].startswith(' '):
                 # indent comment lines only if they were not indented before.
                 prev_indent = True
-            line_strip = lines[0].lstrip()
-            is_fypp = FYPP_LINE_RE.search(line_strip)
-            is_ford = line_strip.startswith('!!')
         else:
             is_blank = True
-        if not is_fypp and not is_ford:
-            lines = [l.strip(' ') for l in lines]
-
+        lines = [l.strip(' ') if not is_special[n] else l for n, l in enumerate(lines)]
     else:
         do_format = True
 
-    return [lines, do_format, prev_indent, is_blank, is_fypp, is_ford]
+    return [lines, do_format, prev_indent, is_blank, is_special]
 
 
 def pass_defaults_to_next_line(f_line):
@@ -1261,12 +1272,12 @@ def prepend_ampersands(lines, indent, pre_ampersand):
     return [lines, indent]
 
 
-def append_comments(lines, comment_lines):
+def append_comments(lines, comment_lines, is_special):
     """append comments to lines"""
     for pos, (line, comment) in enumerate(zip(lines, comment_lines)):
         if pos < len(lines) - 1:
             has_nl = True  # has next line
-            if not line.strip(): comment = comment.lstrip()
+            if not line.strip() and not is_special[pos]: comment = comment.lstrip()
         else:
             has_nl = not re.search(EOL_SC, line)
         lines[pos] = lines[pos].rstrip(' ') + comment + '\n' * has_nl
