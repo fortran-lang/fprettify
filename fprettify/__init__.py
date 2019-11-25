@@ -1086,7 +1086,7 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
                 manual_lines_indent = []
 
             lines, pre_ampersand, ampersand_sep = remove_pre_ampersands(
-                lines, orig_filename, stream.line_nr)
+                lines, is_special, orig_filename, stream.line_nr)
 
             linebreak_pos = get_linebreak_pos(lines)
 
@@ -1304,7 +1304,7 @@ def get_linebreak_pos(lines):
     return linebreak_pos
 
 
-def remove_pre_ampersands(lines, filename, line_nr):
+def remove_pre_ampersands(lines, is_special, filename, line_nr):
     """
     remove and return preceding ampersands ('pre_ampersand'). Also return
     number of whitespace characters before ampersand of previous line
@@ -1339,8 +1339,7 @@ def remove_pre_ampersands(lines, filename, line_nr):
                 # use default 1 whitespace character before ampersand
                 ampersand_sep.append(1)
 
-    lines = [l.strip(' ').strip('&') for l in lines]
-
+    lines = [l.strip(' ').strip('&') if not s else l for l, s in zip(lines, is_special)]
     return [lines, pre_ampersand, ampersand_sep]
 
 
