@@ -849,7 +849,8 @@ def add_whitespace_charwise(line, spacey, filename, line_nr):
             lhs = line_ftd[:pos + offset]
             rhs = line_ftd[pos + 1 + offset:]
             line_ftd = lhs.rstrip(' ') + '=' + rhs.lstrip(' ')
-            if not level:  # remember position of assignment operator
+            is_pointer = line[pos + 1] == '>'
+            if (not level) or is_pointer:  # remember position of assignment operator
                 pos_eq.append(len(lhs.rstrip(' ')))
 
     line = line_ftd

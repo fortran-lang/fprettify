@@ -270,7 +270,7 @@ RosettaCodeData/Task/Generate-Chess960-starting-position/Fortran/generate-chess9
 RosettaCodeData/Task/Generate-lower-case-ASCII-alphabet/Fortran/generate-lower-case-ascii-alphabet.f : 054853cb8a148332d90ddae446dab181e5656888c2edf9ccb737fb194407510e
 RosettaCodeData/Task/Generic-swap/Fortran/generic-swap.f : f45dd29c881b4aa481a64a9a1e8ebaec6a9db98d30bab16fe85cdf95da7e8cae
 RosettaCodeData/Task/Globally-replace-text-in-several-files/Fortran/globally-replace-text-in-several-files.f : 92a2baa4b982dd837e117102b26dba68b417d37803421823b8f28d7a4e8e9499
-RosettaCodeData/Task/Gray-code/Fortran/gray-code.f : 50a42162ce71e157dfd5c254c805e79523f86944629dfb10120ab7f4dd8e0e4f
+RosettaCodeData/Task/Gray-code/Fortran/gray-code.f : 71cc01614650a7ad5ba0de0e46d1595e800b163ae6493acbf819a627dc1ff4fa
 RosettaCodeData/Task/Grayscale-image/Fortran/grayscale-image-1.f : 0df446255b3ac717802c78098770aaad7241615db778678630f43754cbcb4e5f
 RosettaCodeData/Task/Grayscale-image/Fortran/grayscale-image-2.f : c56bac767c6eb3c1a029bdb4c395496eb59d551dda45f18c4449c55f25b51514
 RosettaCodeData/Task/Grayscale-image/Fortran/grayscale-image-4.f : ef674fa80e7180c6969047ef685608d0d94807172fdde9555e569793fbfd20e6
@@ -315,7 +315,7 @@ RosettaCodeData/Task/Horners-rule-for-polynomial-evaluation/Fortran/horners-rule
 RosettaCodeData/Task/Host-introspection/Fortran/host-introspection.f : 077e6082513833757c6837aad84e1f01115417b5d2346a4dedd8c33ba735d8d4
 RosettaCodeData/Task/Hostname/Fortran/hostname-1.f : 73f91b7879305a6ea7028d4ff57c3b4a742bc6f7c9baebcfb099e431b8b641a0
 RosettaCodeData/Task/Hostname/Fortran/hostname-2.f : beea9d30b3c4c7e0d6f2547843d591aa81bf7c34d39310c24a81ed5c24aed650
-RosettaCodeData/Task/Huffman-coding/Fortran/huffman-coding.f : a27b526deadf357a08e9428e977661cd646b02ef08fdeceadab22ba5739cafe0
+RosettaCodeData/Task/Huffman-coding/Fortran/huffman-coding.f : 9ae6031779214a747bd0df28d389a69840359233e34c50734e4c009e920968cf
 RosettaCodeData/Task/I-before-E-except-after-C/Fortran/i-before-e-except-after-c.f : b45c3145a996a492a4f788d2695ea37383efcab92742b6665d0faf651db3dab0
 RosettaCodeData/Task/Identity-matrix/Fortran/identity-matrix-1.f : 1b1a9e29ad1611bb291f2a9a1f7f4cf42dcb311d3c2c0ac55994598c588fba4b
 RosettaCodeData/Task/Identity-matrix/Fortran/identity-matrix-3.f : a6e3ae0bbfd1fddfb5fe67fbdec911db1b390c91cb894490fed785ffd94e67b0
@@ -497,7 +497,7 @@ RosettaCodeData/Task/Price-fraction/Fortran/price-fraction-2.f : 8b40f34401a450d
 RosettaCodeData/Task/Primality-by-trial-division/Fortran/primality-by-trial-division.f : ec2cf305d046482a0ed27dc9893aa4493fe49190c2f23d453812527144df50a8
 RosettaCodeData/Task/Prime-decomposition/Fortran/prime-decomposition-1.f : bcec46c44468bfa90fbf2c959d5382976a8cdc697f3c67db3b9b8ad8a3b98ff4
 RosettaCodeData/Task/Prime-decomposition/Fortran/prime-decomposition-2.f : 6ed12122a34b32c4d984947bca82f0a2721295eb75f3d2dbf473c9155f404b2c
-RosettaCodeData/Task/Priority-queue/Fortran/priority-queue.f : a014e3f3991dfb6907d6e6f55b54ea70287bb5f0f68215f527752449b4c48edc
+RosettaCodeData/Task/Priority-queue/Fortran/priority-queue.f : fba41e749572eb1e4a7f9f12f9f0fc000477d613687d58fc5e1cda395fa3aaab
 RosettaCodeData/Task/Probabilistic-choice/Fortran/probabilistic-choice.f : c1bb02157d97c4e4a37f440f8bdd858d324c2776e54e999dc01c9cd33693451f
 RosettaCodeData/Task/Problem-of-Apollonius/Fortran/problem-of-apollonius.f : 5ef16b3bfc08579bd6ec1d2d6fd11fea86652e0d7868d05e4a256ffb00acc0b7
 RosettaCodeData/Task/Program-name/Fortran/program-name.f : 7e84e433e9a062325fe5309aab904945c40c480eab11709534751aec27a972d6

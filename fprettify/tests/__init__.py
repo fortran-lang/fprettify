@@ -335,6 +335,17 @@ class FPrettifyTestCase(unittest.TestCase):
         for i in range(0, len(instring)):
             self.assert_fprettify_result([], instring[i], outstring[i])
 
+    def test_associate(self):
+        """test correct formatting of associate construct"""
+        instring = ("associate(a=>b , c  =>d ,e=> f  )\n"
+                    "e=a+c\n"
+                    "end associate")
+        outstring = ("associate (a => b, c => d, e => f)\n"
+                    "   e = a + c\n"
+                    "end associate")
+
+        self.assert_fprettify_result([], instring, outstring)
+
     def test_line_length(self):
         """test line length option"""
         instring = ["REAL(KIND=4) :: r,f  !  some reals",
