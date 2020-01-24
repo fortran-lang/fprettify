@@ -41,6 +41,7 @@ supported criteria for alignment / indentation:
  - if, else, endif
  - do, enddo
  - select case, case, end select
+ - select rank, rank, end select
  - subroutine, end subroutine
  - function, end function
  - module, end module
@@ -121,9 +122,9 @@ DO_RE = re.compile(SOL_STR + r"(\w+\s*:)?\s*DO(" + EOL_STR + r"|\s+\w)", RE_FLAG
 ENDDO_RE = re.compile(SOL_STR + r"END\s*DO(\s+\w+)?" + EOL_STR, RE_FLAGS)
 
 SELCASE_RE = re.compile(
-    SOL_STR + r"SELECT\s*(CASE|TYPE)\s*\(.*\)" + EOL_STR, RE_FLAGS)
+    SOL_STR + r"SELECT\s*(CASE|RANK|TYPE)\s*\(.*\)" + EOL_STR, RE_FLAGS)
 CASE_RE = re.compile(
-    SOL_STR + r"((CASE|TYPE\s+IS|CLASS\s+IS)\s*(\(.*\)|DEFAULT)|CLASS\s+DEFAULT)" + EOL_STR, RE_FLAGS)
+    SOL_STR + r"((CASE|RANK|TYPE\s+IS|CLASS\s+IS)\s*(\(.*\)|DEFAULT)|CLASS\s+DEFAULT)" + EOL_STR, RE_FLAGS)
 ENDSEL_RE = re.compile(SOL_STR + r"END\s*SELECT" + EOL_STR, RE_FLAGS)
 
 ASSOCIATE_RE = re.compile(SOL_STR + r"ASSOCIATE\s*\(.*\)" + EOL_STR, RE_FLAGS)
@@ -784,6 +785,8 @@ def add_whitespace_charwise(line, spacey, filename, line_nr):
                         re.search(SOL_STR + r"(\w+\s*:)?\s*DO\s+WHILE\s*$",
                                   line[:pos], RE_FLAGS) or
                         re.search(SOL_STR + r"(SELECT)?\s*CASE\s*$",
+                                  line[:pos], RE_FLAGS) or
+                        re.search(SOL_STR + r"(SELECT)?\s*RANK\s*$",
                                   line[:pos], RE_FLAGS) or
                         re.search(SOL_STR + r"SELECT\s*TYPE\s*$",
                                   line[:pos], RE_FLAGS) or
