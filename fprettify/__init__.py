@@ -1457,7 +1457,7 @@ def run(argv=sys.argv):  # pragma: no cover
                  'formatter_class': argparse.ArgumentDefaultsHelpFormatter}
 
     if argparse.__name__ == "configargparse":
-        arguments['default_config_files'] = ['.fprettify.rc', '~/.fprettify.rc']
+        arguments['default_config_files'] = ['~/.fprettify.rc', '.fprettify.rc']
 
     parser = argparse.ArgumentParser(**arguments)
 
