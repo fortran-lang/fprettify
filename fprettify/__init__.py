@@ -981,7 +981,9 @@ def split_reformatted_line(line_orig, linebreak_pos_orig, ampersand_sep, line, f
     return lines_split
 
 
-def diff(a: str, b: str, a_name: str, b_name: str) -> str:
+def diff(a, b, a_name, b_name):
+    # type: (str, str, str, str) -> str
+
     """Return a unified diff string between strings `a` and `b`."""
     import difflib
 
