@@ -147,6 +147,9 @@ ENDFCT_RE = re.compile(
 MOD_RE = re.compile(SOL_STR + r"MODULE\s+\w+" + EOL_STR, RE_FLAGS)
 ENDMOD_RE = re.compile(SOL_STR + r"END\s*MODULE(\s+\w+)?" + EOL_STR, RE_FLAGS)
 
+SMOD_RE = re.compile(SOL_STR + r"SUBMODULE\s*\(\w+\)\s+\w+" + EOL_STR, RE_FLAGS)
+ENDSMOD_RE = re.compile(SOL_STR + r"END\s*SUBMODULE(\s+\w+)?" + EOL_STR, RE_FLAGS)
+
 TYPE_RE = re.compile(
     SOL_STR +
     r"TYPE(\s*,\s*(BIND\s*\(\s*C\s*\)|EXTENDS\s*\(.*\)|ABSTRACT|PUBLIC|PRIVATE))*(\s*,\s*)?(\s*::\s*|\s+)\w+" + EOL_STR,
@@ -217,11 +220,11 @@ NO_ALIGN_RE = re.compile(SOL_STR + r"&\s*[^\s*]+")
 
 # combine regex that define subunits
 NEW_SCOPE_RE = [IF_RE, DO_RE, SELCASE_RE, SUBR_RE,
-                FCT_RE, MOD_RE, PROG_RE, INTERFACE_RE, TYPE_RE, ENUM_RE, ASSOCIATE_RE, None, BLK_RE]
+                FCT_RE, MOD_RE, SMOD_RE, PROG_RE, INTERFACE_RE, TYPE_RE, ENUM_RE, ASSOCIATE_RE, None, BLK_RE]
 CONTINUE_SCOPE_RE = [ELSE_RE, None, CASE_RE, CONTAINS_RE,
-                     CONTAINS_RE, CONTAINS_RE, CONTAINS_RE, None, CONTAINS_RE, None, None, None, None]
+                     CONTAINS_RE, CONTAINS_RE, CONTAINS_RE, CONTAINS_RE, None, CONTAINS_RE, None, None, None, None]
 END_SCOPE_RE = [ENDIF_RE, ENDDO_RE, ENDSEL_RE, ENDSUBR_RE,
-                ENDFCT_RE, ENDMOD_RE, ENDPROG_RE, ENDINTERFACE_RE, ENDTYPE_RE, ENDENUM_RE, ENDASSOCIATE_RE, ENDANY_RE, ENDBLK_RE]
+                ENDFCT_RE, ENDMOD_RE, ENDSMOD_RE, ENDPROG_RE, ENDINTERFACE_RE, ENDTYPE_RE, ENDENUM_RE, ENDASSOCIATE_RE, ENDANY_RE, ENDBLK_RE]
 
 # match namelist names
 NML_RE = re.compile(r"(/\w+/)", RE_FLAGS)
