@@ -981,7 +981,17 @@ def split_reformatted_line(line_orig, linebreak_pos_orig, ampersand_sep, line, f
     return lines_split
 
 
-def reformat_inplace(filename, stdout=False, **kwargs):  # pragma: no cover
+def diff(a: str, b: str, a_name: str, b_name: str) -> str:
+    """Return a unified diff string between strings `a` and `b`."""
+    import difflib
+
+    a_lines = [line + "\n" for line in a.splitlines()]
+    b_lines = [line + "\n" for line in b.splitlines()]
+    return "".join(
+        difflib.unified_diff(a_lines, b_lines, fromfile=a_name, tofile=b_name, n=5)
+    )
+
+def reformat_inplace(filename, stdout=False, diffonly=False, **kwargs):  # pragma: no cover
     """reformat a file in place."""
     if filename == '-':
         infile = io.StringIO()
@@ -993,24 +1003,31 @@ def reformat_inplace(filename, stdout=False, **kwargs):  # pragma: no cover
     reformat_ffile(infile=infile, outfile=newfile,
                    orig_filename=filename, **kwargs)
 
-    if stdout:
-        sys.stdout.write(newfile.getvalue())
+    if diffonly:
+        infile.seek(0)
+        newfile.seek(0)
+        diff_contents=diff(infile.read(),newfile.read(),filename,filename)
+        sys.stdout.write(diff_contents)
     else:
-        outfile = io.open(filename, 'r', encoding='utf-8')
 
-        # write to outfile only if content has changed
+        if stdout:
+            sys.stdout.write(newfile.getvalue())
+        else:
+            outfile = io.open(filename, 'r', encoding='utf-8')
 
-        import hashlib
-        hash_new = hashlib.md5()
-        hash_new.update(newfile.getvalue().encode('utf-8'))
-        hash_old = hashlib.md5()
-        hash_old.update(outfile.read().encode('utf-8'))
+            # write to outfile only if content has changed
 
-        outfile.close()
+            import hashlib
+            hash_new = hashlib.md5()
+            hash_new.update(newfile.getvalue().encode('utf-8'))
+            hash_old = hashlib.md5()
+            hash_old.update(outfile.read().encode('utf-8'))
 
-        if hash_new.digest() != hash_old.digest():
-            outfile = io.open(filename, 'w', encoding='utf-8')
-            outfile.write(newfile.getvalue())
+            outfile.close()
+
+            if hash_new.digest() != hash_old.digest():
+                outfile = io.open(filename, 'w', encoding='utf-8')
+                outfile.write(newfile.getvalue())
 
 
 def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_indent=False, impose_whitespace=True,
@@ -1516,6 +1533,8 @@ def run(argv=sys.argv):  # pragma: no cover
         parser.add_argument("--enable-replacements", action='store_true', default=False, help="replace relational operators (e.g. '.lt.' <--> '<')")
         parser.add_argument("--c-relations", action='store_true', default=False, help="C-style relational operators ('<', '<=', ...)")
         parser.add_argument("--strip-comments", action='store_true', default=False, help="strip whitespaces before comments")
+        parser.add_argument("-d","--diff", action='store_true', default=False,
+                             help="Write file differences to stdout instead of formatting inplace")
         parser.add_argument("-s", "--stdout", action='store_true', default=False,
                             help="Write to stdout instead of formatting inplace")
 
@@ -1591,6 +1610,7 @@ def run(argv=sys.argv):  # pragma: no cover
             ws_dict = build_ws_dict(file_args)
 
             stdout = file_args.stdout or directory == '-'
+            diff=file_args.diff
 
             if file_args.debug:
                 level = logging.DEBUG
@@ -1604,6 +1624,7 @@ def run(argv=sys.argv):  # pragma: no cover
             try:
                 reformat_inplace(filename,
                                  stdout=stdout,
+                                 diffonly=diff,
                                  impose_indent=not file_args.disable_indent,
                                  indent_size=file_args.indent,
                                  strict_indent=file_args.strict_indent,
