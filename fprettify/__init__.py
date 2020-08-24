@@ -1610,7 +1610,7 @@ def run(argv=sys.argv):  # pragma: no cover
             ws_dict = build_ws_dict(file_args)
 
             stdout = file_args.stdout or directory == '-'
-            diff=file_args.diff
+            diffonly=file_args.diff
 
             if file_args.debug:
                 level = logging.DEBUG
@@ -1624,7 +1624,7 @@ def run(argv=sys.argv):  # pragma: no cover
             try:
                 reformat_inplace(filename,
                                  stdout=stdout,
-                                 diffonly=diff,
+                                 diffonly=diffonly,
                                  impose_indent=not file_args.disable_indent,
                                  indent_size=file_args.indent,
                                  strict_indent=file_args.strict_indent,
