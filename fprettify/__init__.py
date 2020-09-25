@@ -1549,6 +1549,8 @@ def run(argv=sys.argv):  # pragma: no cover
                             help="Paths to files to be formatted inplace. If no paths are given, stdin (-) is used by default. Path can be a directory if --recursive is used.", default=['-'])
         parser.add_argument('-r', '--recursive', action='store_true',
                             default=False, help="Recursively auto-format all Fortran files in subdirectories of specified path; recognized filename extensions: {}". format(", ".join(FORTRAN_EXTENSIONS)))
+        parser.add_argument('-e', '--exclude', action='extend',
+                            default=[], nargs="+", type=str, help="File or directory patterns to be excluded when searching for Fortran files to format")
         parser.add_argument('-f', '--fortran', type=str, action='append', default=[],
                             help="Overrides default fortran extensions recognized by --recursive. Repeat this option to specify more than one extension.")
         parser.add_argument('--version', action='version',
@@ -1598,11 +1600,26 @@ def run(argv=sys.argv):  # pragma: no cover
             else:
                 ext = FORTRAN_EXTENSIONS
             filenames = []
-            for dirpath, _, files in os.walk(directory):
-                for ffile in [os.path.join(dirpath, f) for f in files if any(f.endswith(_) for _ in ext)]:
+
+            from fnmatch import fnmatch
+
+            for dirpath, dirnames, files in os.walk(directory,topdown=True):
+
+                # Prune excluded patterns from list of child directories
+                dirnames[:] = [dirname for dirname in dirnames if not any(
+                    [fnmatch(dirname,exclude_pattern) or fnmatch(os.path.join(dirpath,dirname),exclude_pattern)
+                            for exclude_pattern in args.exclude]
+                )]
+
+                for ffile in [os.path.join(dirpath, f) for f in files
+                              if any(f.endswith(_) for _ in ext)
+                              and not any([
+                                  fnmatch(f,exclude_pattern)
+                                  for exclude_pattern in args.exclude])]:
                     filenames.append(ffile)
 
         for filename in filenames:
+
             # reparse arguments using the file's list of config files
             filearguments = arguments
             if argparse.__name__ == "configargparse":
