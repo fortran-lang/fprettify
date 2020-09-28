@@ -1551,7 +1551,7 @@ def run(argv=sys.argv):  # pragma: no cover
                             default=False, help="Recursively auto-format all Fortran files in subdirectories of specified path; recognized filename extensions: {}". format(", ".join(FORTRAN_EXTENSIONS)))
         parser.add_argument('-e', '--exclude', action='append',
                             default=[], type=str,
-                            help="File or directory patterns to be excluded when searching for Fortran filesx to format")
+                            help="File or directory patterns to be excluded when searching for Fortran files to format")
         parser.add_argument('-f', '--fortran', type=str, action='append', default=[],
                             help="Overrides default fortran extensions recognized by --recursive. Repeat this option to specify more than one extension.")
         parser.add_argument('--version', action='version',
