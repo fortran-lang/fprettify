@@ -175,6 +175,14 @@ ENDENUM_RE = re.compile(SOL_STR + r"END\s*ENUM(\s+\w+)?" + EOL_STR, RE_FLAGS)
 
 ENDANY_RE = re.compile(SOL_STR + r"END" + EOL_STR, RE_FLAGS)
 
+# Regular expressions for where and forall block constructs
+
+WHERE_RE = re.compile(SOL_STR + r"WHERE\s*\(.*\)\n+" + EOL_STR, RE_FLAGS)
+ELSEWHERE_RE = re.compile(SOL_STR + r"ELSEWHERE\s*\(.*\)" + EOL_STR, RE_FLAGS)
+ENDWHERE_RE = re.compile(SOL_STR + r"END\s*WHERE" + EOL_STR, RE_FLAGS)
+FORALL_RE = re.compile(SOL_STR + r"FORALL\s*\(.*\)\n+" + EOL_STR, RE_FLAGS)
+ENDFORALL_RE = re.compile(SOL_STR + r"END\s*FORALL" + EOL_STR, RE_FLAGS)
+
 PRIVATE_RE = re.compile(SOL_STR + r"PRIVATE\s*::", RE_FLAGS)
 PUBLIC_RE = re.compile(SOL_STR + r"PUBLIC\s*::", RE_FLAGS)
 
@@ -234,6 +242,11 @@ NEW_SCOPE = [parser_re(re) if re else None for re in NEW_SCOPE]
 CONTINUE_SCOPE = [parser_re(re) if re else None for re in CONTINUE_SCOPE]
 
 END_SCOPE = [parser_re(re, spec = re!=ENDANY_RE) if re else None for re in END_SCOPE]
+# Lists containing where and forall constructs
+
+BLOCK_NEW_SCOPE_RE = [WHERE_RE, FORALL_RE]
+BLOCK_CONTINUE_SCOPE_RE = [ELSEWHERE_RE, None]
+BLOCK_END_SCOPE_RE = [ENDWHERE_RE, ENDFORALL_RE]
 
 # match namelist names
 NML_RE = re.compile(r"(/\w+/)", RE_FLAGS)
@@ -1813,11 +1826,18 @@ def run(argv=sys.argv):  # pragma: no cover
                             help="Overrides default fortran extensions recognized by --recursive. Repeat this option to specify more than one extension.")
         parser.add_argument('--version', action='version',
                             version='%(prog)s 0.3.6')
+        parser.add_argument('--where_forall_constructs', default=False,
+                            help="Choose whether the where and forall commands should be treated as block-constructs or as statements. Only boolean values allowed. True means they are treated as block constructs. False  means they are treated as statements.")
         return parser
 
     parser = get_arg_parser(arguments)
 
     args = parser.parse_args(argv[1:])
+
+    if args.where_forall_constructs:
+        NEW_SCOPE_RE.extend(BLOCK_NEW_SCOPE_RE)
+        CONTINUE_SCOPE_RE.extend(BLOCK_CONTINUE_SCOPE_RE)
+        END_SCOPE_RE.extend(BLOCK_END_SCOPE_RE)
 
     def build_ws_dict(args):
         """helper function to build whitespace dictionary"""
