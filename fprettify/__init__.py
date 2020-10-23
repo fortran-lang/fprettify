@@ -92,7 +92,7 @@ from .fparse_utils import (VAR_DECL_RE, OMP_COND_RE,
                            InputStream, CharFilter,
                            FprettifyException, FprettifyParseException, FprettifyInternalException,
                            CPP_RE, NOTFORTRAN_LINE_RE, FYPP_LINE_RE, RE_FLAGS, STR_OPEN_RE,
-                           parser_re)
+                           parser_re, FYPP_WITHOUT_PREPRO_RE)
 
 # recognize fortran files by extension
 FORTRAN_EXTENSIONS = [".f", ".for", ".ftn",
@@ -182,6 +182,27 @@ ENDFORALL_RE = re.compile(SOL_STR + r"END\s*FORALL(\s+\w+)?" + EOL_STR, RE_FLAGS
 WHERE_RE = re.compile(SOL_STR + r"(\w+\s*:)?\s*WHERE\s*\(.*\)" + EOL_STR, RE_FLAGS)
 ELSEWHERE_RE = re.compile(SOL_STR + r"ELSE\s*WHERE(\(.*\))?(\s*\w+)?" + EOL_STR, RE_FLAGS)
 ENDWHERE_RE = re.compile(SOL_STR + r"END\s*WHERE(\s+\w+)?" + EOL_STR, RE_FLAGS)
+
+# Regular expressions for preprocessor directives
+
+PREPRO_DEF_RE = re.compile(r"#:DEF\s+.*\n", RE_FLAGS)
+PREPRO_ENDDEF_RE = re.compile(r"#:ENDDEF.*\n", RE_FLAGS)
+
+PREPRO_IF_RE = re.compile(r"#:IF\s+.*\n", RE_FLAGS)
+PREPRO_ELIF_ELSE_RE = re.compile(r"#:(ELIF\s+.*\n|ELSE\n)", RE_FLAGS)
+PREPRO_ENDIF_RE = re.compile(r"#:ENDIF\s\n*" , RE_FLAGS)
+
+PREPRO_FOR_RE = re.compile(r"#:FOR\s+.*\n" , RE_FLAGS)
+PREPRO_ENDFOR_RE = re.compile(r"#:ENDFOR\s*\n" , RE_FLAGS)
+
+PREPRO_BLOCK_RE = re.compile(r"#:BLOCK\s+.*\n", RE_FLAGS)
+PREPRO_ENDBLOCK_RE = re.compile(r"#:ENDBLOCK\s+.*\n", RE_FLAGS)
+
+PREPRO_CALL_RE = re.compile(r"#:CALL\s+.*\n", RE_FLAGS)
+PREPRO_ENDCALL_RE = re.compile(r"#:ENDCALL\s+.*\n", RE_FLAGS)
+
+PREPRO_MUTE_RE = re.compile(r"#:MUTE\s*\n", RE_FLAGS)
+PREPRO_ENDMUTE_RE = re.compile(r"#:ENDMUTE\s*\n", RE_FLAGS)
 
 PRIVATE_RE = re.compile(SOL_STR + r"PRIVATE\s*::", RE_FLAGS)
 PUBLIC_RE = re.compile(SOL_STR + r"PUBLIC\s*::", RE_FLAGS)
@@ -299,6 +320,13 @@ END_SCOPE = [parser_re(ENDIF_RE), parser_re(ENDDO_RE), parser_re(ENDSEL_RE), par
              parser_re(ENDFCT_RE), parser_re(ENDMOD_RE), parser_re(ENDSMOD_RE), parser_re(ENDPROG_RE),
              parser_re(ENDINTERFACE_RE), parser_re(ENDTYPE_RE), parser_re(ENDENUM_RE), parser_re(ENDASSOCIATE_RE),
              parser_re(ENDANY_RE,spec=False), parser_re(ENDBLK_RE), parser_re(ENDWHERE_RE), parser_re(ENDFORALL_RE)]
+
+PREPRO_NEW_SCOPE_RE = [PREPRO_DEF_RE, PREPRO_IF_RE, PREPRO_FOR_RE,
+                       PREPRO_BLOCK_RE, PREPRO_CALL_RE, PREPRO_MUTE_RE]
+PREPRO_CONTINUE_SCOPE_RE = [None, PREPRO_ELIF_ELSE_RE, None, None, None, None]
+PREPRO_END_SCOPE_RE = [PREPRO_ENDDEF_RE, PREPRO_ENDIF_RE, PREPRO_ENDFOR_RE,
+                       PREPRO_ENDBLOCK_RE, PREPRO_ENDCALL_RE,
+                       PREPRO_ENDMUTE_RE]
 
 # match namelist names
 NML_RE = re.compile(r"(/\w+/)", RE_FLAGS)
@@ -1345,7 +1373,7 @@ def reformat_inplace(filename, stdout=False, diffonly=False, **kwargs):  # pragm
 def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_indent=False, impose_whitespace=True,
                    case_dict={},
                    impose_replacements=False, cstyle=False, whitespace=2, whitespace_dict={}, llength=132,
-                   strip_comments=False, orig_filename=None):
+                   strip_comments=False, orig_filename=None, preprocessor=False):
     """main method to be invoked for formatting a Fortran file."""
 
     if not orig_filename:
@@ -1401,7 +1429,7 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
         f_line, lines, label = preprocess_labels(f_line, lines)
 
         lines, do_format, prev_indent, is_blank, is_special = preprocess_line(
-            f_line, lines, comments, orig_filename, stream.line_nr)
+            f_line, lines, comments, orig_filename, stream.line_nr, preprocessor)
 
         if is_special[0]:
             indent_special = 3
@@ -1552,7 +1580,7 @@ def preprocess_labels(f_line, lines):
 
     return [f_line, lines, label]
 
-def preprocess_line(f_line, lines, comments, filename, line_nr):
+def preprocess_line(f_line, lines, comments, filename, line_nr, preprocessor):
     """preprocess lines: identification and formatting of special cases"""
     is_blank = False
     prev_indent = False
@@ -1565,6 +1593,8 @@ def preprocess_line(f_line, lines, comments, filename, line_nr):
     for pos, line in enumerate(lines):
         line_strip = line.lstrip()
         is_special[pos] = FYPP_LINE_RE.search(line_strip) or line_strip.startswith('!!')
+        if preprocessor is True:
+            is_special[pos] = FYPP_WITHOUT_PREPRO_RE.search(line_strip) or line_strip.startswith('!!')
 
     # if first line is special, all lines should be special
     if is_special[0]: is_special = [True]*len(lines)
@@ -1877,11 +1907,18 @@ def run(argv=sys.argv):  # pragma: no cover
                             help="Overrides default fortran extensions recognized by --recursive. Repeat this option to specify more than one extension.")
         parser.add_argument('--version', action='version',
                             version='%(prog)s 0.3.6')
+        parser.add_argument('--preprocessor', type=str2bool, default=False,
+                            help="En/disables the indentation of preprocessor blocks.")
         return parser
 
     parser = get_arg_parser(arguments)
 
     args = parser.parse_args(argv[1:])
+
+    if args.preprocessor is True:
+        NEW_SCOPE_RE.extend(PREPRO_NEW_SCOPE_RE)
+        CONTINUE_SCOPE_RE.extend(PREPRO_CONTINUE_SCOPE_RE)
+        END_SCOPE_RE.extend(PREPRO_END_SCOPE_RE)
 
     def build_ws_dict(args):
         """helper function to build whitespace dictionary"""
@@ -1984,6 +2021,7 @@ def run(argv=sys.argv):  # pragma: no cover
                                  whitespace=file_args.whitespace,
                                  whitespace_dict=ws_dict,
                                  llength=1024 if file_args.line_length == 0 else file_args.line_length,
-                                 strip_comments=file_args.strip_comments)
+                                 strip_comments=file_args.strip_comments,
+                                 preprocessor=file_args.preprocessor)
             except FprettifyException as e:
                 log_exception(e, "Fatal error occured")
