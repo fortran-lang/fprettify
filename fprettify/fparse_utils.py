@@ -34,12 +34,14 @@ OMP_COND_RE = re.compile(r"^\s*(!\$ )", RE_FLAGS)
 
 # supported preprocessors
 FYPP_LINE_STR = r"^(#!|#:|\$:|@:)"
+FYPP_WITHOUT_PREPRO_STR = r"^(#!|\$:|@:)"
 CPP_STR = r"^#[^!:{}]"
 COMMENT_LINE_STR = r"^!"
 FYPP_OPEN_STR = r"(#{|\${|@{)"
 FYPP_CLOSE_STR = r"(}#|}\$|}@)"
 NOTFORTRAN_LINE_RE = re.compile(r"("+FYPP_LINE_STR+r"|"+CPP_STR+r"|"+COMMENT_LINE_STR+r")", RE_FLAGS)
 FYPP_LINE_RE = re.compile(FYPP_LINE_STR, RE_FLAGS)
+FYPP_WITHOUT_PREPRO_RE = re.compile(FYPP_WITHOUT_PREPRO_STR, RE_FLAGS)
 FYPP_OPEN_RE = re.compile(FYPP_OPEN_STR, RE_FLAGS)
 FYPP_CLOSE_RE = re.compile(FYPP_CLOSE_STR, RE_FLAGS)
 
