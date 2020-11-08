@@ -190,10 +190,10 @@ PREPRO_ENDDEF_RE = re.compile(r"#:ENDDEF.*\n", RE_FLAGS)
 
 PREPRO_IF_RE = re.compile(r"#:IF\s+.*\n", RE_FLAGS)
 PREPRO_ELIF_ELSE_RE = re.compile(r"#:(ELIF\s+.*\n|ELSE\n)", RE_FLAGS)
-PREPRO_ENDIF_RE = re.compile(r"#:ENDIF\s\n*" , RE_FLAGS)
+PREPRO_ENDIF_RE = re.compile(r"#:ENDIF\s\n*", RE_FLAGS)
 
-PREPRO_FOR_RE = re.compile(r"#:FOR\s+.*\n" , RE_FLAGS)
-PREPRO_ENDFOR_RE = re.compile(r"#:ENDFOR\s*\n" , RE_FLAGS)
+PREPRO_FOR_RE = re.compile(r"#:FOR\s+.*\n", RE_FLAGS)
+PREPRO_ENDFOR_RE = re.compile(r"#:ENDFOR\s*\n", RE_FLAGS)
 
 PREPRO_BLOCK_RE = re.compile(r"#:BLOCK\s+.*\n", RE_FLAGS)
 PREPRO_ENDBLOCK_RE = re.compile(r"#:ENDBLOCK\s+.*\n", RE_FLAGS)
@@ -1373,7 +1373,7 @@ def reformat_inplace(filename, stdout=False, diffonly=False, **kwargs):  # pragm
 def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_indent=False, impose_whitespace=True,
                    case_dict={},
                    impose_replacements=False, cstyle=False, whitespace=2, whitespace_dict={}, llength=132,
-                   strip_comments=False, orig_filename=None, preprocessor=False):
+                   strip_comments=False, orig_filename=None, fypp_preprocessor=False):
     """main method to be invoked for formatting a Fortran file."""
 
     if not orig_filename:
@@ -1429,7 +1429,7 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
         f_line, lines, label = preprocess_labels(f_line, lines)
 
         lines, do_format, prev_indent, is_blank, is_special = preprocess_line(
-            f_line, lines, comments, orig_filename, stream.line_nr, preprocessor)
+            f_line, lines, comments, orig_filename, stream.line_nr, fypp_preprocessor)
 
         if is_special[0]:
             indent_special = 3
@@ -1580,7 +1580,7 @@ def preprocess_labels(f_line, lines):
 
     return [f_line, lines, label]
 
-def preprocess_line(f_line, lines, comments, filename, line_nr, preprocessor):
+def preprocess_line(f_line, lines, comments, filename, line_nr, fypp_preprocessor):
     """preprocess lines: identification and formatting of special cases"""
     is_blank = False
     prev_indent = False
@@ -1593,7 +1593,7 @@ def preprocess_line(f_line, lines, comments, filename, line_nr, preprocessor):
     for pos, line in enumerate(lines):
         line_strip = line.lstrip()
         is_special[pos] = FYPP_LINE_RE.search(line_strip) or line_strip.startswith('!!')
-        if preprocessor is True:
+        if fypp_preprocessor is True:
             is_special[pos] = FYPP_WITHOUT_PREPRO_RE.search(line_strip) or line_strip.startswith('!!')
 
     # if first line is special, all lines should be special
@@ -1907,18 +1907,13 @@ def run(argv=sys.argv):  # pragma: no cover
                             help="Overrides default fortran extensions recognized by --recursive. Repeat this option to specify more than one extension.")
         parser.add_argument('--version', action='version',
                             version='%(prog)s 0.3.6')
-        parser.add_argument('--indentfypp', type=str2bool, default=False,
+        parser.add_argument('--indent-fypp', type=str2bool, default=False,
                             help="En/disables the indentation of preprocessor blocks.")
         return parser
 
     parser = get_arg_parser(arguments)
 
     args = parser.parse_args(argv[1:])
-
-    if args.indentfypp is True:
-        NEW_SCOPE_RE.extend(PREPRO_NEW_SCOPE_RE)
-        CONTINUE_SCOPE_RE.extend(PREPRO_CONTINUE_SCOPE_RE)
-        END_SCOPE_RE.extend(PREPRO_END_SCOPE_RE)
 
     def build_ws_dict(args):
         """helper function to build whitespace dictionary"""
@@ -1998,6 +1993,11 @@ def run(argv=sys.argv):  # pragma: no cover
             stdout = file_args.stdout or directory == '-'
             diffonly=file_args.diff
 
+            if file_args.indent_fypp is True:
+                NEW_SCOPE_RE.extend(PREPRO_NEW_SCOPE_RE)
+                CONTINUE_SCOPE_RE.extend(PREPRO_CONTINUE_SCOPE_RE)
+                END_SCOPE_RE.extend(PREPRO_END_SCOPE_RE)
+
             if file_args.debug:
                 level = logging.DEBUG
             elif args.silent:
@@ -2022,6 +2022,6 @@ def run(argv=sys.argv):  # pragma: no cover
                                  whitespace_dict=ws_dict,
                                  llength=1024 if file_args.line_length == 0 else file_args.line_length,
                                  strip_comments=file_args.strip_comments,
-                                 preprocessor=file_args.indentfypp)
+                                 fypp_preprocessor=file_args.indent_fypp)
             except FprettifyException as e:
                 log_exception(e, "Fatal error occured")
