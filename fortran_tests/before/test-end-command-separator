@@ -1,0 +1,54 @@
+TEST END-BLOCK
+
+if (cond) then
+  a = 2
+EnDiF
+
+do
+  write(*,*) "hola"
+endDo
+
+program helloworld
+ENDPROGRAM helloworld
+
+endwhere
+
+do helloworld
+if (cond) then
+a = 2
+EnDiF
+eNdDo helloworld
+
+do
+  write(*,*) "hola"
+endDo
+
+endwhere
+
+ENDIF 
+    ENDDO
+  ENDSELECT
+    ENDASSOCIATE
+     ENDBLOCK
+  ENDSUBROUTINE
+ENDFUNCTION
+ENDMODULE
+ENDSUBMODULE
+ENDTYPE
+ENDPROGRAM
+ENDINTERFACE
+ENDENUM
+ENDWHERE
+ENDFORALL
+
+! This is a comentary endif
+! This is a comentary enddo
+
+! The statements underneath should not make sense
+
+endfootball
+endsleep
+endhello
+endwhat
+
+"Should not be modified endif, enddo"

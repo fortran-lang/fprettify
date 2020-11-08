@@ -1809,7 +1809,7 @@ def run(argv=sys.argv):  # pragma: no cover
                             help="Overrides default fortran extensions recognized by --recursive. Repeat this option to specify more than one extension.")
         parser.add_argument('--version', action='version',
                             version='%(prog)s 0.3.6')
-        parser.add_argument('--end_command_spacing', type=str2bool , default=False,
+        parser.add_argument('--end-command-separation', type=str2bool , default=False,
                             help="En/disables the spacing of end commands (ex. endif -> end if).")
         return parser
 
