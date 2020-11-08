@@ -1826,7 +1826,7 @@ def run(argv=sys.argv):  # pragma: no cover
                             help="Overrides default fortran extensions recognized by --recursive. Repeat this option to specify more than one extension.")
         parser.add_argument('--version', action='version',
                             version='%(prog)s 0.3.6')
-        parser.add_argument('--where_forall_constructs', default=False,
+        parser.add_argument('--statement-constructs', default=False,
                             help="Choose whether the where and forall commands should be treated as block-constructs or as statements. Only boolean values allowed. True means they are treated as block constructs. False  means they are treated as statements.")
         return parser
 
