@@ -1834,11 +1834,6 @@ def run(argv=sys.argv):  # pragma: no cover
 
     args = parser.parse_args(argv[1:])
 
-    if args.where_forall_constructs:
-        NEW_SCOPE_RE.extend(BLOCK_NEW_SCOPE_RE)
-        CONTINUE_SCOPE_RE.extend(BLOCK_CONTINUE_SCOPE_RE)
-        END_SCOPE_RE.extend(BLOCK_END_SCOPE_RE)
-
     def build_ws_dict(args):
         """helper function to build whitespace dictionary"""
         ws_dict = {}
@@ -1917,6 +1912,11 @@ def run(argv=sys.argv):  # pragma: no cover
             stdout = file_args.stdout or directory == '-'
             diffonly=file_args.diff
 
+            if file_args.statement_constructs:
+                NEW_SCOPE_RE.extend(BLOCK_NEW_SCOPE_RE)
+                CONTINUE_SCOPE_RE.extend(BLOCK_CONTINUE_SCOPE_RE)
+                END_SCOPE_RE.extend(BLOCK_END_SCOPE_RE)
+
             if file_args.debug:
                 level = logging.DEBUG
             elif args.silent:
@@ -1940,6 +1940,6 @@ def run(argv=sys.argv):  # pragma: no cover
                                  whitespace=file_args.whitespace,
                                  whitespace_dict=ws_dict,
                                  llength=1024 if file_args.line_length == 0 else file_args.line_length,
-                                 strip_comments=file_args.strip_comments)
+                                 strip_comments=file_args.statement_constructs)
             except FprettifyException as e:
                 log_exception(e, "Fatal error occured")
