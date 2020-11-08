@@ -1919,6 +1919,6 @@ def run(argv=sys.argv):  # pragma: no cover
                                  whitespace_dict=ws_dict,
                                  llength=1024 if file_args.line_length == 0 else file_args.line_length,
                                  strip_comments=file_args.strip_comments,
-                                 end_command_spacing=file_args.end_command_spacing)
+                                 end_command_spacing=file_args.end_command_separation)
             except FprettifyException as e:
                 log_exception(e, "Fatal error occured")
