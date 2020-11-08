@@ -1907,7 +1907,7 @@ def run(argv=sys.argv):  # pragma: no cover
                             help="Overrides default fortran extensions recognized by --recursive. Repeat this option to specify more than one extension.")
         parser.add_argument('--version', action='version',
                             version='%(prog)s 0.3.6')
-        parser.add_argument('--preprocessor', type=str2bool, default=False,
+        parser.add_argument('--indentfypp', type=str2bool, default=False,
                             help="En/disables the indentation of preprocessor blocks.")
         return parser
 
@@ -1915,7 +1915,7 @@ def run(argv=sys.argv):  # pragma: no cover
 
     args = parser.parse_args(argv[1:])
 
-    if args.preprocessor is True:
+    if args.indentfypp is True:
         NEW_SCOPE_RE.extend(PREPRO_NEW_SCOPE_RE)
         CONTINUE_SCOPE_RE.extend(PREPRO_CONTINUE_SCOPE_RE)
         END_SCOPE_RE.extend(PREPRO_END_SCOPE_RE)
@@ -2022,6 +2022,6 @@ def run(argv=sys.argv):  # pragma: no cover
                                  whitespace_dict=ws_dict,
                                  llength=1024 if file_args.line_length == 0 else file_args.line_length,
                                  strip_comments=file_args.strip_comments,
-                                 preprocessor=file_args.preprocessor)
+                                 preprocessor=file_args.indentfypp)
             except FprettifyException as e:
                 log_exception(e, "Fatal error occured")
