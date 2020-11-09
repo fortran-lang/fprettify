@@ -370,7 +370,7 @@ class FPrettifyTestCase(unittest.TestCase):
         self.assert_fprettify_result(['-S', '-l 0'], instring_, outstring_[1])
 
     def test_relation_replacement(self):
-        """test relacement of relational statements"""
+        """test replacement of relational statements"""
         instring = ["if ( min < max .and. min .lt. thres)",
                     "if (min > max .and. min .gt. thres )",
                     "if (   min == max .and. min .eq. thres  )",
@@ -406,7 +406,7 @@ class FPrettifyTestCase(unittest.TestCase):
             self.assert_fprettify_result(['--enable-replacements'], instring[i], f_outstring[i])
 
     def test_swap_case(self):
-        """test relacement of keyword character case"""
+        """test replacement of keyword character case"""
         instring = (
             "MODULE exAmple",
             "INTEGER,   PARAMETER :: SELECTED_REAL_KIND = 1*2",
@@ -423,7 +423,7 @@ class FPrettifyTestCase(unittest.TestCase):
             "REAL, PARAMETER :: r32 = 2.e3",
             "REAL, PARAMETER :: r32 = 2.0d3",
             "REAL, PARAMETER :: r32 = .2e3",
-            "USE iso_fortran_env, only: int64",
+            "USE ISO_FORTRAN_ENV, ONLY: int64",
             "INTEGER, INTENT(IN) :: r, i, j, k",
             "IF (l.EQ.2) l=MAX  (l64, 2_int64)",
             "PURE SUBROUTINE mypure()"
@@ -450,7 +450,7 @@ class FPrettifyTestCase(unittest.TestCase):
             "pure subroutine mypure()"
             )
         for i in range(len(instring)):
-            self.assert_fprettify_result(['--enable-swap-case'],
+            self.assert_fprettify_result(['--case', '1', '1', '1', '2'],
                                          instring[i], outstring[i])
 
     def test_do(self):

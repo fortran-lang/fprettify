@@ -257,12 +257,6 @@ F90_KEYWORDS_RE = re.compile(r"\b(" + "|".join((
     ## F2008.
     "contiguous", "submodule", "concurrent", "codimension",
     "sync all", "sync memory", "critical", "image_index",
-    ## F2003/F2008 module names
-    "iso_fortran_env",
-    "iso_c_binding",
-    "ieee_exceptions",
-    "ieee_arithmetic",
-    "ieee_features"
     )) + r")\b", RE_FLAGS)
 
 ## Regexp whose first part matches F90 intrinsic procedures.
@@ -314,6 +308,16 @@ F90_PROCEDURES_RE = re.compile(r"\b(" + "|".join((
     "compiler_options", "compiler_version",
     ## F2008 iso_c_binding module.
     "c_sizeof"
+
+    )) + r")\b", RE_FLAGS)
+
+F90_MODULES_RE = re.compile(r"\b(" + "|".join((
+    ## F2003/F2008 module names
+    "iso_fortran_env",
+    "iso_c_binding",
+    "ieee_exceptions",
+    "ieee_arithmetic",
+    "ieee_features"
     )) + r")\b", RE_FLAGS)
 
 ## Regexp matching intrinsic operators
@@ -838,7 +842,7 @@ def replace_keywords_single_fline(f_line, case_dict):
                   for a in line_parts]
     line_parts = [b for a in line_parts for b in a]
 
-    swapcase = lambda s, a: s.lower() if a else s.upper()
+    swapcase = lambda s, a: s if a==0 else (s.lower() if a==1 else s.upper())
 
     nbparts = len(line_parts)
     for pos, part in enumerate(line_parts):
@@ -846,6 +850,8 @@ def replace_keywords_single_fline(f_line, case_dict):
         if part.strip() and not STR_OPEN_RE.match(part):
             if F90_KEYWORDS_RE.match(part):
                 part = swapcase(part, case_dict['keywords'])
+            elif F90_MODULES_RE.match(part):
+                part = swapcase(part, case_dict['procedures'])
             elif F90_PROCEDURES_RE.match(part):
                 ok = False
                 for pos2 in range(pos+1, nbparts):
@@ -1251,7 +1257,7 @@ def reformat_inplace(filename, stdout=False, diffonly=False, **kwargs):  # pragm
 
 
 def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_indent=False, impose_whitespace=True,
-                   impose_case=False, case_dict={},
+                   case_dict={},
                    impose_replacements=False, cstyle=False, whitespace=2, whitespace_dict={}, llength=132,
                    strip_comments=False, orig_filename=None):
     """main method to be invoked for formatting a Fortran file."""
@@ -1277,6 +1283,8 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
         indenter = F90Indenter(first_indent, indent_size, orig_filename)
     else:
         indent_special = 3
+
+    impose_case = not all(v == 0 for v in case_dict.values())
 
     nfl = 0  # fortran line counter
     use_same_line = False
@@ -1756,7 +1764,12 @@ def run(argv=sys.argv):  # pragma: no cover
         parser.add_argument("--disable-whitespace", action='store_true', default=False, help="don't impose whitespace formatting")
         parser.add_argument("--enable-replacements", action='store_true', default=False, help="replace relational operators (e.g. '.lt.' <--> '<')")
         parser.add_argument("--c-relations", action='store_true', default=False, help="C-style relational operators ('<', '<=', ...)")
-        parser.add_argument("--enable-swap-case", action='store_true', default=False, help="replace character case formating for known keywords and constants")
+        parser.add_argument("--case", nargs=4, default=[0,0,0,0], type=int, help="Enable letter case formatting of intrinsics by specifying which of "
+                            "keywords, procedures/modules, operators and constants (in this order) should be lowercased or uppercased - "
+                            "   0: do nothing"
+                            " | 1: lowercase"
+                            " | 2: uppercase")
+
         parser.add_argument("--strip-comments", action='store_true', default=False, help="strip whitespaces before comments")
         parser.add_argument("-d","--diff", action='store_true', default=False,
                              help="Write file differences to stdout instead of formatting inplace")
@@ -1782,6 +1795,7 @@ def run(argv=sys.argv):  # pragma: no cover
         return parser
 
     parser = get_arg_parser(arguments)
+
     args = parser.parse_args(argv[1:])
 
     def build_ws_dict(args):
@@ -1798,15 +1812,12 @@ def run(argv=sys.argv):  # pragma: no cover
         ws_dict['intrinsics'] = args.whitespace_intrinsics
         return ws_dict
 
-    # build swap case dictionary, could add option to select case
-    SWAP_TO_LOWER = True
-    SWAP_TO_UPPER = False
     case_dict = {
-        'keywords' : SWAP_TO_LOWER,
-        'procedures' : SWAP_TO_LOWER,
-        'operators' : SWAP_TO_LOWER,
-        'constants' : SWAP_TO_UPPER,
-        }
+            'keywords' : args.case[0],
+            'procedures' : args.case[1],
+            'operators' : args.case[2],
+            'constants' : args.case[3]
+            }
 
     # support legacy input:
     if 'stdin' in args.path and not os.path.isfile('stdin'):
@@ -1884,7 +1895,6 @@ def run(argv=sys.argv):  # pragma: no cover
                                  impose_whitespace=not file_args.disable_whitespace,
                                  impose_replacements=file_args.enable_replacements,
                                  cstyle=file_args.c_relations,
-                                 impose_case=args.enable_swap_case,
                                  case_dict=case_dict,
                                  whitespace=file_args.whitespace,
                                  whitespace_dict=ws_dict,
