@@ -190,21 +190,13 @@ class FPrettifyTestCase(unittest.TestCase):
         """test of reset indentation at file start"""
         instring = ("integer :: i,j\ndo i=1,2\ndo j=1,3\n"
                     "print*,i,j,i*j\nend do\nend do",
-                    #"   integer :: 1\n",
-                    "   subroutine a()\ninteger :: 1\n")
-        outstring_d = ("integer :: i, j\ndo i = 1, 2\ndo j = 1, 3\n"
-                       "   print *, i, j, i*j\nend do\nend do",
-                       #"   integer :: 1",
-                       "   subroutine a()\n   integer :: 1")
-        outstring_r = ("integer :: i, j\ndo i = 1, 2\ndo j = 1, 3\n"
-                       "   print *, i, j, i*j\nend do\nend do",
-                       #"   integer :: 1",
-                       "subroutine a()\n   integer :: 1")
+                    "   module a\ninteger :: 1\n")
+        outstring = ("integer :: i, j\ndo i = 1, 2\ndo j = 1, 3\n"
+                     "   print *, i, j, i*j\nend do\nend do",
+                     "module a\n   integer :: 1")
 
-        ## for ind, out in zip(instring, outstring_d):
-        ##     self.assert_fprettify_result([], ind, out)
-        for ind, out in zip(instring, outstring_r):
-            self.assert_fprettify_result(['--reset-indent'], ind, out)
+        for ind, out in zip(instring, outstring):
+            self.assert_fprettify_result([],ind, out)
 
     def test_disable(self):
         """test disabling indentation and/or whitespace formatting"""
