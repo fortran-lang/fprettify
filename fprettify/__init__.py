@@ -256,7 +256,13 @@ F90_KEYWORDS_RE = re.compile(r"\b(" + "|".join((
     "nopass", "pass", "protected", "same_type_as", "value", "volatile",
     ## F2008.
     "contiguous", "submodule", "concurrent", "codimension",
-    "sync all", "sync memory", "critical", "image_index"
+    "sync all", "sync memory", "critical", "image_index",
+    ## F2003/F2008 module names
+    "iso_fortran_env",
+    "iso_c_binding",
+    "ieee_exceptions",
+    "ieee_arithmetic",
+    "ieee_features"
     )) + r")\b", RE_FLAGS)
 
 ## Regexp whose first part matches F90 intrinsic procedures.
@@ -315,35 +321,6 @@ F90_OPERATORS_RE = re.compile(r"(" + "|".join([r"\." + a + r"\." for a in (
     "and", "eq", "eqv", "false", "ge", "gt", "le", "lt", "ne",
     "neqv", "not", "or", "true"
     )]) + r")", RE_FLAGS)
-
-## Regexp for all HPF keywords, procedures and directives.
-F90_HPF_KEYWORDS_RE = re.compile(r"\b(" + "|".join((
-    ## Intrinsic procedures.
-    "all_prefix", "all_scatter", "all_suffix", "any_prefix",
-    "any_scatter", "any_suffix", "copy_prefix", "copy_scatter",
-    "copy_suffix", "count_prefix", "count_scatter", "count_suffix",
-    "grade_down", "grade_up",
-    "hpf_alignment", "hpf_distribution", "hpf_template", "iall", "iall_prefix",
-    "iall_scatter", "iall_suffix", "iany", "iany_prefix", "iany_scatter",
-    "iany_suffix", "ilen", "iparity", "iparity_prefix",
-    "iparity_scatter", "iparity_suffix", "leadz", "maxval_prefix",
-    "maxval_scatter", "maxval_suffix", "minval_prefix", "minval_scatter",
-    "minval_suffix", "number_of_processors", "parity",
-    "parity_prefix", "parity_scatter", "parity_suffix", "popcnt", "poppar",
-    "processors_shape", "product_prefix", "product_scatter",
-    "product_suffix", "sum_prefix", "sum_scatter", "sum_suffix",
-    ## Directives.
-    "align", "distribute", "dynamic", "independent", "inherit", "processors",
-    "realign", "redistribute", "template",
-    ## Keywords.
-    "block", "cyclic", "extrinsic", "new", "onto", "pure", "with",
-    ## F2003/F2008 module names
-    "iso_fortran_env",
-    "iso_c_binding",
-    "ieee_exceptions",
-    "ieee_arithmetic",
-    "ieee_features"
-    )) + r")\b", RE_FLAGS)
 
 ## Regexp for Fortran intrinsic constants
 F90_CONSTANTS_RE = re.compile(r"\b(" + "|".join((
@@ -880,8 +857,6 @@ def replace_keywords_single_fline(f_line, case_dict):
                     part = swapcase(part, case_dict['procedures'])
             elif F90_OPERATORS_RE.match(part):
                 part = swapcase(part, case_dict['operators'])
-            elif F90_HPF_KEYWORDS_RE.match(part):
-                part = swapcase(part, case_dict['keywords'])
             elif F90_CONSTANTS_RE.match(part):
                 part = swapcase(part, case_dict['constants'])
             elif F90_CONSTANTS_TYPES_RE.match(part):
