@@ -1,0 +1,210 @@
+PREPROCESSOR TEST
+
+! IF
+
+! Example 1
+
+#:if DEBUG > 0
+print *, "hola"
+if (.not. (${cond}$)) then
+   #:if ASSERT(cond)
+   print *, "Assert failed!"
+   #:endif
+   error stop
+end if
+#:endif
+
+! Example 2
+
+#:if DEBUG > 0
+print *, "hola"
+if (.not. (${cond}$)) then
+   #:if ASSERT(cond)
+   print *, "Assert failed!"
+   #:endif
+   error stop
+end if
+#:endif
+
+! Example 3
+
+#:if DEBUG > 0
+print *, "hola"
+if (.not. (${cond}$)) then
+   #:if ASSERT(cond)
+   print *, "Assert failed!"
+   #:endif
+   error stop
+end if
+#:endif
+
+! FOR
+
+! Example 1
+
+if (.not. (${cond}$)) then
+   #:for element in list
+   print *, "Element is in list!"
+   #:endfor
+   error stop
+end if
+
+! Example 2
+
+if (.not. (${cond}$)) then
+   #:for element in list
+   print *, "Element is in list!"
+   #:endfor
+   error stop
+end if
+
+! Example 3
+
+if (.not. (${cond}$)) then
+   #:for element in list
+   print *, "Element is in list!"
+   #:endfor
+   error stop
+end if
+
+! DEF
+
+! Example 1
+
+#:if aa > 1
+print *, "Number is more than 1"
+if (condition) then
+   #:def something
+   print *, "Added Definition!"
+   #:enddef
+end if
+#:endif
+
+! Example 2
+
+#:if aa > 1
+print *, "Number is more than 1"
+if (condition) then
+   #:def  something
+   print *, "Added Definition!"
+   #:enddef
+end if
+#:endif
+
+! Example 3
+
+#:if aa > 1
+print *, "Number is more than 1"
+if (condition) then
+   #:def something
+   print *, "Added Definition!"
+   #:enddef
+end if
+#:endif
+
+! BLOCK
+
+! Example 1
+
+#:if DEBUG > 0
+print *, "hola"
+if (.not. (${cond}$)) then
+   print *, "hola"
+   #:block my_function
+   print *, "Run My Function!"
+   #:endblock
+   error stop
+end if
+#:endif
+
+! Example 2
+
+#:if DEBUG > 0
+print *, "hola"
+if (.not. (${cond}$)) then
+   #:block my_function
+   print *, "Run My Function!"
+   #:endblock
+   error stop
+end if
+#:endif
+
+! Example 3
+
+#:if DEBUG > 0
+print *, "hola"
+if (.not. (${cond}$)) then
+   #:block my_function
+   print *, "Run My Function!"
+   #:endblock
+   error stop
+end if
+#:endif
+
+! CALL
+
+! Example 1
+
+if (.not. (${cond}$)) then
+   #:call module
+   print *, "Module"
+   #:endcall
+   error stop
+end if
+
+! Example 2
+
+if (.not. (${cond}$)) then
+   #:call module
+   print *, "Module"
+   #:endcall
+   error stop
+end if
+
+! Example 3
+
+if (.not. (${cond}$)) then
+   print *, "hola"
+   #:call module
+   print *, "Module"
+   #:endcall
+   error stop
+end if
+
+! MUTE
+
+! Example 1
+
+#:if DEBUG > 0
+print *, "hola"
+if (.not. (${cond}$)) then
+   #:mute
+   print *, "Muted"
+   #:endmute
+   error stop
+end if
+#:endif
+
+! Example 2
+
+#:if DEBUG > 0
+print *, "hola"
+if (.not. (${cond}$)) then
+   #:mute
+   print *, "Muted"
+   #:endmute
+   error stop
+end if
+#:endif
+
+! Example 3
+
+#:if DEBUG > 0
+print *, "hola"
+if (.not. (${cond}$)) then
+   #:mute
+   print *, "Muted"
+   #:endmute
+   error stop
+end if
+#:endif

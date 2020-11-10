@@ -190,7 +190,7 @@ PREPRO_ENDDEF_RE = re.compile(r"#:ENDDEF.*\n", RE_FLAGS)
 
 PREPRO_IF_RE = re.compile(r"#:IF\s+.*\n", RE_FLAGS)
 PREPRO_ELIF_ELSE_RE = re.compile(r"#:(ELIF\s+.*\n|ELSE\n)", RE_FLAGS)
-PREPRO_ENDIF_RE = re.compile(r"#:ENDIF\s\n*", RE_FLAGS)
+PREPRO_ENDIF_RE = re.compile(r"#:ENDIF\s*\n", RE_FLAGS)
 
 PREPRO_FOR_RE = re.compile(r"#:FOR\s+.*\n", RE_FLAGS)
 PREPRO_ENDFOR_RE = re.compile(r"#:ENDFOR\s*\n", RE_FLAGS)
