@@ -1,5 +1,3 @@
-FIRST NEW FEATURES FPRETTIFY TEST
-
 ! Forall-construct
 
 ! Example 1
@@ -29,7 +27,7 @@ end forall
 
 where (C /= 0)
    A = B/C
-   elsewhere
+elsewhere
    A = 0.0
 end where
 
@@ -37,7 +35,7 @@ end where
 
 where (C /= 0)
    A = B/C
-   elsewhere
+elsewhere
    A = 0.0
 end where
 
@@ -45,6 +43,6 @@ end where
 
 where (C /= 0)
    A = B/C
-   elsewhere
+elsewhere
    A = 0.0
 end where

@@ -1,5 +1,3 @@
-FIRST NEW FEATURES FPRETTIFY TEST
-
 ! Forall-construct
 
 ! Example 1
