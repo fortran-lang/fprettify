@@ -200,13 +200,13 @@ class FPrettifyTestCase(unittest.TestCase):
 
     def test_disable(self):
         """test disabling indentation and/or whitespace formatting"""
-        instring = ("if(&\nl==111)&\n then\n   do m   =1,  2\n A=&\nB+C\n    enddo;   endif")
+        instring = ("if(&\nl==111)&\n then\n   do m   =1,  2\n A=&\nB+C\n    end  do;   endif")
         outstring_exp_default = ("if ( &\n   l == 111) &\n   then\n   do m = 1, 2\n"
-                                 "      A = &\n         B + C\n   enddo; endif")
+                                 "      A = &\n         B + C\n   end do; end if")
         outstring_exp_nowhitespace = ("if(&\n   l==111)&\n   then\n   do m   =1,  2\n"
-                                      "      A=&\n         B+C\n   enddo; endif")
+                                      "      A=&\n         B+C\n   end  do; endif")
         outstring_exp_noindent = ("if ( &\nl == 111) &\n then\n   do m = 1, 2\n"
-                                  " A = &\nB + C\n    enddo;   endif")
+                                  " A = &\nB + C\n    end do;   end if")
 
         self.assert_fprettify_result([], instring, outstring_exp_default)
         self.assert_fprettify_result(['--disable-whitespace'], instring, outstring_exp_nowhitespace)
