@@ -176,12 +176,12 @@ ENDENUM_RE = re.compile(SOL_STR + r"END\s*ENUM(\s+\w+)?" + EOL_STR, RE_FLAGS)
 ENDANY_RE = re.compile(SOL_STR + r"END" + EOL_STR, RE_FLAGS)
 
 # Regular expressions for where and forall block constructs
+FORALL_RE = re.compile(SOL_STR + r"(\w+\s*:)?\s*FORALL\s*\(.*\)" + EOL_STR, RE_FLAGS)
+ENDFORALL_RE = re.compile(SOL_STR + r"END\s*FORALL(\s+\w+)?" + EOL_STR, RE_FLAGS)
 
-WHERE_RE = re.compile(SOL_STR + r"WHERE\s*\(.*\)\n+" + EOL_STR, RE_FLAGS)
-ELSEWHERE_RE = re.compile(SOL_STR + r"ELSEWHERE\s*\(.*\)" + EOL_STR, RE_FLAGS)
-ENDWHERE_RE = re.compile(SOL_STR + r"END\s*WHERE" + EOL_STR, RE_FLAGS)
-FORALL_RE = re.compile(SOL_STR + r"FORALL\s*\(.*\)\n+" + EOL_STR, RE_FLAGS)
-ENDFORALL_RE = re.compile(SOL_STR + r"END\s*FORALL" + EOL_STR, RE_FLAGS)
+WHERE_RE = re.compile(SOL_STR + r"(\w+\s*:)?\s*WHERE\s*\(.*\)" + EOL_STR, RE_FLAGS)
+ELSEWHERE_RE = re.compile(SOL_STR + r"ELSE\s*WHERE(\(.*\))?(\s*\w+)?" + EOL_STR, RE_FLAGS)
+ENDWHERE_RE = re.compile(SOL_STR + r"END\s*WHERE(\s+\w+)?" + EOL_STR, RE_FLAGS)
 
 PRIVATE_RE = re.compile(SOL_STR + r"PRIVATE\s*::", RE_FLAGS)
 PUBLIC_RE = re.compile(SOL_STR + r"PUBLIC\s*::", RE_FLAGS)
@@ -229,24 +229,48 @@ USE_RE = re.compile(
 # markups to deactivate formatter
 NO_ALIGN_RE = re.compile(SOL_STR + r"&\s*[^\s*]+")
 
+class where_parser(parser_re):
+    """parser for where / forall construct
+    """
+    def search(self, line):
+        match = self._re.search(line)
+
+        if match:
+            level = 0
+            for pos, char in CharFilter(line):
+                [what_del_open, what_del_close] = get_curr_delim(line, pos)
+
+                if what_del_open:
+                    if what_del_open.group() == r'(': level += 1
+
+                if what_del_close and what_del_close.group() == r')':
+                    if level == 1:
+                        if EMPTY_RE.search(line[pos+1:]):
+                            return True
+                        else:
+                            return False
+                    else:
+                        level += -1
+
+        return False
+
+forall_parser = where_parser
+
 # combine regex that define subunits
-NEW_SCOPE = [IF_RE, DO_RE, SELCASE_RE, SUBR_RE,
-                FCT_RE, MOD_RE, SMOD_RE, PROG_RE, INTERFACE_RE, TYPE_RE, ENUM_RE, ASSOCIATE_RE, None, BLK_RE]
+NEW_SCOPE = [parser_re(IF_RE), parser_re(DO_RE), parser_re(SELCASE_RE), parser_re(SUBR_RE),
+             parser_re(FCT_RE), parser_re(MOD_RE), parser_re(SMOD_RE), parser_re(PROG_RE),
+             parser_re(INTERFACE_RE), parser_re(TYPE_RE), parser_re(ENUM_RE), parser_re(ASSOCIATE_RE),
+             None, parser_re(BLK_RE), where_parser(WHERE_RE), forall_parser(FORALL_RE)]
 
-CONTINUE_SCOPE = [ELSE_RE, None, CASE_RE, CONTAINS_RE,
-                     CONTAINS_RE, CONTAINS_RE, CONTAINS_RE, CONTAINS_RE, None, CONTAINS_RE, None, None, None, None]
-END_SCOPE = [ENDIF_RE, ENDDO_RE, ENDSEL_RE, ENDSUBR_RE,
-                ENDFCT_RE, ENDMOD_RE, ENDSMOD_RE, ENDPROG_RE, ENDINTERFACE_RE, ENDTYPE_RE, ENDENUM_RE, ENDASSOCIATE_RE, ENDANY_RE, ENDBLK_RE]
+CONTINUE_SCOPE = [parser_re(ELSE_RE), None, parser_re(CASE_RE), parser_re(CONTAINS_RE),
+                  parser_re(CONTAINS_RE), parser_re(CONTAINS_RE), parser_re(CONTAINS_RE), parser_re(CONTAINS_RE),
+                  None, parser_re(CONTAINS_RE), None, None,
+                  None, None, parser_re(ELSEWHERE_RE), None]
 
-NEW_SCOPE = [parser_re(re) if re else None for re in NEW_SCOPE]
-CONTINUE_SCOPE = [parser_re(re) if re else None for re in CONTINUE_SCOPE]
-
-END_SCOPE = [parser_re(re, spec = re!=ENDANY_RE) if re else None for re in END_SCOPE]
-# Lists containing where and forall constructs
-
-BLOCK_NEW_SCOPE_RE = [WHERE_RE, FORALL_RE]
-BLOCK_CONTINUE_SCOPE_RE = [ELSEWHERE_RE, None]
-BLOCK_END_SCOPE_RE = [ENDWHERE_RE, ENDFORALL_RE]
+END_SCOPE = [parser_re(ENDIF_RE), parser_re(ENDDO_RE), parser_re(ENDSEL_RE), parser_re(ENDSUBR_RE),
+             parser_re(ENDFCT_RE), parser_re(ENDMOD_RE), parser_re(ENDSMOD_RE), parser_re(ENDPROG_RE),
+             parser_re(ENDINTERFACE_RE), parser_re(ENDTYPE_RE), parser_re(ENDENUM_RE), parser_re(ENDASSOCIATE_RE),
+             parser_re(ENDANY_RE,spec=False), parser_re(ENDBLK_RE), parser_re(ENDWHERE_RE), parser_re(ENDFORALL_RE)]
 
 # match namelist names
 NML_RE = re.compile(r"(/\w+/)", RE_FLAGS)
@@ -1826,8 +1850,6 @@ def run(argv=sys.argv):  # pragma: no cover
                             help="Overrides default fortran extensions recognized by --recursive. Repeat this option to specify more than one extension.")
         parser.add_argument('--version', action='version',
                             version='%(prog)s 0.3.6')
-        parser.add_argument('--statement-constructs', default=False,
-                            help="Choose whether the where and forall commands should be treated as block-constructs or as statements. Only boolean values allowed. True means they are treated as block constructs. False  means they are treated as statements.")
         return parser
 
     parser = get_arg_parser(arguments)
@@ -1911,11 +1933,6 @@ def run(argv=sys.argv):  # pragma: no cover
 
             stdout = file_args.stdout or directory == '-'
             diffonly=file_args.diff
-
-            if file_args.statement_constructs:
-                NEW_SCOPE_RE.extend(BLOCK_NEW_SCOPE_RE)
-                CONTINUE_SCOPE_RE.extend(BLOCK_CONTINUE_SCOPE_RE)
-                END_SCOPE_RE.extend(BLOCK_END_SCOPE_RE)
 
             if file_args.debug:
                 level = logging.DEBUG
