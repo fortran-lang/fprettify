@@ -46,6 +46,20 @@ FYPP_CLOSE_RE = re.compile(FYPP_CLOSE_STR, RE_FLAGS)
 STR_OPEN_RE = re.compile(r"("+FYPP_OPEN_STR+r"|"+r"'|\"|!)", RE_FLAGS)
 CPP_RE = re.compile(CPP_STR, RE_FLAGS)
 
+class fline_parser(object):
+    def __init__(self):
+        self.spec = False
+    def search(self, line):
+        pass
+
+class parser_re(fline_parser):
+    def __init__(self, re, spec=True):
+        self._re = re
+        self.spec = spec
+
+    def search(self, line):
+        return self._re.search(line)
+
 class FprettifyException(Exception):
     """Base class for all custom exceptions"""
 

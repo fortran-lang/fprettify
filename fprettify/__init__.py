@@ -91,7 +91,8 @@ except AttributeError: # pragma: no cover
 from .fparse_utils import (VAR_DECL_RE, OMP_COND_RE,
                            InputStream, CharFilter,
                            FprettifyException, FprettifyParseException, FprettifyInternalException,
-                           CPP_RE, NOTFORTRAN_LINE_RE, FYPP_LINE_RE, RE_FLAGS, STR_OPEN_RE)
+                           CPP_RE, NOTFORTRAN_LINE_RE, FYPP_LINE_RE, RE_FLAGS, STR_OPEN_RE,
+                           parser_re)
 
 # recognize fortran files by extension
 FORTRAN_EXTENSIONS = [".f", ".for", ".ftn",
@@ -221,12 +222,18 @@ USE_RE = re.compile(
 NO_ALIGN_RE = re.compile(SOL_STR + r"&\s*[^\s*]+")
 
 # combine regex that define subunits
-NEW_SCOPE_RE = [IF_RE, DO_RE, SELCASE_RE, SUBR_RE,
+NEW_SCOPE = [IF_RE, DO_RE, SELCASE_RE, SUBR_RE,
                 FCT_RE, MOD_RE, SMOD_RE, PROG_RE, INTERFACE_RE, TYPE_RE, ENUM_RE, ASSOCIATE_RE, None, BLK_RE]
-CONTINUE_SCOPE_RE = [ELSE_RE, None, CASE_RE, CONTAINS_RE,
+
+CONTINUE_SCOPE = [ELSE_RE, None, CASE_RE, CONTAINS_RE,
                      CONTAINS_RE, CONTAINS_RE, CONTAINS_RE, CONTAINS_RE, None, CONTAINS_RE, None, None, None, None]
-END_SCOPE_RE = [ENDIF_RE, ENDDO_RE, ENDSEL_RE, ENDSUBR_RE,
+END_SCOPE = [ENDIF_RE, ENDDO_RE, ENDSEL_RE, ENDSUBR_RE,
                 ENDFCT_RE, ENDMOD_RE, ENDSMOD_RE, ENDPROG_RE, ENDINTERFACE_RE, ENDTYPE_RE, ENDENUM_RE, ENDASSOCIATE_RE, ENDANY_RE, ENDBLK_RE]
+
+NEW_SCOPE = [parser_re(re) if re else None for re in NEW_SCOPE]
+CONTINUE_SCOPE = [parser_re(re) if re else None for re in CONTINUE_SCOPE]
+
+END_SCOPE = [parser_re(re, spec = re!=ENDANY_RE) if re else None for re in END_SCOPE]
 
 # match namelist names
 NML_RE = re.compile(r"(/\w+/)", RE_FLAGS)
@@ -457,9 +464,9 @@ class F90Indenter(object):
         f_filter = CharFilter(f_line)
         f_line_filtered = f_filter.filter_all()
 
-        for new_n, newre in enumerate(NEW_SCOPE_RE):
+        for new_n, newre in enumerate(NEW_SCOPE):
             if newre and newre.search(f_line_filtered) and \
-                not END_SCOPE_RE[new_n].search(f_line_filtered):
+                not END_SCOPE[new_n].search(f_line_filtered):
                 what_new = new_n
                 is_new = True
                 valid_new = True
@@ -470,7 +477,7 @@ class F90Indenter(object):
         # check statements that continue scope
         is_con = False
         valid_con = False
-        for con_n, conre in enumerate(CONTINUE_SCOPE_RE):
+        for con_n, conre in enumerate(CONTINUE_SCOPE):
             if conre and conre.search(f_line_filtered):
                 what_con = con_n
                 is_con = True
@@ -484,13 +491,13 @@ class F90Indenter(object):
         # check statements that end scope
         is_end = False
         valid_end = False
-        for end_n, endre in enumerate(END_SCOPE_RE):
+        for end_n, endre in enumerate(END_SCOPE):
             if endre and endre.search(f_line_filtered):
                 what_end = end_n
                 is_end = True
                 if len(scopes) > 0:
                     what = scopes.pop()
-                    if what == what_end or (END_SCOPE_RE[what_end] == ENDANY_RE):
+                    if what == what_end or not END_SCOPE[what_end].spec:
                         valid_end = True
                         log_message("{}: {}".format(
                             what_end, f_line), "debug", filename, line_nr)
@@ -1107,7 +1114,7 @@ def add_whitespace_charwise(line, spacey, filename, line_nr):
 
     is_end = False
     if END_RE.search(line_ftd):
-        for endre in END_SCOPE_RE:
+        for endre in END_SCOPE:
             if endre and endre.search(line_ftd):
                 is_end = True
     if is_end:
@@ -1161,7 +1168,7 @@ def add_whitespace_context(line, spacey):
 
     line = ''.join(line_parts)
 
-    for newre in NEW_SCOPE_RE[0:2] + [BLK_RE]:
+    for newre in NEW_SCOPE[0:2] + [BLK_RE]:
         if newre.search(line) and re.search(SOL_STR + r"\w+\s*:", line):
             line = ': '.join(_.strip() for _ in line.split(':', 1))
 
