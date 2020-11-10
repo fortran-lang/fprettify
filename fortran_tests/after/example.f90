@@ -37,7 +37,7 @@ contains
          l = 0
       else
          l = 1
-      endif
+      end if
    end function
 
 end module
@@ -117,13 +117,13 @@ program example_prog
                   do k = 1, 3
                      if (k == 1) l = l + 1
                   end do
-               enddo
-            endif
-         enddo do_label
+               end do
+            end if
+         end do do_label
       case (2)
          l = i + j + k
       end select
-   enddo
+   end do
 
 ! example 2.2
    do m = 1, 2
@@ -135,13 +135,13 @@ program example_prog
             do my_integer = 1, 1
             do j = 1, 2
                write (*, *) test_function(m, r, k, l) + i
-            enddo
-            enddo
-         enddo
-         enddo
-         enddo
-      enddo
-   enddo
+            end do
+            end do
+         end do
+         end do
+         end do
+      end do
+   end do
 
 ! 3) auto alignment for linebreaks   !
 !************************************!
@@ -202,17 +202,17 @@ program example_prog
                      l = l + 1
 ! unindented comment
                      ! indented comment
-                  end do; enddo
+                  end do; end do
             elseif (.not. j == 4) then
                my_integer = 4
             else
                write (*, *) " hello"
-            endif
-         enddo
+            end if
+         end do
       case (2)
          l = i + j + k
       end select
-   enddo
+   end do
 
 ! example 4.2
    if ( &
@@ -232,7 +232,7 @@ program example_prog
       end & ! comment
          ! comment
          do
-   endif
+   end if
 
 ! example 4.3
    arr = [1, (/3, 4, &
@@ -247,11 +247,11 @@ program example_prog
       endif = 5
    else if (endif == 3) then
       write (*, *) endif
-   endif
+   end if
 
 ! example 4.5
    do i = 1, 2; if (.true.) then
          write (*, *) "hello"
-      endif; enddo
+      end if; end do
 
 end program

@@ -61,11 +61,11 @@
                    merge(3, 1, i <= 2)
                 write (*, *) test_function(r, i, j, k)
                 END MODULE
-                ENDPROGRAM
-             ENDIF
-          ENDDO
+                END PROGRAM
+             END IF
+          END DO
           FUNCTION a(b)
              integer :: a
-          ENDFUNCTION
+          END FUNCTION
        END SUBROUTINE
 

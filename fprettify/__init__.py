@@ -177,7 +177,7 @@ ENDANY_RE = re.compile(SOL_STR + r"END" + EOL_STR, RE_FLAGS)
 PRIVATE_RE = re.compile(SOL_STR + r"PRIVATE\s*::", RE_FLAGS)
 PUBLIC_RE = re.compile(SOL_STR + r"PUBLIC\s*::", RE_FLAGS)
 
-ENDCONSTRUCT_RE = re.compile(r"(\n\s*END)\s*(IF|DO|SELECT|ASSOCIATE|BLOCK|SUBROUTINE|FUNCTION|MODULE|SUBMODULE|TYPE|PROGRAM|INTERFACE|ENUM|WHERE|FORALL)", RE_FLAGS)
+END_RE = re.compile(SOL_STR + r"(END)\s*(IF|DO|SELECT|ASSOCIATE|BLOCK|SUBROUTINE|FUNCTION|MODULE|SUBMODULE|TYPE|PROGRAM|INTERFACE|ENUM|WHERE|FORALL)", RE_FLAGS)
 
 # intrinsic statements with parenthesis notation that are not functions
 INTR_STMTS_PAR = (r"(ALLOCATE|DEALLOCATE|"
@@ -1105,6 +1105,14 @@ def add_whitespace_charwise(line, spacey, filename, line_nr):
                     ' ' * spacey[1] + rhs.lstrip(' '))
         # offset w.r.t. unformatted line
 
+    is_end = False
+    if END_RE.search(line_ftd):
+        for endre in END_SCOPE_RE:
+            if endre and endre.search(line_ftd):
+                is_end = True
+    if is_end:
+        line_ftd = END_RE.sub(r'\1' + ' '*spacey[8] + r'\2', line_ftd)
+
     if level != 0:
         log_message('unpaired bracket delimiters', "info", filename, line_nr)
 
@@ -1265,7 +1273,7 @@ def reformat_inplace(filename, stdout=False, diffonly=False, **kwargs):  # pragm
 def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_indent=False, impose_whitespace=True,
                    case_dict={},
                    impose_replacements=False, cstyle=False, whitespace=2, whitespace_dict={}, llength=132,
-                   strip_comments=False, orig_filename=None, end_command_spacing=False):
+                   strip_comments=False, orig_filename=None):
     """main method to be invoked for formatting a Fortran file."""
 
     if not orig_filename:
@@ -1275,17 +1283,6 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
     req_indents, first_indent = inspect_ffile_format(
         infile, indent_size, strict_indent, orig_filename)
     infile.seek(0)
-
-    def end_space_construct(infile, outfile):
-        """Helper function to add an empty space between end and a command
-        that ends a block construct
-        """
-        infile_string = infile.read()
-        return_block_re = ENDCONSTRUCT_RE.sub(r'\1 \2 ', infile_string)
-        outfile.write(return_block_re)
-
-    if end_command_spacing is True:
-        end_space_construct(infile, outfile)
 
     # initialization
 
@@ -1809,8 +1806,6 @@ def run(argv=sys.argv):  # pragma: no cover
                             help="Overrides default fortran extensions recognized by --recursive. Repeat this option to specify more than one extension.")
         parser.add_argument('--version', action='version',
                             version='%(prog)s 0.3.6')
-        parser.add_argument('--end-command-separation', type=str2bool , default=False,
-                            help="En/disables the spacing of end commands (ex. endif -> end if).")
         return parser
 
     parser = get_arg_parser(arguments)
@@ -1918,7 +1913,6 @@ def run(argv=sys.argv):  # pragma: no cover
                                  whitespace=file_args.whitespace,
                                  whitespace_dict=ws_dict,
                                  llength=1024 if file_args.line_length == 0 else file_args.line_length,
-                                 strip_comments=file_args.strip_comments,
-                                 end_command_spacing=file_args.end_command_separation)
+                                 strip_comments=file_args.strip_comments)
             except FprettifyException as e:
                 log_exception(e, "Fatal error occured")
