@@ -415,7 +415,7 @@ RosettaCodeData/Task/Multiplication-tables/Fortran/multiplication-tables-2.f : 3
 RosettaCodeData/Task/Multiplication-tables/Fortran/multiplication-tables-3.f : 1476bdcb7aa9d50074a583830022740a2fe8951e367d4a03ef67ae24b29db7b4
 RosettaCodeData/Task/Multiplication-tables/Fortran/multiplication-tables-4.f : 4ba6f310b0c8fe99e00507fa0308f172b9faf8a9735fa769029259e3444dbc0b
 RosettaCodeData/Task/Multiplication-tables/Fortran/multiplication-tables-5.f : ca83004d898315c8aeca2eb415dcfc2ddf9631401ba93c251cd818b5350741ef
-RosettaCodeData/Task/Multiplication-tables/Fortran/multiplication-tables-6.f : 4680e0dce1b42b80cf424711c8fcb8b377c783edd6682f525684df3f43220a57
+RosettaCodeData/Task/Multiplication-tables/Fortran/multiplication-tables-6.f : parse error
 RosettaCodeData/Task/Multiplication-tables/Fortran/multiplication-tables-7.f : 42f97f96bccce569c8dd2467a7c905a40e7831ac6a90f7d317490d5c0c62a07b
 RosettaCodeData/Task/Multiplication-tables/Fortran/multiplication-tables-8.f : 3f838e7fbb72322775ea6a3c673fc256417a27845b2ff693c9f3d76034873405
 RosettaCodeData/Task/Mutual-recursion/Fortran/mutual-recursion-1.f : 9fac41ce5518eb9cbbd22dc2b040a83ebe605577d4ea285126a04fd65f27dd08
@@ -1889,7 +1889,7 @@ cp2k/src/xc_write_output.F : 28e24c28026d3add7db48eced2e9fc057e85aacafab65eede6f
 cp2k/src/xray_diffraction.F : c464f328d0612908031a73c36899497ca24e970a9db1c2dc313cb90169f86095
 RosettaCodeData/Task/Accumulator-factory/Fortran/accumulator-factory-1.f : 0eb4b1d8535ad761efe80bf0cdf86261849a4f921441c9233121380094268c0c
 RosettaCodeData/Task/Apply-a-callback-to-an-array/Fortran/apply-a-callback-to-an-array-3.f : 2d7a98c4abad8c946812df76fc3c4d038172859dce10da96d8f47b19358623b1
-RosettaCodeData/Task/Arithmetic-Integer/Fortran/arithmetic-integer.f : a9f7e47c05aa1537572e3e1343cc3dd3a3135372861263c823445158d98bb983
+RosettaCodeData/Task/Arithmetic-Integer/Fortran/arithmetic-integer.f : parse error
 RosettaCodeData/Task/Call-a-function/Fortran/call-a-function-4.f : 2f596c1e386c0832b142d3c830d1b41fac734ec45baa8916ef21f8ae486c345e
 RosettaCodeData/Task/Empty-string/Fortran/empty-string.f : dfa446b39418da422f2cf0bb194695912e1f25b9f69b65a79fb3000d908794ea
 RosettaCodeData/Task/Flatten-a-list/Fortran/flatten-a-list-2.f : 61ddd296b1cf4479f0552de1ed37e0684533de49c2a00eef61fb35ae871b7ef9

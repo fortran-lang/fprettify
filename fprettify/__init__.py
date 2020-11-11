@@ -199,8 +199,7 @@ LINEBREAK_STR = r"(&)[\s]*(?:!.*)?$"
 
 # regular expressions for parsing operators
 # Note: +/- in real literals and sign operator is ignored
-PLUSMINUS_RE = re.compile(
-    r"(?<=[\w\)\]])(?<![\d\.][de])\s*(\+|-)\s*", RE_FLAGS)
+PLUSMINUS_RE = re.compile(r"(?<=[\w\)\]])\s*(\+|-)\s*", RE_FLAGS)
 # Note: ** or // (or any multiples of * or /) are ignored
 #       we also ignore any * or / before a :: because we may be seeing 'real*8'
 MULTDIV_RE = re.compile(
@@ -220,8 +219,39 @@ DEL_CLOSE_RE = re.compile(r"^" + DEL_CLOSE_STR, RE_FLAGS)
 # empty line regex
 EMPTY_RE = re.compile(SOL_STR + r"$", RE_FLAGS)
 
+class plusminus_parser(parser_re):
+    """parser for +/- in addition
+    """
+    def __init__(self, regex):
+        self._re = regex
+        self._re_excl = re.compile(r"\b(\d+\.?\d*|\d*\.?\d+)[de]" + EOL_STR, RE_FLAGS)
+
+    def split(self, line):
+        partsplit = self._re.split(line)
+        partsplit_out = []
+
+        # exclude splits due to '+/-' in real literals
+        for n, part in enumerate(partsplit):
+            if re.search(r"^(\+|-)$", part):
+                if self._re_excl.search(partsplit[n-1]):
+                    if n==1: partsplit_out = [partsplit[n-1]]
+                    try:
+                        partsplit_out[-1] += part + partsplit[n+1]
+                    except IndexError:
+                        raise FprettifyParseException("non-standard expression involving + or -",'',0)
+                else:
+                    if n==1: partsplit_out = [partsplit[n-1]]
+                    try:
+                        partsplit_out += [part, partsplit[n+1]]
+                    except IndexError:
+                        raise FprettifyParseException("non-standard expression involving + or -",'',0)
+
+        if not partsplit_out: partsplit_out = partsplit
+
+        return partsplit_out
+
 # two-sided operators
-LR_OPS_RE = [REL_OP_RE, LOG_OP_RE, PLUSMINUS_RE, MULTDIV_RE, PRINT_RE]
+LR_OPS_RE = [REL_OP_RE, LOG_OP_RE, plusminus_parser(PLUSMINUS_RE), MULTDIV_RE, PRINT_RE]
 
 USE_RE = re.compile(
     SOL_STR + "USE(\s+|(,.+?)?::\s*)\w+?((,.+?=>.+?)+|,\s*only\s*:.+?)?$" + EOL_STR, RE_FLAGS)

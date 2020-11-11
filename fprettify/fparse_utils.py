@@ -48,17 +48,20 @@ CPP_RE = re.compile(CPP_STR, RE_FLAGS)
 
 class fline_parser(object):
     def __init__(self):
-        self.spec = False
+        pass
     def search(self, line):
         pass
 
 class parser_re(fline_parser):
-    def __init__(self, re, spec=True):
-        self._re = re
+    def __init__(self, regex, spec=True):
+        self._re = regex
         self.spec = spec
 
     def search(self, line):
         return self._re.search(line)
+
+    def split(self, line):
+        return self._re.split(line)
 
 class FprettifyException(Exception):
     """Base class for all custom exceptions"""

@@ -515,6 +515,12 @@ class FPrettifyTestCase(unittest.TestCase):
 
         self.assert_fprettify_result([], instring, outstring)
 
+    def test_plusminus(self):
+        """test corner cases of +/-"""
+        instring = "val_1d-1-1.0e-9-2.0d-08+.2e-1-val_2d-3.e-12+4"
+        outstring = "val_1d - 1 - 1.0e-9 - 2.0d-08 + .2e-1 - val_2d - 3.e-12 + 4"
+        self.assert_fprettify_result([], instring, outstring)
+
 def addtestmethod(testcase, fpath, ffile):
     """add a test method for each example."""
 
