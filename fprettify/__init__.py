@@ -238,13 +238,13 @@ class plusminus_parser(parser_re):
                     try:
                         partsplit_out[-1] += part + partsplit[n+1]
                     except IndexError:
-                        raise FprettifyParseException("non-standard expression involving + or -",'',0)
+                        raise FprettifyParseException("non-standard expression involving + or -",'',0) from None
                 else:
                     if n==1: partsplit_out = [partsplit[n-1]]
                     try:
                         partsplit_out += [part, partsplit[n+1]]
                     except IndexError:
-                        raise FprettifyParseException("non-standard expression involving + or -",'',0)
+                        raise FprettifyParseException("non-standard expression involving + or -",'',0) from None
 
         if not partsplit_out: partsplit_out = partsplit
 
@@ -1674,7 +1674,7 @@ def remove_pre_ampersands(lines, is_special, filename, line_nr):
                                     lines[pos - 1]).group(1))
             except AttributeError:
                 raise FprettifyParseException(
-                    "Bad continuation line format", filename, line_nr)
+                    "Bad continuation line format", filename, line_nr) from None
 
             ampersand_sep.append(sep)
         else:
