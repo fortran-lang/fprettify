@@ -185,6 +185,25 @@ ENDWHERE_RE = re.compile(SOL_STR + r"END\s*WHERE(\s+\w+)?" + EOL_STR, RE_FLAGS)
 
 # Regular expressions for preprocessor directives
 
+PREPRO_DEF_RE = re.compile(r"#:DEF\s+.*\n", RE_FLAGS)
+PREPRO_ENDDEF_RE = re.compile(r"#:ENDDEF.*\n", RE_FLAGS)
+
+PREPRO_IF_RE = re.compile(r"#:IF\s+.*\n", RE_FLAGS)
+PREPRO_ELIF_ELSE_RE = re.compile(r"#:(ELIF\s+.*\n|ELSE\n)", RE_FLAGS)
+PREPRO_ENDIF_RE = re.compile(r"#:ENDIF\s*\n", RE_FLAGS)
+
+PREPRO_FOR_RE = re.compile(r"#:FOR\s+.*\n", RE_FLAGS)
+PREPRO_ENDFOR_RE = re.compile(r"#:ENDFOR\s*\n", RE_FLAGS)
+
+PREPRO_BLOCK_RE = re.compile(r"#:BLOCK\s+.*\n", RE_FLAGS)
+PREPRO_ENDBLOCK_RE = re.compile(r"#:ENDBLOCK\s+.*\n", RE_FLAGS)
+
+PREPRO_CALL_RE = re.compile(r"#:CALL\s+.*\n", RE_FLAGS)
+PREPRO_ENDCALL_RE = re.compile(r"#:ENDCALL\s+.*\n", RE_FLAGS)
+
+PREPRO_MUTE_RE = re.compile(r"#:MUTE\s*\n", RE_FLAGS)
+PREPRO_ENDMUTE_RE = re.compile(r"#:ENDMUTE\s*\n", RE_FLAGS)
+
 PRIVATE_RE = re.compile(SOL_STR + r"PRIVATE\s*::", RE_FLAGS)
 PUBLIC_RE = re.compile(SOL_STR + r"PUBLIC\s*::", RE_FLAGS)
 
@@ -301,6 +320,13 @@ END_SCOPE = [parser_re(ENDIF_RE), parser_re(ENDDO_RE), parser_re(ENDSEL_RE), par
              parser_re(ENDFCT_RE), parser_re(ENDMOD_RE), parser_re(ENDSMOD_RE), parser_re(ENDPROG_RE),
              parser_re(ENDINTERFACE_RE), parser_re(ENDTYPE_RE), parser_re(ENDENUM_RE), parser_re(ENDASSOCIATE_RE),
              parser_re(ENDANY_RE,spec=False), parser_re(ENDBLK_RE), parser_re(ENDWHERE_RE), parser_re(ENDFORALL_RE)]
+
+PREPRO_NEW_SCOPE_RE = [PREPRO_DEF_RE, PREPRO_IF_RE, PREPRO_FOR_RE,
+                       PREPRO_BLOCK_RE, PREPRO_CALL_RE, PREPRO_MUTE_RE]
+PREPRO_CONTINUE_SCOPE_RE = [None, PREPRO_ELIF_ELSE_RE, None, None, None, None]
+PREPRO_END_SCOPE_RE = [PREPRO_ENDDEF_RE, PREPRO_ENDIF_RE, PREPRO_ENDFOR_RE,
+                       PREPRO_ENDBLOCK_RE, PREPRO_ENDCALL_RE,
+                       PREPRO_ENDMUTE_RE]
 
 # match namelist names
 NML_RE = re.compile(r"(/\w+/)", RE_FLAGS)
@@ -1966,6 +1992,11 @@ def run(argv=sys.argv):  # pragma: no cover
 
             stdout = file_args.stdout or directory == '-'
             diffonly=file_args.diff
+
+            if file_args.indent_fypp is True:
+                NEW_SCOPE_RE.extend(PREPRO_NEW_SCOPE_RE)
+                CONTINUE_SCOPE_RE.extend(PREPRO_CONTINUE_SCOPE_RE)
+                END_SCOPE_RE.extend(PREPRO_END_SCOPE_RE)
 
             if file_args.debug:
                 level = logging.DEBUG
