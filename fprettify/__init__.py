@@ -235,16 +235,14 @@ class plusminus_parser(parser_re):
             if re.search(r"^(\+|-)$", part):
                 if self._re_excl.search(partsplit[n-1]):
                     if n==1: partsplit_out = [partsplit[n-1]]
-                    try:
-                        partsplit_out[-1] += part + partsplit[n+1]
-                    except IndexError:
+                    if n + 1 >= len(partsplit) or not partsplit_out:
                         raise FprettifyParseException("non-standard expression involving + or -",'',0)
+                    partsplit_out[-1] += part + partsplit[n+1]
                 else:
                     if n==1: partsplit_out = [partsplit[n-1]]
-                    try:
-                        partsplit_out += [part, partsplit[n+1]]
-                    except IndexError:
+                    if n + 1 >= len(partsplit):
                         raise FprettifyParseException("non-standard expression involving + or -",'',0)
+                    partsplit_out += [part, partsplit[n+1]]
 
         if not partsplit_out: partsplit_out = partsplit
 
@@ -1668,13 +1666,12 @@ def remove_pre_ampersands(lines, is_special, filename, line_nr):
         match = re.search(SOL_STR + r'(&\s*)', line)
         if match:
             pre_ampersand.append(match.group(1))
-            try:
-                # amount of whitespace before ampersand of previous line:
-                sep = len(re.search(r'(\s*)&[\s]*(?:!.*)?$',
-                                    lines[pos - 1]).group(1))
-            except AttributeError:
+            # amount of whitespace before ampersand of previous line:
+            m = re.search(r'(\s*)&[\s]*(?:!.*)?$', lines[pos - 1])
+            if not m:
                 raise FprettifyParseException(
                     "Bad continuation line format", filename, line_nr)
+            sep = len(m.group(1))
 
             ampersand_sep.append(sep)
         else:
