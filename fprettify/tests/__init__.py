@@ -751,7 +751,7 @@ ${worktype}$, &
 
 
         for instr, outstr in zip(instring, outstring):
-            self.assert_fprettify_result(['--indent-fypp'], instr, outstr)
+            self.assert_fprettify_result([], instr, outstr)
 
 def addtestmethod(testcase, fpath, ffile):
     """add a test method for each example."""
