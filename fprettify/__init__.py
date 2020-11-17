@@ -1640,9 +1640,8 @@ def preprocess_line(f_line, lines, comments, filename, line_nr, indent_fypp):
     for pos, line in enumerate(lines):
         line_strip = line.lstrip()
         if indent_fypp:
-            is_special[pos] = line_strip.startswith('!!')
-            if pos > 0:
-                is_special[pos] = FYPP_LINE_RE.search(line_strip)
+            is_special[pos] = line_strip.startswith('!!') or \
+                              (FYPP_LINE_RE.search(line_strip) if pos > 0 else False)
         else:
             is_special[pos] = FYPP_LINE_RE.search(line_strip) or line_strip.startswith('!!')
 
@@ -1941,6 +1940,9 @@ def run(argv=sys.argv):  # pragma: no cover
                             " | 2: uppercase")
 
         parser.add_argument("--strip-comments", action='store_true', default=False, help="strip whitespaces before comments")
+        parser.add_argument('--disable-fypp', action='store_true', default=False,
+                            help="Disables the indentation of fypp preprocessor blocks.")
+
         parser.add_argument("-d","--diff", action='store_true', default=False,
                              help="Write file differences to stdout instead of formatting inplace")
         parser.add_argument("-s", "--stdout", action='store_true', default=False,
@@ -1962,8 +1964,6 @@ def run(argv=sys.argv):  # pragma: no cover
                             help="Overrides default fortran extensions recognized by --recursive. Repeat this option to specify more than one extension.")
         parser.add_argument('--version', action='version',
                             version='%(prog)s 0.3.6')
-        parser.add_argument('--indent-fypp', action='store_true', default=False,
-                            help="En/disables the indentation of preprocessor blocks.")
         return parser
 
     parser = get_arg_parser(arguments)
@@ -2048,7 +2048,7 @@ def run(argv=sys.argv):  # pragma: no cover
             stdout = file_args.stdout or directory == '-'
             diffonly=file_args.diff
 
-            if file_args.indent_fypp:
+            if not file_args.disable_fypp:
                 NEW_SCOPE.extend(PREPRO_NEW_SCOPE)
                 CONTINUE_SCOPE.extend(PREPRO_CONTINUE_SCOPE)
                 END_SCOPE.extend(PREPRO_END_SCOPE)
@@ -2077,6 +2077,6 @@ def run(argv=sys.argv):  # pragma: no cover
                                  whitespace_dict=ws_dict,
                                  llength=1024 if file_args.line_length == 0 else file_args.line_length,
                                  strip_comments=file_args.strip_comments,
-                                 indent_fypp=file_args.indent_fypp)
+                                 indent_fypp=not file_args.disable_fypp)
             except FprettifyException as e:
                 log_exception(e, "Fatal error occured")
