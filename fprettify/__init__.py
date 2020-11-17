@@ -91,8 +91,8 @@ except AttributeError: # pragma: no cover
 from .fparse_utils import (VAR_DECL_RE, OMP_COND_RE,
                            InputStream, CharFilter,
                            FprettifyException, FprettifyParseException, FprettifyInternalException,
-                           CPP_RE, NOTFORTRAN_LINE_RE, FYPP_LINE_RE, RE_FLAGS, STR_OPEN_RE,
-                           parser_re, FYPP_WITHOUT_PREPRO_RE)
+                           CPP_RE, NOTFORTRAN_LINE_RE, NOTFORTRAN_FYPP_LINE_RE, FYPP_LINE_RE, RE_FLAGS,
+                           STR_OPEN_RE, parser_re, FYPP_WITHOUT_PREPRO_RE)
 
 # recognize fortran files by extension
 FORTRAN_EXTENSIONS = [".f", ".for", ".ftn",
@@ -185,24 +185,24 @@ ENDWHERE_RE = re.compile(SOL_STR + r"END\s*WHERE(\s+\w+)?" + EOL_STR, RE_FLAGS)
 
 # Regular expressions for preprocessor directives
 
-PREPRO_DEF_RE = re.compile(r"#:DEF\s+.*\n", RE_FLAGS)
-PREPRO_ENDDEF_RE = re.compile(r"#:ENDDEF.*\n", RE_FLAGS)
+FYPP_DEF_RE = re.compile(SOL_STR + r"#:DEF\s+", RE_FLAGS)
+FYPP_ENDDEF_RE = re.compile(SOL_STR + r"#:ENDDEF", RE_FLAGS)
 
-PREPRO_IF_RE = re.compile(r"#:IF\s+.*\n", RE_FLAGS)
-PREPRO_ELIF_ELSE_RE = re.compile(r"#:(ELIF\s+.*\n|ELSE\n)", RE_FLAGS)
-PREPRO_ENDIF_RE = re.compile(r"#:ENDIF\s*\n", RE_FLAGS)
+FYPP_IF_RE = re.compile(SOL_STR + r"#:IF\s+", RE_FLAGS)
+FYPP_ELIF_ELSE_RE = re.compile(SOL_STR + r"#:(ELIF\s+|ELSE)", RE_FLAGS)
+FYPP_ENDIF_RE = re.compile(SOL_STR + r"#:ENDIF", RE_FLAGS)
 
-PREPRO_FOR_RE = re.compile(r"#:FOR\s+.*\n", RE_FLAGS)
-PREPRO_ENDFOR_RE = re.compile(r"#:ENDFOR\s*\n", RE_FLAGS)
+FYPP_FOR_RE = re.compile(SOL_STR + r"#:FOR\s+", RE_FLAGS)
+FYPP_ENDFOR_RE = re.compile(SOL_STR + r"#:ENDFOR", RE_FLAGS)
 
-PREPRO_BLOCK_RE = re.compile(r"#:BLOCK\s+.*\n", RE_FLAGS)
-PREPRO_ENDBLOCK_RE = re.compile(r"#:ENDBLOCK\s+.*\n", RE_FLAGS)
+FYPP_BLOCK_RE = re.compile(SOL_STR + r"#:BLOCK\s+", RE_FLAGS)
+FYPP_ENDBLOCK_RE = re.compile(SOL_STR + r"#:ENDBLOCK", RE_FLAGS)
 
-PREPRO_CALL_RE = re.compile(r"#:CALL\s+.*\n", RE_FLAGS)
-PREPRO_ENDCALL_RE = re.compile(r"#:ENDCALL\s+.*\n", RE_FLAGS)
+FYPP_CALL_RE = re.compile(SOL_STR + r"#:CALL\s+", RE_FLAGS)
+FYPP_ENDCALL_RE = re.compile(SOL_STR + r"#:ENDCALL", RE_FLAGS)
 
-PREPRO_MUTE_RE = re.compile(r"#:MUTE\s*\n", RE_FLAGS)
-PREPRO_ENDMUTE_RE = re.compile(r"#:ENDMUTE\s*\n", RE_FLAGS)
+FYPP_MUTE_RE = re.compile(SOL_STR + r"#:MUTE", RE_FLAGS)
+FYPP_ENDMUTE_RE = re.compile(SOL_STR + r"#:ENDMUTE", RE_FLAGS)
 
 PRIVATE_RE = re.compile(SOL_STR + r"PRIVATE\s*::", RE_FLAGS)
 PUBLIC_RE = re.compile(SOL_STR + r"PUBLIC\s*::", RE_FLAGS)
@@ -321,12 +321,12 @@ END_SCOPE = [parser_re(ENDIF_RE), parser_re(ENDDO_RE), parser_re(ENDSEL_RE), par
              parser_re(ENDINTERFACE_RE), parser_re(ENDTYPE_RE), parser_re(ENDENUM_RE), parser_re(ENDASSOCIATE_RE),
              parser_re(ENDANY_RE,spec=False), parser_re(ENDBLK_RE), parser_re(ENDWHERE_RE), parser_re(ENDFORALL_RE)]
 
-PREPRO_NEW_SCOPE_RE = [PREPRO_DEF_RE, PREPRO_IF_RE, PREPRO_FOR_RE,
-                       PREPRO_BLOCK_RE, PREPRO_CALL_RE, PREPRO_MUTE_RE]
-PREPRO_CONTINUE_SCOPE_RE = [None, PREPRO_ELIF_ELSE_RE, None, None, None, None]
-PREPRO_END_SCOPE_RE = [PREPRO_ENDDEF_RE, PREPRO_ENDIF_RE, PREPRO_ENDFOR_RE,
-                       PREPRO_ENDBLOCK_RE, PREPRO_ENDCALL_RE,
-                       PREPRO_ENDMUTE_RE]
+PREPRO_NEW_SCOPE = [parser_re(FYPP_DEF_RE), parser_re(FYPP_IF_RE), parser_re(FYPP_FOR_RE),
+                       parser_re(FYPP_BLOCK_RE), parser_re(FYPP_CALL_RE), parser_re(FYPP_MUTE_RE)]
+PREPRO_CONTINUE_SCOPE = [None, parser_re(FYPP_ELIF_ELSE_RE), None, None, None, None]
+PREPRO_END_SCOPE = [parser_re(FYPP_ENDDEF_RE), parser_re(FYPP_ENDIF_RE), parser_re(FYPP_ENDFOR_RE),
+                       parser_re(FYPP_ENDBLOCK_RE), parser_re(FYPP_ENDCALL_RE),
+                       parser_re(FYPP_ENDMUTE_RE)]
 
 # match namelist names
 NML_RE = re.compile(r"(/\w+/)", RE_FLAGS)
@@ -520,7 +520,7 @@ class F90Indenter(object):
             self._indent_storage = [0]
 
     def process_lines_of_fline(self, f_line, lines, rel_ind, rel_ind_con,
-                               line_nr, manual_lines_indent=None):
+                               line_nr, indent_fypp=True, manual_lines_indent=None):
         """
         Process all lines that belong to a Fortran line `f_line`.
 
@@ -532,6 +532,7 @@ class F90Indenter(object):
         :param rel_ind: relative scope indent size for this line
         :rel_ind_con: relative continuation indent size for this line
         :line_nr: line number
+        :indent_fypp: whether or not to include fypp preprocessor lines
         :manual_lines_indent: don't use F90Aligner but manually impose
                               indents for continuations
         """
@@ -554,7 +555,7 @@ class F90Indenter(object):
         is_new = False
         valid_new = False
 
-        f_filter = CharFilter(f_line)
+        f_filter = CharFilter(f_line, filter_fypp=not indent_fypp)
         f_line_filtered = f_filter.filter_all()
 
         for new_n, newre in enumerate(NEW_SCOPE):
@@ -597,6 +598,24 @@ class F90Indenter(object):
                 else:
                     valid_end = True
 
+        # fypp preprocessor scopes may be within continuation lines
+        if indent_fypp and len(lines) > 1:
+
+            for new_n, newre in enumerate(PREPRO_NEW_SCOPE):
+                for l in lines:
+                    if(newre and newre.search(l)):
+                        is_new = True
+                        valid_new = True
+                        scopes.append(new_n)
+
+            for end_n, endre in enumerate(PREPRO_END_SCOPE):
+                for l in lines:
+                    if(endre and endre.search(l)):
+                        is_end = True
+                        valid_end = True
+                        if len(scopes) > 0:
+                            what = scopes.pop()
+
         # deal with line breaks
         if not manual_lines_indent:
             self._aligner.process_lines_of_fline(
@@ -608,7 +627,7 @@ class F90Indenter(object):
         for pos in range(0, len(lines) - 1):
             line_indents[pos + 1] = br_indent_list[pos + 1]
 
-        if is_new:
+        if is_new and not is_end:
             if not valid_new:
                 log_message('invalid scope opening statement',
                             "info", filename, line_nr)
@@ -617,7 +636,7 @@ class F90Indenter(object):
 
             indents.append(rel_ind + indents[-1])
 
-        elif is_con or is_end:
+        elif (not is_new) and (is_con or is_end):
             valid = valid_con if is_con else valid_end
 
             if not valid:
@@ -810,7 +829,7 @@ class F90Aligner(object):
         self._level = level
 
 
-def inspect_ffile_format(infile, indent_size, strict_indent, orig_filename=None):
+def inspect_ffile_format(infile, indent_size, strict_indent, indent_fypp=False, orig_filename=None):
     """
     Determine indentation by inspecting original Fortran file.
 
@@ -827,7 +846,7 @@ def inspect_ffile_format(infile, indent_size, strict_indent, orig_filename=None)
 
     num_labels = False
     indents = []
-    stream = InputStream(infile, orig_filename)
+    stream = InputStream(infile, filter_fypp=not indent_fypp, orig_filename=orig_filename)
     prev_offset = 0
     first_indent = -1
 
@@ -1339,9 +1358,35 @@ def reformat_inplace(filename, stdout=False, diffonly=False, **kwargs):  # pragm
     else:
         infile = io.open(filename, 'r', encoding='utf-8')
 
-    newfile = io.StringIO()
-    reformat_ffile(infile=infile, outfile=newfile,
-                   orig_filename=filename, **kwargs)
+    # note: whitespace formatting and indentation may require different parsing rules
+    # (e.g. preprocessor statements may be indented but not whitespace formatted)
+    # therefore we invoke reformat_ffile independently for:
+    # 1) whitespace formatting
+    # 2) indentation
+
+    # 1) whitespace formatting  (fixme: fypp cont. lines)
+    oldfile = infile
+    newfile = infile
+
+    if kwargs['impose_whitespace']:
+        args = kwargs.copy()
+        args['impose_indent'] = False
+
+        newfile = io.StringIO()
+        reformat_ffile(infile=oldfile, outfile=newfile,
+                       orig_filename=filename, **args)
+        oldfile = newfile
+
+    # 2) indentation
+    if kwargs['impose_indent']:
+
+        args = kwargs.copy()
+        args['impose_whitespace'] = False
+        args['impose_replacements'] = False
+
+        newfile = io.StringIO()
+        reformat_ffile(infile=oldfile, outfile=newfile,
+                       orig_filename=filename, **args)
 
     if diffonly:
         infile.seek(0)
@@ -1373,15 +1418,18 @@ def reformat_inplace(filename, stdout=False, diffonly=False, **kwargs):  # pragm
 def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_indent=False, impose_whitespace=True,
                    case_dict={},
                    impose_replacements=False, cstyle=False, whitespace=2, whitespace_dict={}, llength=132,
-                   strip_comments=False, orig_filename=None, fypp_preprocessor=False):
+                   strip_comments=False, orig_filename=None, indent_fypp=False):
     """main method to be invoked for formatting a Fortran file."""
 
     if not orig_filename:
         orig_filename = infile.name
 
+    if not impose_indent:
+        indent_fypp = False
+
     infile.seek(0)
     req_indents, first_indent = inspect_ffile_format(
-        infile, indent_size, strict_indent, orig_filename)
+        infile, indent_size, strict_indent, indent_fypp, orig_filename)
     infile.seek(0)
 
     # initialization
@@ -1402,7 +1450,7 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
 
     nfl = 0  # fortran line counter
     use_same_line = False
-    stream = InputStream(infile, orig_filename)
+    stream = InputStream(infile, not indent_fypp, orig_filename=orig_filename)
     skip_blank = False
     in_format_off_block = False
 
@@ -1429,7 +1477,7 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
         f_line, lines, label = preprocess_labels(f_line, lines)
 
         lines, do_format, prev_indent, is_blank, is_special = preprocess_line(
-            f_line, lines, comments, orig_filename, stream.line_nr, fypp_preprocessor)
+            f_line, lines, comments, orig_filename, stream.line_nr, indent_fypp)
 
         if is_special[0]:
             indent_special = 3
@@ -1455,7 +1503,7 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
             lines, pre_ampersand, ampersand_sep = remove_pre_ampersands(
                 lines, is_special, orig_filename, stream.line_nr)
 
-            linebreak_pos = get_linebreak_pos(lines)
+            linebreak_pos = get_linebreak_pos(lines, filter_fypp=not indent_fypp)
 
             f_line = f_line.strip(' ')
 
@@ -1478,17 +1526,16 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
             if indent_special != 3:
                 indenter.process_lines_of_fline(
                     f_line, lines, rel_indent, indent_size,
-                    stream.line_nr, manual_lines_indent)
+                    stream.line_nr, indent_fypp, manual_lines_indent)
                 indent = indenter.get_lines_indent()
 
-            # use actual indents if line is special
-            if any(is_special):
-                for pos, line in enumerate(lines):
-                    if is_special[pos]:
-                        indent[pos] = len(line) - len(line.lstrip(' '))
-                        lines[pos] = line.lstrip(' ')
-
             lines, indent = prepend_ampersands(lines, indent, pre_ampersand)
+
+        if any(is_special):
+            for pos, line in enumerate(lines):
+                if is_special[pos]:
+                    indent[pos] = len(line) - len(line.lstrip(' '))
+                    lines[pos] = line.lstrip(' ')
 
         lines = remove_trailing_whitespace(lines)
 
@@ -1580,7 +1627,7 @@ def preprocess_labels(f_line, lines):
 
     return [f_line, lines, label]
 
-def preprocess_line(f_line, lines, comments, filename, line_nr, fypp_preprocessor):
+def preprocess_line(f_line, lines, comments, filename, line_nr, indent_fypp):
     """preprocess lines: identification and formatting of special cases"""
     is_blank = False
     prev_indent = False
@@ -1592,9 +1639,12 @@ def preprocess_line(f_line, lines, comments, filename, line_nr, fypp_preprocesso
 
     for pos, line in enumerate(lines):
         line_strip = line.lstrip()
-        is_special[pos] = FYPP_LINE_RE.search(line_strip) or line_strip.startswith('!!')
-        if fypp_preprocessor is True:
-            is_special[pos] = FYPP_WITHOUT_PREPRO_RE.search(line_strip) or line_strip.startswith('!!')
+        if indent_fypp:
+            is_special[pos] = line_strip.startswith('!!')
+            if pos > 0:
+                is_special[pos] = FYPP_LINE_RE.search(line_strip)
+        else:
+            is_special[pos] = FYPP_LINE_RE.search(line_strip) or line_strip.startswith('!!')
 
     # if first line is special, all lines should be special
     if is_special[0]: is_special = [True]*len(lines)
@@ -1657,9 +1707,14 @@ def append_comments(lines, comment_lines, is_special):
     return lines
 
 
-def get_linebreak_pos(lines):
+def get_linebreak_pos(lines, filter_fypp=True):
     """extract linebreak positions in Fortran line from lines"""
     linebreak_pos = []
+    if filter_fypp:
+        notfortran_re = NOTFORTRAN_LINE_RE
+    else:
+        notfortran_re = NOTFORTRAN_FYPP_LINE_RE
+
     for line in lines:
         found = None
         for char_pos, _ in CharFilter(line, filter_strings=False):
@@ -1667,7 +1722,7 @@ def get_linebreak_pos(lines):
                 found = char_pos
         if found:
             linebreak_pos.append(found)
-        elif NOTFORTRAN_LINE_RE.search(line.lstrip(' ')):
+        elif notfortran_re.search(line.lstrip(' ')):
             linebreak_pos.append(0)
 
     linebreak_pos = [sum(linebreak_pos[0:_ + 1]) -
@@ -1907,7 +1962,7 @@ def run(argv=sys.argv):  # pragma: no cover
                             help="Overrides default fortran extensions recognized by --recursive. Repeat this option to specify more than one extension.")
         parser.add_argument('--version', action='version',
                             version='%(prog)s 0.3.6')
-        parser.add_argument('--indent-fypp', type=str2bool, default=False,
+        parser.add_argument('--indent-fypp', action='store_true', default=False,
                             help="En/disables the indentation of preprocessor blocks.")
         return parser
 
@@ -1993,10 +2048,10 @@ def run(argv=sys.argv):  # pragma: no cover
             stdout = file_args.stdout or directory == '-'
             diffonly=file_args.diff
 
-            if file_args.indent_fypp is True:
-                NEW_SCOPE_RE.extend(PREPRO_NEW_SCOPE_RE)
-                CONTINUE_SCOPE_RE.extend(PREPRO_CONTINUE_SCOPE_RE)
-                END_SCOPE_RE.extend(PREPRO_END_SCOPE_RE)
+            if file_args.indent_fypp:
+                NEW_SCOPE.extend(PREPRO_NEW_SCOPE)
+                CONTINUE_SCOPE.extend(PREPRO_CONTINUE_SCOPE)
+                END_SCOPE.extend(PREPRO_END_SCOPE)
 
             if file_args.debug:
                 level = logging.DEBUG
@@ -2022,6 +2077,6 @@ def run(argv=sys.argv):  # pragma: no cover
                                  whitespace_dict=ws_dict,
                                  llength=1024 if file_args.line_length == 0 else file_args.line_length,
                                  strip_comments=file_args.strip_comments,
-                                 fypp_preprocessor=file_args.indent_fypp)
+                                 indent_fypp=file_args.indent_fypp)
             except FprettifyException as e:
                 log_exception(e, "Fatal error occured")
