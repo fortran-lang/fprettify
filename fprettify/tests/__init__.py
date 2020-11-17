@@ -259,7 +259,7 @@ class FPrettifyTestCase(unittest.TestCase):
             args, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
         outstring = p1.communicate(instring.encode(
             'UTF-8'))[0].decode('UTF-8').rstrip()
-        self.assertEqual(outstring_exp, outstring)
+        self.assertEqual(outstring_exp.rstrip(), outstring)
 
     def test_io(self):
         """simple test for io (file inplace, stdin & stdout)"""
@@ -520,6 +520,238 @@ class FPrettifyTestCase(unittest.TestCase):
         instring = "val_1d-1-1.0e-9-2.0d-08+.2e-1-val_2d-3.e-12+4"
         outstring = "val_1d - 1 - 1.0e-9 - 2.0d-08 + .2e-1 - val_2d - 3.e-12 + 4"
         self.assert_fprettify_result([], instring, outstring)
+
+    def test_fypp(self):
+        """test formatting of fypp statements"""
+
+        instring = []
+        outstring = []
+
+        instring += [
+"""
+#:if DEBUG>  0
+print *, "hola"
+if( .not. (${cond}$) ) then
+#:if  ASSERT(cond)
+print *, "Assert failed!"
+#:endif
+error stop
+end if
+#:endif
+"""
+]
+
+        outstring += [
+"""
+#:if DEBUG>  0
+   print *, "hola"
+   if (.not. (${cond}$)) then
+      #:if  ASSERT(cond)
+         print *, "Assert failed!"
+      #:endif
+      error stop
+   end if
+#:endif
+"""
+]
+
+        instring += [
+"""
+if  (.not. (${cond}$)) then
+   #:for element in list
+   print *, "Element is in list!"
+ #:endfor
+   error stop
+end if
+"""
+]
+
+        outstring += [
+"""
+if (.not. (${cond}$)) then
+   #:for element in list
+      print *, "Element is in list!"
+   #:endfor
+   error stop
+end if
+"""
+]
+
+        instring += [
+"""
+#:if aa > 1
+print  *, "Number is more than 1"
+if (condition) then
+     #:def something
+   print *, "Added Definition!"
+   #:enddef
+end if
+#:endif
+"""
+]
+
+        outstring += [
+"""
+#:if aa > 1
+   print *, "Number is more than 1"
+   if (condition) then
+      #:def something
+         print *, "Added Definition!"
+      #:enddef
+   end if
+#:endif
+"""
+]
+
+        instring += [
+"""
+#:def DEBUG_CODE( code)
+  #:if DEBUG > 0
+    $:code
+  #:endif
+#:enddef DEBUG_CODE
+"""
+]
+
+        outstring += [
+"""
+#:def DEBUG_CODE( code)
+   #:if DEBUG > 0
+      $:code
+   #:endif
+#:enddef DEBUG_CODE
+"""
+]
+
+
+        instring += [
+"""
+#:block DEBUG_CODE
+  if (a <b) then
+    print *, "DEBUG: a is less than b"
+  end if
+#:endblock  DEBUG_CODE
+"""
+]
+
+        outstring += [
+"""
+#:block DEBUG_CODE
+   if (a < b) then
+      print *, "DEBUG: a is less than b"
+   end if
+#:endblock  DEBUG_CODE
+"""
+]
+
+        instring += [
+"""
+#:call DEBUG_CODE
+  if (a < b) then
+    print *, "DEBUG: a is less than b"
+  end if
+#:endcall DEBUG_CODE
+"""
+]
+
+        outstring += [
+"""
+#:call DEBUG_CODE
+   if (a < b) then
+      print *, "DEBUG: a is less than b"
+   end if
+#:endcall DEBUG_CODE
+"""
+]
+
+        instring += [
+"""
+#:if DEBUG > 0
+print *, "hola"
+if (.not. (${cond}$)) then
+   #:mute
+   print *, "Muted"
+   #:endmute
+   error stop
+end if
+#:endif
+"""
+]
+
+        outstring += [
+"""
+#:if DEBUG > 0
+   print *, "hola"
+   if (.not. (${cond}$)) then
+      #:mute
+         print *, "Muted"
+      #:endmute
+      error stop
+   end if
+#:endif
+"""
+]
+
+        instring += [
+"""
+program try
+#:def mydef
+a = &
+#:if dothat
+b + &
+#:else
+c + &
+#:endif
+d
+#:enddef
+end program
+"""
+]
+
+        outstring += [
+"""
+program try
+   #:def mydef
+      a = &
+#:if dothat
+         b + &
+#:else
+         c + &
+#:endif
+         d
+   #:enddef
+end program
+"""
+]
+
+        instring += [
+"""
+#:if worktype
+      ${worktype}$, &
+#:else
+      ${type}$, &
+#:endif
+         DIMENSION(${arr_exp}$), &
+         POINTER :: work
+"""
+]
+
+        outstring += [
+"""
+#:if worktype
+${worktype}$, &
+#:else
+   ${type}$, &
+#:endif
+   DIMENSION(${arr_exp}$), &
+   POINTER :: work
+"""
+]
+
+
+
+        for instr, outstr in zip(instring, outstring):
+            self.assert_fprettify_result(['--indent-fypp'], instr, outstr)
 
 def addtestmethod(testcase, fpath, ffile):
     """add a test method for each example."""

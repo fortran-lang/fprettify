@@ -39,7 +39,8 @@ CPP_STR = r"^#[^!:{}]"
 COMMENT_LINE_STR = r"^!"
 FYPP_OPEN_STR = r"(#{|\${|@{)"
 FYPP_CLOSE_STR = r"(}#|}\$|}@)"
-NOTFORTRAN_LINE_RE = re.compile(r"("+CPP_STR+r"|"+COMMENT_LINE_STR+r")", RE_FLAGS)
+NOTFORTRAN_LINE_RE = re.compile(r"("+FYPP_LINE_STR+r"|"+CPP_STR+r"|"+COMMENT_LINE_STR+r")", RE_FLAGS)
+NOTFORTRAN_FYPP_LINE_RE = re.compile(r"("+CPP_STR+r"|"+COMMENT_LINE_STR+r")", RE_FLAGS)
 FYPP_LINE_RE = re.compile(FYPP_LINE_STR, RE_FLAGS)
 FYPP_WITHOUT_PREPRO_RE = re.compile(FYPP_WITHOUT_PREPRO_STR, RE_FLAGS)
 FYPP_OPEN_RE = re.compile(FYPP_OPEN_STR, RE_FLAGS)
@@ -92,7 +93,8 @@ class CharFilter(object):
     and ignore comments and characters inside strings
     """
 
-    def __init__(self, string, filter_comments=True, filter_strings=True):
+    def __init__(self, string, filter_comments=True, filter_strings=True,
+                 filter_fypp=True):
         self._content = string
         self._it = enumerate(self._content)
         self._instring = ''
@@ -101,12 +103,22 @@ class CharFilter(object):
         self._instring = ''
         self._filter_comments = filter_comments
         self._filter_strings = filter_strings
+        if filter_fypp:
+            self._notfortran_re = NOTFORTRAN_LINE_RE
+        else:
+            self._notfortran_re = NOTFORTRAN_FYPP_LINE_RE
 
-    def update(self, string, filter_comments=True, filter_strings=True):
+
+    def update(self, string, filter_comments=True, filter_strings=True,
+               filter_fypp=True):
         self._content = string
         self._it = enumerate(self._content)
         self._filter_comments = filter_comments
         self._filter_strings = filter_strings
+        if filter_fypp:
+            self._notfortran_re = NOTFORTRAN_LINE_RE
+        else:
+            self._notfortran_re = NOTFORTRAN_FYPP_LINE_RE
 
     def __iter__(self):
         return self
@@ -126,7 +138,7 @@ class CharFilter(object):
                 if FYPP_OPEN_RE.search(char2):
                     self._instring = char2
                     self._infypp = True
-                elif (NOTFORTRAN_LINE_RE.search(char2)):
+                elif (self._notfortran_re.search(char2)):
                     self._incomment = char
                 elif char in ['"', "'"]:
                     self._instring = char
@@ -164,7 +176,7 @@ class CharFilter(object):
 class InputStream(object):
     """Class to read logical Fortran lines from a Fortran file."""
 
-    def __init__(self, infile, orig_filename=None):
+    def __init__(self, infile, filter_fypp=True, orig_filename=None):
         if not orig_filename:
             orig_filename = infile.name
         self.line_buffer = deque([])
@@ -173,6 +185,10 @@ class InputStream(object):
         self.filename = orig_filename
         self.endpos = deque([])
         self.what_omp = deque([])
+        if filter_fypp:
+            self.notfortran_re = NOTFORTRAN_LINE_RE
+        else:
+            self.notfortran_re = NOTFORTRAN_FYPP_LINE_RE
 
     def next_fortran_line(self):
         """Reads a group of connected lines (connected with &, separated by newline or semicolon)
@@ -226,7 +242,7 @@ class InputStream(object):
                    else:
                        for pos_add, char in CharFilter(line[pos+1:], filter_comments=False):
                            char2 = line[pos+1+pos_add:pos+3+pos_add]
-                           if NOTFORTRAN_LINE_RE.search(char2):
+                           if self.notfortran_re.search(char2):
                                self.endpos.append(pos + pos_add - line_start)
                                self.line_buffer.append(line[line_start:])
                                self.what_omp.append(what_omp)
@@ -249,7 +265,7 @@ class InputStream(object):
 
             line_core = line[:endpos + 1]
 
-            if NOTFORTRAN_LINE_RE.search(line[endpos+1:endpos+3]) or fypp_cont:
+            if self.notfortran_re.search(line[endpos+1:endpos+3]) or fypp_cont:
                 line_comments = line[endpos + 1:]
             else:
                 line_comments = ''
@@ -261,7 +277,7 @@ class InputStream(object):
 
             line_core = line_core.strip()
 
-            if line_core:
+            if line_core and not NOTFORTRAN_LINE_RE.search(line_core):
                 continuation = 0
             if line_core.endswith('&'):
                 continuation = 1
