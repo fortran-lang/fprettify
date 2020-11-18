@@ -1677,7 +1677,7 @@ def preprocess_labels(f_line, lines):
 
     if label:
         f_line = STATEMENT_LABEL_RE.sub(len(label)*' ', f_line, count=1)
-        lines = [STATEMENT_LABEL_RE.sub(len(label)*' ', l, count=1) for l in lines]
+        lines[0] = STATEMENT_LABEL_RE.sub(len(label)*' ', lines[0], count=1)
 
     return [f_line, lines, label]
 

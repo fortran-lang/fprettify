@@ -784,6 +784,12 @@ ${worktype}$, &
         self.assert_fprettify_result(['--enable-decl'], instring_2, outstring_2)
         self.assert_fprettify_result(['--enable-decl', '--whitespace-decl=0'], instring_2, outstring_2_min)
 
+    def test_statement_label(self):
+        instring = "1003  FORMAT(2(1x, i4), 5x, '-', 5x, '-', 3x, '-', 5x, '-', 5x, '-', 8x, '-', 3x, &\n    1p, 2(1x, d10.3))"
+        outstring = "1003 FORMAT(2(1x, i4), 5x, '-', 5x, '-', 3x, '-', 5x, '-', 5x, '-', 8x, '-', 3x, &\n            1p, 2(1x, d10.3))"
+        self.assert_fprettify_result([], instring, outstring)
+
+
 def addtestmethod(testcase, fpath, ffile):
     """add a test method for each example."""
 
