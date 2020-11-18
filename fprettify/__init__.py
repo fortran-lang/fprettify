@@ -1023,7 +1023,8 @@ def replace_keywords_single_fline(f_line, case_dict):
 
 
 def format_single_fline(f_line, whitespace, whitespace_dict, linebreak_pos,
-                        ampersand_sep, scope_parser, filename, line_nr, auto_format=True):
+                        ampersand_sep, scope_parser, format_decl, filename, line_nr,
+                        auto_format=True):
     """
     format a single Fortran line - imposes white space formatting
     and inserts linebreaks.
@@ -1048,19 +1049,20 @@ def format_single_fline(f_line, whitespace, whitespace_dict, linebreak_pos,
             'multdiv': 5,         # 5: arithm. operators multiply and divide
             'print': 6,           # 6: print / read statements
             'type': 7,            # 7: select type components
-            'intrinsics': 8       # 8: intrinsics
+            'intrinsics': 8,      # 8: intrinsics
+            'decl': 9             # 9: declarations
             }
 
     if whitespace == 0:
-        spacey = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+        spacey = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     elif whitespace == 1:
-        spacey = [1, 1, 1, 1, 0, 0, 1, 0, 1]
+        spacey = [1, 1, 1, 1, 0, 0, 1, 0, 1, 1]
     elif whitespace == 2:
-        spacey = [1, 1, 1, 1, 1, 0, 1, 0, 1]
+        spacey = [1, 1, 1, 1, 1, 0, 1, 0, 1, 1]
     elif whitespace == 3:
-        spacey = [1, 1, 1, 1, 1, 1, 1, 0, 1]
+        spacey = [1, 1, 1, 1, 1, 1, 1, 0, 1, 1]
     elif whitespace == 4:
-        spacey = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+        spacey = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     else:
         raise NotImplementedError("unknown value for whitespace")
 
@@ -1077,8 +1079,8 @@ def format_single_fline(f_line, whitespace, whitespace_dict, linebreak_pos,
 
     if auto_format:
 
-        line = rm_extra_whitespace(line)
-        line = add_whitespace_charwise(line, spacey, scope_parser, filename, line_nr)
+        line = rm_extra_whitespace(line, format_decl)
+        line = add_whitespace_charwise(line, spacey, scope_parser, format_decl, filename, line_nr)
         line = add_whitespace_context(line, spacey)
 
     lines_out = split_reformatted_line(
@@ -1086,14 +1088,17 @@ def format_single_fline(f_line, whitespace, whitespace_dict, linebreak_pos,
     return lines_out
 
 
-def rm_extra_whitespace(line):
+def rm_extra_whitespace(line, format_decl):
     """rm all unneeded whitespace chars, except for declarations"""
     line_ftd = ''
     pos_prev = -1
     pos = -1
     for pos, char in CharFilter(line):
-        is_decl = line[pos:].lstrip().startswith('::') or line[
-            :pos].rstrip().endswith('::')
+        if format_decl:
+            is_decl = False
+        else:
+            is_decl = line[pos:].lstrip().startswith('::') or line[
+                :pos].rstrip().endswith('::')
 
         if pos > pos_prev + 1: # skipped string
             line_ftd = line_ftd + line[pos_prev + 1:pos]
@@ -1113,7 +1118,7 @@ def rm_extra_whitespace(line):
     return line_ftd
 
 
-def add_whitespace_charwise(line, spacey, scope_parser, filename, line_nr):
+def add_whitespace_charwise(line, spacey, scope_parser, format_decl, filename, line_nr):
     """add whitespace character wise (no need for context aware parsing)"""
     line_ftd = line
     pos_eq = []
@@ -1184,7 +1189,7 @@ def add_whitespace_charwise(line, spacey, scope_parser, filename, line_nr):
                                  line[pos + 1:], RE_FLAGS):
                     sep2 = 1
                 elif re.search(r"^\s*::", line[pos + 1:], RE_FLAGS):
-                    sep2 = len(rhs) - len(rhs.lstrip(' '))
+                    sep2 = len(rhs) - len(rhs.lstrip(' ')) if not format_decl else 1
 
             # where delimiter token ends
             end_of_delim = pos + len(delim) - 1
@@ -1208,6 +1213,16 @@ def add_whitespace_charwise(line, spacey, scope_parser, filename, line_nr):
                     + ' ' * spacey[7] \
                     + char \
                     + ' ' * spacey[7] \
+                    + rhs.lstrip(' ')
+            line_ftd = line_ftd.rstrip(' ')
+
+        # format '::'
+        if format_decl and line[pos:pos+2] == "::":
+            lhs = line_ftd[:pos + offset]
+            rhs = line_ftd[pos + 2 + offset:]
+            line_ftd = lhs.rstrip(' ') \
+                    + ' ' * spacey[9] \
+                    + '::' + ' ' * spacey[9] \
                     + rhs.lstrip(' ')
             line_ftd = line_ftd.rstrip(' ')
 
@@ -1411,7 +1426,7 @@ def reformat_inplace(filename, stdout=False, diffonly=False, **kwargs):  # pragm
 def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_indent=False, impose_whitespace=True,
                    case_dict={},
                    impose_replacements=False, cstyle=False, whitespace=2, whitespace_dict={}, llength=132,
-                   strip_comments=False, orig_filename=None, indent_fypp=True, indent_mod=True):
+                   strip_comments=False, format_decl=False, orig_filename=None, indent_fypp=True, indent_mod=True):
     """main method to be invoked for formatting a Fortran file."""
 
     # note: whitespace formatting and indentation may require different parsing rules
@@ -1434,7 +1449,7 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
         reformat_ffile_combined(oldfile, newfile, _impose_indent, indent_size, strict_indent, impose_whitespace,
                                 case_dict,
                                 impose_replacements, cstyle, whitespace, whitespace_dict, llength,
-                                strip_comments, orig_filename, indent_fypp, indent_mod)
+                                strip_comments, format_decl, orig_filename, indent_fypp, indent_mod)
         oldfile = newfile
 
     # 2) indentation
@@ -1447,7 +1462,7 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
         reformat_ffile_combined(oldfile, newfile, impose_indent, indent_size, strict_indent, _impose_whitespace,
                                 case_dict,
                                 _impose_replacements, cstyle, whitespace, whitespace_dict, llength,
-                                strip_comments, orig_filename, indent_fypp, indent_mod)
+                                strip_comments, format_decl, orig_filename, indent_fypp, indent_mod)
 
 
     outfile.write(newfile.getvalue())
@@ -1456,7 +1471,7 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
 def reformat_ffile_combined(infile, outfile, impose_indent=True, indent_size=3, strict_indent=False, impose_whitespace=True,
                             case_dict={},
                             impose_replacements=False, cstyle=False, whitespace=2, whitespace_dict={}, llength=132,
-                            strip_comments=False, orig_filename=None, indent_fypp=True, indent_mod=True):
+                            strip_comments=False, format_decl=False, orig_filename=None, indent_fypp=True, indent_mod=True):
 
     if not orig_filename:
         orig_filename = infile.name
@@ -1555,7 +1570,7 @@ def reformat_ffile_combined(infile, outfile, impose_indent=True, indent_size=3, 
             if impose_whitespace:
                 lines = format_single_fline(
                     f_line, whitespace, whitespace_dict, linebreak_pos, ampersand_sep,
-                    scope_parser, orig_filename, stream.line_nr, auto_format)
+                    scope_parser, format_decl, orig_filename, stream.line_nr, auto_format)
 
                 lines = append_comments(lines, comment_lines, is_special)
 
@@ -1953,6 +1968,8 @@ def run(argv=sys.argv):  # pragma: no cover
                             help="boolean, en-/disable whitespace for comma/semicolons")
         parser.add_argument("--whitespace-assignment", type=str2bool, nargs="?", default="None", const=True,
                             help="boolean, en-/disable whitespace for assignments")
+        parser.add_argument("--whitespace-decl", type=str2bool, nargs="?", default="None", const=True,
+                            help="boolean, en-/disable whitespace for declarations (requires '--enable-decl')")
         parser.add_argument("--whitespace-relational", type=str2bool, nargs="?", default="None", const=True,
                             help="boolean, en-/disable whitespace for relational operators")
         parser.add_argument("--whitespace-logical", type=str2bool, nargs="?", default="None", const=True,
@@ -1968,6 +1985,7 @@ def run(argv=sys.argv):  # pragma: no cover
         parser.add_argument("--whitespace-intrinsics", type=str2bool, nargs="?", default="None", const=True,
                             help="boolean, en-/disable whitespace for intrinsics like if/write/close")
         parser.add_argument("--strict-indent", action='store_true', default=False, help="strictly impose indentation even for nested loops")
+        parser.add_argument("--enable-decl", action="store_true", default=False, help="enable whitespace formatting of declarations ('::' operator).")
         parser.add_argument("--disable-indent", action='store_true', default=False, help="don't impose indentation")
         parser.add_argument("--disable-whitespace", action='store_true', default=False, help="don't impose whitespace formatting")
         parser.add_argument("--enable-replacements", action='store_true', default=False, help="replace relational operators (e.g. '.lt.' <--> '<')")
@@ -2016,6 +2034,7 @@ def run(argv=sys.argv):  # pragma: no cover
         ws_dict = {}
         ws_dict['comma'] = args.whitespace_comma
         ws_dict['assignments'] = args.whitespace_assignment
+        ws_dict['decl'] = args.whitespace_decl
         ws_dict['relational'] = args.whitespace_relational
         ws_dict['logical'] = args.whitespace_logical
         ws_dict['plusminus'] = args.whitespace_plusminus
@@ -2113,6 +2132,7 @@ def run(argv=sys.argv):  # pragma: no cover
                                  whitespace_dict=ws_dict,
                                  llength=1024 if file_args.line_length == 0 else file_args.line_length,
                                  strip_comments=file_args.strip_comments,
+                                 format_decl=file_args.enable_decl,
                                  indent_fypp=not file_args.disable_fypp,
                                  indent_mod=not file_args.disable_indent_mod)
             except FprettifyException as e:

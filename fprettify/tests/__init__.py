@@ -770,6 +770,19 @@ ${worktype}$, &
         self.assert_fprettify_result(['--disable-indent-mod'], instring_mod, outstring_mod_disable)
         self.assert_fprettify_result(['--disable-indent-mod'], instring_prog, outstring_prog_disable)
 
+    def test_decl(self):
+        """test formatting of declarations"""
+        instring_1 = "integer    ::     a"
+        instring_2 = "integer, dimension(:)    ::     a"
+        outstring_1 = "integer :: a"
+        outstring_2 = "integer, dimension(:) :: a"
+        outstring_2_min = "integer, dimension(:)::a"
+
+        self.assert_fprettify_result([], instring_1, instring_1)
+        self.assert_fprettify_result([], instring_2, instring_2)
+        self.assert_fprettify_result(['--enable-decl'], instring_1, outstring_1)
+        self.assert_fprettify_result(['--enable-decl'], instring_2, outstring_2)
+        self.assert_fprettify_result(['--enable-decl', '--whitespace-decl=0'], instring_2, outstring_2_min)
 
 def addtestmethod(testcase, fpath, ffile):
     """add a test method for each example."""
