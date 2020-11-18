@@ -240,6 +240,13 @@ DEL_CLOSE_RE = re.compile(r"^" + DEL_CLOSE_STR, RE_FLAGS)
 # empty line regex
 EMPTY_RE = re.compile(SOL_STR + r"$", RE_FLAGS)
 
+PREPRO_NEW_SCOPE = [parser_re(FYPP_DEF_RE), parser_re(FYPP_IF_RE), parser_re(FYPP_FOR_RE),
+                       parser_re(FYPP_BLOCK_RE), parser_re(FYPP_CALL_RE), parser_re(FYPP_MUTE_RE)]
+PREPRO_CONTINUE_SCOPE = [None, parser_re(FYPP_ELIF_ELSE_RE), None, None, None, None]
+PREPRO_END_SCOPE = [parser_re(FYPP_ENDDEF_RE), parser_re(FYPP_ENDIF_RE), parser_re(FYPP_ENDFOR_RE),
+                       parser_re(FYPP_ENDBLOCK_RE), parser_re(FYPP_ENDCALL_RE),
+                       parser_re(FYPP_ENDMUTE_RE)]
+
 class plusminus_parser(parser_re):
     """parser for +/- in addition
     """
@@ -305,28 +312,33 @@ class where_parser(parser_re):
 
 forall_parser = where_parser
 
+def build_scope_parser(fypp=True):
 # combine regex that define subunits
-NEW_SCOPE = [parser_re(IF_RE), parser_re(DO_RE), parser_re(SELCASE_RE), parser_re(SUBR_RE),
-             parser_re(FCT_RE), parser_re(MOD_RE), parser_re(SMOD_RE), parser_re(PROG_RE),
-             parser_re(INTERFACE_RE), parser_re(TYPE_RE), parser_re(ENUM_RE), parser_re(ASSOCIATE_RE),
-             None, parser_re(BLK_RE), where_parser(WHERE_RE), forall_parser(FORALL_RE)]
+    parser = {}
+    parser['new'] = \
+        [parser_re(IF_RE), parser_re(DO_RE), parser_re(SELCASE_RE), parser_re(SUBR_RE),
+         parser_re(FCT_RE), parser_re(MOD_RE), parser_re(SMOD_RE), parser_re(PROG_RE),
+         parser_re(INTERFACE_RE), parser_re(TYPE_RE), parser_re(ENUM_RE), parser_re(ASSOCIATE_RE),
+         None, parser_re(BLK_RE), where_parser(WHERE_RE), forall_parser(FORALL_RE)]
 
-CONTINUE_SCOPE = [parser_re(ELSE_RE), None, parser_re(CASE_RE), parser_re(CONTAINS_RE),
-                  parser_re(CONTAINS_RE), parser_re(CONTAINS_RE), parser_re(CONTAINS_RE), parser_re(CONTAINS_RE),
-                  None, parser_re(CONTAINS_RE), None, None,
-                  None, None, parser_re(ELSEWHERE_RE), None]
+    parser['continue'] = \
+        [parser_re(ELSE_RE), None, parser_re(CASE_RE), parser_re(CONTAINS_RE),
+         parser_re(CONTAINS_RE), parser_re(CONTAINS_RE), parser_re(CONTAINS_RE), parser_re(CONTAINS_RE),
+         None, parser_re(CONTAINS_RE), None, None,
+         None, None, parser_re(ELSEWHERE_RE), None]
 
-END_SCOPE = [parser_re(ENDIF_RE), parser_re(ENDDO_RE), parser_re(ENDSEL_RE), parser_re(ENDSUBR_RE),
-             parser_re(ENDFCT_RE), parser_re(ENDMOD_RE), parser_re(ENDSMOD_RE), parser_re(ENDPROG_RE),
-             parser_re(ENDINTERFACE_RE), parser_re(ENDTYPE_RE), parser_re(ENDENUM_RE), parser_re(ENDASSOCIATE_RE),
-             parser_re(ENDANY_RE,spec=False), parser_re(ENDBLK_RE), parser_re(ENDWHERE_RE), parser_re(ENDFORALL_RE)]
+    parser['end'] = \
+        [parser_re(ENDIF_RE), parser_re(ENDDO_RE), parser_re(ENDSEL_RE), parser_re(ENDSUBR_RE),
+         parser_re(ENDFCT_RE), parser_re(ENDMOD_RE), parser_re(ENDSMOD_RE), parser_re(ENDPROG_RE),
+         parser_re(ENDINTERFACE_RE), parser_re(ENDTYPE_RE), parser_re(ENDENUM_RE), parser_re(ENDASSOCIATE_RE),
+         parser_re(ENDANY_RE,spec=False), parser_re(ENDBLK_RE), parser_re(ENDWHERE_RE), parser_re(ENDFORALL_RE)]
 
-PREPRO_NEW_SCOPE = [parser_re(FYPP_DEF_RE), parser_re(FYPP_IF_RE), parser_re(FYPP_FOR_RE),
-                       parser_re(FYPP_BLOCK_RE), parser_re(FYPP_CALL_RE), parser_re(FYPP_MUTE_RE)]
-PREPRO_CONTINUE_SCOPE = [None, parser_re(FYPP_ELIF_ELSE_RE), None, None, None, None]
-PREPRO_END_SCOPE = [parser_re(FYPP_ENDDEF_RE), parser_re(FYPP_ENDIF_RE), parser_re(FYPP_ENDFOR_RE),
-                       parser_re(FYPP_ENDBLOCK_RE), parser_re(FYPP_ENDCALL_RE),
-                       parser_re(FYPP_ENDMUTE_RE)]
+    if fypp:
+        parser['new'].extend(PREPRO_NEW_SCOPE)
+        parser['continue'].extend(PREPRO_CONTINUE_SCOPE)
+        parser['end'].extend(PREPRO_END_SCOPE)
+
+    return parser
 
 # match namelist names
 NML_RE = re.compile(r"(/\w+/)", RE_FLAGS)
@@ -495,13 +507,15 @@ class F90Indenter(object):
     and updates the indentation.
     """
 
-    def __init__(self, first_indent, rel_indent, filename):
+    def __init__(self, scope_parser, first_indent, rel_indent, filename):
         # scopes / subunits:
         self._scope_storage = []
         # indents for all fortran lines:
         self._indent_storage = []
         # indents of actual lines of current fortran line
         self._line_indents = []
+
+        self._parser = scope_parser
 
         self._filename = filename
         self._aligner = F90Aligner(filename)
@@ -558,9 +572,9 @@ class F90Indenter(object):
         f_filter = CharFilter(f_line, filter_fypp=not indent_fypp)
         f_line_filtered = f_filter.filter_all()
 
-        for new_n, newre in enumerate(NEW_SCOPE):
+        for new_n, newre in enumerate(self._parser['new']):
             if newre and newre.search(f_line_filtered) and \
-                not END_SCOPE[new_n].search(f_line_filtered):
+                not self._parser['end'][new_n].search(f_line_filtered):
                 what_new = new_n
                 is_new = True
                 valid_new = True
@@ -571,27 +585,29 @@ class F90Indenter(object):
         # check statements that continue scope
         is_con = False
         valid_con = False
-        for con_n, conre in enumerate(CONTINUE_SCOPE):
+        for con_n, conre in enumerate(self._parser['continue']):
             if conre and conre.search(f_line_filtered):
                 what_con = con_n
                 is_con = True
+                log_message("{}: {}".format(
+                    what_con, f_line), "debug", filename, line_nr)
                 if len(scopes) > 0:
                     what = scopes[-1]
                     if what == what_con:
                         valid_con = True
-                        log_message("{}: {}".format(
-                            what_con, f_line), "debug", filename, line_nr)
 
         # check statements that end scope
         is_end = False
         valid_end = False
-        for end_n, endre in enumerate(END_SCOPE):
+        for end_n, endre in enumerate(self._parser['end']):
             if endre and endre.search(f_line_filtered):
                 what_end = end_n
                 is_end = True
+                log_message("{}: {}".format(
+                    what_end, f_line), "debug", filename, line_nr)
                 if len(scopes) > 0:
                     what = scopes.pop()
-                    if what == what_end or not END_SCOPE[what_end].spec:
+                    if what == what_end or not self._parser['end'][what_end].spec:
                         valid_end = True
                         log_message("{}: {}".format(
                             what_end, f_line), "debug", filename, line_nr)
@@ -599,7 +615,7 @@ class F90Indenter(object):
                     valid_end = True
 
         # fypp preprocessor scopes may be within continuation lines
-        if indent_fypp and len(lines) > 1:
+        if indent_fypp and len(lines) > 1 and not FYPP_LINE_RE.search(f_line_filtered):
 
             for new_n, newre in enumerate(PREPRO_NEW_SCOPE):
                 for l in lines:
@@ -1003,7 +1019,7 @@ def replace_keywords_single_fline(f_line, case_dict):
 
 
 def format_single_fline(f_line, whitespace, whitespace_dict, linebreak_pos,
-                        ampersand_sep, filename, line_nr, auto_format=True):
+                        ampersand_sep, scope_parser, filename, line_nr, auto_format=True):
     """
     format a single Fortran line - imposes white space formatting
     and inserts linebreaks.
@@ -1058,7 +1074,7 @@ def format_single_fline(f_line, whitespace, whitespace_dict, linebreak_pos,
     if auto_format:
 
         line = rm_extra_whitespace(line)
-        line = add_whitespace_charwise(line, spacey, filename, line_nr)
+        line = add_whitespace_charwise(line, spacey, scope_parser, filename, line_nr)
         line = add_whitespace_context(line, spacey)
 
     lines_out = split_reformatted_line(
@@ -1093,7 +1109,7 @@ def rm_extra_whitespace(line):
     return line_ftd
 
 
-def add_whitespace_charwise(line, spacey, filename, line_nr):
+def add_whitespace_charwise(line, spacey, scope_parser, filename, line_nr):
     """add whitespace character wise (no need for context aware parsing)"""
     line_ftd = line
     pos_eq = []
@@ -1226,7 +1242,7 @@ def add_whitespace_charwise(line, spacey, filename, line_nr):
 
     is_end = False
     if END_RE.search(line_ftd):
-        for endre in END_SCOPE:
+        for endre in scope_parser['end']:
             if endre and endre.search(line_ftd):
                 is_end = True
     if is_end:
@@ -1280,7 +1296,7 @@ def add_whitespace_context(line, spacey):
 
     line = ''.join(line_parts)
 
-    for newre in NEW_SCOPE[0:2] + [BLK_RE]:
+    for newre in [IF_RE, DO_RE, BLK_RE]:
         if newre.search(line) and re.search(SOL_STR + r"\w+\s*:", line):
             line = ': '.join(_.strip() for _ in line.split(':', 1))
 
@@ -1358,35 +1374,9 @@ def reformat_inplace(filename, stdout=False, diffonly=False, **kwargs):  # pragm
     else:
         infile = io.open(filename, 'r', encoding='utf-8')
 
-    # note: whitespace formatting and indentation may require different parsing rules
-    # (e.g. preprocessor statements may be indented but not whitespace formatted)
-    # therefore we invoke reformat_ffile independently for:
-    # 1) whitespace formatting
-    # 2) indentation
-
-    # 1) whitespace formatting  (fixme: fypp cont. lines)
-    oldfile = infile
-    newfile = infile
-
-    if kwargs['impose_whitespace']:
-        args = kwargs.copy()
-        args['impose_indent'] = False
-
-        newfile = io.StringIO()
-        reformat_ffile(infile=oldfile, outfile=newfile,
-                       orig_filename=filename, **args)
-        oldfile = newfile
-
-    # 2) indentation
-    if kwargs['impose_indent']:
-
-        args = kwargs.copy()
-        args['impose_whitespace'] = False
-        args['impose_replacements'] = False
-
-        newfile = io.StringIO()
-        reformat_ffile(infile=oldfile, outfile=newfile,
-                       orig_filename=filename, **args)
+    newfile = io.StringIO()
+    reformat_ffile(infile, newfile,
+                   orig_filename=filename, **kwargs)
 
     if diffonly:
         infile.seek(0)
@@ -1414,11 +1404,54 @@ def reformat_inplace(filename, stdout=False, diffonly=False, **kwargs):  # pragm
                 outfile = io.open(filename, 'w', encoding='utf-8')
                 outfile.write(newfile.getvalue())
 
-
 def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_indent=False, impose_whitespace=True,
                    case_dict={},
                    impose_replacements=False, cstyle=False, whitespace=2, whitespace_dict={}, llength=132,
-                   strip_comments=False, orig_filename=None, indent_fypp=False):
+                   strip_comments=False, orig_filename=None, indent_fypp=True):
+
+    # note: whitespace formatting and indentation may require different parsing rules
+    # (e.g. preprocessor statements may be indented but not whitespace formatted)
+    # therefore we invoke reformat_ffile independently for:
+    # 1) whitespace formatting
+    # 2) indentation
+
+    if not orig_filename:
+        orig_filename = infile.name
+
+    # 1) whitespace formatting
+    oldfile = infile
+    newfile = infile
+
+    if impose_whitespace:
+        _impose_indent = False
+
+        newfile = io.StringIO()
+        reformat_ffile_combined(oldfile, newfile, _impose_indent, indent_size, strict_indent, impose_whitespace,
+                                case_dict,
+                                impose_replacements, cstyle, whitespace, whitespace_dict, llength,
+                                strip_comments, orig_filename, indent_fypp)
+        oldfile = newfile
+
+    # 2) indentation
+    if impose_indent:
+
+        _impose_whitespace = False
+        _impose_replacements = False
+
+        newfile = io.StringIO()
+        reformat_ffile_combined(oldfile, newfile, impose_indent, indent_size, strict_indent, _impose_whitespace,
+                                case_dict,
+                                _impose_replacements, cstyle, whitespace, whitespace_dict, llength,
+                                strip_comments, orig_filename, indent_fypp)
+
+
+    outfile.write(newfile.getvalue())
+
+
+def reformat_ffile_combined(infile, outfile, impose_indent=True, indent_size=3, strict_indent=False, impose_whitespace=True,
+                            case_dict={},
+                            impose_replacements=False, cstyle=False, whitespace=2, whitespace_dict={}, llength=132,
+                            strip_comments=False, orig_filename=None, indent_fypp=True):
     """main method to be invoked for formatting a Fortran file."""
 
     if not orig_filename:
@@ -1426,6 +1459,8 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
 
     if not impose_indent:
         indent_fypp = False
+
+    scope_parser = build_scope_parser(fypp=indent_fypp)
 
     infile.seek(0)
     req_indents, first_indent = inspect_ffile_format(
@@ -1442,7 +1477,7 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
     indent_special = 0
 
     if impose_indent:
-        indenter = F90Indenter(first_indent, indent_size, orig_filename)
+        indenter = F90Indenter(scope_parser, first_indent, indent_size, orig_filename)
     else:
         indent_special = 3
 
@@ -1516,7 +1551,7 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
             if impose_whitespace:
                 lines = format_single_fline(
                     f_line, whitespace, whitespace_dict, linebreak_pos, ampersand_sep,
-                    orig_filename, stream.line_nr, auto_format)
+                    scope_parser, orig_filename, stream.line_nr, auto_format)
 
                 lines = append_comments(lines, comment_lines, is_special)
 
@@ -2047,11 +2082,6 @@ def run(argv=sys.argv):  # pragma: no cover
 
             stdout = file_args.stdout or directory == '-'
             diffonly=file_args.diff
-
-            if not file_args.disable_fypp:
-                NEW_SCOPE.extend(PREPRO_NEW_SCOPE)
-                CONTINUE_SCOPE.extend(PREPRO_CONTINUE_SCOPE)
-                END_SCOPE.extend(PREPRO_END_SCOPE)
 
             if file_args.debug:
                 level = logging.DEBUG

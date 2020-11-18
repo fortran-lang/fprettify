@@ -9,7 +9,7 @@ print *, "LOGLEVEL: ${LOGLEVEL}$"
 
 #:def assertTrue(cond)
 #:if DEBUG > 0
-if  (.not.    ${cond}$ )   then
+ if  (.not.    ${cond}$ )   then
   print*,"Assert failed in file ${_FILE_}$, line ${_LINE_}$"
    error  stop
  end if
