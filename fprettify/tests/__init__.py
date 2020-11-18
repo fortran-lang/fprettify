@@ -753,6 +753,24 @@ ${worktype}$, &
         for instr, outstr in zip(instring, outstring):
             self.assert_fprettify_result([], instr, outstr)
 
+    def test_mod(self):
+        """test indentation of module / program"""
+        instring_mod = "module my_module\nintrinsic none\ncontains\nfunction my_func()\nend\nend module"
+        instring_prog = "program my_program\nintrinsic none\ncontains\nfunction my_func()\nend\nend program"
+
+        outstring_mod = "module my_module\n   intrinsic none\ncontains\n   function my_func()\n   end\nend module"
+        outstring_mod_disable = "module my_module\nintrinsic none\ncontains\nfunction my_func()\nend\nend module"
+
+        outstring_prog = "program my_program\n   intrinsic none\ncontains\n   function my_func()\n   end\nend program"
+        outstring_prog_disable = "program my_program\nintrinsic none\ncontains\nfunction my_func()\nend\nend program"
+
+        self.assert_fprettify_result([], instring_mod, outstring_mod)
+        self.assert_fprettify_result([], instring_prog, outstring_prog)
+
+        self.assert_fprettify_result(['--disable-indent-mod'], instring_mod, outstring_mod_disable)
+        self.assert_fprettify_result(['--disable-indent-mod'], instring_prog, outstring_prog_disable)
+
+
 def addtestmethod(testcase, fpath, ffile):
     """add a test method for each example."""
 

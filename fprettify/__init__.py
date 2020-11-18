@@ -312,26 +312,30 @@ class where_parser(parser_re):
 
 forall_parser = where_parser
 
-def build_scope_parser(fypp=True):
-# combine regex that define subunits
+def build_scope_parser(fypp=True, mod=True):
     parser = {}
     parser['new'] = \
         [parser_re(IF_RE), parser_re(DO_RE), parser_re(SELCASE_RE), parser_re(SUBR_RE),
-         parser_re(FCT_RE), parser_re(MOD_RE), parser_re(SMOD_RE), parser_re(PROG_RE),
+         parser_re(FCT_RE),
          parser_re(INTERFACE_RE), parser_re(TYPE_RE), parser_re(ENUM_RE), parser_re(ASSOCIATE_RE),
          None, parser_re(BLK_RE), where_parser(WHERE_RE), forall_parser(FORALL_RE)]
 
     parser['continue'] = \
         [parser_re(ELSE_RE), None, parser_re(CASE_RE), parser_re(CONTAINS_RE),
-         parser_re(CONTAINS_RE), parser_re(CONTAINS_RE), parser_re(CONTAINS_RE), parser_re(CONTAINS_RE),
+         parser_re(CONTAINS_RE),
          None, parser_re(CONTAINS_RE), None, None,
          None, None, parser_re(ELSEWHERE_RE), None]
 
     parser['end'] = \
         [parser_re(ENDIF_RE), parser_re(ENDDO_RE), parser_re(ENDSEL_RE), parser_re(ENDSUBR_RE),
-         parser_re(ENDFCT_RE), parser_re(ENDMOD_RE), parser_re(ENDSMOD_RE), parser_re(ENDPROG_RE),
+         parser_re(ENDFCT_RE),
          parser_re(ENDINTERFACE_RE), parser_re(ENDTYPE_RE), parser_re(ENDENUM_RE), parser_re(ENDASSOCIATE_RE),
          parser_re(ENDANY_RE,spec=False), parser_re(ENDBLK_RE), parser_re(ENDWHERE_RE), parser_re(ENDFORALL_RE)]
+
+    if mod:
+        parser['new'].extend([parser_re(MOD_RE), parser_re(SMOD_RE), parser_re(PROG_RE)])
+        parser['continue'].extend([parser_re(CONTAINS_RE), parser_re(CONTAINS_RE), parser_re(CONTAINS_RE)])
+        parser['end'].extend([parser_re(ENDMOD_RE), parser_re(ENDSMOD_RE), parser_re(ENDPROG_RE)])
 
     if fypp:
         parser['new'].extend(PREPRO_NEW_SCOPE)
@@ -1407,7 +1411,8 @@ def reformat_inplace(filename, stdout=False, diffonly=False, **kwargs):  # pragm
 def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_indent=False, impose_whitespace=True,
                    case_dict={},
                    impose_replacements=False, cstyle=False, whitespace=2, whitespace_dict={}, llength=132,
-                   strip_comments=False, orig_filename=None, indent_fypp=True):
+                   strip_comments=False, orig_filename=None, indent_fypp=True, indent_mod=True):
+    """main method to be invoked for formatting a Fortran file."""
 
     # note: whitespace formatting and indentation may require different parsing rules
     # (e.g. preprocessor statements may be indented but not whitespace formatted)
@@ -1429,7 +1434,7 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
         reformat_ffile_combined(oldfile, newfile, _impose_indent, indent_size, strict_indent, impose_whitespace,
                                 case_dict,
                                 impose_replacements, cstyle, whitespace, whitespace_dict, llength,
-                                strip_comments, orig_filename, indent_fypp)
+                                strip_comments, orig_filename, indent_fypp, indent_mod)
         oldfile = newfile
 
     # 2) indentation
@@ -1442,7 +1447,7 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
         reformat_ffile_combined(oldfile, newfile, impose_indent, indent_size, strict_indent, _impose_whitespace,
                                 case_dict,
                                 _impose_replacements, cstyle, whitespace, whitespace_dict, llength,
-                                strip_comments, orig_filename, indent_fypp)
+                                strip_comments, orig_filename, indent_fypp, indent_mod)
 
 
     outfile.write(newfile.getvalue())
@@ -1451,8 +1456,7 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
 def reformat_ffile_combined(infile, outfile, impose_indent=True, indent_size=3, strict_indent=False, impose_whitespace=True,
                             case_dict={},
                             impose_replacements=False, cstyle=False, whitespace=2, whitespace_dict={}, llength=132,
-                            strip_comments=False, orig_filename=None, indent_fypp=True):
-    """main method to be invoked for formatting a Fortran file."""
+                            strip_comments=False, orig_filename=None, indent_fypp=True, indent_mod=True):
 
     if not orig_filename:
         orig_filename = infile.name
@@ -1460,7 +1464,7 @@ def reformat_ffile_combined(infile, outfile, impose_indent=True, indent_size=3, 
     if not impose_indent:
         indent_fypp = False
 
-    scope_parser = build_scope_parser(fypp=indent_fypp)
+    scope_parser = build_scope_parser(fypp=indent_fypp, mod=indent_mod)
 
     infile.seek(0)
     req_indents, first_indent = inspect_ffile_format(
@@ -1977,6 +1981,8 @@ def run(argv=sys.argv):  # pragma: no cover
         parser.add_argument("--strip-comments", action='store_true', default=False, help="strip whitespaces before comments")
         parser.add_argument('--disable-fypp', action='store_true', default=False,
                             help="Disables the indentation of fypp preprocessor blocks.")
+        parser.add_argument('--disable-indent-mod', action='store_true', default=False,
+                            help="Disables the indentation after module / program.")
 
         parser.add_argument("-d","--diff", action='store_true', default=False,
                              help="Write file differences to stdout instead of formatting inplace")
@@ -2107,6 +2113,7 @@ def run(argv=sys.argv):  # pragma: no cover
                                  whitespace_dict=ws_dict,
                                  llength=1024 if file_args.line_length == 0 else file_args.line_length,
                                  strip_comments=file_args.strip_comments,
-                                 indent_fypp=not file_args.disable_fypp)
+                                 indent_fypp=not file_args.disable_fypp,
+                                 indent_mod=not file_args.disable_indent_mod)
             except FprettifyException as e:
                 log_exception(e, "Fatal error occured")
