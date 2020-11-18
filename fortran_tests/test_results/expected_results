@@ -9,7 +9,7 @@ RosettaCodeData/Task/99-Bottles-of-Beer/Fortran/99-bottles-of-beer-1.f : 8703424
 RosettaCodeData/Task/99-Bottles-of-Beer/Fortran/99-bottles-of-beer-2.f : 263babdb93bd1afcd42282f4a8a0b767f9728df55f440583411f04b3341a8a47
 RosettaCodeData/Task/A+B/Fortran/a+b.f : efa4a3a04b7c89f980398e3312cac13d7260a10d5a58f38af9356028b4dc2a54
 RosettaCodeData/Task/ABC-Problem/Fortran/abc-problem-1.f : 9729c2df9028f998a7fa68cd4e5604c90ba0783010a257cf61e6f20a501a1c81
-RosettaCodeData/Task/ABC-Problem/Fortran/abc-problem-2.f : 6112d2842236870364dffadc1946d737005d0dd3e23f049514ee2b6395d7dbdc
+RosettaCodeData/Task/ABC-Problem/Fortran/abc-problem-2.f : 7b72cc9206a3252c68e8ee6d1482003d2154f2fb076c99afd723e9ac2eae231a
 RosettaCodeData/Task/AKS-test-for-primes/Fortran/aks-test-for-primes.f : 2b2a7946894d08c2046c4f1574321e7647279b7a9fee61de493412945cbaf45a
 RosettaCodeData/Task/Abundant,-deficient-and-perfect-number-classifications/Fortran/abundant,-deficient-and-perfect-number-classifications.f : 2a08932a1b391d77a2fcb1503b90852d189f6f573b8804a65d4761b6e8478f9c
 RosettaCodeData/Task/Ackermann-function/Fortran/ackermann-function.f : 599ed2ad43b48a4fb57831029e4a122a45e380685438bc7a7abead154cfa12f0
@@ -202,12 +202,12 @@ RosettaCodeData/Task/Evaluate-binomial-coefficients/Fortran/evaluate-binomial-co
 RosettaCodeData/Task/Evaluate-binomial-coefficients/Fortran/evaluate-binomial-coefficients-2.f : 170fb78405907811f3eeaf101434ccf4acdff7ed7fa581c04b3510718ceabcb1
 RosettaCodeData/Task/Evaluate-binomial-coefficients/Fortran/evaluate-binomial-coefficients.f : 3305f7383cf813b6fcfc38c3cb3ff6cd2b4a6658bb8e7f809beb74d223164e99
 RosettaCodeData/Task/Even-or-odd/Fortran/even-or-odd.f : 0e4cc270e588ce499f8e08cef33339c497b9b87e387cb9c18b7fbbd3a2b856fd
-RosettaCodeData/Task/Evolutionary-algorithm/Fortran/evolutionary-algorithm-1.f : a3262f22055fb743029a67cc9578ab5fcee554e4722df60906f1168166ffdcca
+RosettaCodeData/Task/Evolutionary-algorithm/Fortran/evolutionary-algorithm-1.f : 517c7d8b5f9ab77136c983ea64d58bb9e334adf39fde925bf13f05bf14d8d94e
 RosettaCodeData/Task/Evolutionary-algorithm/Fortran/evolutionary-algorithm-2.f : 8b6eb20fa34089cdb0b9700e02fa6c06c06ac1bf4868e58446d11575ebb51ca9
 RosettaCodeData/Task/Execute-Brain----/Fortran/execute-brain-----1.f : 008147b30c6b7d8a5f990c9d80efe7c39d845f048941f32fd8aaed46797bc2e5
 RosettaCodeData/Task/Execute-Brain----/Fortran/execute-brain-----2.f : 0521bf5368ba92ee0d9528f5a521be25e53e4519f1bc12e95c81f0216404ea3a
-RosettaCodeData/Task/Execute-Brain----/Fortran/execute-brain-----3.f : cfd2faa6ff84e3fcf9d2f5e3769fe6489ec650e753b9abc2520a37e7200841c1
-RosettaCodeData/Task/Execute-Brain----/Fortran/execute-brain-----4.f : 41f50aa8d284d881b0326d682d77fde33f41a5ba6929fb8a1b24dcba61772c52
+RosettaCodeData/Task/Execute-Brain----/Fortran/execute-brain-----3.f : b44a35f600cc8af2d6dbde35de789003665a3fe17a6b9ee1468b18cdb065cc93
+RosettaCodeData/Task/Execute-Brain----/Fortran/execute-brain-----4.f : 2c5b12d43fe1c9a8d4d58b0acf8ca9f1886eaf2282442bb6470895c813ffcef2
 RosettaCodeData/Task/Execute-a-system-command/Fortran/execute-a-system-command-1.f : 249f01891243585e53ef93239e071e777bf7ba4299430cb456194eb8be248a31
 RosettaCodeData/Task/Execute-a-system-command/Fortran/execute-a-system-command-2.f : 79483676132fb6ddc21c19f0a64ee1352d6ef67c3681f3231f056cdd1b712b31
 RosettaCodeData/Task/Extensible-prime-generator/Fortran/extensible-prime-generator-1.f : 9096d0aee46679b48be032394bd3bd0270153d37df22162008f256e62796a397
@@ -227,7 +227,7 @@ RosettaCodeData/Task/Fibonacci-sequence/Fortran/fibonacci-sequence-2.f : 0660489
 RosettaCodeData/Task/Fibonacci-sequence/Fortran/fibonacci-sequence-3.f : ae1eef0f35d6930593970318706826d5983a67972b9724c1db055ae907efd00d
 RosettaCodeData/Task/Fibonacci-sequence/Fortran/fibonacci-sequence-5.f : 758c9f5caeed8b02a4b54ec8c207c8bc70f2a92065455c76978b487d1fa8566d
 RosettaCodeData/Task/File-input-output/Fortran/file-input-output.f : 7ca43af47d32a81cdda1b429b76064829bb7c8976eb8676039f6665beff312b7
-RosettaCodeData/Task/File-size/Fortran/file-size.f : ac651b71be127b548cf892543459f8aaf51036bcaafe4732dce34b64e839b2a8
+RosettaCodeData/Task/File-size/Fortran/file-size.f : cb246eaa9454c27de3e5f798fc2fd5ea20a133a37aca66382dce47e301ae38ec
 RosettaCodeData/Task/Filter/Fortran/filter-1.f : 1ee15cec4697c6e8b593daab3b207965da95062c120fa8e3dc9cc48fa4215d50
 RosettaCodeData/Task/Filter/Fortran/filter-2.f : 334084bebb56efc62ecae5be4c3122f6b1df99a9436db6dd0387aca83172ef52
 RosettaCodeData/Task/Find-limit-of-recursion/Fortran/find-limit-of-recursion-1.f : 48d02f8ee889a8aeb50779de2f0536af4cdadff7953f425e21d5ff1fe263b123
@@ -299,7 +299,7 @@ RosettaCodeData/Task/Hello-world-Newline-omission/Fortran/hello-world-newline-om
 RosettaCodeData/Task/Hello-world-Newline-omission/Fortran/hello-world-newline-omission-2.f : 6b6fd5732919638e2dc9d7b9346274c0122d1c66c251e3e3d4bd57e4af1f817f
 RosettaCodeData/Task/Hello-world-Standard-error/Fortran/hello-world-standard-error.f : 911acb9589db869aa7b4772e4c18a2cdc63bb82ec283617b464130217ccf637b
 RosettaCodeData/Task/Hello-world-Text/Fortran/hello-world-text-1.f : 72eded4a9e386a5ddb9430da2bca5b11d851d20cf18c304a4449334bff0e2045
-RosettaCodeData/Task/Hello-world-Text/Fortran/hello-world-text-2.f : dd117e9c323640d2521c8877f36437c8fd823c12a3bcd820342c537f3bc2f0d4
+RosettaCodeData/Task/Hello-world-Text/Fortran/hello-world-text-2.f : 061f685f5143707c22d608b55102e3da3a71dbedae5f2e71f3bc4216fc92073b
 RosettaCodeData/Task/Hello-world-Text/Fortran/hello-world-text-3.f : 32d370f88b797c1b42986192ee6bcbd195e089f0f04975b82cd92f9fadab675f
 RosettaCodeData/Task/Hello-world-Web-server/Fortran/hello-world-web-server.f : 48b637824c93c177eeeffdcda90046614f03e7880859f697cc136f8f2e63bb25
 RosettaCodeData/Task/Here-document/Fortran/here-document.f : internal error
@@ -1903,7 +1903,7 @@ RosettaCodeData/Task/Integer-comparison/Fortran/integer-comparison-2.f : c2e1064
 RosettaCodeData/Task/Integer-comparison/Fortran/integer-comparison-3.f : 6aa50936f2b0de791b9e386de3fc495d818bbe7a7e0adfb0877f77cb70d936ef
 RosettaCodeData/Task/Jensens-Device/Fortran/jensens-device-1.f : d380054d18b2eb9de4570e8dee6d47cf37bbaf9fce462ce623a17140ffd0d89a
 RosettaCodeData/Task/Jensens-Device/Fortran/jensens-device-2.f : 371900846e5bf7e68e3a8d32f9cb7dc2d13f0b063888f38c082f2d64c26ab312
-RosettaCodeData/Task/Logical-operations/Fortran/logical-operations.f : b1f147d9f28bec9cdf54ef195f748d0db519e234123d627873d1f0cf05b94df1
+RosettaCodeData/Task/Logical-operations/Fortran/logical-operations.f : d731cd99840890fe14ffc098a1910ac53163d54d34298c34e5c004eac0310af9
 RosettaCodeData/Task/Rename-a-file/Fortran/rename-a-file.f : b1282772aa55739b8442a9e8ee04e9a6c89408f8394ea55b8d6f5a32a4c997f2
 RosettaCodeData/Task/Reverse-words-in-a-string/Fortran/reverse-words-in-a-string.f : 01164158932afdc592f84c439916dcc9ab53689f8a1835f309dcead0f035d37f
 RosettaCodeData/Task/String-case/Fortran/string-case-2.f : 5501427b902a18caeccf8e8b1ffed96545ab0e89487c63e6172e391b3a2d9ec3
@@ -1931,7 +1931,7 @@ FLAP/src/lib/flap_command_line_arguments_group_t.f90 : 4cec59ae5e75db56eed6b6461
 FLAP/src/lib/flap_command_line_interface_t.F90 : 486ac2a82ba1f73e973735859a1412b78866d1cea376d918c727b460a4aabbca
 FLAP/src/lib/flap_object_t.f90 : 243a91989d3936da04096e529d4d4361e5f5b7d5c25d013507309fcddea8a852
 FLAP/src/lib/flap_utils_m.f90 : bd18b5f6226ecd9cab045897ae9d732d005f62073f8ce2ff276776b1cadabf8d
-FLAP/src/tests/test_basic.f90 : dfed10974fa1ca2235da7aeeecbe03fdc8931f3a7669df760463d83f1623a3a0
+FLAP/src/tests/test_basic.f90 : 2e9a6df732135d38e4d28a2c07474ba36e74ce5ed507428bde3b6ce6e4ed5b72
 FLAP/src/tests/test_choices_logical.f90 : 3f110cd34af712ea6b13bb9fa71df09a24222031778633b3aa48d5a21b0f0448
 FLAP/src/tests/test_group.f90 : ff70c14558f9f12d16d085b1e8808e0ae1f288a8ded89f363db38089708d8ce9
 FLAP/src/tests/test_hidden.f90 : d7ec93d37518ce41f035bb4568c67f3dff7085d22fa2e1dea77fa692acaa02ae
@@ -2063,7 +2063,7 @@ wannier90/src/utility.F90 : 66af442127ae9ae30f2114140a4a8147c6cce9a5fc5c7a776d1b
 wannier90/src/w90chk2chk.F90 : 38fbfea39ce8a71cbf4b63aa619d42093f52a114c6943f9bde717552d0f5272b
 wannier90/src/wannier_lib.F90 : a40c61b2be8ba0637101798a6a63f69e435994f3d8c50edf703255d870ab063a
 wannier90/src/wannier_prog.F90 : fb1e82046071a805a8cd520bd595605d2ca5b204779ed98647cd86231ed5f8a5
-wannier90/src/wannierise.F90 : f05345397e4e5aa7615f59c8fa2dd61a8c9647c4d894b10e5df8f7091bff81c9
+wannier90/src/wannierise.F90 : 567a4ed9c6721e84ba4a39a80b61c780a8aca6d94662643bd5ac7079a4a2abf1
 wannier90/src/ws_distance.F90 : af6bb808c9048ffa8b5cf7c553bab218970a4e8b8a3998326bf3accb20246f61
 wannier90/test-suite/library-mode-test/test_library.F90 : 547d77cd073f6b528c4b52f46ef995cc1110bfd6709da1dfa060e6c0323aacce
 wannier90/utility/PL_assessment/PL_assess.f90 : fd1b6a460c8e38d13e3d64cf8500c69e6eed8c09eb4df8355d6cacd6f3e779c3
@@ -2083,7 +2083,7 @@ cp2k/src/pwdft_environment_types.F : d8ec970163e6cb2ff15d0b7575845dc51b1594adbda
 cp2k/src/qs_cdft_opt_types.F : 32343fd0f132000cbc0021966edceecc28063dfd5dc14647b87edac0a1b4e25c
 cp2k/src/sirius_interface.F : 80070b28610b469a4369d4a1de134af7b488c34949f97d7ec1f0dcb0b8c89585
 FLAP/src/tests/flap_test_ansi_color_style.f90 : 44c16501a896113b05884b65a75e52b7bd6bd00400495d724fb13e73fba7771b
-FLAP/src/tests/flap_test_basic.f90 : 1e3c0df160e11f56c9a119cc951a11ebf9e18ba3fc94d0291643a786016a2837
+FLAP/src/tests/flap_test_basic.f90 : 546f942f6a7d658e6db5ca5957cf6d6e6351c5c9b1d1cd849e32cc0666a3b7f1
 FLAP/src/tests/flap_test_choices_logical.f90 : 393b3f711d95d953729953b14e1e3b33c7b11631debf25ff363ea89c0ffc7042
 FLAP/src/tests/flap_test_group.f90 : 7bff977bb02e6b75b84f9f0b66bcfd6fecb6017cf2f8b341a384254622dd4fc5
 FLAP/src/tests/flap_test_hidden.f90 : 566a950f6bf4ad65019f9774e23a2847a25cd76eb97a4b6b49e0bfe7829c111f
@@ -2109,7 +2109,7 @@ RosettaCodeData/Task/Extend-your-language/Fortran/extend-your-language-2.f : 886
 RosettaCodeData/Task/Extend-your-language/Fortran/extend-your-language-3.f : 7dfe7d5d2b283242a09ab4990d5917cbc4ea843a0856fb9bdc864bbf065a7f4f
 RosettaCodeData/Task/Fibonacci-sequence/Fortran/fibonacci-sequence-6.f : 70743db8385634abf260dcf089c82ecbf645da4c2e62267bdcdd078629407865
 RosettaCodeData/Task/File-size/Fortran/file-size-1.f : cc741b42b3b2820ff0062759e1f8be0a02763cacc3f27b593e5ca643e25986af
-RosettaCodeData/Task/File-size/Fortran/file-size-2.f : ac651b71be127b548cf892543459f8aaf51036bcaafe4732dce34b64e839b2a8
+RosettaCodeData/Task/File-size/Fortran/file-size-2.f : cb246eaa9454c27de3e5f798fc2fd5ea20a133a37aca66382dce47e301ae38ec
 RosettaCodeData/Task/Find-largest-left-truncatable-prime-in-a-given-base/Fortran/find-largest-left-truncatable-prime-in-a-given-base-1.f : d976517e0d7f260cf0e765aac7d2e459ed600aea39b5149d440e7e9d7919e7e7
 RosettaCodeData/Task/Find-largest-left-truncatable-prime-in-a-given-base/Fortran/find-largest-left-truncatable-prime-in-a-given-base-2.f : c8f98aa543c635d1ad0150cf5030bfde0c2c9ac34b2855c9f0fe5e00659ac9d8
 RosettaCodeData/Task/Find-largest-left-truncatable-prime-in-a-given-base/Fortran/find-largest-left-truncatable-prime-in-a-given-base-3.f : 57d9632d5762b90dbe98b761f773549da310597384f9020fd896c773f660b21c
@@ -2135,7 +2135,7 @@ RosettaCodeData/Task/Rate-counter/Fortran/rate-counter.f : fd6b448a7a2f53b1de97e
 RosettaCodeData/Task/Remove-duplicate-elements/Fortran/remove-duplicate-elements-1.f : 9282a4400871bd66a6073d310bf6b1ee4c0f2df1a41ad1fa78d5a62d0b70b346
 RosettaCodeData/Task/Remove-duplicate-elements/Fortran/remove-duplicate-elements-2.f : 9734960a3fa2d403e71be11d58dd03eb055f00d629d07f24bdbaf0c2e2a3e820
 RosettaCodeData/Task/Reverse-a-string/Fortran/reverse-a-string-3.f : abf477bfec3f7d53d1c9b607918dd61d2bed0984b9c2f7e2c754dc0fbeb062b2
-RosettaCodeData/Task/Sorting-algorithms-Radix-sort/Fortran/sorting-algorithms-radix-sort.f : 316485629fdb2434cb313f3b058ae7f80a81b45c8bc76df5d7f26a9834cbb127
+RosettaCodeData/Task/Sorting-algorithms-Radix-sort/Fortran/sorting-algorithms-radix-sort.f : 69078091d087d509cc8cf1755748f9ab01484594f445d583f992cfda4098eeb2
 RosettaCodeData/Task/Sorting-algorithms-Sleep-sort/Fortran/sorting-algorithms-sleep-sort.f : d9485ca5bf8bc56a79c55187879803ae0289878e69d04a4ce7e825d153318200
 RosettaCodeData/Task/Special-variables/Fortran/special-variables.f : 73ced0b19ddb14d73878b52775af8a3164724efbc5904a7f2653c7cd192f9df0
 RosettaCodeData/Task/String-case/Fortran/string-case-3.f : 55863eebdcb910e3c489f9e487b8beb21176d58e04bffa017baa38e6d5ffcdc5
