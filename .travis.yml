@@ -1,12 +1,10 @@
 dist: xenial # required for Python >= 3.7
 language: python
 python:
-- 2.7
 - 3.5
-- 3.6
-- 3.7
+- 3.9
 before_install:
-- if [[ $TRAVIS_PYTHON_VERSION == "3.5" ]]; then export DO_COVERAGE=1; fi
+- if [[ $TRAVIS_PYTHON_VERSION == "3.9" ]]; then export DO_COVERAGE=1; fi
 - if [[ "$TRAVIS_EVENT_TYPE" = "cron" ]]; then unset DO_COVERAGE; fi
 install:
 - pip install -U -r requirements.txt
@@ -27,4 +25,4 @@ deploy:
   distributions: sdist bdist_wheel
   on:
     tags: true
-    python: 3.6
+    python: 3.9
