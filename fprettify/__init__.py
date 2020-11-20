@@ -65,28 +65,17 @@ FIXME's
   whitespaces
 - open files only when needed
 """
-from __future__ import (absolute_import, division,
-                        print_function, unicode_literals)
 import re
 import sys
 import logging
 import os
 import io
 
-# allow for unicode for stdin / stdout, it's a mess
-try:
-    # python 3
-    sys.stdin = io.TextIOWrapper(
-        sys.stdin.detach(), encoding='UTF-8', line_buffering=True)
-    sys.stdout = io.TextIOWrapper(
-        sys.stdout.detach(), encoding='UTF-8', line_buffering=True)
-except AttributeError: # pragma: no cover
-    # python 2
-    import codecs
-    utf8_reader = codecs.getreader('UTF-8')
-    utf8_writer = codecs.getwriter('UTF-8')
-    sys.stdin = utf8_reader(sys.stdin)
-    sys.stdout = utf8_writer(sys.stdout)
+sys.stdin = io.TextIOWrapper(
+    sys.stdin.detach(), encoding='UTF-8', line_buffering=True)
+sys.stdout = io.TextIOWrapper(
+    sys.stdout.detach(), encoding='UTF-8', line_buffering=True)
+
 
 from .fparse_utils import (VAR_DECL_RE, OMP_COND_RE,
                            InputStream, CharFilter,

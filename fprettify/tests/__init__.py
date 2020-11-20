@@ -33,17 +33,8 @@ import difflib
 import subprocess
 import inspect
 
-# allow unicode for stdin / stdout, it's a mess
-try:
-    # python 3
-    sys.stderr = io.TextIOWrapper(
-        sys.stderr.detach(), encoding='UTF-8', line_buffering=True)
-
-except AttributeError: # pragma: no cover
-    # python 2
-    import codecs
-    utf8_writer = codecs.getwriter('UTF-8')
-    sys.stderr = utf8_writer(sys.stderr)
+sys.stderr = io.TextIOWrapper(
+    sys.stderr.detach(), encoding='UTF-8', line_buffering=True)
 
 import fprettify
 from fprettify.fparse_utils import FprettifyParseException, FprettifyInternalException
@@ -76,9 +67,7 @@ def eprint(*args, **kwargs):
     Print to stderr - to print output compatible with default unittest output.
     """
 
-    print(*args, file=sys.stderr, **kwargs)
-    sys.stderr.flush()  # python 2 print does not have flush argument
-
+    print(*args, file=sys.stderr, flush=True, **kwargs)
 
 class FPrettifyTestCase(unittest.TestCase):
     """
@@ -943,12 +932,7 @@ def addtestmethod(testcase, fpath, ffile):
 
     # not sure why this even works, using "test something" (with a space) as function name...
     # however it gives optimal test output
-    try:
-        testmethod.__name__ = ("test " + joinpath(fpath, ffile))
-    except TypeError: # pragma: no cover
-        # need to encode in python 2 since we are using unicode strings
-        testmethod.__name__ = (
-            "test " + joinpath(fpath, ffile)).encode('utf-8')
+    testmethod.__name__ = ("test " + joinpath(fpath, ffile))
 
     setattr(testcase, testmethod.__name__, testmethod)
 
