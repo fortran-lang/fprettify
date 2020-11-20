@@ -789,6 +789,67 @@ ${worktype}$, &
         outstring = "1003 FORMAT(2(1x, i4), 5x, '-', 5x, '-', 3x, '-', 5x, '-', 5x, '-', 8x, '-', 3x, &\n            1p, 2(1x, d10.3))"
         self.assert_fprettify_result([], instring, outstring)
 
+    def test_multiline_str(self):
+
+        instring = []
+        outstring = []
+
+        instring += [
+'''
+      CHARACTER(len=*), PARAMETER      :: serialized_string = &
+         "qtb_rng_gaussian                         1 F T F   0.0000000000000000E+00&
+                          12.0                12.0                12.0&
+                          12.0                12.0                12.0&
+                          12.0                12.0                12.0&
+                          12.0                12.0                12.0&
+                          12.0                12.0                12.0&
+                          12.0                12.0                12.0"
+'''
+]
+
+        outstring += [
+'''
+      CHARACTER(len=*), PARAMETER      :: serialized_string = &
+         "qtb_rng_gaussian                         1 F T F   0.0000000000000000E+00&
+&                          12.0                12.0                12.0&
+&                          12.0                12.0                12.0&
+&                          12.0                12.0                12.0&
+&                          12.0                12.0                12.0&
+&                          12.0                12.0                12.0&
+&                          12.0                12.0                12.0"
+'''
+]
+
+        instring += [
+'''
+      CHARACTER(len=*), PARAMETER      :: serialized_string = &
+         "qtb_rng_gaussian                         1 F T F   0.0000000000000000E+00&
+                 &         12.0                12.0                12.0&
+                 &         12.0                12.0                12.0&
+                 &         12.0                12.0                12.0&
+                 &         12.0                12.0                12.0&
+                 &         12.0                12.0                12.0&
+                 &         12.0                12.0                12.0"
+'''
+]
+
+        outstring += [
+'''
+      CHARACTER(len=*), PARAMETER      :: serialized_string = &
+         "qtb_rng_gaussian                         1 F T F   0.0000000000000000E+00&
+                 &         12.0                12.0                12.0&
+                 &         12.0                12.0                12.0&
+                 &         12.0                12.0                12.0&
+                 &         12.0                12.0                12.0&
+                 &         12.0                12.0                12.0&
+                 &         12.0                12.0                12.0"
+'''
+]
+
+        for instr, outstr in zip(instring, outstring):
+            self.assert_fprettify_result([], instr, outstr)
+
+
 
 def addtestmethod(testcase, fpath, ffile):
     """add a test method for each example."""

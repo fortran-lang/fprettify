@@ -285,7 +285,7 @@ RosettaCodeData/Task/Greatest-subsequential-sum/Fortran/greatest-subsequential-s
 RosettaCodeData/Task/Guess-the-number-With-feedback--player-/Fortran/guess-the-number-with-feedback--player-.f : 284ccc92b6f5fde65e43ce529074971fb418055d8072311a1cb75a58f851fdda
 RosettaCodeData/Task/Guess-the-number-With-feedback/Fortran/guess-the-number-with-feedback.f : 661105f97c992730108ac748b9a4dd20e5f726c52ec9a24ad91b4f79db083059
 RosettaCodeData/Task/Guess-the-number/Fortran/guess-the-number.f : 7a2df5abd11f66780892248c6783c5c4842503b110168cf9921688dcb8fdbe90
-RosettaCodeData/Task/HTTPS/Fortran/https.f : 757153d0f3735862667ba2856d81ad9db144ca17b5404c8d077f417bf066c463
+RosettaCodeData/Task/HTTPS/Fortran/https.f : 43910e3c3e68b4f36ecf5768ed55546bbebd46d325fcde8fb31f87c4e6718955
 RosettaCodeData/Task/Hailstone-sequence/Fortran/hailstone-sequence.f : 4004f858ce5a6cb7259346480311b0406539ddf26aa1fd42ed292c9b5fa7b120
 RosettaCodeData/Task/Hamming-numbers/Fortran/hamming-numbers.f : 240f87447439757653ab747a6204d7cca4ab34f5237acad498387ed1eaa60b02
 RosettaCodeData/Task/Happy-numbers/Fortran/happy-numbers.f : aab1f194326c253eaeac72ca3f10d155aaea5f1fd0f613cb318ea530d9fabffd
@@ -301,7 +301,7 @@ RosettaCodeData/Task/Hello-world-Standard-error/Fortran/hello-world-standard-err
 RosettaCodeData/Task/Hello-world-Text/Fortran/hello-world-text-1.f : 72eded4a9e386a5ddb9430da2bca5b11d851d20cf18c304a4449334bff0e2045
 RosettaCodeData/Task/Hello-world-Text/Fortran/hello-world-text-2.f : 061f685f5143707c22d608b55102e3da3a71dbedae5f2e71f3bc4216fc92073b
 RosettaCodeData/Task/Hello-world-Text/Fortran/hello-world-text-3.f : 32d370f88b797c1b42986192ee6bcbd195e089f0f04975b82cd92f9fadab675f
-RosettaCodeData/Task/Hello-world-Web-server/Fortran/hello-world-web-server.f : 48b637824c93c177eeeffdcda90046614f03e7880859f697cc136f8f2e63bb25
+RosettaCodeData/Task/Hello-world-Web-server/Fortran/hello-world-web-server.f : 85479ed055218ad1fc69c422e40d5710b6714962b576cea05fe2dcc7c76d785f
 RosettaCodeData/Task/Here-document/Fortran/here-document.f : internal error
 RosettaCodeData/Task/Heronian-triangles/Fortran/heronian-triangles.f : 140742694498790304d5cd8c79a3508498416501d176ff5ff84b845b087ba81d
 RosettaCodeData/Task/Hickerson-series-of-almost-integers/Fortran/hickerson-series-of-almost-integers.f : 950c5ef9194f04ea6e696d2068da307f582079c29c629b79ab14aa4881df28a1
@@ -329,7 +329,7 @@ RosettaCodeData/Task/Integer-comparison/Fortran/integer-comparison-1.f : 8062451
 RosettaCodeData/Task/Integer-comparison/Fortran/integer-comparison-4.f : e1e99a0d2a9a3859b586a719f5e1e2f6ff8388aaa378e7904d7da464055d8377
 RosettaCodeData/Task/Integer-sequence/Fortran/integer-sequence.f : 3bef7b2e0e8f9480d4e939581e2e722f21f558cf9505e63bbe7b0756589dd204
 RosettaCodeData/Task/Inverted-syntax/Fortran/inverted-syntax.f : 97c6463b3079aca08f11b73d95e56357be66b3402fc54f89a18f2b6f4a985b6b
-RosettaCodeData/Task/JSON/Fortran/json.f : 8dc779b76403e4415d7140e3a975a5e32241b3e7a277ec219f9abe3fdda3da4d
+RosettaCodeData/Task/JSON/Fortran/json.f : 4d4fc1bbb36274a62cf45cf6f8c00dfe76cf87f0b1944282b1ab090d27660e73
 RosettaCodeData/Task/Josephus-problem/Fortran/josephus-problem.f : 4f04283b00b3d5953ea35687692e455a132a06294733d45deec9a01e1c978fa3
 RosettaCodeData/Task/Kaprekar-numbers/Fortran/kaprekar-numbers.f : 2cab0f48c8f182577ab6417eef9b2d151c0e483a1d968c2aa01c889cdcd112dd
 RosettaCodeData/Task/Keyboard-input-Obtain-a-Y-or-N-response/Fortran/keyboard-input-obtain-a-y-or-n-response.f : c554f7c225e11e7c8381a45d4eda8c0200960592769745ee70e9cfdbd37ad0c7
