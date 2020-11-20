@@ -173,6 +173,9 @@ class CharFilter(object):
             filtered_str += char
         return filtered_str
 
+    def instring(self):
+        return self._instring
+
 class InputStream(object):
     """Class to read logical Fortran lines from a Fortran file."""
 
@@ -223,6 +226,10 @@ class InputStream(object):
                 line_start = 0
 
                 pos = -1
+
+                # multiline string: prepend line continuation with '&'
+                if string_iter.instring() and not line.lstrip().startswith('&'):
+                    line = '&' + line
 
                 # update instead of CharFilter(line) to account for multiline strings
                 string_iter.update(line)
