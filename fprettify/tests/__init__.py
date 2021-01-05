@@ -838,6 +838,29 @@ ${worktype}$, &
         for instr, outstr in zip(instring, outstring):
             self.assert_fprettify_result([], instr, outstr)
 
+    def test_label(self):
+        instring = \
+"""
+MODULE cp_lbfgs
+CONTAINS
+20000    FORMAT('RUNNING THE L-BFGS-B CODE', /, /,                          &
+     &    'it    = iteration number', /,                                    &
+     &    'Machine precision =', 1p, d10.3)
+END MODULE
+"""
+
+        outstring = \
+"""
+MODULE cp_lbfgs
+CONTAINS
+20000 FORMAT('RUNNING THE L-BFGS-B CODE', /, /,                          &
+     &    'it    = iteration number', /,                                    &
+     &    'Machine precision =', 1p, d10.3)
+END MODULE
+"""
+
+        self.assert_fprettify_result([], instring, outstring)
+
 
 
 def addtestmethod(testcase, fpath, ffile):

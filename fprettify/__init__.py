@@ -98,7 +98,7 @@ EOL_STR = r"\s*;?\s*$"  # end of fortran line
 EOL_SC = r"\s*;\s*$"  # whether line is ended with semicolon
 SOL_STR = r"^\s*"  # start of fortran line
 
-STATEMENT_LABEL_RE = re.compile(r"^\s*(\d+)", RE_FLAGS)
+STATEMENT_LABEL_RE = re.compile(r"^\s*(\d+\s)(?!"+EOL_STR+")", RE_FLAGS)
 
 # regular expressions for parsing statements that start, continue or end a
 # subunit:
@@ -1589,6 +1589,11 @@ def reformat_ffile_combined(infile, outfile, impose_indent=True, indent_size=3, 
 
         lines = remove_trailing_whitespace(lines)
 
+        # need to shift indents if label wider than first indent
+        if label and impose_indent:
+            if indent[0] < len(label):
+                indent = [ind + len(label) - indent[0] for ind in indent]
+
         write_formatted_line(outfile, indent, lines, orig_lines, indent_special, llength,
                              use_same_line, is_omp_conditional, label, orig_filename, stream.line_nr)
 
@@ -1850,7 +1855,7 @@ def write_formatted_line(outfile, indent, lines, orig_lines, indent_special, lle
             ind_use = 0
 
         if label:
-            label_use = label + ' '
+            label_use = label
             label = '' # no label for continuation lines
         else:
             label_use = ''
