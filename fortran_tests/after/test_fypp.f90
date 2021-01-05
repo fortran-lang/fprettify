@@ -316,14 +316,30 @@ print *, @{mymacro(a <b)}@
             #:endfor
          #:endfor
 
-         end module errorcalc
+      end module errorcalc
 
 ! tests for fypp directives inside Fortran continuation lines
-         call test(arg1, &
-                   ${a if a  > b else b}$, arg3, &
+      call test(arg1, &
+                ${a if a  > b else b}$, arg3, &
  #:if c>d
-                   c, &
+                c, &
  #:else
-                   d, &
+                d, &
  #:endif
-                   arg4)
+                arg4)
+
+! test for nested fypp / fortran constructs
+! this is globally consistent even though the logical scopes can not be matched correctly
+
+      #:if do
+         do x = 1, 3
+            ax = x*0.1
+         #:else
+            ax = 0.1
+         #:endif
+         r = ax
+         #:if do
+         end do
+      #:endif
+
+      r2 = r**2

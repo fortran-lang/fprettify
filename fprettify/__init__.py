@@ -586,7 +586,7 @@ class F90Indenter(object):
                     what_con, f_line), "debug", filename, line_nr)
                 if len(scopes) > 0:
                     what = scopes[-1]
-                    if what == what_con:
+                    if what == what_con or indent_fypp:
                         valid_con = True
 
         # check statements that end scope
@@ -600,7 +600,8 @@ class F90Indenter(object):
                     what_end, f_line), "debug", filename, line_nr)
                 if len(scopes) > 0:
                     what = scopes.pop()
-                    if what == what_end or not self._parser['end'][what_end].spec:
+                    if (what == what_end or not self._parser['end'][what_end].spec
+                        or indent_fypp):
                         valid_end = True
                         log_message("{}: {}".format(
                             what_end, f_line), "debug", filename, line_nr)
@@ -858,11 +859,14 @@ def inspect_ffile_format(infile, indent_size, strict_indent, indent_fypp=False, 
     stream = InputStream(infile, filter_fypp=not indent_fypp, orig_filename=orig_filename)
     prev_offset = 0
     first_indent = -1
+    has_fypp = False
 
     while 1:
         f_line, _, lines = stream.next_fortran_line()
         if not lines:
             break
+
+        if FYPP_LINE_RE.search(f_line): has_fypp = True
 
         f_line, lines, label = preprocess_labels(f_line, lines)
 
@@ -880,7 +884,7 @@ def inspect_ffile_format(infile, indent_size, strict_indent, indent_fypp=False, 
 
         prev_offset = offset
 
-    return indents, first_indent
+    return indents, first_indent, has_fypp
 
 
 def replace_relational_single_fline(f_line, cstyle):
@@ -1468,12 +1472,15 @@ def reformat_ffile_combined(infile, outfile, impose_indent=True, indent_size=3, 
     if not impose_indent:
         indent_fypp = False
 
-    scope_parser = build_scope_parser(fypp=indent_fypp, mod=indent_mod)
 
     infile.seek(0)
-    req_indents, first_indent = inspect_ffile_format(
+    req_indents, first_indent, has_fypp = inspect_ffile_format(
         infile, indent_size, strict_indent, indent_fypp, orig_filename)
     infile.seek(0)
+
+    if not has_fypp: indent_fypp = False
+
+    scope_parser = build_scope_parser(fypp=indent_fypp, mod=indent_mod)
 
     # initialization
 

@@ -330,3 +330,19 @@ call test(arg1,&
    d,&
  #:endif
    arg4)
+
+! test for nested fypp / fortran constructs
+! this is globally consistent even though the logical scopes can not be matched correctly
+
+#:if do
+   do x=1,3
+      ax=x*0.1
+#:else
+   ax=0.1
+#:endif
+   r=ax
+#:if do
+   enddo
+#:endif
+
+r2 = r**2
