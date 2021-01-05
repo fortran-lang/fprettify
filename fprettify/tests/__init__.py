@@ -472,7 +472,7 @@ class FPrettifyTestCase(unittest.TestCase):
                     "!$OMP END  PARALLEL DO\n"
                     "END PROGRAM")
         outstring = ("PROGRAM test_omp\n"
-                     "   !$OMP    PARALLEL DO\n"
+                     "!$OMP    PARALLEL DO\n"
                      "   b = 4\n"
                      "!$a=b\n"
                      "!$ a = b\n"

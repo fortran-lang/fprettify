@@ -77,7 +77,7 @@ sys.stdout = io.TextIOWrapper(
     sys.stdout.detach(), encoding='UTF-8', line_buffering=True)
 
 
-from .fparse_utils import (VAR_DECL_RE, OMP_COND_RE,
+from .fparse_utils import (VAR_DECL_RE, OMP_COND_RE, OMP_DIR_RE,
                            InputStream, CharFilter,
                            FprettifyException, FprettifyParseException, FprettifyInternalException,
                            CPP_RE, NOTFORTRAN_LINE_RE, NOTFORTRAN_FYPP_LINE_RE, FYPP_LINE_RE, RE_FLAGS,
@@ -1693,7 +1693,7 @@ def preprocess_line(f_line, lines, comments, filename, line_nr, indent_fypp):
 
     if EMPTY_RE.search(f_line):  # empty lines including comment lines
         if any(comments):
-            if lines[0].startswith(' '):
+            if lines[0].startswith(' ') and not OMP_DIR_RE.search(lines[0]):
                 # indent comment lines only if they were not indented before.
                 prev_indent = True
         else:

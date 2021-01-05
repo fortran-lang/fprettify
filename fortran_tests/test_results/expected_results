@@ -151,7 +151,7 @@ RosettaCodeData/Task/Comments/Fortran/comments-3.f : 64deed221be4d0df2c89520d506
 RosettaCodeData/Task/Comments/Fortran/comments-4.f : 96607ca322e66e45f2a7ee861de8bc874b6f994672bdcdb2c015e7dfaf8827fd
 RosettaCodeData/Task/Compile-time-calculation/Fortran/compile-time-calculation.f : 814b1b89611db56479f2d529e610e74acad6777497a62915d212c48945bad1b0
 RosettaCodeData/Task/Compound-data-type/Fortran/compound-data-type.f : 53663aa3b016162f96e68261337ea7e0f7b614bcb79c8597dbb133884188bfcd
-RosettaCodeData/Task/Concurrent-computing/Fortran/concurrent-computing.f : 0be4401a34bac877ff9b4bd101b082d65ca880851446f1ba0630c2cb2cdec08c
+RosettaCodeData/Task/Concurrent-computing/Fortran/concurrent-computing.f : 6d6a69080120a159514c437c9695a3ab22c135b9ed65c22973389fa0164163ad
 RosettaCodeData/Task/Conditional-structures/Fortran/conditional-structures-1.f : 8c0644ab04c7eb48b0923d95dd10fc75c6e555b661a52235e16f903026a351c3
 RosettaCodeData/Task/Conditional-structures/Fortran/conditional-structures-2.f : e5bc40a30396be52b51a66ebcfbc34afdd16dc8038e708c6854c81ea767c8f5f
 RosettaCodeData/Task/Conditional-structures/Fortran/conditional-structures-3.f : 59cd66056606fb47faabb2fb8647afb9693a9abf0050baa1e68d5ae9eca4718f
@@ -423,7 +423,7 @@ RosettaCodeData/Task/Mutual-recursion/Fortran/mutual-recursion-2.f : f71ea481d7d
 RosettaCodeData/Task/N-queens-problem/Fortran/n-queens-problem-1.f : 6b6bec86794da993800ce75a1e5e4a8939cb431f3b8bb0f4b6c5b35fa4450193
 RosettaCodeData/Task/N-queens-problem/Fortran/n-queens-problem-2.f : 98889c25029835e7ef92e8a2eb114e74eecf8a65ec3b39f60cd5ef200eb1cc91
 RosettaCodeData/Task/N-queens-problem/Fortran/n-queens-problem-3.f : 07e51978eed5f22a45bfd653321aed871957f869dab5b8acab83b4452f8c89b1
-RosettaCodeData/Task/N-queens-problem/Fortran/n-queens-problem-4.f : 4cd0d3796e2cd9bab38b06cf8acbdc248598074ce67c36708772f1df8e9ae250
+RosettaCodeData/Task/N-queens-problem/Fortran/n-queens-problem-4.f : 50e2ec87f41974ebe7edaee84356cda3d70b069d2920352e543c27049c6bdfa4
 RosettaCodeData/Task/Named-parameters/Fortran/named-parameters-1.f : e89d610bfce251c90a7d079c8af92df19dfd4576eb68bd317406bca73707d265
 RosettaCodeData/Task/Named-parameters/Fortran/named-parameters-2.f : de02a553b7e11ed00104db00977f3a852ce9b18aa771635a2473560ff3bb2b23
 RosettaCodeData/Task/Named-parameters/Fortran/named-parameters-3.f : 02c249e9ce557ac3a7893a603aaa2f5491670ca12ab49aba2c0545d094275dec
@@ -2127,7 +2127,7 @@ RosettaCodeData/Task/Loops-N-plus-one-half/Fortran/loops-n-plus-one-half-3.f : 7
 RosettaCodeData/Task/Matrix-transposition/Fortran/matrix-transposition-4.f : 611a48a771272ce93208fefa7cc05c9dffd243468a0fe6d36bb925e16334ddc1
 RosettaCodeData/Task/Multiple-regression/Fortran/multiple-regression.f : 1c2791971bb0d79d0e6600d24facdbd6d12f62a9b203069f78f1dc66b42a9be3
 RosettaCodeData/Task/Old-lady-swallowed-a-fly/Fortran/old-lady-swallowed-a-fly.f : bf991933a7bdd9326471c0fa2aeb3276cdcd05076e456eb94db844bb4b6c2b00
-RosettaCodeData/Task/Parallel-calculations/Fortran/parallel-calculations.f : 0c67748390c52fc6ad4af0c6af74e3afbced8e3312aef27e0618d85f34a804be
+RosettaCodeData/Task/Parallel-calculations/Fortran/parallel-calculations.f : b72b03de122cc32fa18e4d14797cfb4ff57247547f70b2b586c4ec49be5a3525
 RosettaCodeData/Task/Parametric-polymorphism/Fortran/parametric-polymorphism-1.f : ff3ce07c5728d376235144358a66f291a82882a93f44fa178cdacebafb0f169c
 RosettaCodeData/Task/Parametric-polymorphism/Fortran/parametric-polymorphism-2.f : 154d259a5b19c81df96d5dea14225c7816f633a150ec33a58db7cd616eeb2f4f
 RosettaCodeData/Task/Permutations/Fortran/permutations-4.f : 8d12f02828bbbe808dbaa5e18dfc1936194656c28ee3598cf4d93b41fca088cd
@@ -2136,7 +2136,7 @@ RosettaCodeData/Task/Remove-duplicate-elements/Fortran/remove-duplicate-elements
 RosettaCodeData/Task/Remove-duplicate-elements/Fortran/remove-duplicate-elements-2.f : 9734960a3fa2d403e71be11d58dd03eb055f00d629d07f24bdbaf0c2e2a3e820
 RosettaCodeData/Task/Reverse-a-string/Fortran/reverse-a-string-3.f : abf477bfec3f7d53d1c9b607918dd61d2bed0984b9c2f7e2c754dc0fbeb062b2
 RosettaCodeData/Task/Sorting-algorithms-Radix-sort/Fortran/sorting-algorithms-radix-sort.f : 69078091d087d509cc8cf1755748f9ab01484594f445d583f992cfda4098eeb2
-RosettaCodeData/Task/Sorting-algorithms-Sleep-sort/Fortran/sorting-algorithms-sleep-sort.f : d9485ca5bf8bc56a79c55187879803ae0289878e69d04a4ce7e825d153318200
+RosettaCodeData/Task/Sorting-algorithms-Sleep-sort/Fortran/sorting-algorithms-sleep-sort.f : 583ee495dc60dd32c6c0f20ea5caeb6142e6a59ce2c8c8cadd5753418b9462ba
 RosettaCodeData/Task/Special-variables/Fortran/special-variables.f : 73ced0b19ddb14d73878b52775af8a3164724efbc5904a7f2653c7cd192f9df0
 RosettaCodeData/Task/String-case/Fortran/string-case-3.f : 55863eebdcb910e3c489f9e487b8beb21176d58e04bffa017baa38e6d5ffcdc5
 RosettaCodeData/Task/String-case/Fortran/string-case-4.f : 2c7f28c175cd3369f84d45306460b507d650c1acdec5f664305c484522ab659d
