@@ -2061,15 +2061,15 @@ def run(argv=sys.argv):  # pragma: no cover
         if directory == '-':
             if args.recursive:
                 sys.stderr.write("--recursive requires a directory.\n")
-                sys.exit()
+                sys.exit(1)
         else:
             if not os.path.exists(directory):
                 sys.stderr.write("directory " + directory +
                                  " does not exist!\n")
-                sys.exit()
+                sys.exit(1)
             if not os.path.isfile(directory) and directory != '-' and not args.recursive:
                 sys.stderr.write("file " + directory + " does not exist!\n")
-                sys.exit()
+                sys.exit(1)
 
         if not args.recursive:
             filenames = [directory]
@@ -2139,3 +2139,4 @@ def run(argv=sys.argv):  # pragma: no cover
                                  indent_mod=not file_args.disable_indent_mod)
             except FprettifyException as e:
                 log_exception(e, "Fatal error occured")
+                sys.exit(1)
