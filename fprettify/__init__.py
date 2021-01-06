@@ -2046,13 +2046,6 @@ def run(argv=sys.argv):  # pragma: no cover
         ws_dict['intrinsics'] = args.whitespace_intrinsics
         return ws_dict
 
-    case_dict = {
-            'keywords' : args.case[0],
-            'procedures' : args.case[1],
-            'operators' : args.case[2],
-            'constants' : args.case[3]
-            }
-
     # support legacy input:
     if 'stdin' in args.path and not os.path.isfile('stdin'):
         args.path = ['-' if _ == 'stdin' else _ for _ in args.path]
@@ -2106,6 +2099,13 @@ def run(argv=sys.argv):  # pragma: no cover
             file_argparser = get_arg_parser(filearguments)
             file_args = file_argparser.parse_args(argv[1:])
             ws_dict = build_ws_dict(file_args)
+
+            case_dict = {
+                    'keywords' : file_args.case[0],
+                    'procedures' : file_args.case[1],
+                    'operators' : file_args.case[2],
+                    'constants' : file_args.case[3]
+                    }
 
             stdout = file_args.stdout or directory == '-'
             diffonly=file_args.diff
