@@ -1513,6 +1513,10 @@ def reformat_ffile_combined(infile, outfile, impose_indent=True, indent_size=3, 
         nfl += 1
         orig_lines = lines
 
+        f_line, lines, is_omp_conditional = preprocess_omp(
+            f_line, lines)
+        f_line, lines, label = preprocess_labels(f_line, lines)
+
         if indent_special != 3:
             indent = [0] * len(lines)
         else:
@@ -1522,9 +1526,6 @@ def reformat_ffile_combined(infile, outfile, impose_indent=True, indent_size=3, 
 
         auto_align, auto_format, in_format_off_block = parse_fprettify_directives(
             lines, comment_lines, in_format_off_block, orig_filename, stream.line_nr)
-        f_line, lines, is_omp_conditional = preprocess_omp(
-            f_line, lines)
-        f_line, lines, label = preprocess_labels(f_line, lines)
 
         lines, do_format, prev_indent, is_blank, is_special = preprocess_line(
             f_line, lines, comments, orig_filename, stream.line_nr, indent_fypp)
