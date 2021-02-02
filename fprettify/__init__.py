@@ -1929,10 +1929,10 @@ def run(argv=sys.argv):  # pragma: no cover
         else:
             return None
 
-    def get_config_file_list(filename):
+    def get_config_file_list(start_dir):
         """helper function to create list of config files found in parent directories"""
         config_file_list = []
-        dir = os.path.dirname(filename)
+        dir = start_dir
         while True:
             config_file = os.path.join(dir, '.fprettify.rc')
             if os.path.isfile(config_file):
@@ -2095,7 +2095,8 @@ def run(argv=sys.argv):  # pragma: no cover
             # reparse arguments using the file's list of config files
             filearguments = arguments
             if argparse.__name__ == "configargparse":
-                filearguments['default_config_files'] = ['~/.fprettify.rc'] + get_config_file_list(os.path.abspath(filename) if filename != '-' else os.getcwd())
+                filearguments['default_config_files'] = ['~/.fprettify.rc'] \
+                    + get_config_file_list(os.path.dirname(os.path.abspath(filename)) if filename != '-' else os.getcwd())
             file_argparser = get_arg_parser(filearguments)
             file_args = file_argparser.parse_args(argv[1:])
             ws_dict = build_ws_dict(file_args)
