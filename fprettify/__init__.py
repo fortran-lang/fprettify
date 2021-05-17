@@ -302,29 +302,57 @@ class where_parser(parser_re):
 forall_parser = where_parser
 
 def build_scope_parser(fypp=True, mod=True):
+# Zaikun's comment (2021-05-17)
+# build_scope_parser builds a "parser" for the environments that will be indented. There are two
+# special cases:
+# 1. If and only if mod=true, the blocks of [module, program, subroutine, function] will be indented.
+# 2. If and only if fypp=True, the fypp preprocessor blocks will be indented.
+# In the fprettify by Patrick Seewald, the list in 1 is [module, program], which is the only place
+# modified in this fork.
     parser = {}
+    # Zaikun's modification 1 (2021-05-17) >>
+    #parser['new'] = \
+    #    [parser_re(IF_RE), parser_re(DO_RE), parser_re(SELCASE_RE), parser_re(SUBR_RE),
+    #     parser_re(FCT_RE),
+    #     parser_re(INTERFACE_RE), parser_re(TYPE_RE), parser_re(ENUM_RE), parser_re(ASSOCIATE_RE),
+    #     None, parser_re(BLK_RE), where_parser(WHERE_RE), forall_parser(FORALL_RE)]
+    #
+    #parser['continue'] = \
+    #    [parser_re(ELSE_RE), None, parser_re(CASE_RE), parser_re(CONTAINS_RE),
+    #     parser_re(CONTAINS_RE),
+    #     None, parser_re(CONTAINS_RE), None, None,
+    #     None, None, parser_re(ELSEWHERE_RE), None]
+    #
+    #parser['end'] = \
+    #    [parser_re(ENDIF_RE), parser_re(ENDDO_RE), parser_re(ENDSEL_RE), parser_re(ENDSUBR_RE),
+    #     parser_re(ENDFCT_RE),
+    #     parser_re(ENDINTERFACE_RE), parser_re(ENDTYPE_RE), parser_re(ENDENUM_RE), parser_re(ENDASSOCIATE_RE),
+    #     parser_re(ENDANY_RE,spec=False), parser_re(ENDBLK_RE), parser_re(ENDWHERE_RE), parser_re(ENDFORALL_RE)]
     parser['new'] = \
-        [parser_re(IF_RE), parser_re(DO_RE), parser_re(SELCASE_RE), parser_re(SUBR_RE),
-         parser_re(FCT_RE),
+        [parser_re(IF_RE), parser_re(DO_RE), parser_re(SELCASE_RE),
          parser_re(INTERFACE_RE), parser_re(TYPE_RE), parser_re(ENUM_RE), parser_re(ASSOCIATE_RE),
          None, parser_re(BLK_RE), where_parser(WHERE_RE), forall_parser(FORALL_RE)]
 
     parser['continue'] = \
-        [parser_re(ELSE_RE), None, parser_re(CASE_RE), parser_re(CONTAINS_RE),
-         parser_re(CONTAINS_RE),
+        [parser_re(ELSE_RE), None, parser_re(CASE_RE),
          None, parser_re(CONTAINS_RE), None, None,
          None, None, parser_re(ELSEWHERE_RE), None]
 
     parser['end'] = \
-        [parser_re(ENDIF_RE), parser_re(ENDDO_RE), parser_re(ENDSEL_RE), parser_re(ENDSUBR_RE),
-         parser_re(ENDFCT_RE),
+        [parser_re(ENDIF_RE), parser_re(ENDDO_RE), parser_re(ENDSEL_RE),
          parser_re(ENDINTERFACE_RE), parser_re(ENDTYPE_RE), parser_re(ENDENUM_RE), parser_re(ENDASSOCIATE_RE),
          parser_re(ENDANY_RE,spec=False), parser_re(ENDBLK_RE), parser_re(ENDWHERE_RE), parser_re(ENDFORALL_RE)]
+    # << Zaikun's modification 1 (2021-05-17)
 
     if mod:
-        parser['new'].extend([parser_re(MOD_RE), parser_re(SMOD_RE), parser_re(PROG_RE)])
-        parser['continue'].extend([parser_re(CONTAINS_RE), parser_re(CONTAINS_RE), parser_re(CONTAINS_RE)])
-        parser['end'].extend([parser_re(ENDMOD_RE), parser_re(ENDSMOD_RE), parser_re(ENDPROG_RE)])
+        # Zaikun's modification 2 (2021-05-17) >>
+        #parser['new'].extend([parser_re(MOD_RE), parser_re(SMOD_RE), parser_re(PROG_RE)])
+        #parser['continue'].extend([parser_re(CONTAINS_RE), parser_re(CONTAINS_RE), parser_re(CONTAINS_RE)])
+        #parser['end'].extend([parser_re(ENDMOD_RE), parser_re(ENDSMOD_RE), parser_re(ENDPROG_RE)])
+        parser['new'].extend([parser_re(MOD_RE), parser_re(SMOD_RE), parser_re(PROG_RE), parser_re(SUBR_RE), parser_re(FCT_RE)])
+        parser['continue'].extend([parser_re(CONTAINS_RE), parser_re(CONTAINS_RE), parser_re(CONTAINS_RE), parser_re(CONTAINS_RE), parser_re(CONTAINS_RE)])
+        parser['end'].extend([parser_re(ENDMOD_RE), parser_re(ENDSMOD_RE), parser_re(ENDPROG_RE), parser_re(ENDSUBR_RE), parser_re(ENDFCT_RE)])
+        # << Zaikun's modification 2 (2021-05-17)
 
     if fypp:
         parser['new'].extend(PREPRO_NEW_SCOPE)
