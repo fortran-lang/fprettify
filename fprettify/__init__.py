@@ -195,6 +195,7 @@ FYPP_ENDMUTE_RE = re.compile(SOL_STR + r"#:ENDMUTE", RE_FLAGS)
 
 PRIVATE_RE = re.compile(SOL_STR + r"PRIVATE\s*::", RE_FLAGS)
 PUBLIC_RE = re.compile(SOL_STR + r"PUBLIC\s*::", RE_FLAGS)
+EXTERNAL_RE = re.compile(SOL_STR + r"EXTERNAL\s*::", RE_FLAGS)
 
 ATTR_RE = re.compile(SOL_STR + r"(ALLOCATABLE|DIMENSION|EXTERNAL|IMPORT|INTENT|INTRINSIC|OPTIONAL|PARAMETER|POINTER|PRIVATE|PUBLIC|SAVE|TARGET)(\s+|\(|::)", RE_FLAGS)
 PROC_RE = re.compile(SOL_STR + r"(MODULE\s+)?(PROCEDURE)(\s+|\(|::)", RE_FLAGS)
@@ -745,7 +746,7 @@ class F90Aligner(object):
 
         self.__init_line(line_nr)
 
-        is_decl = VAR_DECL_RE.search(f_line) or PUBLIC_RE.search(f_line) or PRIVATE_RE.match(f_line)
+        is_decl = VAR_DECL_RE.search(f_line) or PUBLIC_RE.search(f_line) or PRIVATE_RE.match(f_line) or EXTERNAL_RE.match(f_line)
         is_use = USE_RE.search(f_line)
         for pos, line in enumerate(lines):
             self.__align_line_continuations(
