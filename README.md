@@ -2,8 +2,8 @@
 
 [![Build Status](https://travis-ci.com/pseewald/fprettify.svg?branch=master)](https://travis-ci.com/pseewald/fprettify) [![Coverage Status](https://coveralls.io/repos/github/pseewald/fprettify/badge.svg?branch=master)](https://coveralls.io/github/pseewald/fprettify?branch=master) [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0) [![PyPI version](https://badge.fury.io/py/fprettify.svg)](https://badge.fury.io/py/fprettify)
 
-This is a fork of [pseewald/fprettify](https://github.com/pseewald/fprettify).
-fprettify is an auto-formatter for modern Fortran code that imposes strict whitespace formatting, written in Python.
+This is a fork of [pseewald/fprettify](https://github.com/pseewald/fprettify),
+which is an auto-formatter for modern Fortran code that imposes strict whitespace formatting, written in Python.
 
 
 ## Differences from pseewald/fprettify
