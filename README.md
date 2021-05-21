@@ -8,10 +8,8 @@ fprettify is an auto-formatter for modern Fortran code that imposes strict white
 
 ## Differences from pseewald/fprettify
 
-* The option `--no-indent-mod` disables the indentation of subroutines and functions, in addition to
-  that of modules and programs.
-* A new option `--keep-blank-lines` is introduced to disable the removal of consecutive/trailing
-  blank lines.
+* A new option `--disable-indent-subroutine` to disable the indentation after subroutines and functions.
+* A new option `--keep-blank-lines` to disable the removal of consecutive/trailing blank lines.
 
 
 ## Features
