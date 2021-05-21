@@ -307,8 +307,7 @@ def build_scope_parser(fypp=True, mod=True):
 # special cases:
 # 1. If and only if mod=true, the blocks of [module, program, subroutine, function] will be indented.
 # 2. If and only if fypp=True, the fypp preprocessor blocks will be indented.
-# In the fprettify by Patrick Seewald, the list in 1 is [module, program], which is the only place
-# modified in this fork.
+# In the fprettify by Patrick Seewald, the list in 1 is [module, program].
     parser = {}
     # Zaikun's modification 1 (2021-05-17) >>
     #parser['new'] = \
@@ -1447,7 +1446,7 @@ def reformat_inplace(filename, stdout=False, diffonly=False, **kwargs):  # pragm
 def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_indent=False, impose_whitespace=True,
                    case_dict={},
                    impose_replacements=False, cstyle=False, whitespace=2, whitespace_dict={}, llength=132,
-                   strip_comments=False, format_decl=False, orig_filename=None, indent_fypp=True, indent_mod=True):
+                   strip_comments=False, format_decl=False, orig_filename=None, indent_fypp=True, indent_mod=True, keep_blank_lines=False):
     """main method to be invoked for formatting a Fortran file."""
 
     # note: whitespace formatting and indentation may require different parsing rules
@@ -1470,7 +1469,7 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
         reformat_ffile_combined(oldfile, newfile, _impose_indent, indent_size, strict_indent, impose_whitespace,
                                 case_dict,
                                 impose_replacements, cstyle, whitespace, whitespace_dict, llength,
-                                strip_comments, format_decl, orig_filename, indent_fypp, indent_mod)
+                                strip_comments, format_decl, orig_filename, indent_fypp, indent_mod, keep_blank_lines)
         oldfile = newfile
 
     # 2) indentation
@@ -1483,7 +1482,7 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
         reformat_ffile_combined(oldfile, newfile, impose_indent, indent_size, strict_indent, _impose_whitespace,
                                 case_dict,
                                 _impose_replacements, cstyle, whitespace, whitespace_dict, llength,
-                                strip_comments, format_decl, orig_filename, indent_fypp, indent_mod)
+                                strip_comments, format_decl, orig_filename, indent_fypp, indent_mod, keep_blank_lines)
 
 
     outfile.write(newfile.getvalue())
@@ -1492,7 +1491,7 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
 def reformat_ffile_combined(infile, outfile, impose_indent=True, indent_size=3, strict_indent=False, impose_whitespace=True,
                             case_dict={},
                             impose_replacements=False, cstyle=False, whitespace=2, whitespace_dict={}, llength=132,
-                            strip_comments=False, format_decl=False, orig_filename=None, indent_fypp=True, indent_mod=True):
+                            strip_comments=False, format_decl=False, orig_filename=None, indent_fypp=True, indent_mod=True, keep_blank_lines=False):
 
     if not orig_filename:
         orig_filename = infile.name
@@ -1636,7 +1635,7 @@ def reformat_ffile_combined(infile, outfile, impose_indent=True, indent_size=3, 
 
         # rm subsequent blank lines
         skip_blank = EMPTY_RE.search(
-            f_line) and not any(comments) and not is_omp_conditional and not label
+            f_line) and not any(comments) and not is_omp_conditional and not label and not keep_blank_lines
 
 
 def format_comments(lines, comments, strip_comments):
@@ -2032,6 +2031,13 @@ def run(argv=sys.argv):  # pragma: no cover
         parser.add_argument('--disable-indent-mod', action='store_true', default=False,
                             help="Disables the indentation after module / program.")
 
+        # Zaikun's comment (2021-05-21)
+        # Here we introduce a new option "--keep-blank-lines" to disable the removal of
+        # consecutive/trailing blank lines.
+        # Zaikun's modification 3 >>
+        parser.add_argument("--keep-blank-lines", action='store_true', default=False, help="Disables the removal of consecutive/trailing blank lines")
+        # Zaikun's modification 3 <<
+
         parser.add_argument("-d","--diff", action='store_true', default=False,
                              help="Write file differences to stdout instead of formatting inplace")
         parser.add_argument("-s", "--stdout", action='store_true', default=False,
@@ -2164,7 +2170,8 @@ def run(argv=sys.argv):  # pragma: no cover
                                  strip_comments=file_args.strip_comments,
                                  format_decl=file_args.enable_decl,
                                  indent_fypp=not file_args.disable_fypp,
-                                 indent_mod=not file_args.disable_indent_mod)
+                                 indent_mod=not file_args.disable_indent_mod,
+                                 keep_blank_lines=file_args.keep_blank_lines)
             except FprettifyException as e:
                 log_exception(e, "Fatal error occured")
                 sys.exit(1)
