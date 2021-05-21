@@ -75,11 +75,6 @@ end program
 
 ## Installation
 
-The latest release can be installed using pip:
-```
-pip install --upgrade fprettify
-```
-
 Installation from source requires Python Setuptools:
 ```
 ./setup.py install
