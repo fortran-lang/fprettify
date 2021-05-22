@@ -10,7 +10,7 @@ which is an auto-formatter for modern Fortran code that imposes strict whitespac
 
 * A new option `--disable-indent-subroutine` to disable the indentation after subroutines and functions.
 * A new option `--keep-blank-lines` to disable the removal of consecutive/trailing blank lines.
-
+* Avoid greedy regex, which is very slow for long numbers. See [Fixes and new options #99](https://github.com/pseewald/fprettify/pull/99/commits/2f766f33ed795ee69d0ac404e699e5475ff52f3f) of pseewald/fprettify.
 
 ## Features
 
