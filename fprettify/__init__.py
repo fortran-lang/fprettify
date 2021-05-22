@@ -500,7 +500,11 @@ F90_NUMBER_ALL_REC = re.compile(F90_NUMBER_ALL_RE, RE_FLAGS)
 
 ## F90_CONSTANTS_TYPES_RE = re.compile(r"\b" + F90_NUMBER_ALL_RE + "_(" + "|".join([a + r"\b" for a in (
 F90_CONSTANTS_TYPES_RE = re.compile(
-    r"(" + F90_NUMBER_ALL_RE + ")*_(" + "|".join((
+    # Zaikun's modification 3 >>
+    # Avoid greedy regex, which is very slow for long numbers.
+    #r"(" + F90_NUMBER_ALL_RE + ")*_(" + "|".join((
+    r"(" + F90_NUMBER_ALL_RE + ")_(" + "|".join((
+    # << Zaikun's modification
     ## F2003 iso_fortran_env constants.
     ## F2003 iso_c_binding constants.
     "c_int", "c_short", "c_long", "c_long_long", "c_signed_char",
@@ -1071,19 +1075,20 @@ def format_single_fline(f_line, whitespace, whitespace_dict, linebreak_pos,
             'print': 6,           # 6: print / read statements
             'type': 7,            # 7: select type components
             'intrinsics': 8,      # 8: intrinsics
-            'decl': 9             # 9: declarations
+            'decl': 9,             # 9: declarations
+            'use_only': 10
             }
 
     if whitespace == 0:
-        spacey = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        spacey = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     elif whitespace == 1:
-        spacey = [1, 1, 1, 1, 0, 0, 1, 0, 1, 1]
+        spacey = [1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1]
     elif whitespace == 2:
-        spacey = [1, 1, 1, 1, 1, 0, 1, 0, 1, 1]
+        spacey = [1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1]
     elif whitespace == 3:
-        spacey = [1, 1, 1, 1, 1, 1, 1, 0, 1, 1]
+        spacey = [1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1]
     elif whitespace == 4:
-        spacey = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        spacey = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     else:
         raise NotImplementedError("unknown value for whitespace")
 
@@ -1342,8 +1347,8 @@ def add_whitespace_context(line, spacey):
 
     # format ':' for labels and use only statements
     if USE_RE.search(line):
-        line = re.sub(r'(only)\s*:\s*', r'\g<1>:' + ' ' *
-                      spacey[0], line, flags=RE_FLAGS)
+        line = re.sub(r'(only)\s*:\s*', r'\g<1>' + ' ' * spacey[10] + ':' + ' ' * spacey[0], line, flags=RE_FLAGS)
+
 
     return line
 
@@ -2018,6 +2023,8 @@ def run(argv=sys.argv):  # pragma: no cover
                             help="boolean, en-/disable whitespace for select type components")
         parser.add_argument("--whitespace-intrinsics", type=str2bool, nargs="?", default="None", const=True,
                             help="boolean, en-/disable whitespace for intrinsics like if/write/close")
+        parser.add_argument("--whitespace-use-only", type=str2bool, nargs="?", default="None", const=True,
+                            help="boolean, en-/disable whitespace for the colon after `use MODULE, only`")
         parser.add_argument("--strict-indent", action='store_true', default=False, help="strictly impose indentation even for nested loops")
         parser.add_argument("--enable-decl", action="store_true", default=False, help="enable whitespace formatting of declarations ('::' operator).")
         parser.add_argument("--disable-indent", action='store_true', default=False, help="don't impose indentation")
@@ -2087,6 +2094,7 @@ def run(argv=sys.argv):  # pragma: no cover
         ws_dict['print'] = args.whitespace_print
         ws_dict['type'] = args.whitespace_type
         ws_dict['intrinsics'] = args.whitespace_intrinsics
+        ws_dict['use_only'] = args.whitespace_use_only
         return ws_dict
 
     # support legacy input:
