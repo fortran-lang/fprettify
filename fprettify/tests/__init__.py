@@ -376,6 +376,43 @@ class FPrettifyTestCase(unittest.TestCase):
         else:
             self.removeTmpDir()
 
+    def test_config_stdin(self):
+        outstring = []
+        instring = "CALL  alien_invasion( x)"
+        outstring_with_config = "call alien_invasion(x)"
+        self.createTmpDir()
+
+        alien_file = joinpath(TEMP_DIR, "alien_invasion.f90")
+        config_file = joinpath(os.getcwd(), ".fprettify.rc")
+        conf_string = "case=[1,1,1,2]\nexclude=[excluded*]"
+
+        if os.path.exists(config_file):
+            raise FileException(
+                    "remove file %s" % conf_file_cwd)  # pragma: no cover
+
+        def create_file(fname, string):
+            with io.open(fname, 'w', encoding='utf-8') as infile:
+                infile.write(string)
+
+        try:
+            create_file(alien_file, instring)
+            create_file(config_file, conf_string)
+
+            # testing stdin --> stdout, with configuration file read from CWD
+            p1 = subprocess.Popen(RUNSCRIPT,
+                                  stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+            outstr = p1.communicate(instring.encode('UTF-8'))[0].decode('UTF-8')
+            self.assertEqual(outstring_with_config, outstr.strip())
+
+        except:  # pragma: no cover
+            self.removeTmpDir()
+            if os.path.isfile(config_file):
+                os.remove(config_file)
+            raise
+        else:
+            self.removeTmpDir()
+            os.remove(config_file)
+
     def test_config_file(self):
         """simple test for configuration file reading"""
 
