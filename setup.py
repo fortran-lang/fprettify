@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from setuptools import setup
+from setuptools import setup, find_packages
 from codecs import open
 from os import path
 
@@ -16,7 +16,7 @@ setup(name='fprettify',
       author_email='patrick.seewald@gmail.com',
       license='GPLv3',
       entry_points={'console_scripts': ['fprettify = fprettify:run']},
-      packages=['fprettify'],
+      packages=find_packages(),
       install_requires=[
           'configargparse',
       ],
