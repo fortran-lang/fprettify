@@ -70,10 +70,12 @@ jobs:
         run: |
           coverage run --source=fprettify setup.py test
 
-      # - name: Coverage upload
-      #   run: coveralls
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Coverage upload
+        run: coveralls --service=github
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COVERALLS_FLAG_NAME: ${{ matrix.python }}
+          COVERALLS_PARALLEL: true
 
   pip:
     needs:
@@ -100,7 +102,7 @@ jobs:
           python-version: ${{ matrix.python }}
 
       - name: Install dependencies
-        run: pip install -U -r requirements.txt coveralls
+        run: pip install -r requirements.txt coveralls
 
       - name: Install project
         run: pip install .
@@ -109,7 +111,28 @@ jobs:
         run: |
           coverage run --source=fprettify setup.py test
 
-      # - name: Coverage upload
-      #   run: coveralls
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Coverage upload
+        run: coveralls --service=github
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COVERALLS_FLAG_NAME: ${{ matrix.python }}
+          COVERALLS_PARALLEL: true
+
+  coverage:
+    needs:
+      - pip
+      - conda
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/setup-python@v3
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install coveralls
+
+      - name: Coverage upload
+        run: coveralls --service=github --finish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
