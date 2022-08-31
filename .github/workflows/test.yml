@@ -85,7 +85,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        python: ["3.5", "3.6"]
+        python: ["3.6" ]
 
     steps:
       - name: Checkout code
