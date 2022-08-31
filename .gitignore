@@ -91,3 +91,6 @@ ENV/
 
 # ctags
 tags
+
+# setuptools_scm autogeneated version
+_version.py
