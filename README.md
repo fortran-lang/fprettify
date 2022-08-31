@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/pseewald/fprettify/actions/workflows/test.yml/badge.svg)](https://github.com/pseewald/fprettify/actions/workflows/test.yml)
 [![Coverage Status](https://coveralls.io/repos/github/pseewald/fprettify/badge.svg?branch=master)](https://coveralls.io/github/pseewald/fprettify?branch=master)
-[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
+![PyPI - License](https://img.shields.io/pypi/l/fprettify)
 ![PyPI](https://img.shields.io/pypi/v/fprettify)
 
 fprettify is an auto-formatter for modern Fortran code that imposes strict whitespace formatting, written in Python.
