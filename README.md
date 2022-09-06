@@ -4,6 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/pseewald/fprettify/badge.svg?branch=master)](https://coveralls.io/github/pseewald/fprettify?branch=master)
 ![PyPI - License](https://img.shields.io/pypi/l/fprettify)
 ![PyPI](https://img.shields.io/pypi/v/fprettify)
+[![Code Climate](https://codeclimate.com/github/pseewald/fprettify/badges/gpa.svg)](https://codeclimate.com/github/pseewald/fprettify)
 
 fprettify is an auto-formatter for modern Fortran code that imposes strict whitespace formatting, written in Python.
 
@@ -147,5 +148,3 @@ A = [-1,   10, 0, &
 ## Contributing / Testing
 
 The testing mechanism allows you to easily test fprettify with any Fortran project of your choice. Simply clone or copy your entire project into `fortran_tests/before` and run `python setup.py test`. The directory `fortran_tests/after` contains the test output (reformatted Fortran files). If testing fails, please submit an issue!
-
-[![Code Climate](https://codeclimate.com/github/pseewald/fprettify/badges/gpa.svg)](https://codeclimate.com/github/pseewald/fprettify)
