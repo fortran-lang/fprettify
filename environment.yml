@@ -3,4 +3,4 @@ channels:
   - conda-forge
 dependencies:
   - configargparse
-  - importlib-metadata  # [py<38]
+  - importlib-metadata
