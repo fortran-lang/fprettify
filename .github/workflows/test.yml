@@ -31,52 +31,6 @@ jobs:
         run: |
           .travis/prep_cron.sh
 
-  conda:
-    needs:
-      - resources
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest]
-        python: ["3.7", "3.8", "3.9", "3.10"]
-
-    defaults:
-      run:
-        shell: "bash -l {0}"
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Load resources
-        uses: actions/cache@v3
-        with:
-          path: ./fortran_tests/before/*/
-          key: resources-${{ github.event_name }}
-
-      - name: Install dependencies
-        uses: mamba-org/provision-with-micromamba@main
-        with:
-          environment-file: environment.yml
-          extra-specs: |
-            python=${{ matrix.python }}
-            coveralls
-
-      - name: Install project
-        run: pip install .
-
-      - name: Run tests
-        run: |
-          coverage run --source=fprettify setup.py test
-
-      - name: Coverage upload
-        run: coveralls --service=github
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          COVERALLS_FLAG_NAME: ${{ matrix.python }}
-          COVERALLS_PARALLEL: true
-
   pip:
     needs:
       - resources
@@ -85,7 +39,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        python: ["3.6" ]
+        python: ["3.7", "3.8", "3.9", "3.10", "3.11-dev"]
 
     steps:
       - name: Checkout code
@@ -118,13 +72,12 @@ jobs:
   coverage:
     needs:
       - pip
-      - conda
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/setup-python@v3
         with:
-          python-version: '3.x'
+          python-version: "3.x"
 
       - name: Install dependencies
         run: pip install coveralls
