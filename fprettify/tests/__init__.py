@@ -18,7 +18,6 @@
 #    along with fprettify. If not, see <http://www.gnu.org/licenses/>.
 ###############################################################################
 
-"""Dynamically create tests based on examples in examples/before."""
 from __future__ import (absolute_import, division,
                         print_function, unicode_literals)
 
@@ -32,6 +31,8 @@ import re
 import difflib
 import subprocess
 import inspect
+from datetime import datetime
+import shutil
 
 sys.stderr = io.TextIOWrapper(
     sys.stderr.detach(), encoding='UTF-8', line_buffering=True)
@@ -46,9 +47,11 @@ def joinpath(path1, path2):
 MYPATH = os.path.dirname(os.path.abspath(
     inspect.getfile(inspect.currentframe())))
 
-BEFORE_DIR = joinpath(MYPATH, r'../../fortran_tests/before/')
-AFTER_DIR = joinpath(MYPATH, r'../../fortran_tests/after/')
-RESULT_DIR = joinpath(MYPATH, r'../../fortran_tests/test_results/')
+TEST_DIR = joinpath(MYPATH, r'../../fortran_tests/test_code')
+EXAMPLE_DIR = joinpath(MYPATH, r'../../examples/in')
+TIMESTAMP = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+BACKUP_DIR = joinpath(MYPATH, r'../../fortran_tests/test_code_in_' + TIMESTAMP)
+RESULT_DIR = joinpath(MYPATH, r'../../fortran_tests/test_results')
 RESULT_FILE = joinpath(RESULT_DIR, r'expected_results')
 FAILED_FILE = joinpath(RESULT_DIR, r'failed_results')
 
@@ -100,8 +103,8 @@ class FPrettifyTestCase(unittest.TestCase):
         eprint("recognized Fortran files")
         eprint(", ".join(fprettify.FORTRAN_EXTENSIONS))
         eprint("-" * 70)
-        eprint("Testing with Fortran files in " + BEFORE_DIR)
-        eprint("Writing formatted Fortran files to " + AFTER_DIR)
+        eprint("Applying fprettify to Fortran files in " + TEST_DIR)
+        eprint("Writing backup of original files to " + BACKUP_DIR)
         eprint("Storing expected results in " + RESULT_FILE)
         eprint("Storing failed results in " + FAILED_FILE)
         eprint("-" * 70)
@@ -891,61 +894,63 @@ def addtestmethod(testcase, fpath, ffile):
     def testmethod(testcase):
         """this is the test method invoked for each example."""
 
-        dirpath_before = joinpath(BEFORE_DIR, fpath)
-        dirpath_after = joinpath(AFTER_DIR, fpath)
-        if not os.path.exists(dirpath_after):
-            os.makedirs(dirpath_after)
+        example_path = joinpath(TEST_DIR, fpath)
+        backup_path = joinpath(BACKUP_DIR, fpath)
+        if not os.path.exists(backup_path):
+            os.makedirs(backup_path)
 
-        example_before = joinpath(dirpath_before, ffile)
-        example_after = joinpath(dirpath_after, ffile)
-
-        if os.path.isfile(example_after):
-            os.remove(example_after)
+        example = joinpath(example_path, ffile)
+        example_backup = joinpath(backup_path, ffile)
 
         def test_result(path, info):
-            return [os.path.relpath(path, BEFORE_DIR), info]
+            return [os.path.relpath(path, TEST_DIR), info]
 
-        with io.open(example_before, 'r', encoding='utf-8') as infile:
+        with io.open(example, 'r', encoding='utf-8') as infile:
+            instring = infile.read()
 
+        # write backup of original file
+        with io.open(example_backup, 'w', encoding='utf-8') as outfile:
+            outfile.write(instring)
+
+        # apply fprettify
+        with io.open(example, 'r', encoding='utf-8') as infile:
             outstring = io.StringIO()
 
             try:
                 fprettify.reformat_ffile(infile, outstring)
+                outstring = outstring.getvalue()
                 m = hashlib.sha256()
-                m.update(outstring.getvalue().encode('utf-8'))
+                m.update(outstring.encode('utf-8'))
 
                 test_info = "checksum"
-                test_content = test_result(example_before, m.hexdigest())
+                test_content = test_result(example, m.hexdigest())
 
-                with io.open(example_after, 'w', encoding='utf-8') as outfile:
-                    outfile.write(outstring.getvalue())
                 FPrettifyTestCase.n_success += 1
             except FprettifyParseException as e:
                 test_info = "parse error"
                 fprettify.log_exception(e, test_info)
-                test_content = test_result(example_before, test_info)
+                test_content = test_result(example, test_info)
                 FPrettifyTestCase.n_parsefail += 1
             except FprettifyInternalException as e:
                 test_info = "internal error"
                 fprettify.log_exception(e, test_info)
-                test_content = test_result(example_before, test_info)
+                test_content = test_result(example, test_info)
                 FPrettifyTestCase.n_internalfail += 1
             except:  # pragma: no cover
                 FPrettifyTestCase.n_unexpectedfail += 1
                 raise
 
-        after_exists = os.path.isfile(example_after)
-        if after_exists:
-            with io.open(example_before, 'r', encoding='utf-8') as infile:
-                before_content = infile.read()
-                before_nosp = re.sub(
-                    r'\n{3,}', r'\n\n', before_content.lower().replace(' ', '').replace('\t', ''))
+        # overwrite example
+        with io.open(example, 'w', encoding='utf-8') as outfile:
+            outfile.write(outstring)
 
-            with io.open(example_after, 'r', encoding='utf-8') as outfile:
-                after_content = outfile.read()
-                after_nosp = after_content.lower().replace(' ', '')
+        # check that no changes other than whitespace changes or lower/upper case occured
+        before_nosp = re.sub(
+            r'\n{3,}', r'\n\n', instring.lower().replace(' ', '').replace('\t', ''))
 
-            testcase.assertMultiLineEqual(before_nosp, after_nosp)
+        after_nosp = outstring.lower().replace(' ', '')
+
+        testcase.assertMultiLineEqual(before_nosp, after_nosp)
 
         sep_str = ' : '
         with io.open(RESULT_FILE, 'r', encoding='utf-8') as infile:
@@ -957,10 +962,10 @@ def addtestmethod(testcase, fpath, ffile):
                     eprint(test_info, end=" ")
                     msg = '{} (old) != {} (new)'.format(
                         line_content[1], test_content[1])
-                    if test_info == "checksum" and after_exists and after_content.count('\n') < 10000:
+                    if test_info == "checksum" and outstring.count('\n') < 10000:
                         # difflib can not handle large files
-                        result = list(difflib.unified_diff(before_content.splitlines(
-                            True), after_content.splitlines(True), fromfile=test_content[0], tofile=line_content[0]))
+                        result = list(difflib.unified_diff(instring.splitlines(
+                            True), outstring.splitlines(True), fromfile=test_content[0], tofile=line_content[0]))
                         msg += '\n' + ''.join(result)
                     try:
                         testcase.assertEqual(
@@ -982,10 +987,10 @@ def addtestmethod(testcase, fpath, ffile):
     setattr(testcase, testmethod.__name__, testmethod)
 
 # make sure all directories exist
-if not os.path.exists(BEFORE_DIR):  # pragma: no cover
-    os.makedirs(BEFORE_DIR)
-if not os.path.exists(AFTER_DIR):  # pragma: no cover
-    os.makedirs(AFTER_DIR)
+if not os.path.exists(TEST_DIR):  # pragma: no cover
+    os.makedirs(TEST_DIR)
+if not os.path.exists(BACKUP_DIR):  # pragma: no cover
+    os.makedirs(BACKUP_DIR)
 if not os.path.exists(RESULT_DIR):  # pragma: no cover
     os.makedirs(RESULT_DIR)
 if not os.path.exists(RESULT_FILE):  # pragma: no cover
@@ -995,7 +1000,13 @@ if os.path.exists(FAILED_FILE):  # pragma: no cover
     io.open(FAILED_FILE, 'w', encoding='utf-8').close()
 
 # this prepares FPrettifyTestCase class when module is loaded by unittest
-for dirpath, _, filenames in os.walk(BEFORE_DIR):
+
+# copy examples to test directory
+shutil.copytree(EXAMPLE_DIR, os.path.join(TEST_DIR, "examples"), dirs_exist_ok=True)
+
+# dynamically create test cases from fortran files in test directory
+for dirpath, _, filenames in os.walk(TEST_DIR):
     for example in [f for f in filenames if any(f.endswith(_) for _ in fprettify.FORTRAN_EXTENSIONS)]:
-        rel_dirpath = os.path.relpath(dirpath, start=BEFORE_DIR)
+        rel_dirpath = os.path.relpath(dirpath, start=TEST_DIR)
         addtestmethod(FPrettifyTestCase, rel_dirpath, example)
+
