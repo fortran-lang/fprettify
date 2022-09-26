@@ -70,6 +70,10 @@ import sys
 import logging
 import os
 import io
+try:
+    import configargparse as argparse
+except ImportError:
+    import argparse
 
 sys.stdin = io.TextIOWrapper(
     sys.stdin.detach(), encoding='UTF-8', line_buffering=True)
@@ -1911,23 +1915,143 @@ def log_message(message, level, filename, line_nr):
     logger_to_use = getattr(logger, level)
     logger_to_use(message, extra=logger_d)
 
+def build_ws_dict(args):
+    """helper function to build whitespace dictionary"""
+    ws_dict = {}
+    ws_dict['comma'] = args.whitespace_comma
+    ws_dict['assignments'] = args.whitespace_assignment
+    ws_dict['decl'] = args.whitespace_decl
+    ws_dict['relational'] = args.whitespace_relational
+    ws_dict['logical'] = args.whitespace_logical
+    ws_dict['plusminus'] = args.whitespace_plusminus
+    ws_dict['multdiv'] = args.whitespace_multdiv
+    ws_dict['print'] = args.whitespace_print
+    ws_dict['type'] = args.whitespace_type
+    ws_dict['intrinsics'] = args.whitespace_intrinsics
+    return ws_dict
+
+def process_args(args):
+
+    args_out = {}
+
+    args_out['whitespace_dict'] = build_ws_dict(args)
+
+    args_out['case_dict'] = {
+            'keywords' : args.case[0],
+            'procedures' : args.case[1],
+            'operators' : args.case[2],
+            'constants' : args.case[3]
+            }
+
+    args_out['impose_indent'] = not args.disable_indent
+    args_out['indent_size'] = args.indent
+    args_out['strict_indent'] = args.strict_indent
+    args_out['impose_whitespace'] = not args.disable_whitespace
+    args_out['impose_replacements'] = args.enable_replacements
+    args_out['cstyle'] = args.c_relations
+    args_out['whitespace'] = args.whitespace
+    args_out['llength'] = 1024 if args.line_length == 0 else args.line_length
+    args_out['strip_comments'] = args.strip_comments
+    args_out['format_decl'] = args.enable_decl
+    args_out['indent_fypp'] = not args.disable_fypp
+    args_out['indent_mod'] = not args.disable_indent_mod
+
+
+    return args_out
+
+def str2bool(str):
+    """helper function to convert strings to bool"""
+    if str.lower() in ('yes', 'true', 't', 'y', '1'):
+        return True
+    elif str.lower() in ('no', 'false', 'f', 'n', '0'):
+        return False
+    else:
+        return None
+
+
+def get_arg_parser(args={}):
+    """helper function to create the parser object"""
+    parser = argparse.ArgumentParser(**args)
+
+    parser.add_argument("-i", "--indent", type=int, default=3,
+                        help="relative indentation width")
+    parser.add_argument("-l", "--line-length", type=int, default=132,
+                        help="column after which a line should end, viz. -ffree-line-length-n for GCC")
+    parser.add_argument("-w", "--whitespace", type=int,
+                        choices=range(0, 5), default=2, help="Presets for the amount of whitespace - "
+                                                             "   0: minimal whitespace"
+                                                             " | 1: operators (except arithmetic), print/read"
+                                                             " | 2: operators, print/read, plus/minus"
+                                                             " | 3: operators, print/read, plus/minus, muliply/divide"
+                                                             " | 4: operators, print/read, plus/minus, muliply/divide, type component selector")
+    parser.add_argument("--whitespace-comma", type=str2bool, nargs="?", default="None", const=True,
+                        help="boolean, en-/disable whitespace for comma/semicolons")
+    parser.add_argument("--whitespace-assignment", type=str2bool, nargs="?", default="None", const=True,
+                        help="boolean, en-/disable whitespace for assignments")
+    parser.add_argument("--whitespace-decl", type=str2bool, nargs="?", default="None", const=True,
+                        help="boolean, en-/disable whitespace for declarations (requires '--enable-decl')")
+    parser.add_argument("--whitespace-relational", type=str2bool, nargs="?", default="None", const=True,
+                        help="boolean, en-/disable whitespace for relational operators")
+    parser.add_argument("--whitespace-logical", type=str2bool, nargs="?", default="None", const=True,
+                        help="boolean, en-/disable whitespace for logical operators")
+    parser.add_argument("--whitespace-plusminus", type=str2bool, nargs="?", default="None", const=True,
+                        help="boolean, en-/disable whitespace for plus/minus arithmetic")
+    parser.add_argument("--whitespace-multdiv", type=str2bool, nargs="?", default="None", const=True,
+                        help="boolean, en-/disable whitespace for multiply/divide arithmetic")
+    parser.add_argument("--whitespace-print", type=str2bool, nargs="?", default="None", const=True,
+                        help="boolean, en-/disable whitespace for print/read statements")
+    parser.add_argument("--whitespace-type", type=str2bool, nargs="?", default="None", const=True,
+                        help="boolean, en-/disable whitespace for select type components")
+    parser.add_argument("--whitespace-intrinsics", type=str2bool, nargs="?", default="None", const=True,
+                        help="boolean, en-/disable whitespace for intrinsics like if/write/close")
+    parser.add_argument("--strict-indent", action='store_true', default=False, help="strictly impose indentation even for nested loops")
+    parser.add_argument("--enable-decl", action="store_true", default=False, help="enable whitespace formatting of declarations ('::' operator).")
+    parser.add_argument("--disable-indent", action='store_true', default=False, help="don't impose indentation")
+    parser.add_argument("--disable-whitespace", action='store_true', default=False, help="don't impose whitespace formatting")
+    parser.add_argument("--enable-replacements", action='store_true', default=False, help="replace relational operators (e.g. '.lt.' <--> '<')")
+    parser.add_argument("--c-relations", action='store_true', default=False, help="C-style relational operators ('<', '<=', ...)")
+    parser.add_argument("--case", nargs=4, default=[0,0,0,0], type=int, help="Enable letter case formatting of intrinsics by specifying which of "
+                        "keywords, procedures/modules, operators and constants (in this order) should be lowercased or uppercased - "
+                        "   0: do nothing"
+                        " | 1: lowercase"
+                        " | 2: uppercase")
+
+    parser.add_argument("--strip-comments", action='store_true', default=False, help="strip whitespaces before comments")
+    parser.add_argument('--disable-fypp', action='store_true', default=False,
+                        help="Disables the indentation of fypp preprocessor blocks.")
+    parser.add_argument('--disable-indent-mod', action='store_true', default=False,
+                        help="Disables the indentation after module / program.")
+
+    parser.add_argument("-d","--diff", action='store_true', default=False,
+                         help="Write file differences to stdout instead of formatting inplace")
+    parser.add_argument("-s", "--stdout", action='store_true', default=False,
+                        help="Write to stdout instead of formatting inplace")
+
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("-S", "--silent", "--no-report-errors", action='store_true',
+                       default=False, help="Don't write any errors or warnings to stderr")
+    group.add_argument("-D", "--debug", action='store_true',
+                       default=False, help=argparse.SUPPRESS)
+    parser.add_argument("path", type=str, nargs='*',
+                        help="Paths to files to be formatted inplace. If no paths are given, stdin (-) is used by default. Path can be a directory if --recursive is used.", default=['-'])
+    parser.add_argument('-r', '--recursive', action='store_true',
+                        default=False, help="Recursively auto-format all Fortran files in subdirectories of specified path; recognized filename extensions: {}". format(", ".join(FORTRAN_EXTENSIONS)))
+    parser.add_argument('-e', '--exclude', action='append',
+                        default=[], type=str,
+                        help="File or directory patterns to be excluded when searching for Fortran files to format")
+    parser.add_argument('-f', '--fortran', type=str, action='append', default=[],
+                        help="Overrides default fortran extensions recognized by --recursive. Repeat this option to specify more than one extension.")
+    parser.add_argument('--version', action='version',
+                        version='%(prog)s 0.3.7')
+    return parser
+
+
 
 def run(argv=sys.argv):  # pragma: no cover
     """Command line interface"""
 
-    try:
-        import configargparse as argparse
-    except ImportError:
-        import argparse
 
-    def str2bool(str):
-        """helper function to convert strings to bool"""
-        if str.lower() in ('yes', 'true', 't', 'y', '1'):
-            return True
-        elif str.lower() in ('no', 'false', 'f', 'n', '0'):
-            return False
-        else:
-            return None
+
 
     def get_config_file_list(filename):
         """helper function to create list of config files found in parent directories"""
@@ -1951,100 +2075,10 @@ def run(argv=sys.argv):  # pragma: no cover
         arguments['args_for_setting_config_path'] = ['-c', '--config-file']
         arguments['description'] = arguments['description'] + " Config files ('.fprettify.rc') in the home (~) directory and any such files located in parent directories of the input file will be used. When the standard input is used, the search is started from the current directory."
 
-    def get_arg_parser(args):
-        """helper function to create the parser object"""
-        parser = argparse.ArgumentParser(**args)
-
-        parser.add_argument("-i", "--indent", type=int, default=3,
-                            help="relative indentation width")
-        parser.add_argument("-l", "--line-length", type=int, default=132,
-                            help="column after which a line should end, viz. -ffree-line-length-n for GCC")
-        parser.add_argument("-w", "--whitespace", type=int,
-                            choices=range(0, 5), default=2, help="Presets for the amount of whitespace - "
-                                                                 "   0: minimal whitespace"
-                                                                 " | 1: operators (except arithmetic), print/read"
-                                                                 " | 2: operators, print/read, plus/minus"
-                                                                 " | 3: operators, print/read, plus/minus, muliply/divide"
-                                                                 " | 4: operators, print/read, plus/minus, muliply/divide, type component selector")
-        parser.add_argument("--whitespace-comma", type=str2bool, nargs="?", default="None", const=True,
-                            help="boolean, en-/disable whitespace for comma/semicolons")
-        parser.add_argument("--whitespace-assignment", type=str2bool, nargs="?", default="None", const=True,
-                            help="boolean, en-/disable whitespace for assignments")
-        parser.add_argument("--whitespace-decl", type=str2bool, nargs="?", default="None", const=True,
-                            help="boolean, en-/disable whitespace for declarations (requires '--enable-decl')")
-        parser.add_argument("--whitespace-relational", type=str2bool, nargs="?", default="None", const=True,
-                            help="boolean, en-/disable whitespace for relational operators")
-        parser.add_argument("--whitespace-logical", type=str2bool, nargs="?", default="None", const=True,
-                            help="boolean, en-/disable whitespace for logical operators")
-        parser.add_argument("--whitespace-plusminus", type=str2bool, nargs="?", default="None", const=True,
-                            help="boolean, en-/disable whitespace for plus/minus arithmetic")
-        parser.add_argument("--whitespace-multdiv", type=str2bool, nargs="?", default="None", const=True,
-                            help="boolean, en-/disable whitespace for multiply/divide arithmetic")
-        parser.add_argument("--whitespace-print", type=str2bool, nargs="?", default="None", const=True,
-                            help="boolean, en-/disable whitespace for print/read statements")
-        parser.add_argument("--whitespace-type", type=str2bool, nargs="?", default="None", const=True,
-                            help="boolean, en-/disable whitespace for select type components")
-        parser.add_argument("--whitespace-intrinsics", type=str2bool, nargs="?", default="None", const=True,
-                            help="boolean, en-/disable whitespace for intrinsics like if/write/close")
-        parser.add_argument("--strict-indent", action='store_true', default=False, help="strictly impose indentation even for nested loops")
-        parser.add_argument("--enable-decl", action="store_true", default=False, help="enable whitespace formatting of declarations ('::' operator).")
-        parser.add_argument("--disable-indent", action='store_true', default=False, help="don't impose indentation")
-        parser.add_argument("--disable-whitespace", action='store_true', default=False, help="don't impose whitespace formatting")
-        parser.add_argument("--enable-replacements", action='store_true', default=False, help="replace relational operators (e.g. '.lt.' <--> '<')")
-        parser.add_argument("--c-relations", action='store_true', default=False, help="C-style relational operators ('<', '<=', ...)")
-        parser.add_argument("--case", nargs=4, default=[0,0,0,0], type=int, help="Enable letter case formatting of intrinsics by specifying which of "
-                            "keywords, procedures/modules, operators and constants (in this order) should be lowercased or uppercased - "
-                            "   0: do nothing"
-                            " | 1: lowercase"
-                            " | 2: uppercase")
-
-        parser.add_argument("--strip-comments", action='store_true', default=False, help="strip whitespaces before comments")
-        parser.add_argument('--disable-fypp', action='store_true', default=False,
-                            help="Disables the indentation of fypp preprocessor blocks.")
-        parser.add_argument('--disable-indent-mod', action='store_true', default=False,
-                            help="Disables the indentation after module / program.")
-
-        parser.add_argument("-d","--diff", action='store_true', default=False,
-                             help="Write file differences to stdout instead of formatting inplace")
-        parser.add_argument("-s", "--stdout", action='store_true', default=False,
-                            help="Write to stdout instead of formatting inplace")
-
-        group = parser.add_mutually_exclusive_group()
-        group.add_argument("-S", "--silent", "--no-report-errors", action='store_true',
-                           default=False, help="Don't write any errors or warnings to stderr")
-        group.add_argument("-D", "--debug", action='store_true',
-                           default=False, help=argparse.SUPPRESS)
-        parser.add_argument("path", type=str, nargs='*',
-                            help="Paths to files to be formatted inplace. If no paths are given, stdin (-) is used by default. Path can be a directory if --recursive is used.", default=['-'])
-        parser.add_argument('-r', '--recursive', action='store_true',
-                            default=False, help="Recursively auto-format all Fortran files in subdirectories of specified path; recognized filename extensions: {}". format(", ".join(FORTRAN_EXTENSIONS)))
-        parser.add_argument('-e', '--exclude', action='append',
-                            default=[], type=str,
-                            help="File or directory patterns to be excluded when searching for Fortran files to format")
-        parser.add_argument('-f', '--fortran', type=str, action='append', default=[],
-                            help="Overrides default fortran extensions recognized by --recursive. Repeat this option to specify more than one extension.")
-        parser.add_argument('--version', action='version',
-                            version='%(prog)s 0.3.7')
-        return parser
 
     parser = get_arg_parser(arguments)
 
     args = parser.parse_args(argv[1:])
-
-    def build_ws_dict(args):
-        """helper function to build whitespace dictionary"""
-        ws_dict = {}
-        ws_dict['comma'] = args.whitespace_comma
-        ws_dict['assignments'] = args.whitespace_assignment
-        ws_dict['decl'] = args.whitespace_decl
-        ws_dict['relational'] = args.whitespace_relational
-        ws_dict['logical'] = args.whitespace_logical
-        ws_dict['plusminus'] = args.whitespace_plusminus
-        ws_dict['multdiv'] = args.whitespace_multdiv
-        ws_dict['print'] = args.whitespace_print
-        ws_dict['type'] = args.whitespace_type
-        ws_dict['intrinsics'] = args.whitespace_intrinsics
-        return ws_dict
 
     # support legacy input:
     if 'stdin' in args.path and not os.path.isfile('stdin'):
@@ -2097,46 +2131,25 @@ def run(argv=sys.argv):  # pragma: no cover
             if argparse.__name__ == "configargparse":
                 filearguments['default_config_files'] = ['~/.fprettify.rc'] + get_config_file_list(os.path.abspath(filename) if filename != '-' else os.getcwd())
             file_argparser = get_arg_parser(filearguments)
-            file_args = file_argparser.parse_args(argv[1:])
-            ws_dict = build_ws_dict(file_args)
 
-            case_dict = {
-                    'keywords' : file_args.case[0],
-                    'procedures' : file_args.case[1],
-                    'operators' : file_args.case[2],
-                    'constants' : file_args.case[3]
-                    }
 
-            stdout = file_args.stdout or directory == '-'
-            diffonly=file_args.diff
+            args_tmp = file_argparser.parse_args(argv[1:])
+            file_args = process_args(args_tmp)
+            file_args['stdout'] = args_tmp.stdout or directory == '-'
+            file_args['diffonly'] = args.diff
 
-            if file_args.debug:
-                level = logging.DEBUG
+            if args.debug:
+                args.debug_level = logging.DEBUG
             elif args.silent:
-                level = logging.CRITICAL
+                debug_level = logging.CRITICAL
             else:
-                level = logging.WARNING
+                debug_level = logging.WARNING
 
-            set_fprettify_logger(level)
+            set_fprettify_logger(debug_level)
 
             try:
-                reformat_inplace(filename,
-                                 stdout=stdout,
-                                 diffonly=diffonly,
-                                 impose_indent=not file_args.disable_indent,
-                                 indent_size=file_args.indent,
-                                 strict_indent=file_args.strict_indent,
-                                 impose_whitespace=not file_args.disable_whitespace,
-                                 impose_replacements=file_args.enable_replacements,
-                                 cstyle=file_args.c_relations,
-                                 case_dict=case_dict,
-                                 whitespace=file_args.whitespace,
-                                 whitespace_dict=ws_dict,
-                                 llength=1024 if file_args.line_length == 0 else file_args.line_length,
-                                 strip_comments=file_args.strip_comments,
-                                 format_decl=file_args.enable_decl,
-                                 indent_fypp=not file_args.disable_fypp,
-                                 indent_mod=not file_args.disable_indent_mod)
+                reformat_inplace(filename, **file_args)
+
             except FprettifyException as e:
                 log_exception(e, "Fatal error occured")
                 sys.exit(1)
