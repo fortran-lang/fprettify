@@ -33,6 +33,8 @@ import subprocess
 import inspect
 from datetime import datetime
 import shutil
+import configparser
+import shlex
 
 sys.stderr = io.TextIOWrapper(
     sys.stderr.detach(), encoding='UTF-8', line_buffering=True)
@@ -47,7 +49,9 @@ def joinpath(path1, path2):
 MYPATH = os.path.dirname(os.path.abspath(
     inspect.getfile(inspect.currentframe())))
 
-TEST_DIR = joinpath(MYPATH, r'../../fortran_tests/test_code')
+TEST_MAIN_DIR = joinpath(MYPATH, r'../../fortran_tests')
+
+TEST_DIR = joinpath(TEST_MAIN_DIR, r'test_code')
 EXAMPLE_DIR = joinpath(MYPATH, r'../../examples/in')
 TIMESTAMP = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 BACKUP_DIR = joinpath(MYPATH, r'../../fortran_tests/test_code_in_' + TIMESTAMP)
@@ -886,9 +890,33 @@ END MODULE
 
         self.assert_fprettify_result([], instring, outstring)
 
+def generatesuite(suitename):
+    config = configparser.ConfigParser()
+    config.read(joinpath(TEST_MAIN_DIR, 'externalTestCode.config'))
+
+    for key in config.sections():
+        code = config[key]
+        if code['suite'] == suitename:
+            orig = os.getcwd()
+            try:
+                os.chdir(TEST_DIR)
+
+                if not os.path.isdir(code['path']):
+                    exec(code['obtain'])
+            finally:
+                os.chdir(orig)
+
+        addtestcode(code['path'], code['options'])
+
+def addtestcode(code_path, options):
+    # dynamically create test cases from fortran files in test directory
+    for dirpath, _, filenames in os.walk(joinpath(TEST_DIR, code_path)):
+        for example in [f for f in filenames if any(f.endswith(_) for _ in fprettify.FORTRAN_EXTENSIONS)]:
+            rel_dirpath = os.path.relpath(dirpath, start=TEST_DIR)
+            addtestmethod(FPrettifyTestCase, rel_dirpath, example, options)
 
 
-def addtestmethod(testcase, fpath, ffile):
+def addtestmethod(testcase, fpath, ffile, options):
     """add a test method for each example."""
 
     def testmethod(testcase):
@@ -917,7 +945,12 @@ def addtestmethod(testcase, fpath, ffile):
             outstring = io.StringIO()
 
             try:
-                fprettify.reformat_ffile(infile, outstring)
+                parser = fprettify.get_arg_parser()
+                args = parser.parse_args(options)
+
+                args = fprettify.process_args(args)
+
+                fprettify.reformat_ffile(infile, outstring, **args)
                 outstring = outstring.getvalue()
                 m = hashlib.sha256()
                 m.update(outstring.encode('utf-8'))
@@ -999,14 +1032,5 @@ if os.path.exists(FAILED_FILE):  # pragma: no cover
     # erase failures from previous testers
     io.open(FAILED_FILE, 'w', encoding='utf-8').close()
 
-# this prepares FPrettifyTestCase class when module is loaded by unittest
-
-# copy examples to test directory
-shutil.copytree(EXAMPLE_DIR, os.path.join(TEST_DIR, "examples"), dirs_exist_ok=True)
-
-# dynamically create test cases from fortran files in test directory
-for dirpath, _, filenames in os.walk(TEST_DIR):
-    for example in [f for f in filenames if any(f.endswith(_) for _ in fprettify.FORTRAN_EXTENSIONS)]:
-        rel_dirpath = os.path.relpath(dirpath, start=TEST_DIR)
-        addtestmethod(FPrettifyTestCase, rel_dirpath, example)
-
+# ToDo: parameterize regular / cron
+generatesuite('cron')
