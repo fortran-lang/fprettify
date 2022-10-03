@@ -1915,22 +1915,23 @@ def log_message(message, level, filename, line_nr):
     logger_to_use = getattr(logger, level)
     logger_to_use(message, extra=logger_d)
 
-def build_ws_dict(args):
-    """helper function to build whitespace dictionary"""
-    ws_dict = {}
-    ws_dict['comma'] = args.whitespace_comma
-    ws_dict['assignments'] = args.whitespace_assignment
-    ws_dict['decl'] = args.whitespace_decl
-    ws_dict['relational'] = args.whitespace_relational
-    ws_dict['logical'] = args.whitespace_logical
-    ws_dict['plusminus'] = args.whitespace_plusminus
-    ws_dict['multdiv'] = args.whitespace_multdiv
-    ws_dict['print'] = args.whitespace_print
-    ws_dict['type'] = args.whitespace_type
-    ws_dict['intrinsics'] = args.whitespace_intrinsics
-    return ws_dict
 
 def process_args(args):
+
+    def build_ws_dict(args):
+        """helper function to build whitespace dictionary"""
+        ws_dict = {}
+        ws_dict['comma'] = args.whitespace_comma
+        ws_dict['assignments'] = args.whitespace_assignment
+        ws_dict['decl'] = args.whitespace_decl
+        ws_dict['relational'] = args.whitespace_relational
+        ws_dict['logical'] = args.whitespace_logical
+        ws_dict['plusminus'] = args.whitespace_plusminus
+        ws_dict['multdiv'] = args.whitespace_multdiv
+        ws_dict['print'] = args.whitespace_print
+        ws_dict['type'] = args.whitespace_type
+        ws_dict['intrinsics'] = args.whitespace_intrinsics
+        return ws_dict
 
     args_out = {}
 
@@ -1959,18 +1960,18 @@ def process_args(args):
 
     return args_out
 
-def str2bool(str):
-    """helper function to convert strings to bool"""
-    if str.lower() in ('yes', 'true', 't', 'y', '1'):
-        return True
-    elif str.lower() in ('no', 'false', 'f', 'n', '0'):
-        return False
-    else:
-        return None
-
-
 def get_arg_parser(args={}):
     """helper function to create the parser object"""
+
+    def str2bool(str):
+        """helper function to convert strings to bool"""
+        if str.lower() in ('yes', 'true', 't', 'y', '1'):
+            return True
+        elif str.lower() in ('no', 'false', 'f', 'n', '0'):
+            return False
+        else:
+            return None
+
     parser = argparse.ArgumentParser(**args)
 
     parser.add_argument("-i", "--indent", type=int, default=3,
@@ -2046,12 +2047,8 @@ def get_arg_parser(args={}):
     return parser
 
 
-
 def run(argv=sys.argv):  # pragma: no cover
     """Command line interface"""
-
-
-
 
     def get_config_file_list(filename):
         """helper function to create list of config files found in parent directories"""
@@ -2074,7 +2071,6 @@ def run(argv=sys.argv):  # pragma: no cover
     if argparse.__name__ == "configargparse":
         arguments['args_for_setting_config_path'] = ['-c', '--config-file']
         arguments['description'] = arguments['description'] + " Config files ('.fprettify.rc') in the home (~) directory and any such files located in parent directories of the input file will be used. When the standard input is used, the search is started from the current directory."
-
 
     parser = get_arg_parser(arguments)
 
@@ -2131,7 +2127,6 @@ def run(argv=sys.argv):  # pragma: no cover
             if argparse.__name__ == "configargparse":
                 filearguments['default_config_files'] = ['~/.fprettify.rc'] + get_config_file_list(os.path.abspath(filename) if filename != '-' else os.getcwd())
             file_argparser = get_arg_parser(filearguments)
-
 
             args_tmp = file_argparser.parse_args(argv[1:])
             file_args = process_args(args_tmp)
