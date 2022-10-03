@@ -49,20 +49,34 @@ def joinpath(path1, path2):
 MYPATH = os.path.dirname(os.path.abspath(
     inspect.getfile(inspect.currentframe())))
 
+TIMESTAMP = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+ 
+# main directory for running tests
 TEST_MAIN_DIR = joinpath(MYPATH, r'../../fortran_tests')
 
-TEST_DIR = joinpath(TEST_MAIN_DIR, r'test_code')
+# directory for external Fortran code
+TEST_EXT_DIR = joinpath(TEST_MAIN_DIR, r'test_code')
+
+# directory containing Fortran examples
 EXAMPLE_DIR = joinpath(MYPATH, r'../../examples/in')
-TIMESTAMP = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-BACKUP_DIR = joinpath(MYPATH, r'../../fortran_tests/test_code_in_' + TIMESTAMP)
-RESULT_DIR = joinpath(MYPATH, r'../../fortran_tests/test_results')
+
+# backup directory
+BACKUP_DIR = joinpath(TEST_MAIN_DIR, r'test_code_in_' + TIMESTAMP)
+
+# where to store summarized results
+RESULT_DIR = joinpath(TEST_MAIN_DIR, r'test_results')
+
+# expected hash-sums
 RESULT_FILE = joinpath(RESULT_DIR, r'expected_results')
+
+# test failures
 FAILED_FILE = joinpath(RESULT_DIR, r'failed_results')
 
+# path to fprettify 
 RUNSCRIPT = joinpath(MYPATH, r"../../fprettify.py")
 
-fprettify.set_fprettify_logger(logging.ERROR)
 
+fprettify.set_fprettify_logger(logging.ERROR)
 
 class AlienInvasion(Exception):
     """Should not happen"""
@@ -107,7 +121,7 @@ class FPrettifyTestCase(unittest.TestCase):
         eprint("recognized Fortran files")
         eprint(", ".join(fprettify.FORTRAN_EXTENSIONS))
         eprint("-" * 70)
-        eprint("Applying fprettify to Fortran files in " + TEST_DIR)
+        eprint("Applying fprettify to Fortran files in " + TEST_EXT_DIR)
         eprint("Writing backup of original files to " + BACKUP_DIR)
         eprint("Storing expected results in " + RESULT_FILE)
         eprint("Storing failed results in " + FAILED_FILE)
@@ -250,12 +264,17 @@ class FPrettifyTestCase(unittest.TestCase):
         assert that result of calling fprettify with args on instring gives
         outstring_exp
         """
-        args.insert(0, RUNSCRIPT)
-        p1 = subprocess.Popen(
-            args, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
-        outstring = p1.communicate(instring.encode(
-            'UTF-8'))[0].decode('UTF-8').rstrip()
-        self.assertEqual(outstring_exp.rstrip(), outstring)
+
+        parser = fprettify.get_arg_parser()
+        args = parser.parse_args(args)
+        args = fprettify.process_args(args)
+
+        outfile = io.StringIO()
+        infile = io.StringIO(instring)
+
+        fprettify.reformat_ffile(infile, outfile, orig_filename='StringIO', **args)
+        outstring = outfile.getvalue()
+        self.assertEqual(outstring_exp.rstrip(), outstring.rstrip())
 
     def test_io(self):
         """simple test for io (file inplace, stdin & stdout)"""
@@ -890,7 +909,7 @@ END MODULE
 
         self.assert_fprettify_result([], instring, outstring)
 
-def generatesuite(suitename):
+def generate_suite(suitename):
     config = configparser.ConfigParser()
     config.read(joinpath(TEST_MAIN_DIR, 'externalTestCode.config'))
 
@@ -899,7 +918,7 @@ def generatesuite(suitename):
         if code['suite'] == suitename:
             orig = os.getcwd()
             try:
-                os.chdir(TEST_DIR)
+                os.chdir(TEST_EXT_DIR)
 
                 if not os.path.isdir(code['path']):
                     exec(code['obtain'])
@@ -910,9 +929,9 @@ def generatesuite(suitename):
 
 def addtestcode(code_path, options):
     # dynamically create test cases from fortran files in test directory
-    for dirpath, _, filenames in os.walk(joinpath(TEST_DIR, code_path)):
+    for dirpath, _, filenames in os.walk(joinpath(TEST_EXT_DIR, code_path)):
         for example in [f for f in filenames if any(f.endswith(_) for _ in fprettify.FORTRAN_EXTENSIONS)]:
-            rel_dirpath = os.path.relpath(dirpath, start=TEST_DIR)
+            rel_dirpath = os.path.relpath(dirpath, start=TEST_EXT_DIR)
             addtestmethod(FPrettifyTestCase, rel_dirpath, example, options)
 
 
@@ -922,7 +941,7 @@ def addtestmethod(testcase, fpath, ffile, options):
     def testmethod(testcase):
         """this is the test method invoked for each example."""
 
-        example_path = joinpath(TEST_DIR, fpath)
+        example_path = joinpath(TEST_EXT_DIR, fpath)
         backup_path = joinpath(BACKUP_DIR, fpath)
         if not os.path.exists(backup_path):
             os.makedirs(backup_path)
@@ -931,7 +950,7 @@ def addtestmethod(testcase, fpath, ffile, options):
         example_backup = joinpath(backup_path, ffile)
 
         def test_result(path, info):
-            return [os.path.relpath(path, TEST_DIR), info]
+            return [os.path.relpath(path, TEST_EXT_DIR), info]
 
         with io.open(example, 'r', encoding='utf-8') as infile:
             instring = infile.read()
@@ -942,16 +961,15 @@ def addtestmethod(testcase, fpath, ffile, options):
 
         # apply fprettify
         with io.open(example, 'r', encoding='utf-8') as infile:
-            outstring = io.StringIO()
+            outfile = io.StringIO()
 
             try:
                 parser = fprettify.get_arg_parser()
-                args = parser.parse_args(options)
-
+                args = parser.parse_args(shlex.split(options))
                 args = fprettify.process_args(args)
 
-                fprettify.reformat_ffile(infile, outstring, **args)
-                outstring = outstring.getvalue()
+                fprettify.reformat_ffile(infile, outfile, **args)
+                outstring = outfile.getvalue()
                 m = hashlib.sha256()
                 m.update(outstring.encode('utf-8'))
 
@@ -1020,8 +1038,8 @@ def addtestmethod(testcase, fpath, ffile, options):
     setattr(testcase, testmethod.__name__, testmethod)
 
 # make sure all directories exist
-if not os.path.exists(TEST_DIR):  # pragma: no cover
-    os.makedirs(TEST_DIR)
+if not os.path.exists(TEST_EXT_DIR):  # pragma: no cover
+    os.makedirs(TEST_EXT_DIR)
 if not os.path.exists(BACKUP_DIR):  # pragma: no cover
     os.makedirs(BACKUP_DIR)
 if not os.path.exists(RESULT_DIR):  # pragma: no cover
@@ -1033,4 +1051,4 @@ if os.path.exists(FAILED_FILE):  # pragma: no cover
     io.open(FAILED_FILE, 'w', encoding='utf-8').close()
 
 # ToDo: parameterize regular / cron
-generatesuite('cron')
+#generate_suite('cron')
