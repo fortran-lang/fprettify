@@ -19,7 +19,9 @@
 ###############################################################################
 
 import unittest
-from fprettify.tests import FPrettifyTestCase, FAILED_FILE, RESULT_FILE
+from fprettify.tests.unittests import FprettifyUnitTestCase
+from fprettify.tests.fortrantests import generate_suite
+from fprettify.tests.test_common import FAILED_FILE, RESULT_FILE, FprettifyTestCase
 import fileinput
 import io
 import os
@@ -31,10 +33,16 @@ if __name__ == '__main__':
         description='Run tests', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("-r", "--reset", action='store_true', default=False,
                         help="Reset test results to new results of failed tests")
+    parser.add_argument("-s", "--suite", type=str, default="unittests", help="select suite.")
 
     args = parser.parse_args()
 
-    suite = unittest.TestLoader().loadTestsFromTestCase(FPrettifyTestCase)
+    if args.suite == "unittests":
+        suite = unittest.TestLoader().loadTestsFromTestCase(FprettifyUnitTestCase)
+    else:
+        testCase = generate_suite(args.suite)
+        suite = unittest.TestLoader().loadTestsFromTestCase(testCase)
+
     unittest.TextTestRunner(verbosity=2).run(suite)
 
     if args.reset and os.path.isfile(FAILED_FILE):
