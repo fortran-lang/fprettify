@@ -104,12 +104,12 @@ def addtestmethod(testcase, fpath, ffile, options):
                 FprettifyTestCase.n_success += 1
             except fprettify.FprettifyParseException as e:
                 test_info = "parse error"
-                fprettify.log_exception(e, test_info)
+                fprettify.log_exception(e, test_info, level="warning")
                 test_content = test_result(example, test_info)
                 FprettifyTestCase.n_parsefail += 1
             except fprettify.FprettifyInternalException as e:
                 test_info = "internal error"
-                fprettify.log_exception(e, test_info)
+                fprettify.log_exception(e, test_info, level="warning")
                 test_content = test_result(example, test_info)
                 FprettifyTestCase.n_internalfail += 1
             except:  # pragma: no cover

@@ -1902,9 +1902,9 @@ def set_fprettify_logger(level):
     logger.addHandler(stream_handler)
 
 
-def log_exception(e, message):
+def log_exception(e, message, level="exception"):
     """log an exception and a message"""
-    log_message(message, "exception", e.filename, e.line_nr)
+    log_message(message, level, e.filename, e.line_nr)
 
 
 def log_message(message, level, filename, line_nr):

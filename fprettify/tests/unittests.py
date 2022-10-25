@@ -32,7 +32,6 @@ sys.stderr = io.TextIOWrapper(
     sys.stderr.detach(), encoding='UTF-8', line_buffering=True)
 
 import fprettify
-from fprettify.fparse_utils import FprettifyParseException, FprettifyInternalException
 from fprettify.tests.test_common import FprettifyTestCase, RUNSCRIPT
 
 
