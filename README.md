@@ -80,7 +80,7 @@ pip install --upgrade fprettify
 Installation from source requires Python Setuptools:
 
 ```sh
-./setup.py install
+pip install .
 ```
 
 For local installation, use `--user` option.
