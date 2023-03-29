@@ -85,6 +85,12 @@ pip install .
 
 For local installation, use `--user` option.
 
+If you use the [Conda](https://docs.conda.io/) package manager, fprettify is available from the [conda-forge](https://conda-forge.org/) channel:
+
+```sh
+conda install -c conda-forge fprettify
+```
+
 ## Command line tool
 
 Autoformat file1, file2, ... inplace by
