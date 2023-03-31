@@ -103,6 +103,18 @@ For more options, read
 fprettify -h
 ```
 
+## Configuration file
+
+Adjusted parameters of `fprettify` can be stored in a configuration file in a pattern like
+
+```sh
+# Explicitly define / overwrite the program's defaults e.g.
+indent=2
+whitespace=0
+```
+
+The rules are activated by the optional parameter `-c` and subsequent indication of the config file in question. For one example of application, see the setup of [ABIN](https://github.com/PHOTOX/ABIN/blob/master/.fprettify.rc).
+
 ## Editor integration
 
 For editor integration, use
