@@ -194,7 +194,7 @@ program example_prog
 ! example 4.1
    l = 0
    do r = 1, 10
-      case_label: select case(r)
+      case_label: select case (r)
       case (1) case_label
          do i = 1, 100; if (i <= 2) then! comment
                do j = 1, 5

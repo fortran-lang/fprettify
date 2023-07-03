@@ -1154,7 +1154,7 @@ def add_whitespace_charwise(line, spacey, scope_parser, format_decl, filename, l
                                   line[:pos], RE_FLAGS) or
                         re.search(SOL_STR + r"(\w+\s*:)?\s*DO\s+WHILE\s*$",
                                   line[:pos], RE_FLAGS) or
-                        re.search(SOL_STR + r"(SELECT)?\s*CASE\s*$",
+                        re.search(SOL_STR + r"(\w+\s*:)?\s*(SELECT)?\s*CASE\s*$",
                                   line[:pos], RE_FLAGS) or
                         re.search(SOL_STR + r"(SELECT)?\s*RANK\s*$",
                                   line[:pos], RE_FLAGS) or
