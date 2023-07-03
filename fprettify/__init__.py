@@ -112,10 +112,10 @@ DO_RE = re.compile(SOL_STR + r"(\w+\s*:)?\s*DO(" + EOL_STR + r"|\s+\w)", RE_FLAG
 ENDDO_RE = re.compile(SOL_STR + r"END\s*DO(\s+\w+)?" + EOL_STR, RE_FLAGS)
 
 SELCASE_RE = re.compile(
-    SOL_STR + r"SELECT\s*(CASE|RANK|TYPE)\s*\(.*\)" + EOL_STR, RE_FLAGS)
+    SOL_STR + r"(\w+\s*:)?\s*SELECT\s*(CASE|RANK|TYPE)\s*\(.*\)" + EOL_STR, RE_FLAGS)
 CASE_RE = re.compile(
-    SOL_STR + r"((CASE|RANK|TYPE\s+IS|CLASS\s+IS)\s*(\(.*\)|DEFAULT)|CLASS\s+DEFAULT)" + EOL_STR, RE_FLAGS)
-ENDSEL_RE = re.compile(SOL_STR + r"END\s*SELECT" + EOL_STR, RE_FLAGS)
+    SOL_STR + r"((CASE|RANK|TYPE\s+IS|CLASS\s+IS)\s*(\(.*\)|DEFAULT)|CLASS\s+DEFAULT)(\s+\w+)?" + EOL_STR, RE_FLAGS)
+ENDSEL_RE = re.compile(SOL_STR + r"END\s*SELECT(\s+\w+)?" + EOL_STR, RE_FLAGS)
 
 ASSOCIATE_RE = re.compile(SOL_STR + r"ASSOCIATE\s*\(.*\)" + EOL_STR, RE_FLAGS)
 ENDASSOCIATE_RE = re.compile(SOL_STR + r"END\s*ASSOCIATE" + EOL_STR, RE_FLAGS)
@@ -1308,7 +1308,7 @@ def add_whitespace_context(line, spacey):
 
     line = ''.join(line_parts)
 
-    for newre in [IF_RE, DO_RE, BLK_RE]:
+    for newre in [IF_RE, DO_RE, BLK_RE, SELCASE_RE]:
         if newre.search(line) and re.search(SOL_STR + r"\w+\s*:", line):
             line = ': '.join(_.strip() for _ in line.split(':', 1))
 
