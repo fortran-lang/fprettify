@@ -1,0 +1,88 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: "0 0 * * 3"
+  workflow_dispatch:
+
+jobs:
+  resources:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Create resource cache
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: ./fortran_tests/before/*/
+          key: resources-${{ github.event_name }}
+
+      - name: Prepare tests (default)
+        if: ${{ steps.cache.outputs.cache-hit != 'true' }}
+        run: |
+          .travis/prep_regular.sh
+
+      - name: Prepare tests (schedule)
+        if: ${{ steps.cache.outputs.cache-hit != 'true' && github.event_name == 'schedule' }}
+        run: |
+          .travis/prep_cron.sh
+
+  pip:
+    needs:
+      - resources
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python: ["3.7", "3.8", "3.9", "3.10", "3.11-dev"]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Load resources
+        uses: actions/cache@v3
+        with:
+          path: ./fortran_tests/before/*/
+          key: resources-${{ github.event_name }}
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install project & dependencies
+        run: pip install .[dev]
+
+      - name: Run tests
+        run: |
+          coverage run --source=fprettify setup.py test
+
+      - name: Coverage upload
+        run: coveralls --service=github
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COVERALLS_FLAG_NAME: ${{ matrix.python }}
+          COVERALLS_PARALLEL: true
+
+  coverage:
+    needs:
+      - pip
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+
+      - name: Install dependencies
+        run: pip install coveralls
+
+      - name: Coverage upload
+        run: coveralls --service=github --finish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

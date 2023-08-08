@@ -1,0 +1,6 @@
+name: devel
+channels:
+  - conda-forge
+dependencies:
+  - configargparse
+  - importlib-metadata
