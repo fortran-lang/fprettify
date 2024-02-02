@@ -241,7 +241,7 @@ class plusminus_parser(parser_re):
     """
     def __init__(self, regex):
         self._re = regex
-        self._re_excl = re.compile(r"\b(\d+\.?\d*|\d*\.?\d+)[de]" + EOL_STR, RE_FLAGS)
+        self._re_excl = re.compile(r"\b(\d+\.?\d*|\d*\.?\d+)[deq]" + EOL_STR, RE_FLAGS)
 
     def split(self, line):
         partsplit = self._re.split(line)
