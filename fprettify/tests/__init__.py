@@ -52,12 +52,14 @@ RESULT_DIR = joinpath(MYPATH, r'../../fortran_tests/test_results/')
 RESULT_FILE = joinpath(RESULT_DIR, r'expected_results')
 FAILED_FILE = joinpath(RESULT_DIR, r'failed_results')
 
+TEMP_DIR = joinpath(MYPATH, r'tmp_test_dir/')
+
 RUNSCRIPT = joinpath(MYPATH, r"../../fprettify.py")
 
 fprettify.set_fprettify_logger(logging.ERROR)
 
 
-class AlienInvasion(Exception):
+class FileException(Exception):
     """Should not happen"""
     pass
 
@@ -84,6 +86,27 @@ class FPrettifyTestCase(unittest.TestCase):
         We have large files to compare, raise the limit
         """
         self.maxDiff = None
+
+    def createTmpDir(self):
+        """
+        Create a temporary directory for IO tests
+        """
+        if os.path.lexists(TEMP_DIR):
+            raise FileException(
+                "remove directory %s" % TEMP_DIR)  # pragma: no cover
+        os.mkdir(TEMP_DIR)
+
+    def removeTmpDir(self):
+        """
+        Remove the temporary test directory and all its content.
+        """
+        if not os.path.isdir(TEMP_DIR):
+            return
+
+        for dirpath, _, files in os.walk(TEMP_DIR, topdown=False):
+            for f in files:
+                os.remove(joinpath(dirpath, f))
+            os.rmdir(dirpath)
 
     @classmethod
     def setUpClass(cls):
@@ -258,10 +281,8 @@ class FPrettifyTestCase(unittest.TestCase):
         instring = "CALL  alien_invasion( 👽 )"
         outstring_exp = "CALL alien_invasion(👽)"
 
-        alien_file = "alien_invasion.f90"
-        if os.path.isfile(alien_file):
-            raise AlienInvasion(
-                "remove file alien_invasion.f90")  # pragma: no cover
+        self.createTmpDir()
+        alien_file = joinpath(TEMP_DIR, "alien_invasion.f90")
 
         try:
             with io.open(alien_file, 'w', encoding='utf-8') as infile:
@@ -289,11 +310,183 @@ class FPrettifyTestCase(unittest.TestCase):
             for outstr in outstring:
                 self.assertEqual(outstring_exp, outstr.strip())
         except:  # pragma: no cover
-            if os.path.isfile(alien_file):
-                os.remove(alien_file)
+            self.removeTmpDir()
             raise
         else:
-            os.remove(alien_file)
+            self.removeTmpDir()
+
+    def test_recursive_mode(self):
+        """test recursive mode which finds all fortran files in the tree"""
+
+        instring = "CALL  alien_invasion( x)"
+        formatted_string = "CALL alien_invasion(x)"
+
+        self.createTmpDir()
+
+        # We will create the following paths inside TEMP_DIR
+        # - alien_file.f90
+        # - excluded_alien_file.f90
+        # - subdir/alien_invasion.f90
+        # - subdir/excluded_alien_invasion.f90
+        # - excluded_subdir/alien_invasion.f90
+        alien_file = "alien_invasion.f90"
+        excluded_file = "excluded_alien_invasion.f90"
+        subdir = joinpath(TEMP_DIR, "subdir/")
+        excluded_subdir = joinpath(TEMP_DIR, "excluded_subdir/")
+        os.mkdir(subdir)
+        os.mkdir(excluded_subdir)
+
+        def create_file(fname):
+            with io.open(fname, 'w', encoding='utf-8') as infile:
+                infile.write(instring)
+
+        def check_output_file(fname, str_exp):
+            with io.open(fname, 'r', encoding='utf-8') as infile:
+                self.assertEqual(str_exp, infile.read().strip())
+
+        try:
+            create_file(joinpath(TEMP_DIR, alien_file))
+            create_file(joinpath(TEMP_DIR, excluded_file))
+            create_file(joinpath(subdir, alien_file))
+            create_file(joinpath(subdir, excluded_file))
+            create_file(joinpath(excluded_subdir, alien_file))
+
+            p1 = subprocess.Popen([
+                    RUNSCRIPT,
+                    '--recursive',
+                    '-e', 'excluded_*',
+                    TEMP_DIR],
+                    stdout=subprocess.PIPE)
+            p1.wait()
+
+            # Check files that should be formatted.
+            check_output_file(joinpath(TEMP_DIR, alien_file), formatted_string)
+            check_output_file(joinpath(subdir, alien_file), formatted_string)
+
+            # Check excluded files.
+            check_output_file(joinpath(TEMP_DIR, excluded_file), instring)
+            check_output_file(joinpath(subdir, excluded_file), instring)
+
+            # Check excluded directory.
+            check_output_file(joinpath(excluded_subdir, alien_file), instring)
+
+        except:  # pragma: no cover
+            self.removeTmpDir()
+            raise
+        else:
+            self.removeTmpDir()
+
+    def test_config_stdin(self):
+        outstring = []
+        instring = "CALL  alien_invasion( x)"
+        outstring_with_config = "call alien_invasion(x)"
+        self.createTmpDir()
+
+        alien_file = joinpath(TEMP_DIR, "alien_invasion.f90")
+        config_file = joinpath(os.getcwd(), ".fprettify.rc")
+        conf_string = "case=[1,1,1,2]\nexclude=[excluded*]"
+
+        if os.path.exists(config_file):
+            raise FileException(
+                    "remove file %s" % conf_file_cwd)  # pragma: no cover
+
+        def create_file(fname, string):
+            with io.open(fname, 'w', encoding='utf-8') as infile:
+                infile.write(string)
+
+        try:
+            create_file(alien_file, instring)
+            create_file(config_file, conf_string)
+
+            # testing stdin --> stdout, with configuration file read from CWD
+            p1 = subprocess.Popen(RUNSCRIPT,
+                                  stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+            outstr = p1.communicate(instring.encode('UTF-8'))[0].decode('UTF-8')
+            self.assertEqual(outstring_with_config, outstr.strip())
+
+        except:  # pragma: no cover
+            self.removeTmpDir()
+            if os.path.isfile(config_file):
+                os.remove(config_file)
+            raise
+        else:
+            self.removeTmpDir()
+            os.remove(config_file)
+
+    def test_config_file(self):
+        """simple test for configuration file reading"""
+
+        outstring = []
+        instring = "CALL  alien_invasion( x)"
+        outstring_with_config = "call alien_invasion(x)"
+        outstring_without_config = "CALL alien_invasion(x)"
+
+        self.createTmpDir()
+        dirname = TEMP_DIR
+
+        alien_file = joinpath(dirname, "alien_invasion.f90")
+        excluded_file = joinpath(dirname, "excluded.f90")
+        config_file = joinpath(dirname, ".fprettify.rc")
+        conf_string = "case=[1,1,1,2]\nexclude=[excluded*]"
+
+        excluded_subdir = joinpath(TEMP_DIR, 'excluded_subdir/')
+        subdir = joinpath(TEMP_DIR, 'subdir/')
+
+        def create_file(fname, string):
+            with io.open(fname, 'w', encoding='utf-8') as infile:
+                infile.write(string)
+
+        def check_output_file(fname, str_exp):
+            with io.open(fname, 'r', encoding='utf-8') as infile:
+                self.assertEqual(str_exp, infile.read().strip())
+
+        try:
+            create_file(alien_file, instring)
+            create_file(excluded_file, instring)
+            create_file(config_file, conf_string)
+
+            # testing stdin --> stdout
+            # In this case, the config file will not be read,
+            # because it is not located in CWD.
+            p1 = subprocess.Popen(RUNSCRIPT,
+                                  stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+            outstr = p1.communicate(instring.encode('UTF-8'))[0].decode('UTF-8')
+            self.assertEqual(outstring_without_config, outstr.strip())
+
+            # testing file --> stdout
+            p1 = subprocess.Popen([RUNSCRIPT, alien_file, '--stdout'],
+                                  stdout=subprocess.PIPE)
+            outstr = p1.communicate(instring.encode('UTF-8')[0])[0].decode('UTF-8')
+            self.assertEqual(outstring_with_config, outstr.strip())
+
+            # testing recursive mode
+            os.mkdir(subdir)
+            file_in_subdir = joinpath(subdir, 'aliens.F90')
+            create_file(file_in_subdir, instring)
+            config_file_in_subdir = joinpath(subdir, ".fprettify.rc")
+            # Config file in subdir should take precedence.
+            create_file(config_file_in_subdir, "case=[2,2,2,2]")
+
+            os.mkdir(excluded_subdir)
+            file_in_excluded_subdir = joinpath(excluded_subdir, 'aliens.F90')
+            create_file(file_in_excluded_subdir, instring)
+
+            p1 = subprocess.Popen([RUNSCRIPT, '--recursive', dirname],
+                                  stdout=subprocess.PIPE)
+            p1.wait()
+
+            check_output_file(alien_file, outstring_with_config)
+            # Excluded files and directories should not be touched at all.
+            check_output_file(excluded_file, instring)
+            check_output_file(file_in_excluded_subdir, instring)
+            # subdir contains a different config file which should take precedence.
+            check_output_file(file_in_subdir, outstring_without_config)
+
+        except:  # pragma: no cover
+            self.removeTmpDir()
+            raise
+        else:
+            self.removeTmpDir()
 
     def test_multi_alias(self):
         """test for issue #11 (multiple alias and alignment)"""

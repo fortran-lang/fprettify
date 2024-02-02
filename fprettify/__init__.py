@@ -1929,10 +1929,10 @@ def run(argv=sys.argv):  # pragma: no cover
         else:
             return None
 
-    def get_config_file_list(filename):
+    def get_config_file_list(start_dir):
         """helper function to create list of config files found in parent directories"""
         config_file_list = []
-        dir = os.path.dirname(filename)
+        dir = start_dir
         while True:
             config_file = os.path.join(dir, '.fprettify.rc')
             if os.path.isfile(config_file):
@@ -1943,13 +1943,15 @@ def run(argv=sys.argv):  # pragma: no cover
             dir = parent
         return config_file_list
 
-    arguments = {'prog': argv[0],
+    def get_argparse_arguments():
+        arguments = {'prog': argv[0],
                  'description': 'Auto-format modern Fortran source files.',
                  'formatter_class': argparse.ArgumentDefaultsHelpFormatter}
 
-    if argparse.__name__ == "configargparse":
-        arguments['args_for_setting_config_path'] = ['-c', '--config-file']
-        arguments['description'] = arguments['description'] + " Config files ('.fprettify.rc') in the home (~) directory and any such files located in parent directories of the input file will be used. When the standard input is used, the search is started from the current directory."
+        if argparse.__name__ == "configargparse":
+            arguments['args_for_setting_config_path'] = ['-c', '--config-file']
+            arguments['description'] = arguments['description'] + " Config files ('.fprettify.rc') in the home (~) directory and any such files located in parent directories of the input file will be used. When the standard input is used, the search is started from the current directory."
+        return arguments
 
     def get_arg_parser(args):
         """helper function to create the parser object"""
@@ -2027,9 +2029,17 @@ def run(argv=sys.argv):  # pragma: no cover
                             version='%(prog)s 0.3.7')
         return parser
 
-    parser = get_arg_parser(arguments)
-
-    args = parser.parse_args(argv[1:])
+    def pars_args_with_config_file(directory):
+        """
+        Parse arguments together with the config file.
+        Requires configargparse package.
+        """
+        filearguments = get_argparse_arguments()
+        filearguments['default_config_files'] = ['~/.fprettify.rc'] \
+                + get_config_file_list(directory if directory != '-' else os.getcwd())
+        file_argparser = get_arg_parser(filearguments)
+        file_args = file_argparser.parse_args(argv[1:])
+        return file_args
 
     def build_ws_dict(args):
         """helper function to build whitespace dictionary"""
@@ -2046,6 +2056,19 @@ def run(argv=sys.argv):  # pragma: no cover
         ws_dict['intrinsics'] = args.whitespace_intrinsics
         return ws_dict
 
+    def build_case_dict(args):
+        """helper function to build case dictionary"""
+        return {
+                'keywords' : file_args.case[0],
+                'procedures' : file_args.case[1],
+                'operators' : file_args.case[2],
+                'constants' : file_args.case[3]
+                }
+
+    parser = get_arg_parser(get_argparse_arguments())
+
+    args = parser.parse_args(argv[1:])
+
     # support legacy input:
     if 'stdin' in args.path and not os.path.isfile('stdin'):
         args.path = ['-' if _ == 'stdin' else _ for _ in args.path]
@@ -2057,12 +2080,13 @@ def run(argv=sys.argv):  # pragma: no cover
                 sys.exit(1)
         else:
             if not os.path.exists(directory):
-                sys.stderr.write("directory " + directory +
+                sys.stderr.write("file " + directory +
                                  " does not exist!\n")
                 sys.exit(1)
-            if not os.path.isfile(directory) and directory != '-' and not args.recursive:
-                sys.stderr.write("file " + directory + " does not exist!\n")
+            if os.path.isdir(directory) and not args.recursive:
+                sys.stderr.write("%s is a directory. Use --recursive option\n" % directory)
                 sys.exit(1)
+
 
         if not args.recursive:
             filenames = [directory]
@@ -2077,35 +2101,34 @@ def run(argv=sys.argv):  # pragma: no cover
 
             for dirpath, dirnames, files in os.walk(directory,topdown=True):
 
+                file_args = args
+                if argparse.__name__ == "configargparse":
+                    file_args = pars_args_with_config_file(directory)
+
                 # Prune excluded patterns from list of child directories
+                # https://stackoverflow.com/a/19859907
                 dirnames[:] = [dirname for dirname in dirnames if not any(
-                    [fnmatch(dirname,exclude_pattern) or fnmatch(os.path.join(dirpath,dirname),exclude_pattern)
-                            for exclude_pattern in args.exclude]
+                    fnmatch(dirname,exclude_pattern) or fnmatch(os.path.join(dirpath,dirname),exclude_pattern)
+                            for exclude_pattern in file_args.exclude
                 )]
 
                 for ffile in [os.path.join(dirpath, f) for f in files
                               if any(f.endswith(_) for _ in ext)
-                              and not any([
+                              and not any(
                                   fnmatch(f,exclude_pattern)
-                                  for exclude_pattern in args.exclude])]:
+                                  for exclude_pattern in file_args.exclude)]:
                     filenames.append(ffile)
 
         for filename in filenames:
 
             # reparse arguments using the file's list of config files
-            filearguments = arguments
+            file_args = args
             if argparse.__name__ == "configargparse":
-                filearguments['default_config_files'] = ['~/.fprettify.rc'] + get_config_file_list(os.path.abspath(filename) if filename != '-' else os.getcwd())
-            file_argparser = get_arg_parser(filearguments)
-            file_args = file_argparser.parse_args(argv[1:])
-            ws_dict = build_ws_dict(file_args)
+                dirname = os.path.dirname(os.path.abspath(filename))
+                file_args = pars_args_with_config_file(dirname)
 
-            case_dict = {
-                    'keywords' : file_args.case[0],
-                    'procedures' : file_args.case[1],
-                    'operators' : file_args.case[2],
-                    'constants' : file_args.case[3]
-                    }
+            ws_dict = build_ws_dict(file_args)
+            case_dict = build_case_dict(file_args)
 
             stdout = file_args.stdout or directory == '-'
             diffonly=file_args.diff
