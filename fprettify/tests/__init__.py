@@ -423,7 +423,7 @@ class FPrettifyTestCase(unittest.TestCase):
             "REAL(kind=real64), PARAMETER :: r64c = .0e3_real64",
             "REAL, PARAMETER :: r32 = 2.e3",
             "REAL, PARAMETER :: r32 = 2.0d3",
-            "REAL, PARAMETER :: r32 = .2e3",
+            "REAL, PARAMETER :: r32 = .2e3*3.0_dp1",
             "USE ISO_FORTRAN_ENV, ONLY: int64",
             "INTEGER, INTENT(IN) :: r, i, j, k",
             "IF (l.EQ.2) l=MAX  (l64, 2_int64)",
@@ -444,7 +444,7 @@ class FPrettifyTestCase(unittest.TestCase):
             "real(kind=REAL64), parameter :: r64c = .0E3_REAL64",
             "real, parameter :: r32 = 2.E3",
             "real, parameter :: r32 = 2.0D3",
-            "real, parameter :: r32 = .2E3",
+            "real, parameter :: r32 = .2E3*3.0_dp1",
             "use iso_fortran_env, only: INT64",
             "integer, intent(IN) :: r, i, j, k",
             "if (l .eq. 2) l = max(l64, 2_INT64)",
@@ -882,6 +882,182 @@ END MODULE
 """
 
         self.assert_fprettify_result([], instring, outstring)
+
+    def test_named_if(self):
+        """test correct formatting of named if construct"""
+        instring = ("foo: if(a==b) then\n"
+                    "e=a+c\n"
+                    "elseif (c==d) then foo\n"
+                    "f=a+c\n"
+                    "else foo\n"
+                    "g=a+c\n"
+                    "end if foo")
+        outstring =("foo: if (a == b) then\n"
+                    "   e = a + c\n"
+                    "elseif (c == d) then foo\n"
+                    "   f = a + c\n"
+                    "else foo\n"
+                    "   g = a + c\n"
+                    "end if foo")
+
+        self.assert_fprettify_result([], instring, outstring)
+
+    def test_reset_indet(self):
+        """test resetting first indent on subroutine"""
+        instring = ("      subroutine foo(a,b)\n"
+                    "          implicit integer\n"
+                    "          b=a\n"
+                    "      end subroutine foo")
+        outstring =("subroutine foo(a, b)\n"
+                    "   implicit integer\n"
+                    "   b = a\n"
+                    "end subroutine foo")
+
+        self.assert_fprettify_result(['--reset-indent'], instring, outstring)
+
+    def test_whitespace_end(self):
+        """test whitespace for end statements"""
+        instring =  ("do i=1,n\n"
+                     " if (a<n)then\n"
+                     "   a = a+i\n"
+                     " end if\n"
+                     "enddo")
+        outstring0 =("do i = 1, n\n"
+                     "   if (a < n) then\n"
+                     "      a = a + i\n"
+                     "   endif\n"
+                     "enddo")
+        outstring1 =("do i = 1, n\n"
+                     "   if(a < n) then\n"
+                     "      a = a + i\n"
+                     "   end if\n"
+                     "end do")
+
+        self.assert_fprettify_result(['--whitespace-intrinsics=1', '--whitespace-end=0'], instring, outstring0)
+        self.assert_fprettify_result(['--whitespace-intrinsics=0', '--whitespace-end=1'], instring, outstring1)
+
+    def test_whitespace_only(self):
+        """test whitespace for use ... only statements"""
+        instring = "use mymod, only: foo=>bar, meh"
+        outstring0 = "use mymod, only:foo => bar, meh"
+        outstring1 = "use mymod,only: foo => bar,meh"
+
+        self.assert_fprettify_result(['--whitespace-comma=1', '--whitespace-only=0'], instring, outstring0)
+        self.assert_fprettify_result(['--whitespace-comma=0', '--whitespace-only=1'], instring, outstring1)
+
+    def test_whitespace_if(self):
+        """test whitespace for if, while, case"""
+        instring =  ("if (a == b) then\n"
+                     "   call this('that')\n"
+                     "else if (c < d) then\n"
+                     "   write(6,*) 'that'\n"
+                     "endif\n"
+                     "do while (.true.)\n"
+                     "  select case (a)\n"
+                     "  case (0)\n"
+                     "    a = 1\n"
+                     "  case default\n"
+                     "    exit\n"
+                     "  end select\n"
+                     "end do")
+        outstring0 =("if(a == b) then\n"
+                     "   call this('that')\n"
+                     "else if(c < d) then\n"
+                     "   write (6, *) 'that'\n"
+                     "end if\n"
+                     "do while(.true.)\n"
+                     "   select case(a)\n"
+                     "   case(0)\n"
+                     "      a = 1\n"
+                     "   case default\n"
+                     "      exit\n"
+                     "   end select\n"
+                     "end do")
+        outstring1 =("if (a == b) then\n"
+                     "   call this('that')\n"
+                     "else if (c < d) then\n"
+                     "   write(6, *) 'that'\n"
+                     "endif\n"
+                     "do while (.true.)\n"
+                     "   select case (a)\n"
+                     "   case (0)\n"
+                     "      a = 1\n"
+                     "   case default\n"
+                     "      exit\n"
+                     "   endselect\n"
+                     "enddo")
+
+        self.assert_fprettify_result(['--whitespace-intrinsics=1', '--whitespace-if=0'], instring, outstring0)
+        self.assert_fprettify_result(['--whitespace-intrinsics=0', '--whitespace-if=1'], instring, outstring1)
+
+    def test_whitespace_do(self):
+        """test whitespace for do assignment"""
+        instring =  ("do i = 1, n\n"
+                     "   a = a + i\n"
+                     "end do")
+        outstring0 =("do i=1, n\n"
+                     "   a = a + i\n"
+                     "end do")
+        outstring1 =("do i = 1, n\n"
+                     "   a=a + i\n"
+                     "end do")
+
+        self.assert_fprettify_result(['--whitespace-assignment=1', '--whitespace-do=0'], instring, outstring0)
+        self.assert_fprettify_result(['--whitespace-assignment=0', '--whitespace-do=1'], instring, outstring1)
+
+    def test_whitespace_list(self):
+        """test whitespace for declarations"""
+        instring =  ("logical function foo(a,x,c)\n"
+                     "use,intrinsic:: ieee_exceptions, only: ieee_all,ieee_usual\n"
+                     "integer,allocatable,dimension(:,:) :: a,b(:,:,:), c\n"
+                     "real x, y,z")
+        outstring0 =("logical function foo(a, x, c)\n"
+                     "   use,intrinsic:: ieee_exceptions,only: ieee_all,ieee_usual\n"
+                     "   integer,allocatable,dimension(:, :) :: a,b(:, :, :),c\n"
+                     "   real x,y,z")
+        outstring1 =("logical function foo(a,x,c)\n"
+                     "   use, intrinsic:: ieee_exceptions, only:ieee_all, ieee_usual\n"
+                     "   integer, allocatable, dimension(:,:) :: a, b(:,:,:), c\n"
+                     "   real x, y, z")
+
+        self.assert_fprettify_result(['--whitespace-comma=1', '--whitespace-list=0'], instring, outstring0)
+        self.assert_fprettify_result(['--whitespace-comma=0', '--whitespace-list=1'], instring, outstring1)
+
+    def test_indent_select(self):
+        """test indentation of top-level unit"""
+        instring = ("select case(a)\n"
+                    "case (0)\n"
+                    "   b = 1\n"
+                    "case (1)\n"
+                    "   b = 0\n"
+                    "case default\n"
+                    "end select")
+        outstring =("select case (a)\n"
+                    "   case (0)\n"
+                    "      b = 1\n"
+                    "   case (1)\n"
+                    "      b = 0\n"
+                    "   case default\n"
+                    "end select")
+
+        self.assert_fprettify_result(['--indent-select'], instring, outstring)
+
+    def test_indent_first(self):
+        """test indentation of top-level unit"""
+        instring_subr = "subroutine my_sub\nintrinsic none\ncontains\nfunction my_func()\nend\nend subroutine"
+        instring_func = "function my_func\nintrinsic none\ncontains\nfunction my_func2()\nend\nend function"
+
+        outstring_subr = "subroutine my_sub\n   intrinsic none\ncontains\n   function my_func()\n   end\nend subroutine"
+        outstring_subr_disable = "subroutine my_sub\nintrinsic none\ncontains\nfunction my_func()\nend\nend subroutine"
+
+        outstring_func = "function my_func\n   intrinsic none\ncontains\n   function my_func2()\n   end\nend function"
+        outstring_func_disable = "function my_func\nintrinsic none\ncontains\nfunction my_func2()\nend\nend function"
+
+        self.assert_fprettify_result([], instring_subr, outstring_subr)
+        self.assert_fprettify_result([], instring_func, outstring_func)
+
+        self.assert_fprettify_result(['--disable-indent-first'], instring_subr, outstring_subr_disable)
+        self.assert_fprettify_result(['--disable-indent-first'], instring_func, outstring_func_disable)
 
 
 
