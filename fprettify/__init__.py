@@ -338,6 +338,8 @@ NML_RE = re.compile(r"(/\w+/)", RE_FLAGS)
 # find namelists and data statements
 NML_STMT_RE = re.compile(SOL_STR + r"NAMELIST.*/.*/", RE_FLAGS)
 DATA_STMT_RE = re.compile(SOL_STR + r"DATA\s+\w", RE_FLAGS)
+# find CUDA chevrons
+CUDA_CHEVRONS_RE = re.compile(r"<<<.*>>>", RE_FLAGS)
 
 ## Regexp for f90 keywords'
 F90_KEYWORDS_RE = re.compile(r"\b(" + "|".join((
@@ -1302,7 +1304,7 @@ def add_whitespace_context(line, spacey):
             # exclude comments, strings:
             if not STR_OPEN_RE.match(part):
                 # also exclude / if we see a namelist and data statement
-                if not ( NML_STMT_RE.match(line) or DATA_STMT_RE.match(line) ):
+                if not ( NML_STMT_RE.match(line) or DATA_STMT_RE.match(line) or CUDA_CHEVRONS_RE.search(line) ):
                     partsplit = lr_re.split(part)
                     line_parts[pos] = (' ' * spacey[n_op + 2]).join(partsplit)
 
