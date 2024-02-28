@@ -1419,7 +1419,8 @@ def reformat_inplace(filename, stdout=False, diffonly=False, **kwargs):  # pragm
 def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_indent=False, impose_whitespace=True,
                    case_dict={},
                    impose_replacements=False, cstyle=False, whitespace=2, whitespace_dict={}, llength=132,
-                   strip_comments=False, format_decl=False, orig_filename=None, indent_fypp=True, indent_mod=True):
+                   strip_comments=False, format_decl=False, orig_filename=None, indent_fypp=True, indent_mod=True,
+                   max_consecutive_empty_lines=1):
     """main method to be invoked for formatting a Fortran file."""
 
     # note: whitespace formatting and indentation may require different parsing rules
@@ -1442,7 +1443,8 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
         reformat_ffile_combined(oldfile, newfile, _impose_indent, indent_size, strict_indent, impose_whitespace,
                                 case_dict,
                                 impose_replacements, cstyle, whitespace, whitespace_dict, llength,
-                                strip_comments, format_decl, orig_filename, indent_fypp, indent_mod)
+                                strip_comments, format_decl, orig_filename, indent_fypp, indent_mod,
+                                max_consecutive_empty_lines)
         oldfile = newfile
 
     # 2) indentation
@@ -1455,7 +1457,8 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
         reformat_ffile_combined(oldfile, newfile, impose_indent, indent_size, strict_indent, _impose_whitespace,
                                 case_dict,
                                 _impose_replacements, cstyle, whitespace, whitespace_dict, llength,
-                                strip_comments, format_decl, orig_filename, indent_fypp, indent_mod)
+                                strip_comments, format_decl, orig_filename, indent_fypp, indent_mod,
+                                max_consecutive_empty_lines)
 
 
     outfile.write(newfile.getvalue())
@@ -1464,7 +1467,8 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
 def reformat_ffile_combined(infile, outfile, impose_indent=True, indent_size=3, strict_indent=False, impose_whitespace=True,
                             case_dict={},
                             impose_replacements=False, cstyle=False, whitespace=2, whitespace_dict={}, llength=132,
-                            strip_comments=False, format_decl=False, orig_filename=None, indent_fypp=True, indent_mod=True):
+                            strip_comments=False, format_decl=False, orig_filename=None, indent_fypp=True, indent_mod=True,
+                            max_consecutive_empty_lines=1):
 
     if not orig_filename:
         orig_filename = infile.name
@@ -1501,7 +1505,7 @@ def reformat_ffile_combined(infile, outfile, impose_indent=True, indent_size=3, 
     nfl = 0  # fortran line counter
     use_same_line = False
     stream = InputStream(infile, not indent_fypp, orig_filename=orig_filename)
-    skip_blank = False
+    number_empty_lines = 0
     in_format_off_block = False
 
     while 1:
@@ -1536,7 +1540,12 @@ def reformat_ffile_combined(infile, outfile, impose_indent=True, indent_size=3, 
         if prev_indent and indent_special == 0:
             indent_special = 2
 
-        if is_blank and skip_blank:
+        # Find empty line
+        found_empty_line = EMPTY_RE.search(f_line) and not any(comments) and not is_omp_conditional and not label
+        if found_empty_line: number_empty_lines += 1
+        else: number_empty_lines = 0
+
+        if is_blank and number_empty_lines > max_consecutive_empty_lines:
             continue
         if (not do_format):
             if indent_special == 2:
@@ -1605,10 +1614,6 @@ def reformat_ffile_combined(infile, outfile, impose_indent=True, indent_size=3, 
                 indent_special = 0
             else:
                 indent_special = 1
-
-        # rm subsequent blank lines
-        skip_blank = EMPTY_RE.search(
-            f_line) and not any(comments) and not is_omp_conditional and not label
 
 
 def format_comments(lines, comments, strip_comments):
@@ -1990,6 +1995,7 @@ def run(argv=sys.argv):  # pragma: no cover
         parser.add_argument("--enable-decl", action="store_true", default=False, help="enable whitespace formatting of declarations ('::' operator).")
         parser.add_argument("--disable-indent", action='store_true', default=False, help="don't impose indentation")
         parser.add_argument("--disable-whitespace", action='store_true', default=False, help="don't impose whitespace formatting")
+        parser.add_argument("--max-consecutive-empty-lines", type=int, default=1, help="set maximum number of consecutive empty lines")
         parser.add_argument("--enable-replacements", action='store_true', default=False, help="replace relational operators (e.g. '.lt.' <--> '<')")
         parser.add_argument("--c-relations", action='store_true', default=False, help="C-style relational operators ('<', '<=', ...)")
         parser.add_argument("--case", nargs=4, default=[0,0,0,0], type=int, help="Enable letter case formatting of intrinsics by specifying which of "
@@ -2136,7 +2142,8 @@ def run(argv=sys.argv):  # pragma: no cover
                                  strip_comments=file_args.strip_comments,
                                  format_decl=file_args.enable_decl,
                                  indent_fypp=not file_args.disable_fypp,
-                                 indent_mod=not file_args.disable_indent_mod)
+                                 indent_mod=not file_args.disable_indent_mod,
+                                 max_consecutive_empty_lines=file_args.max_consecutive_empty_lines)
             except FprettifyException as e:
                 log_exception(e, "Fatal error occured")
                 sys.exit(1)
