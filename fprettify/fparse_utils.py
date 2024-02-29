@@ -28,7 +28,7 @@ RE_FLAGS = re.IGNORECASE | re.UNICODE
 VAR_DECL_RE = re.compile(
     r"^ *(?P<type>integer(?: *\* *[0-9]+)?|logical|character(?: *\* *[0-9]+)?|real(?: *\* *[0-9]+)?|complex(?: *\* *[0-9]+)?|type) *(?P<parameters>\((?:[^()]+|\((?:[^()]+|\([^()]*\))*\))*\))? *(?P<attributes>(?: *, *[a-zA-Z_0-9]+(?: *\((?:[^()]+|\((?:[^()]+|\([^()]*\))*\))*\))?)+)? *(?P<dpnt>::)?(?P<vars>[^\n]+)\n?", RE_FLAGS)
 
-OMP_COND_RE = re.compile(r"^\s*(!\$ )", RE_FLAGS)
+OMP_COND_RE = re.compile(r"^\s*(!\$ ?)", RE_FLAGS)
 OMP_DIR_RE = re.compile(r"^\s*(!\$OMP)", RE_FLAGS)
 
 # supported preprocessors
