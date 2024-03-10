@@ -3,6 +3,7 @@
 [![CI](https://github.com/pseewald/fprettify/actions/workflows/test.yml/badge.svg)](https://github.com/pseewald/fprettify/actions/workflows/test.yml)
 [![Coverage Status](https://coveralls.io/repos/github/pseewald/fprettify/badge.svg?branch=master)](https://coveralls.io/github/pseewald/fprettify?branch=master)
 ![PyPI - License](https://img.shields.io/pypi/l/fprettify)
+![PyPI - Versions](https://img.shields.io/pypi/pyversions/fprettify)
 ![PyPI](https://img.shields.io/pypi/v/fprettify)
 [![Code Climate](https://codeclimate.com/github/pseewald/fprettify/badges/gpa.svg)](https://codeclimate.com/github/pseewald/fprettify)
 
