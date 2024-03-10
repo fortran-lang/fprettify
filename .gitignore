@@ -97,3 +97,6 @@ _version.py
 
 # fortran temporary test files
 fortran_tests/
+
+# mac files
+**.DS_Store
