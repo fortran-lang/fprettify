@@ -706,15 +706,7 @@ def get_curr_delim(line, pos):
     return [what_del_open, what_del_close]
 
 
-class fline_parser:
-    def __init__(self):
-        pass
-
-    def search(self, line):
-        pass
-
-
-class parser_re(fline_parser):
+class Parser:
     def __init__(self, regex, spec=True):
         self._re = regex
         self.spec = spec
@@ -726,7 +718,7 @@ class parser_re(fline_parser):
         return self._re.split(line)
 
 
-class plusminus_parser(parser_re):
+class PlusMinusParser(Parser):
     """parser for +/- in addition"""
 
     def __init__(self, regex):
@@ -763,7 +755,7 @@ class plusminus_parser(parser_re):
         return partsplit_out
 
 
-class where_parser(parser_re):
+class WhereParser(Parser):
     """parser for where / forall construct"""
 
     def search(self, line):
@@ -793,62 +785,60 @@ class where_parser(parser_re):
 def build_scope_parser(fypp=True, mod=True):
     parser = {}
     parser["new"] = [
-        parser_re(IF_RE),
-        parser_re(DO_RE),
-        parser_re(SELCASE_RE),
-        parser_re(SUBR_RE),
-        parser_re(FCT_RE),
-        parser_re(INTERFACE_RE),
-        parser_re(TYPE_RE),
-        parser_re(ENUM_RE),
-        parser_re(ASSOCIATE_RE),
+        Parser(IF_RE),
+        Parser(DO_RE),
+        Parser(SELCASE_RE),
+        Parser(SUBR_RE),
+        Parser(FCT_RE),
+        Parser(INTERFACE_RE),
+        Parser(TYPE_RE),
+        Parser(ENUM_RE),
+        Parser(ASSOCIATE_RE),
         None,
-        parser_re(BLK_RE),
-        where_parser(WHERE_RE),
-        where_parser(FORALL_RE),
+        Parser(BLK_RE),
+        WhereParser(WHERE_RE),
+        WhereParser(FORALL_RE),
     ]
 
     parser["continue"] = [
-        parser_re(ELSE_RE),
+        Parser(ELSE_RE),
         None,
-        parser_re(CASE_RE),
-        parser_re(CONTAINS_RE),
-        parser_re(CONTAINS_RE),
+        Parser(CASE_RE),
+        Parser(CONTAINS_RE),
+        Parser(CONTAINS_RE),
         None,
-        parser_re(CONTAINS_RE),
-        None,
-        None,
+        Parser(CONTAINS_RE),
         None,
         None,
-        parser_re(ELSEWHERE_RE),
+        None,
+        None,
+        Parser(ELSEWHERE_RE),
         None,
     ]
 
     parser["end"] = [
-        parser_re(ENDIF_RE),
-        parser_re(ENDDO_RE),
-        parser_re(ENDSEL_RE),
-        parser_re(ENDSUBR_RE),
-        parser_re(ENDFCT_RE),
-        parser_re(ENDINTERFACE_RE),
-        parser_re(ENDTYPE_RE),
-        parser_re(ENDENUM_RE),
-        parser_re(ENDASSOCIATE_RE),
-        parser_re(ENDANY_RE, spec=False),
-        parser_re(ENDBLK_RE),
-        parser_re(ENDWHERE_RE),
-        parser_re(ENDFORALL_RE),
+        Parser(ENDIF_RE),
+        Parser(ENDDO_RE),
+        Parser(ENDSEL_RE),
+        Parser(ENDSUBR_RE),
+        Parser(ENDFCT_RE),
+        Parser(ENDINTERFACE_RE),
+        Parser(ENDTYPE_RE),
+        Parser(ENDENUM_RE),
+        Parser(ENDASSOCIATE_RE),
+        Parser(ENDANY_RE, spec=False),
+        Parser(ENDBLK_RE),
+        Parser(ENDWHERE_RE),
+        Parser(ENDFORALL_RE),
     ]
 
     if mod:
-        parser["new"].extend(
-            [parser_re(MOD_RE), parser_re(SMOD_RE), parser_re(PROG_RE)]
-        )
+        parser["new"].extend([Parser(MOD_RE), Parser(SMOD_RE), Parser(PROG_RE)])
         parser["continue"].extend(
-            [parser_re(CONTAINS_RE), parser_re(CONTAINS_RE), parser_re(CONTAINS_RE)]
+            [Parser(CONTAINS_RE), Parser(CONTAINS_RE), Parser(CONTAINS_RE)]
         )
         parser["end"].extend(
-            [parser_re(ENDMOD_RE), parser_re(ENDSMOD_RE), parser_re(ENDPROG_RE)]
+            [Parser(ENDMOD_RE), Parser(ENDSMOD_RE), Parser(ENDPROG_RE)]
         )
 
     if fypp:
@@ -860,25 +850,25 @@ def build_scope_parser(fypp=True, mod=True):
 
 
 PREPRO_NEW_SCOPE = [
-    parser_re(FYPP_DEF_RE),
-    parser_re(FYPP_IF_RE),
-    parser_re(FYPP_FOR_RE),
-    parser_re(FYPP_BLOCK_RE),
-    parser_re(FYPP_CALL_RE),
-    parser_re(FYPP_MUTE_RE),
+    Parser(FYPP_DEF_RE),
+    Parser(FYPP_IF_RE),
+    Parser(FYPP_FOR_RE),
+    Parser(FYPP_BLOCK_RE),
+    Parser(FYPP_CALL_RE),
+    Parser(FYPP_MUTE_RE),
 ]
-PREPRO_CONTINUE_SCOPE = [None, parser_re(FYPP_ELIF_ELSE_RE), None, None, None, None]
+PREPRO_CONTINUE_SCOPE = [None, Parser(FYPP_ELIF_ELSE_RE), None, None, None, None]
 PREPRO_END_SCOPE = [
-    parser_re(FYPP_ENDDEF_RE),
-    parser_re(FYPP_ENDIF_RE),
-    parser_re(FYPP_ENDFOR_RE),
-    parser_re(FYPP_ENDBLOCK_RE),
-    parser_re(FYPP_ENDCALL_RE),
-    parser_re(FYPP_ENDMUTE_RE),
+    Parser(FYPP_ENDDEF_RE),
+    Parser(FYPP_ENDIF_RE),
+    Parser(FYPP_ENDFOR_RE),
+    Parser(FYPP_ENDBLOCK_RE),
+    Parser(FYPP_ENDCALL_RE),
+    Parser(FYPP_ENDMUTE_RE),
 ]
 
 # two-sided operators
-LR_OPS_RE = [REL_OP_RE, LOG_OP_RE, plusminus_parser(PLUSMINUS_RE), MULTDIV_RE, PRINT_RE]
+LR_OPS_RE = [REL_OP_RE, LOG_OP_RE, PlusMinusParser(PLUSMINUS_RE), MULTDIV_RE, PRINT_RE]
 
 USE_RE = re.compile(
     SOL_STR + "USE(\s+|(,.+?)?::\s*)\w+?((,.+?=>.+?)+|,\s*only\s*:.+?)?$" + EOL_STR,

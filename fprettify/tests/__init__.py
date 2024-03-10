@@ -32,7 +32,7 @@ import unittest
 
 from fprettify.constants import FORTRAN_EXTENSIONS
 from fprettify.exceptions import FprettifyInternalException, FprettifyParseException
-from fprettify.formatter import reformat_ffile
+from fprettify.formatter import reformat
 from fprettify.utils import log_exception, set_logger
 
 sys.stderr = io.TextIOWrapper(
@@ -975,7 +975,7 @@ def addtestmethod(testcase, fpath, ffile):
             outstring = io.StringIO()
 
             try:
-                reformat_ffile(infile, outstring)
+                reformat(infile, outstring)
                 m = hashlib.sha256()
                 m.update(outstring.getvalue().encode("utf-8"))
 

@@ -72,7 +72,7 @@ import sys
 
 from fprettify.constants import *
 from fprettify.exceptions import *
-from fprettify.formatter import reformat_inplace
+from fprettify.formatter import reformat
 from fprettify.utils import (
     build_ws_dict,
     get_arg_parser,
@@ -119,16 +119,12 @@ def run(argv=sys.argv):  # pragma: no cover
         if not args.recursive:
             filenames = [directory]
         else:
-            if args.fortran:
-                ext = args.fortran
-            else:
-                ext = FORTRAN_EXTENSIONS
+            ext = args.fortran if args.fortran else FORTRAN_EXTENSIONS
             filenames = []
 
             from fnmatch import fnmatch
 
             for dirpath, dirnames, files in os.walk(directory, topdown=True):
-
                 # Prune excluded patterns from list of child directories
                 dirnames[:] = [
                     dirname
@@ -156,7 +152,6 @@ def run(argv=sys.argv):  # pragma: no cover
                     filenames.append(ffile)
 
         for filename in filenames:
-
             # reparse arguments using the file's list of config files
             filearguments = parser_args
             filearguments["default_config_files"] = ["~/.fprettify.rc"] + list(
@@ -167,7 +162,8 @@ def run(argv=sys.argv):  # pragma: no cover
             file_argparser = get_arg_parser(filearguments)
             file_args = file_argparser.parse_args(argv[1:])
             ws_dict = build_ws_dict(file_args)
-
+            stdout = file_args.stdout or directory == "-"
+            diffonly = file_args.diff
             case_dict = {
                 "keywords": file_args.case[0],
                 "procedures": file_args.case[1],
@@ -175,23 +171,28 @@ def run(argv=sys.argv):  # pragma: no cover
                 "constants": file_args.case[3],
             }
 
-            stdout = file_args.stdout or directory == "-"
-            diffonly = file_args.diff
-
-            if file_args.debug:
-                level = logging.DEBUG
-            elif args.silent:
-                level = logging.CRITICAL
-            else:
-                level = logging.WARNING
-
-            set_logger(level)
+            set_logger(
+                logging.DEBUG
+                if file_args.debug
+                else logging.CRITICAL if args.silent else logging.WARNING
+            )
 
             try:
-                reformat_inplace(
-                    filename,
-                    stdout=stdout,
-                    diffonly=diffonly,
+                # transfer input stream or file to an in-memory buffer
+                if filename == "-":
+                    ib = io.StringIO()
+                    ib.write(sys.stdin.read())
+                else:
+                    ib = io.open(filename, "r", encoding="utf-8")
+
+                # buffer for reformatted output
+                ob = io.StringIO()
+
+                # reformat the input buffer
+                reformat(
+                    ib,
+                    ob,
+                    orig_filename=filename,
                     impose_indent=not file_args.disable_indent,
                     indent_size=file_args.indent,
                     strict_indent=file_args.strict_indent,
@@ -209,6 +210,33 @@ def run(argv=sys.argv):  # pragma: no cover
                     indent_fypp=not file_args.disable_fypp,
                     indent_mod=not file_args.disable_indent_mod,
                 )
+
+                # if in diff mode, just write the diff to stdout
+                if diffonly:
+                    from fprettify.utils import diff
+
+                    ib.seek(0)
+                    ob.seek(0)
+                    sys.stdout.write(diff(ib.read(), ob.read(), filename, filename))
+                else:
+                    # otherwise write reformatted content to the selected output
+                    if stdout:
+                        sys.stdout.write(ob.getvalue())
+                        return
+
+                    # write to output file only if content has changed
+                    import hashlib
+
+                    output = ob.getvalue()
+                    hash_new = hashlib.md5()
+                    hash_new.update(output.encode("utf-8"))
+                    hash_old = hashlib.md5()
+                    with io.open(filename, "r", encoding="utf-8") as f:
+                        hash_old.update(f.read().encode("utf-8"))
+                    if hash_new.digest() == hash_old.digest():
+                        return
+                    with io.open(filename, "w", encoding="utf-8") as f:
+                        f.write(output)
             except FprettifyException as e:
                 log_exception(e, "Fatal error occured")
                 sys.exit(1)
