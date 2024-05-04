@@ -34,18 +34,23 @@ from fprettify.tests.test_common import  TEST_MAIN_DIR, TEST_EXT_DIR, BACKUP_DIR
 
 fprettify.set_fprettify_logger(logging.ERROR)
 
-def generate_suite(suitename):
+def generate_suite(suite=None, name=None):
+    import git
     config = configparser.ConfigParser()
-    config.read(joinpath(TEST_MAIN_DIR, 'externalTestCode.config'))
+    config.read(joinpath(TEST_MAIN_DIR, 'testsuites.config'))
+
+    if suite is None and name is None:
+        return None
 
     for key in config.sections():
         code = config[key]
-        if code['suite'] == suitename:
+        if code['suite'] == suite or key == name:
             orig = os.getcwd()
             try:
                 os.chdir(TEST_EXT_DIR)
 
                 if not os.path.isdir(code['path']):
+                    print(f"obtaining {key} ...")
                     exec(code['obtain'])
             finally:
                 os.chdir(orig)
@@ -54,6 +59,7 @@ def generate_suite(suitename):
     return FprettifyTestCase
 
 def addtestcode(code_path, options):
+    print(f"creating test cases from {code_path} ...")
     # dynamically create test cases from fortran files in test directory
     for dirpath, _, filenames in os.walk(joinpath(TEST_EXT_DIR, code_path)):
         for example in [f for f in filenames if any(f.endswith(_) for _ in fprettify.FORTRAN_EXTENSIONS)]:
