@@ -20,8 +20,7 @@
 
 import unittest
 from fprettify.tests.unittests import FprettifyUnitTestCase
-from fprettify.tests.fortrantests import generate_suite
-from fprettify.tests.test_common import FAILED_FILE, RESULT_FILE, FprettifyTestCase
+from fprettify.tests.fortrantests import generate_suite, FAILED_FILE, RESULT_FILE
 import fileinput
 import io
 import os
@@ -44,18 +43,21 @@ if __name__ == '__main__':
     if args.suite[:2] == suite_default and len(args.suite) > 2:
         args.suite = args.suite[2:]
 
+    test_cases = []
+
     if args.name:
-        testCase = generate_suite(name=args.name)
+        test_cases.append(generate_suite(name=args.name))
     else:
-        test_suite = unittest.TestSuite()
         for suite in args.suite:
             if suite == "unittests":
-                test_loaded = unittest.TestLoader().loadTestsFromTestCase(FprettifyUnitTestCase)
-                test_suite.addTest(test_loaded)
+                test_cases.append(FprettifyUnitTestCase)
             else:
-                testCase = generate_suite(suite=suite)
-                test_loaded = unittest.TestLoader().loadTestsFromTestCase(testCase)
-                test_suite.addTest(test_loaded)
+                test_cases.append(generate_suite(suite=suite))
+
+    test_suite = unittest.TestSuite()
+    for test_case in test_cases:
+        test_loaded = unittest.TestLoader().loadTestsFromTestCase(test_case)
+        test_suite.addTest(test_loaded)
 
     unittest.TextTestRunner(verbosity=2).run(test_suite)
 

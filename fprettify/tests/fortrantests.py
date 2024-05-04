@@ -19,6 +19,7 @@
 ###############################################################################
 
 
+import sys
 import hashlib
 import logging
 import io
@@ -28,11 +29,96 @@ import difflib
 import configparser
 import shutil
 import shlex
+from datetime import datetime
 import fprettify
-from fprettify.tests.test_common import  TEST_MAIN_DIR, TEST_EXT_DIR, BACKUP_DIR, RESULT_DIR, RESULT_FILE, FAILED_FILE, FprettifyTestCase, joinpath
+from fprettify.tests.test_common import  _MYPATH, FprettifyTestCase, joinpath
+
+_TIMESTAMP = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+
+# main directory for running tests
+TEST_MAIN_DIR = joinpath(_MYPATH, r'../../fortran_tests')
+
+# directory for external Fortran code
+TEST_EXT_DIR = joinpath(TEST_MAIN_DIR, r'test_code')
+
+# directory containing Fortran examples
+EXAMPLE_DIR = joinpath(_MYPATH, r'../../examples/in')
+
+# backup directory
+BACKUP_DIR = joinpath(TEST_MAIN_DIR, r'test_code_in_' + _TIMESTAMP)
+
+# where to store summarized results
+RESULT_DIR = joinpath(TEST_MAIN_DIR, r'test_results')
+
+# expected hash-sums
+RESULT_FILE = joinpath(RESULT_DIR, r'expected_results')
+
+# test failures
+FAILED_FILE = joinpath(RESULT_DIR, r'failed_results')
 
 
 fprettify.set_fprettify_logger(logging.ERROR)
+
+class FprettifyIntegrationTestCase(FprettifyTestCase):
+    def shortDescription(self):
+        """don't print doc string of testmethod"""
+        return None
+
+    def setUp(self):
+        """
+        setUp to be recognized by unittest.
+        We have large files to compare, raise the limit
+        """
+        self.maxDiff = None
+
+    @classmethod
+    def setUpClass(cls):
+        """
+        setUpClass to be recognized by unittest.
+        """
+
+        cls.n_success = 0
+        cls.n_parsefail = 0
+        cls.n_internalfail = 0
+        cls.n_unexpectedfail = 0
+
+        FprettifyIntegrationTestCase.eprint("-" * 70)
+        FprettifyIntegrationTestCase.eprint("recognized Fortran files")
+        FprettifyIntegrationTestCase.eprint(", ".join(fprettify.FORTRAN_EXTENSIONS))
+        FprettifyIntegrationTestCase.eprint("-" * 70)
+        FprettifyIntegrationTestCase.eprint("Applying fprettify to Fortran files in " + TEST_EXT_DIR)
+        FprettifyIntegrationTestCase.eprint("Writing backup of original files to " + BACKUP_DIR)
+        FprettifyIntegrationTestCase.eprint("Storing expected results in " + RESULT_FILE)
+        FprettifyIntegrationTestCase.eprint("Storing failed results in " + FAILED_FILE)
+        FprettifyIntegrationTestCase.eprint("-" * 70)
+
+    @classmethod
+    def tearDownClass(cls):
+        """
+        tearDownClass to be recognized by unittest. Used for test summary
+        output.
+        """
+        if cls.n_parsefail + cls.n_internalfail > 0:
+            format = "{:<20}{:<6}"
+            FprettifyIntegrationTestCase.eprint('\n' + "=" * 70)
+            FprettifyIntegrationTestCase.eprint("IGNORED errors: invalid or old Fortran")
+            FprettifyIntegrationTestCase.eprint("-" * 70)
+            FprettifyIntegrationTestCase.eprint(format.format("parse errors: ", cls.n_parsefail))
+            FprettifyIntegrationTestCase.eprint(format.format("internal errors: ", cls.n_internalfail))
+
+    @staticmethod
+    def write_result(filename, content, sep_str):  # pragma: no cover
+        with io.open(filename, 'a', encoding='utf-8') as outfile:
+            outfile.write(sep_str.join(content) + '\n')
+
+    @staticmethod
+    def eprint(*args, **kwargs):
+        """
+        Print to stderr - to print output compatible with default unittest output.
+        """
+    
+        print(*args, file=sys.stderr, flush=True, **kwargs)
+
 
 def generate_suite(suite=None, name=None):
     import git
@@ -56,7 +142,7 @@ def generate_suite(suite=None, name=None):
                 os.chdir(orig)
 
             addtestcode(code['path'], code['options'])
-    return FprettifyTestCase
+    return FprettifyIntegrationTestCase
 
 def addtestcode(code_path, options):
     print(f"creating test cases from {code_path} ...")
@@ -64,7 +150,7 @@ def addtestcode(code_path, options):
     for dirpath, _, filenames in os.walk(joinpath(TEST_EXT_DIR, code_path)):
         for example in [f for f in filenames if any(f.endswith(_) for _ in fprettify.FORTRAN_EXTENSIONS)]:
             rel_dirpath = os.path.relpath(dirpath, start=TEST_EXT_DIR)
-            addtestmethod(FprettifyTestCase, rel_dirpath, example, options)
+            addtestmethod(FprettifyIntegrationTestCase, rel_dirpath, example, options)
 
 def addtestmethod(testcase, fpath, ffile, options):
     """add a test method for each example."""
@@ -107,19 +193,19 @@ def addtestmethod(testcase, fpath, ffile, options):
                 test_info = "checksum"
                 test_content = test_result(example, m.hexdigest())
 
-                FprettifyTestCase.n_success += 1
+                FprettifyIntegrationTestCase.n_success += 1
             except fprettify.FprettifyParseException as e:
                 test_info = "parse error"
                 fprettify.log_exception(e, test_info, level="warning")
                 test_content = test_result(example, test_info)
-                FprettifyTestCase.n_parsefail += 1
+                FprettifyIntegrationTestCase.n_parsefail += 1
             except fprettify.FprettifyInternalException as e:
                 test_info = "internal error"
                 fprettify.log_exception(e, test_info, level="warning")
                 test_content = test_result(example, test_info)
-                FprettifyTestCase.n_internalfail += 1
+                FprettifyIntegrationTestCase.n_internalfail += 1
             except:  # pragma: no cover
-                FprettifyTestCase.n_unexpectedfail += 1
+                FprettifyIntegrationTestCase.n_unexpectedfail += 1
                 raise
 
         # overwrite example
@@ -141,7 +227,7 @@ def addtestmethod(testcase, fpath, ffile, options):
                 line_content = line.strip().split(sep_str)
                 if line_content[0] == test_content[0]:
                     found = True
-                    FprettifyTestCase.eprint(test_info, end=" ")
+                    FprettifyIntegrationTestCase.eprint(test_info, end=" ")
                     msg = '{} (old) != {} (new)'.format(
                         line_content[1], test_content[1])
                     if test_info == "checksum" and outstring.count('\n') < 10000:
@@ -153,14 +239,14 @@ def addtestmethod(testcase, fpath, ffile, options):
                         testcase.assertEqual(
                             line_content[1], test_content[1], msg)
                     except AssertionError:  # pragma: no cover
-                        FprettifyTestCase.write_result(
+                        FprettifyIntegrationTestCase.write_result(
                             FAILED_FILE, test_content, sep_str)
                         raise
                     break
 
         if not found:  # pragma: no cover
-            FprettifyTestCase.eprint(test_info + " new", end=" ")
-            FprettifyTestCase.write_result(RESULT_FILE, test_content, sep_str)
+            FprettifyIntegrationTestCase.eprint(test_info + " new", end=" ")
+            FprettifyIntegrationTestCase.write_result(RESULT_FILE, test_content, sep_str)
 
     # not sure why this even works, using "test something" (with a space) as function name...
     # however it gives optimal test output
