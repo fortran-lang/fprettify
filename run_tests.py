@@ -33,17 +33,31 @@ if __name__ == '__main__':
         description='Run tests', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("-r", "--reset", action='store_true', default=False,
                         help="Reset test results to new results of failed tests")
-    parser.add_argument("-s", "--suite", type=str, default="unittests", help="select suite.")
+    parser.add_argument("-n", "--name", type=str, help="select tests by name (sections in testsuites.config).")
+
+    suite_default = ["unittests", "builtin"]
+    parser.add_argument("-s", "--suite", type=str, default=suite_default, help="select suite.", choices=["unittests", "builtin", "regular", "cron", "custom"], action='append')
 
     args = parser.parse_args()
 
-    if args.suite == "unittests":
-        suite = unittest.TestLoader().loadTestsFromTestCase(FprettifyUnitTestCase)
-    else:
-        testCase = generate_suite(args.suite)
-        suite = unittest.TestLoader().loadTestsFromTestCase(testCase)
+    # remove defaults if user has specified anything
+    if args.suite[:2] == suite_default and len(args.suite) > 2:
+        args.suite = args.suite[2:]
 
-    unittest.TextTestRunner(verbosity=2).run(suite)
+    if args.name:
+        testCase = generate_suite(name=args.name)
+    else:
+        test_suite = unittest.TestSuite()
+        for suite in args.suite:
+            if suite == "unittests":
+                test_loaded = unittest.TestLoader().loadTestsFromTestCase(FprettifyUnitTestCase)
+                test_suite.addTest(test_loaded)
+            else:
+                testCase = generate_suite(suite=suite)
+                test_loaded = unittest.TestLoader().loadTestsFromTestCase(testCase)
+                test_suite.addTest(test_loaded)
+
+    unittest.TextTestRunner(verbosity=2).run(test_suite)
 
     if args.reset and os.path.isfile(FAILED_FILE):
         sep_str = ' : '
