@@ -26,7 +26,6 @@ import os
 import logging
 import io
 import subprocess
-import shlex
 
 sys.stderr = io.TextIOWrapper(
     sys.stderr.detach(), encoding='UTF-8', line_buffering=True)
