@@ -1556,7 +1556,7 @@ def reformat_ffile_combined(infile, outfile, impose_indent=True, indent_size=3, 
             lines, pre_ampersand, ampersand_sep = remove_pre_ampersands(
                 lines, is_special, orig_filename, stream.line_nr)
 
-            linebreak_pos = get_linebreak_pos(lines, filter_fypp=not indent_fypp)
+            linebreak_pos = get_linebreak_pos(lines, not indent_fypp, orig_filename, stream.line_nr)
 
             f_line = f_line.strip(' ')
 
@@ -1600,6 +1600,10 @@ def reformat_ffile_combined(infile, outfile, impose_indent=True, indent_size=3, 
         write_formatted_line(outfile, indent, lines, orig_lines, indent_special, llength,
                              use_same_line, is_omp_conditional, label, orig_filename, stream.line_nr)
 
+        # rm subsequent blank lines
+        skip_blank = EMPTY_RE.search(
+            f_line) and not any(comments) and not is_omp_conditional and not label and not use_same_line
+
         do_indent, use_same_line = pass_defaults_to_next_line(f_line)
 
         if impose_indent:
@@ -1607,11 +1611,6 @@ def reformat_ffile_combined(infile, outfile, impose_indent=True, indent_size=3, 
                 indent_special = 0
             else:
                 indent_special = 1
-
-        # rm subsequent blank lines
-        skip_blank = EMPTY_RE.search(
-            f_line) and not any(comments) and not is_omp_conditional and not label
-
 
 def format_comments(lines, comments, strip_comments):
     comments_ftd = []
@@ -1764,7 +1763,7 @@ def append_comments(lines, comment_lines, is_special):
     return lines
 
 
-def get_linebreak_pos(lines, filter_fypp=True):
+def get_linebreak_pos(lines, filter_fypp, filename, line_nr):
     """extract linebreak positions in Fortran line from lines"""
     linebreak_pos = []
     if filter_fypp:
@@ -1778,6 +1777,8 @@ def get_linebreak_pos(lines, filter_fypp=True):
             if re.match(LINEBREAK_STR, line[char_pos:], RE_FLAGS):
                 found = char_pos
         if found:
+            if re.search('&&', line, RE_FLAGS):
+                raise FprettifyParseException("Non-standard expression involving '&&'", filename, line_nr)
             linebreak_pos.append(found)
         elif notfortran_re.search(line.lstrip(' ')):
             linebreak_pos.append(0)

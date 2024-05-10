@@ -144,6 +144,16 @@ def generate_suite(suite=None, name=None):
             addtestcode(code['path'], code['options'])
     return FprettifyIntegrationTestCase
 
+def normalize_line(line):
+    """
+    Normalize fortran line in a way that resulting string should be the same
+    whether fprettify has been applied or not.
+    """
+    line_out = re.sub(r'\n{3,}', r'\n\n', line.lower().replace(' ', '').replace('\t', ''))
+    # fprettify might add missing ampersands when splitting string
+    line_out = re.sub("^&", '', line_out, flags=re.MULTILINE)
+    return line_out
+
 def addtestcode(code_path, options):
     print(f"creating test cases from {code_path} ...")
     # dynamically create test cases from fortran files in test directory
@@ -213,12 +223,10 @@ def addtestmethod(testcase, fpath, ffile, options):
             raise
 
         # check that no changes other than whitespace changes or lower/upper case occured
-        before_stripped = re.sub(
-            r'\n{3,}', r'\n\n', instring.lower().replace(' ', '').replace('\t', ''))
+        orig_stripped = normalize_line(instring)
+        new_stripped = normalize_line(outstring)
 
-        after_stripped = outstring.lower().replace(' ', '').replace('\t', '')
-
-        testcase.assertMultiLineEqual(before_stripped, after_stripped, "fprettify caused changes other than whitespace or lower/upper case")
+        testcase.assertMultiLineEqual(orig_stripped, new_stripped, "fprettify caused changes other than whitespace or lower/upper case")
 
         sep_str = ' : '
         with io.open(RESULT_FILE, 'r', encoding='utf-8') as infile:
