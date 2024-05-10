@@ -800,5 +800,17 @@ END MODULE
 
         self.assert_fprettify_result([], instring, outstring)
 
+    def test_ampersand_string(self):
+        instring = ['write  ( * ,  * )  "a&\nstring"',
+                    'write  ( * ,  * )"a& \n    string"',
+                    'write  ( * ,  * )    "a& \n    &  string"']
+        outstring = ['write (*, *) "a&\n&string"',
+                     'write (*, *) "a&\n&    string"',
+                     'write (*, *) "a&\n    &  string"']
+
+        for instr, outstr in zip(instring, outstring):
+            self.assert_fprettify_result([], instr, outstr)
+
+
 
 
