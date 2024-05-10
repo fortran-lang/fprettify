@@ -176,49 +176,49 @@ def addtestmethod(testcase, fpath, ffile, options):
         with io.open(example_backup, 'w', encoding='utf-8') as outfile:
             outfile.write(instring)
 
+        # initialize outstring containing reformatted file content
+        outstring = instring
+
         # apply fprettify
-        with io.open(example, 'r', encoding='utf-8') as infile:
-            outfile = io.StringIO()
+        try:
+            parser = fprettify.get_arg_parser()
+            args = parser.parse_args(shlex.split(options))
+            args = fprettify.process_args(args)
 
-            try:
-                parser = fprettify.get_arg_parser()
-                args = parser.parse_args(shlex.split(options))
-                args = fprettify.process_args(args)
+            fprettify.reformat_inplace(example, **args)
 
-                fprettify.reformat_ffile(infile, outfile, **args)
-                outstring = outfile.getvalue()
-                m = hashlib.sha256()
-                m.update(outstring.encode('utf-8'))
+            # update outstring
+            with io.open(example, 'r', encoding='utf-8') as outfile:
+                outstring = outfile.read()
 
-                test_info = "checksum"
-                test_content = test_result(example, m.hexdigest())
+            m = hashlib.sha256()
+            m.update(outstring.encode('utf-8'))
 
-                FprettifyIntegrationTestCase.n_success += 1
-            except fprettify.FprettifyParseException as e:
-                test_info = "parse error"
-                fprettify.log_exception(e, test_info, level="warning")
-                test_content = test_result(example, test_info)
-                FprettifyIntegrationTestCase.n_parsefail += 1
-            except fprettify.FprettifyInternalException as e:
-                test_info = "internal error"
-                fprettify.log_exception(e, test_info, level="warning")
-                test_content = test_result(example, test_info)
-                FprettifyIntegrationTestCase.n_internalfail += 1
-            except:  # pragma: no cover
-                FprettifyIntegrationTestCase.n_unexpectedfail += 1
-                raise
+            test_info = "checksum"
+            test_content = test_result(example, m.hexdigest())
 
-        # overwrite example
-        with io.open(example, 'w', encoding='utf-8') as outfile:
-            outfile.write(outstring)
+            FprettifyIntegrationTestCase.n_success += 1
+        except fprettify.FprettifyParseException as e:
+            test_info = "parse error"
+            fprettify.log_exception(e, test_info, level="warning")
+            test_content = test_result(example, test_info)
+            FprettifyIntegrationTestCase.n_parsefail += 1
+        except fprettify.FprettifyInternalException as e:
+            test_info = "internal error"
+            fprettify.log_exception(e, test_info, level="warning")
+            test_content = test_result(example, test_info)
+            FprettifyIntegrationTestCase.n_internalfail += 1
+        except:  # pragma: no cover
+            FprettifyIntegrationTestCase.n_unexpectedfail += 1
+            raise
 
         # check that no changes other than whitespace changes or lower/upper case occured
-        before_nosp = re.sub(
+        before_stripped = re.sub(
             r'\n{3,}', r'\n\n', instring.lower().replace(' ', '').replace('\t', ''))
 
-        after_nosp = outstring.lower().replace(' ', '')
+        after_stripped = outstring.lower().replace(' ', '').replace('\t', '')
 
-        testcase.assertMultiLineEqual(before_nosp, after_nosp)
+        testcase.assertMultiLineEqual(before_stripped, after_stripped, "fprettify caused changes other than whitespace or lower/upper case")
 
         sep_str = ' : '
         with io.open(RESULT_FILE, 'r', encoding='utf-8') as infile:
@@ -266,5 +266,4 @@ if not os.path.exists(RESULT_FILE):  # pragma: no cover
 if os.path.exists(FAILED_FILE):  # pragma: no cover
     # erase failures from previous testers
     io.open(FAILED_FILE, 'w', encoding='utf-8').close()
-
 
