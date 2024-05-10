@@ -1233,10 +1233,11 @@ def add_whitespace_charwise(line, spacey, scope_parser, format_decl, filename, l
         # strip whitespaces from '=' and prepare assignment operator
         # formatting:
         if char == '=' and not REL_OP_RE.search(line[pos - 1:pos + 2]):
+            is_pointer = line[pos + 1] == '>' if pos + 1 < len(line) else False
             lhs = line_ftd[:pos + offset]
-            rhs = line_ftd[pos + 1 + offset:]
-            line_ftd = lhs.rstrip(' ') + '=' + rhs.lstrip(' ')
-            is_pointer = line[pos + 1] == '>'
+            rhs = line_ftd[pos + 1 + is_pointer + offset:]
+            assign_op = '=' + '>'*is_pointer
+            line_ftd = lhs.rstrip(' ') + assign_op + rhs.lstrip(' ')
             if (not level) or is_pointer:  # remember position of assignment operator
                 pos_eq.append(len(lhs.rstrip(' ')))
 
@@ -1244,13 +1245,10 @@ def add_whitespace_charwise(line, spacey, scope_parser, format_decl, filename, l
 
     for pos in pos_eq:
         offset = len(line_ftd) - len(line)
-        is_pointer = line[pos + 1] == '>'
+        is_pointer = line[pos + 1] == '>' if pos + 1 < len(line) else False
         lhs = line_ftd[:pos + offset]
         rhs = line_ftd[pos + 1 + is_pointer + offset:]
-        if is_pointer:
-            assign_op = '=>'  # pointer assignment
-        else:
-            assign_op = '='  # assignment
+        assign_op = '=' + '>'*is_pointer
         line_ftd = (lhs.rstrip(' ') +
                     ' ' * spacey[1] + assign_op +
                     ' ' * spacey[1] + rhs.lstrip(' '))
