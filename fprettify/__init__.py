@@ -550,7 +550,7 @@ class F90Indenter(object):
 
         if (self._initial and
             (PROG_RE.match(f_line) or MOD_RE.match(f_line))):
-            self._indent_storage[-1] = 0
+            self._indent_storage = [0]
 
         self._line_indents = [0] * len(lines)
         br_indent_list = [0] * len(lines)

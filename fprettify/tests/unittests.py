@@ -108,10 +108,12 @@ class FprettifyUnitTestCase(FprettifyTestCase):
         """test of reset indentation at file start"""
         instring = ("integer :: i,j\ndo i=1,2\ndo j=1,3\n"
                     "print*,i,j,i*j\nend do\nend do",
-                    "   module a\ninteger :: 1\n")
+                    "   module a\ninteger :: 1\n",
+                    "     module a\nend\nend")
         outstring = ("integer :: i, j\ndo i = 1, 2\ndo j = 1, 3\n"
                      "   print *, i, j, i*j\nend do\nend do",
-                     "module a\n   integer :: 1")
+                     "module a\n   integer :: 1",
+                     "module a\nend\nend")
 
         for ind, out in zip(instring, outstring):
             self.assert_fprettify_result([],ind, out)
@@ -801,6 +803,7 @@ END MODULE
         self.assert_fprettify_result([], instring, outstring)
 
     def test_ampersand_string(self):
+        """test linebreaks within strings"""
         instring = ['write  ( * ,  * )  "a&\nstring"',
                     'write  ( * ,  * )"a& \n    string"',
                     'write  ( * ,  * )    "a& \n    &  string"']
