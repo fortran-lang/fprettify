@@ -2036,9 +2036,11 @@ def get_arg_parser(args={}):
                         help="Paths to files to be formatted inplace. If no paths are given, stdin (-) is used by default. Path can be a directory if --recursive is used.", default=['-'])
     parser.add_argument('-r', '--recursive', action='store_true',
                         default=False, help="Recursively auto-format all Fortran files in subdirectories of specified path; recognized filename extensions: {}". format(", ".join(FORTRAN_EXTENSIONS)))
-    parser.add_argument('-e', '--exclude', action='append',
+    parser.add_argument('-e', '--exclude-pattern', '--exclude', action='append',
                         default=[], type=str,
                         help="File or directory patterns to be excluded when searching for Fortran files to format")
+    parser.add_argument('-m', '--exclude-max-lines', type=int,
+                        help="Exclude large files when searching for Fortran files to format by specifying the maximum number of lines per file")
     parser.add_argument('-f', '--fortran', type=str, action='append', default=[],
                         help="Overrides default fortran extensions recognized by --recursive. Repeat this option to specify more than one extension.")
     parser.add_argument('--version', action='version',
@@ -2109,15 +2111,27 @@ def run(argv=sys.argv):  # pragma: no cover
                 # Prune excluded patterns from list of child directories
                 dirnames[:] = [dirname for dirname in dirnames if not any(
                     [fnmatch(dirname,exclude_pattern) or fnmatch(os.path.join(dirpath,dirname),exclude_pattern)
-                            for exclude_pattern in args.exclude]
+                            for exclude_pattern in args.exclude_pattern]
                 )]
 
                 for ffile in [os.path.join(dirpath, f) for f in files
                               if any(f.endswith(_) for _ in ext)
                               and not any([
                                   fnmatch(f,exclude_pattern)
-                                  for exclude_pattern in args.exclude])]:
-                    filenames.append(ffile)
+                                  for exclude_pattern in args.exclude_pattern])]:
+
+                    include_file = True
+                    if args.exclude_max_lines is not None:
+                        line_count = 0
+                        with open(ffile) as f:
+                            for i in f:
+                                line_count += 1
+                                if line_count > args.exclude_max_lines:
+                                    include_file = False
+                                    break
+
+                    if include_file:
+                        filenames.append(ffile)
 
         for filename in filenames:
 

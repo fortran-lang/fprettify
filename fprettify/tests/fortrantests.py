@@ -157,12 +157,29 @@ def normalize_line(line):
 def addtestcode(code_path, options):
     print(f"creating test cases from {code_path} ...")
     # dynamically create test cases from fortran files in test directory
+
+    parser = fprettify.get_arg_parser()
+    args = parser.parse_args(shlex.split(options))
+    fprettify_args = fprettify.process_args(args)
+
     for dirpath, _, filenames in os.walk(joinpath(TEST_EXT_DIR, code_path)):
         for example in [f for f in filenames if any(f.endswith(_) for _ in fprettify.FORTRAN_EXTENSIONS)]:
             rel_dirpath = os.path.relpath(dirpath, start=TEST_EXT_DIR)
-            addtestmethod(FprettifyIntegrationTestCase, rel_dirpath, example, options)
 
-def addtestmethod(testcase, fpath, ffile, options):
+            include_file = True
+            if args.exclude_max_lines is not None:
+                line_count = 0
+                with open(joinpath(dirpath, example)) as f:
+                    for i in f:
+                        line_count += 1
+                        if line_count > args.exclude_max_lines:
+                            include_file = False
+                            break
+
+            if include_file:
+                addtestmethod(FprettifyIntegrationTestCase, rel_dirpath, example, fprettify_args)
+
+def addtestmethod(testcase, fpath, ffile, args):
     """add a test method for each example."""
 
     def testmethod(testcase):
@@ -191,10 +208,6 @@ def addtestmethod(testcase, fpath, ffile, options):
 
         # apply fprettify
         try:
-            parser = fprettify.get_arg_parser()
-            args = parser.parse_args(shlex.split(options))
-            args = fprettify.process_args(args)
-
             fprettify.reformat_inplace(example, **args)
 
             # update outstring
