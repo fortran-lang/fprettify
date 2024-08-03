@@ -121,6 +121,19 @@ class FprettifyIntegrationTestCase(FprettifyTestCase):
 
 
 def generate_suite(suite=None, name=None):
+    # make sure all directories exist
+    if not os.path.exists(TEST_EXT_DIR):  # pragma: no cover
+        os.makedirs(TEST_EXT_DIR)
+    if not os.path.exists(BACKUP_DIR):  # pragma: no cover
+        os.makedirs(BACKUP_DIR)
+    if not os.path.exists(RESULT_DIR):  # pragma: no cover
+        os.makedirs(RESULT_DIR)
+    if not os.path.exists(RESULT_FILE):  # pragma: no cover
+        io.open(RESULT_FILE, 'w', encoding='utf-8').close()
+    if os.path.exists(FAILED_FILE):  # pragma: no cover
+        # erase failures from previous testers
+        io.open(FAILED_FILE, 'w', encoding='utf-8').close()
+
     import git
     config = configparser.ConfigParser()
     config.read(joinpath(TEST_MAIN_DIR, 'testsuites.config'))
@@ -274,17 +287,4 @@ def addtestmethod(testcase, fpath, ffile, args):
     testmethod.__name__ = ("test " + joinpath(fpath, ffile))
 
     setattr(testcase, testmethod.__name__, testmethod)
-
-# make sure all directories exist
-if not os.path.exists(TEST_EXT_DIR):  # pragma: no cover
-    os.makedirs(TEST_EXT_DIR)
-if not os.path.exists(BACKUP_DIR):  # pragma: no cover
-    os.makedirs(BACKUP_DIR)
-if not os.path.exists(RESULT_DIR):  # pragma: no cover
-    os.makedirs(RESULT_DIR)
-if not os.path.exists(RESULT_FILE):  # pragma: no cover
-    io.open(RESULT_FILE, 'w', encoding='utf-8').close()
-if os.path.exists(FAILED_FILE):  # pragma: no cover
-    # erase failures from previous testers
-    io.open(FAILED_FILE, 'w', encoding='utf-8').close()
 
