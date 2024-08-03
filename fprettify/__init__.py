@@ -70,6 +70,7 @@ import sys
 import logging
 import os
 import io
+import shlex
 try:
     import configargparse as argparse
 except ImportError:
@@ -239,6 +240,9 @@ PREPRO_CONTINUE_SCOPE = [None, parser_re(FYPP_ELIF_ELSE_RE), None, None, None, N
 PREPRO_END_SCOPE = [parser_re(FYPP_ENDDEF_RE), parser_re(FYPP_ENDIF_RE), parser_re(FYPP_ENDFOR_RE),
                        parser_re(FYPP_ENDBLOCK_RE), parser_re(FYPP_ENDCALL_RE),
                        parser_re(FYPP_ENDMUTE_RE)]
+
+# line annotating fprettify options
+FPRETTIY_ANNOTATION_RE = re.compile("^\s*!\s*fprettify:\s*(.*)\s*$", RE_FLAGS)
 
 class plusminus_parser(parser_re):
     """parser for +/- in addition
@@ -1389,6 +1393,23 @@ def reformat_inplace(filename, stdout=False, diffonly=False, **kwargs):  # pragm
         infile = io.open(filename, 'r', encoding='utf-8')
 
     newfile = io.StringIO()
+
+    # check fprettify annotations overriding any previously parsed options
+    infile.seek(0)
+    arg_parser = get_arg_parser()
+    annotated_args = {}
+    for line in infile:
+        match = FPRETTIY_ANNOTATION_RE.search(line)
+        if match:
+            if annotated_args:
+                log_message("Ignoring subsequent '! fprettify: ...' comments within same file.")
+                continue
+
+            args_tmp = arg_parser.parse_args(shlex.split(match.group(1)))
+            annotated_args = process_args(args_tmp)
+
+    kwargs.update(annotated_args)
+
     reformat_ffile(infile, newfile,
                    orig_filename=filename, **kwargs)
 
