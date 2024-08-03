@@ -814,6 +814,20 @@ END MODULE
         for instr, outstr in zip(instring, outstring):
             self.assert_fprettify_result([], instr, outstr)
 
+    def test_first_line_non_code(self):
+        """test whether first non-code line gets correctly indented"""
+        instr = "  ! a comment\n     module mod\n ! a comment\nend"
+        outstr = "! a comment\nmodule mod\n   ! a comment\nend"
+        self.assert_fprettify_result([], instr, outstr)
+
+        instr = "  ! a comment\n     program mod\n ! a comment\nend"
+        outstr = "! a comment\nprogram mod\n   ! a comment\nend"
+        self.assert_fprettify_result([], instr, outstr)
+
+        instr = "  ! a comment\n     function fun()\n ! a comment\nend"
+        outstr = "     ! a comment\n     function fun()\n        ! a comment\n     end"
+        self.assert_fprettify_result([], instr, outstr)
+
 
 
 

@@ -880,7 +880,11 @@ def inspect_ffile_format(infile, indent_size, strict_indent, indent_fypp=False, 
 
         offset = len(lines[0]) - len(lines[0].lstrip(' '))
         if f_line.strip() and first_indent == -1:
-            first_indent = offset
+            if (PROG_RE.match(f_line) or MOD_RE.match(f_line)):
+                first_indent = 0
+            else:
+                first_indent = offset
+
         indents.append(offset - prev_offset)
 
         # don't impose indentation for blocked do/if constructs:

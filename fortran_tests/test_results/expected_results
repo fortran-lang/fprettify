@@ -202,7 +202,7 @@ RosettaCodeData/Task/Evaluate-binomial-coefficients/Fortran/evaluate-binomial-co
 RosettaCodeData/Task/Evaluate-binomial-coefficients/Fortran/evaluate-binomial-coefficients-2.f : ee437ca111ffe375a35d5867ec901496f92b2e0c87317ed7cdbc578d638c148b
 RosettaCodeData/Task/Evaluate-binomial-coefficients/Fortran/evaluate-binomial-coefficients.f : 3305f7383cf813b6fcfc38c3cb3ff6cd2b4a6658bb8e7f809beb74d223164e99
 RosettaCodeData/Task/Even-or-odd/Fortran/even-or-odd.f : 0e4cc270e588ce499f8e08cef33339c497b9b87e387cb9c18b7fbbd3a2b856fd
-RosettaCodeData/Task/Evolutionary-algorithm/Fortran/evolutionary-algorithm-1.f : a3262f22055fb743029a67cc9578ab5fcee554e4722df60906f1168166ffdcca
+RosettaCodeData/Task/Evolutionary-algorithm/Fortran/evolutionary-algorithm-1.f : 517c7d8b5f9ab77136c983ea64d58bb9e334adf39fde925bf13f05bf14d8d94e
 RosettaCodeData/Task/Evolutionary-algorithm/Fortran/evolutionary-algorithm-2.f : 8b6eb20fa34089cdb0b9700e02fa6c06c06ac1bf4868e58446d11575ebb51ca9
 RosettaCodeData/Task/Execute-Brain----/Fortran/execute-brain-----1.f : 008147b30c6b7d8a5f990c9d80efe7c39d845f048941f32fd8aaed46797bc2e5
 RosettaCodeData/Task/Execute-Brain----/Fortran/execute-brain-----2.f : 0521bf5368ba92ee0d9528f5a521be25e53e4519f1bc12e95c81f0216404ea3a
@@ -2323,7 +2323,7 @@ RosettaCodeData/Task/Boyer-Moore-string-search/Fortran/boyer-moore-string-search
 RosettaCodeData/Task/Brazilian-numbers/Fortran/brazilian-numbers.f : e514b0c782dc294d5e9ef8382451115278cfa6c52a3848bab528c74dc45be1bb
 RosettaCodeData/Task/CUSIP/Fortran/cusip.f : 7b92e68ff1762bc1b0c5fdb6dbcc6a959e513b27fe61d4d03676dcaa14c4a30c
 RosettaCodeData/Task/Calculating-the-value-of-e/Fortran/calculating-the-value-of-e.f : 6b400441114621aa6d32130f9f182cd634f0ccf155012ebcd1ddbd57815ccce3
-RosettaCodeData/Task/Cartesian-product-of-two-or-more-lists/Fortran/cartesian-product-of-two-or-more-lists.f : 03863f01d4583c88bcd69df6285e0d7b7155a354b26c767b7d066fbbbbf96216
+RosettaCodeData/Task/Cartesian-product-of-two-or-more-lists/Fortran/cartesian-product-of-two-or-more-lists.f : cd6b69c40076b85814b26edcb33f77efaf784321f299fb4964f8c9a2f1e96c80
 RosettaCodeData/Task/Chaos-game/Fortran/chaos-game-1.f : d35adb372bc41fafd520a27038965fba9de59f18dbd22dbb85e4a24563394887
 RosettaCodeData/Task/Chaos-game/Fortran/chaos-game-2.f : 17d39771057f76c5d9046740bb5078e89364e15fff1a55dd565b1b3e7b02db5c
 RosettaCodeData/Task/Cheryls-birthday/Fortran/cheryls-birthday.f : 0d2ad8729f4ffca1d8f63245a03e781b9984b87e1acdcd839577cd61941de4e1
