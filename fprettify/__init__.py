@@ -480,8 +480,7 @@ F90_NUMBER_ALL_REC = re.compile(F90_NUMBER_ALL_RE, RE_FLAGS)
 
 ## F90_CONSTANTS_TYPES_RE = re.compile(r"\b" + F90_NUMBER_ALL_RE + "_(" + "|".join([a + r"\b" for a in (
 F90_CONSTANTS_TYPES_RE = re.compile(
-    r"(" + F90_NUMBER_ALL_RE + ")*_(" + "|".join((
-    ## F2003 iso_fortran_env constants.
+    r"(" + F90_NUMBER_ALL_RE + ")_(" + "|".join((
     ## F2003 iso_c_binding constants.
     "c_int", "c_short", "c_long", "c_long_long", "c_signed_char",
     "c_size_t",
