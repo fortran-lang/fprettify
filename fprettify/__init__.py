@@ -269,7 +269,7 @@ class plusminus_parser(parser_re):
 LR_OPS_RE = [REL_OP_RE, LOG_OP_RE, plusminus_parser(PLUSMINUS_RE), MULTDIV_RE, PRINT_RE]
 
 USE_RE = re.compile(
-    SOL_STR + "USE(\s+|(,.+?)?::\s*)\w+?((,.+?=>.+?)+|,\s*only\s*:.+?)?$" + EOL_STR, RE_FLAGS)
+    SOL_STR + r"USE(\s+|(,.+?)?::\s*)\w+?((,.+?=>.+?)+|,\s*only\s*:.+?)?$" + EOL_STR, RE_FLAGS)
 
 # markups to deactivate formatter
 NO_ALIGN_RE = re.compile(SOL_STR + r"&\s*[^\s*]+")
