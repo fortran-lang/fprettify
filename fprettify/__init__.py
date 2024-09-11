@@ -1308,7 +1308,7 @@ def add_whitespace_context(line, spacey):
 
     line = ''.join(line_parts)
 
-    for newre in [IF_RE, DO_RE, BLK_RE]:
+    for newre in [IF_RE, DO_RE, SELCASE_RE, BLK_RE]:
         if newre.search(line) and re.search(SOL_STR + r"\w+\s*:", line):
             line = ': '.join(_.strip() for _ in line.split(':', 1))
 
