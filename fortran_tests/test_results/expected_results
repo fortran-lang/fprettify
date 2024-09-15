@@ -1,4 +1,3 @@
-example.f90 : f5b449553856f8e62b253402ed2189044554f53c9954aad045db44ff3c2d49b7
 RosettaCodeData/Task/100-doors/Fortran/100-doors-1.f : fb2e26d1d430a3473b8a925af2fc1be6ab0642bf841e9efd5d65ecb10445d3cd
 RosettaCodeData/Task/100-doors/Fortran/100-doors-2.f : 263122b2af3e3637a7dab0bc0216dec27d76068b7352e9ab85e420de625408be
 RosettaCodeData/Task/24-game-Solve/Fortran/24-game-solve-1.f : 8927cfcfe15685f1513ed923b7ac38058358ec6586de83920679b537aa5b2d03
@@ -1938,8 +1937,6 @@ FLAP/src/tests/test_hidden.f90 : d7ec93d37518ce41f035bb4568c67f3dff7085d22fa2e1d
 FLAP/src/tests/test_minimal.f90 : 9bc80e1893e060514d3ac3aa46de0064dcc697abc1ccdabb6103b4e94c40d9de
 FLAP/src/tests/test_nested.f90 : f1fff1f3dedc2d19fea72e1b443f0bd62c8ba9ce9d653773c0bdbf0235b6084b
 FLAP/src/tests/test_string.f90 : 02cb543d9f2ecb27dee616b3e5a570ae026f4e8d2c6556fdd9aa868f29512a94
-test_invalid.f90 : 45514bd722d41f25504452820ced31106e4551443f410246be55e84429939daa
-test_namelist_block_select.f90 : 90257fe1108c8689002b470e2e2620c2a0652ca6465ba1a5bbbd6667e2339be0
 cp2k/src/aobasis/aux_basis_set.F : 7ca38bb7e9fd097984b8e805cf70f6824bdb8668b72ff55d5f0ea5d987627bd4
 cp2k/src/arnoldi/arnoldi_data_manipulation.f90 : aca384f26bf61dba98b18313c5b82c30573d1d8989a25001b3c55aac33abd29a
 cp2k/src/arnoldi/arnoldi_data_selection.f90 : 8a821f5d55cb6aac362f6c5f73609c3769efdc6f3a61c33d43bca376435da0d7
@@ -2025,7 +2022,6 @@ cp2k/src/spglib_f08.F : b0220aad31e57cf3e02bfe897c79b9d7f996a0d9f2bdf67f7bced426
 cp2k/src/subsys/molecule_kind_list_types.F : d847b99600e0ebfcc72a3206e6fdde36e77e5307bb1999dd8db340f0dde96f1e
 cp2k/src/subsys/molecule_list_types.F : 30fe9d055adcf1ca35dc6591c40f13a80edadb57aec288fe8ff76dfb20475fe0
 cp2k/src/subsys/molecule_types.F : cd86e0bb34fdcedae6ae3359c4068b357547648e465542400f22d2c391a8ef6b
-test_fypp.f90 : 31f61e4343e01cc9a981165b2905372ed51236653e304a5948990672df2510e9
 wannier90/pwscf/post_v6.2.1/pw2wannier90.f90 : e41bc8f625bd729bd16ef8ae54b3e9bb909a6cc606d75c72cf9f04f47272f7fe
 wannier90/pwscf/v3.2.3/pw2wannier90.f90 : 9db89aacccc86da7297c2cd8b38eaa118ca9a917e2c5c10f4ac782cb7f723eb7
 wannier90/pwscf/v3.2.3/wannier.f90 : c4d7d9c40d3459f837283474545ddcb922a776ddfb6f30866c9402351d2047bc
@@ -2177,8 +2173,6 @@ cp2k/src/xtb_coulomb.F : 21867d63a9e221b6d7e4e0ccefca82f819d0c220f3507673d68004f
 cp2k/src/xtb_matrices.F : b6cc92b6c3a8452fdc6c265883630b8092ff5a57f10b0a4f8c717bb3e9cd6668
 cp2k/src/xtb_parameters.F : 14184f67d5353cdcd6acd7fbaa067b4a85ccc6293df3acfa2ab3ee57c4de3faa
 cp2k/src/xtb_types.F : 88de765a8df90dd9adc86e9eaa0b58e37d9369097c76785e1ae5b3835c77c100
-example_swapcase.f90 : 8dfac266553a438deb71e3faf5aeb97cd067a004c5cf61cda341237cd6328d55
-where_forall.f90 : 11062d8d766cce036a0c2ed25ce3d8fe75fee47ab1e6566ec24c6b0043f6ffea
 cp2k/src/almo_scf_lbfgs_types.F : 927dd2fac1a18e293d78f9153ba0ff5ee284a7b4ce947b2b35ece5bde48b3ceb
 cp2k/src/common/callgraph.F : 48eb0d8f058a57438ac0d9ce72100265c2b52b957108adc58bea741a4d51fd5a
 cp2k/src/common/d3_poly.F : d9e828fd85d1ee24f8cee03cb2b9cd6d9839cd6b3a359c5a941224ed510cad45
