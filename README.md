@@ -153,4 +153,62 @@ A = [-1,   10, 0, &
 
 ## Contributing / Testing
 
+When contributing new features by opening a pull request, testing is essential
+to verify that the new features behave as intended, and that there are no
+unwanted side effects. It is expected that before merging a pull request:
+1. one or more unit tests are added which test formatting of small Fortran code
+   snippets, covering all relevant aspects of the added features.
+2. if the changes lead to failures of existing tests, these test failures
+   should be carefully examinated. Only if the test failures are due to
+   intended changes of `fprettify` defaults, or because of bug fixes, the
+   expected test results can be updated.
+
+### How to add a unit test
+
+Can the new feature be reasonably covered by small code snippets (< 10 lines)?
+- Yes: add a test by starting from the following skeleton, and by adding the code to the file `fprettify/tests/unittests.py`:
+
+```python
+    def test_something(self):
+        """short description"""
+
+        in = "Some Fortran code"
+        out = "Same Fortran code after fprettify formatting"
+
+        # seleced fprettify command line arguments, as documented in "fprettify.py -h":
+        opt = ["arg 1", "value for arg 1", "arg2", ...] 
+
+        # helper function checking that fprettify output is equal to "out":
+        self.assert_fprettify_result(opt, in, out)
+```
+
+  Then run `./run_tests.py -s unittests` and check in the output that the newly added unit test passes.
+
+
+- No: add a test by adding an example Fortran source file: Add the Fortran file
+  to `examples/in`, and the reformatted `fprettify` output to `examples/out`.
+  If the test requires non-default `fprettify` options, specify these options
+  as an annotation `! fprettify:` followed by the command-line arguments at the
+  beginning of the Fortran file. You need to manually remove
+  `fortran_tests/test_code/examples` to make sure that the test configuration
+  will be updated with the changes from `examples`.
+
+  Then run `./run_tests.py -s builtin`, and check that the output mentions the
+  newly added example with `checksum new ok`. Check that a new line containing
+  the checksum for this example has been added to the file
+  `fortran_tests/test_results/expected_results`, and commit this change along
+  with your example. Rerun `./run_tests.py -s builtin` and check that the
+  output mentions the newly added example with `checksum ok`.
+
+### How to debug test failures
+
+`fprettify` comes with **unit tests**, typically testing expected formatting of smaller code snippets. These tests are entirely self-contained, insofar as the Fortran code, the fprettify options and the expected formatting results are all set within the respective test method. `fprettify` also allows to configure **integration tests** to test expected formatting of external Fortran code. **Unit tests** are relevant when adding new features to `fprettify`, and when these features can easily be tested by small code snippets. **Integration tests** are relevant when an entire Fortran module or program is needed to test a specific feature, or when an external repository relying on `fprettify` should be checked regularly for invariance under `fprettify` formatting.
+
+
+Run single unit test:
+
+```python
+python3 -m unittest -v fprettify.tests.unittests.FprettifyUnitTestCase.test_whitespace
+```
+
 The testing mechanism allows you to easily test fprettify with any Fortran project of your choice. Simply clone or copy your entire project into `fortran_tests/before` and run `python setup.py test`. The directory `fortran_tests/after` contains the test output (reformatted Fortran files). If testing fails, please submit an issue!
