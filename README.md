@@ -200,7 +200,26 @@ Can the new feature be reasonably covered by small code snippets (< 10 lines)?
   with your example. Rerun `./run_tests.py -s builtin` and check that the
   output mentions the newly added example with `checksum ok`.
 
+### How to locally run all unit and integration tests:
+
+Run
+
+1. unit tests: `./run_tests.py -s unittests`
+2. builtin examples integration tests: `./run_tests.py -s builtin`
+3. `regular` integration test suite: `./run_tests.py -s regular`
+4. `cron` integration test suite (optional, takes a long time to execute): `./run_tests.py -s cron`
+
 ### How to debug test failures
+
+Unit test failures should be rather easy to understand because the test output shows the diff of the actual vs. expected result. For integration tests, we don't store the Fortran code (as it's usually external to this repository), and the result is verified by comparing the SHA256 checksums of the actual vs. expected result. The test output shows the diff of the actual result vs. the previously tested version of the code. Thus, in order to obtain the diff of the actual vs. expected result, the following steps need to be executed:
+
+1. Run `./run_tests.py -s` followed by the name of the failed test suite. Check
+   the test output for lines mentioning test failures such as: 
+   `Test top-level-dir/subdir/file.f (fprettify.tests.fortrantests.FprettifyIntegrationTestCase) ... checksum FAIL`.
+2. Check out a version of `fprettify` for which the test passes.
+3. Run the integration test(s) via `./run_tests.py -n top-level-dir` (replacing
+   `top-level-dir` with the actual directory mentioned in the test output).
+4. Now the `diff` shown in the test output refers to the expected result.
 
 `fprettify` comes with **unit tests**, typically testing expected formatting of smaller code snippets. These tests are entirely self-contained, insofar as the Fortran code, the fprettify options and the expected formatting results are all set within the respective test method. `fprettify` also allows to configure **integration tests** to test expected formatting of external Fortran code. **Unit tests** are relevant when adding new features to `fprettify`, and when these features can easily be tested by small code snippets. **Integration tests** are relevant when an entire Fortran module or program is needed to test a specific feature, or when an external repository relying on `fprettify` should be checked regularly for invariance under `fprettify` formatting.
 
