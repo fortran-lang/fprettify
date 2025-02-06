@@ -25,7 +25,6 @@ import fprettify
 def joinpath(path1, path2):
     return os.path.normpath(os.path.join(path1, path2))
 
-#ToDo: replace with __FILE__
 _MYPATH = os.path.dirname(os.path.abspath(
     inspect.getfile(inspect.currentframe())))
 
