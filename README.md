@@ -163,10 +163,11 @@ unwanted side effects. It is expected that before merging a pull request:
    intended changes of `fprettify` defaults, or because of bug fixes, the
    expected test results can be updated.
 
+
 ### How to add a unit test
 
 Can the new feature be reasonably covered by small code snippets (< 10 lines)?
-- Yes: add a test by starting from the following skeleton, and by adding the code to the file `fprettify/tests/unittests.py`:
+- **Yes**: add a test by starting from the following skeleton, and by adding the code to the file `fprettify/tests/unittests.py`:
 
 ```python
     def test_something(self):
@@ -185,49 +186,87 @@ Can the new feature be reasonably covered by small code snippets (< 10 lines)?
   Then run `./run_tests.py -s unittests` and check in the output that the newly added unit test passes.
 
 
-- No: add a test by adding an example Fortran source file: Add the Fortran file
+- **No**: add a test by adding an example Fortran source file: Add the Fortran file
   to `examples/in`, and the reformatted `fprettify` output to `examples/out`.
   If the test requires non-default `fprettify` options, specify these options
   as an annotation `! fprettify:` followed by the command-line arguments at the
-  beginning of the Fortran file. You need to manually remove
+  beginning of the Fortran file. Then you'll need to manually remove
   `fortran_tests/test_code/examples` to make sure that the test configuration
   will be updated with the changes from `examples`.
 
-  Then run `./run_tests.py -s builtin`, and check that the output mentions the
-  newly added example with `checksum new ok`. Check that a new line containing
-  the checksum for this example has been added to the file
-  `fortran_tests/test_results/expected_results`, and commit this change along
-  with your example. Rerun `./run_tests.py -s builtin` and check that the
-  output mentions the newly added example with `checksum ok`.
+Then run `./run_tests.py -s builtin`, and check that the output mentions the
+newly added example with `checksum new ok`. Check that a new line containing
+the checksum for this example has been added to the file
+`fortran_tests/test_results/expected_results`, and commit this change along
+with your example. Rerun `./run_tests.py -s builtin` and check that the
+output mentions the newly added example with `checksum ok`.
+
+
+### How to add integration tests
+
+This is a mechanism to add external code bases (such as entire git repositories
+containing Fortran code) as test cases. In order to add a new code base as an
+integration test suite, add a new section to
+[testsuites.config](fortran_tests/testsuites.config), adhering to the following
+format:
+
+``INI
+[...]        # arbitrary unique section name identifying test code
+obtain: ...  # Python command to obtain test code base
+path: ...    # relative path pointing to test code location
+suite: ...   # which suite this test code should belong to
+`` 
+
+For `suite`, you should pick one of the following test suites:
+- `regular`: for small code bases (executed for every pull request)
+- `cron`: for larger code bases (executed nightly)
+
 
 ### How to locally run all unit and integration tests:
 
-Run
-
-1. unit tests: `./run_tests.py -s unittests`
-2. builtin examples integration tests: `./run_tests.py -s builtin`
-3. `regular` integration test suite: `./run_tests.py -s regular`
-4. `cron` integration test suite (optional, takes a long time to execute): `./run_tests.py -s cron`
-
-### How to debug test failures
-
-Unit test failures should be rather easy to understand because the test output shows the diff of the actual vs. expected result. For integration tests, we don't store the Fortran code (as it's usually external to this repository), and the result is verified by comparing the SHA256 checksums of the actual vs. expected result. The test output shows the diff of the actual result vs. the previously tested version of the code. Thus, in order to obtain the diff of the actual vs. expected result, the following steps need to be executed:
-
-1. Run `./run_tests.py -s` followed by the name of the failed test suite. Check
-   the test output for lines mentioning test failures such as: 
-   `Test top-level-dir/subdir/file.f (fprettify.tests.fortrantests.FprettifyIntegrationTestCase) ... checksum FAIL`.
-2. Check out a version of `fprettify` for which the test passes.
-3. Run the integration test(s) via `./run_tests.py -n top-level-dir` (replacing
-   `top-level-dir` with the actual directory mentioned in the test output).
-4. Now the `diff` shown in the test output refers to the expected result.
-
-`fprettify` comes with **unit tests**, typically testing expected formatting of smaller code snippets. These tests are entirely self-contained, insofar as the Fortran code, the fprettify options and the expected formatting results are all set within the respective test method. `fprettify` also allows to configure **integration tests** to test expected formatting of external Fortran code. **Unit tests** are relevant when adding new features to `fprettify`, and when these features can easily be tested by small code snippets. **Integration tests** are relevant when an entire Fortran module or program is needed to test a specific feature, or when an external repository relying on `fprettify` should be checked regularly for invariance under `fprettify` formatting.
+- unit tests: `./run_tests.py -s unittests`
+- builtin examples integration tests: `./run_tests.py -s builtin`
+- `regular`: integration test suite: `./run_tests.py -s regular`
+- `cron`: integration test suite (optional, takes a long time to execute): `./run_tests.py -s cron`
+- `custom`: a dedicated test suite for quick testing, shouldn't be committed.
 
 
-Run single unit test:
+### How to locally run selected unit or integration tests:
 
-```python
-python3 -m unittest -v fprettify.tests.unittests.FprettifyUnitTestCase.test_whitespace
-```
+- unit tests: run
+    `python -m unittest -v fprettify.tests.unittests.FprettifyUnitTestCase.test_xxx`
+    (replacing `test_xxx` with the actual name of the test method)
+- integration tests: run
+    - a specific suite (`unittests`, `builtin`, `regular`, `cron` or `custom`)
+      `./run_tests.py -s ...`
+    - tests belonging to a config section (see [testsuites.config](fortran_tests/testsuites.config)):
+      `./run_tests.py -n ...`
+      
 
-The testing mechanism allows you to easily test fprettify with any Fortran project of your choice. Simply clone or copy your entire project into `fortran_tests/before` and run `python setup.py test`. The directory `fortran_tests/after` contains the test output (reformatted Fortran files). If testing fails, please submit an issue!
+### How to deal with test failures
+
+Test failures are always due to fprettify-formatted code being different than
+expected. To examine what has changed, proceed as follows:
+- Unit tests: failures should be rather easy to understand because the test
+  output shows the diff of the actual vs. expected result. 
+- Integration tests: we don't store the expected version of Fortran code,
+  instead we compare SHA256 checksums of the actual vs. expected result. The
+  test output shows the diff of the actual result vs. the *previous* version of
+  the code (that is, the version before `fprettify` was applied). Thus, in
+  order to obtain the diff of the actual vs. the *expected* result, the
+  following steps need to be executed:
+
+  1. Run `./run_tests.py -s` followed by the name of the failed test suite. Check
+     the test output for lines mentioning test failures such as: 
+     `Test top-level-dir/subdir/file.f (fprettify.tests.fortrantests.FprettifyIntegrationTestCase) ... checksum FAIL`.
+  2. Check out the reference version of `fprettify` for which the test passes (normally, `develop` branch).
+  3. Run the integration test(s) via `./run_tests.py -n top-level-dir` (replacing
+     `top-level-dir` with the actual directory mentioned in the test output).
+  4. Check out the version of `fprettify` for which the test failed and run the integration tests again.
+  5. Now the `diff` shown in the test output shows the exact changes which caused the test to fail.
+
+If you decide to accept the changes as new test references, proceed as follows:
+- Unit tests: update the expected test result within the respective test method (third argument to function `self.assert_fprettify_result`)
+- Integration tests: run `./run_tests.py ... -r` and commit the updated `fortran_tests/test_results/expected_results`. Then
+  run `./run_tests.py ...` and check that tests are passing now.
+
