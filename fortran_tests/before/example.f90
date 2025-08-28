@@ -195,8 +195,8 @@ real(kind=dp) :: r1,   r2,  r3, r4, r5,  r6
 ! example 4.1
    l = 0
    do r = 1, 10
-         select case ( r )
-   case( 1)
+         case_label  :  select case ( r )
+   case( 1) case_label
            do i=1,100;if (i<=2) then! comment
           do j = 1,5
                     do   k= 1, 3
@@ -212,7 +212,7 @@ real(kind=dp) :: r1,   r2,  r3, r4, r5,  r6
            enddo
             case(2 )
            l = i+ j + k
-              end select
+             end select     case_label
                enddo
 
 ! example 4.2
