@@ -1416,8 +1416,6 @@ def replace_relational_single_fline(f_line, cstyle):
     .ne.  <-->  /=
     """
 
-    # keep track of whether the line may be affected
-    line_affected = False
     new_line = f_line
 
     # only act on lines that do contain a relation
@@ -1461,25 +1459,8 @@ def replace_relational_single_fline(f_line, cstyle):
             line_parts[pos] = part
 
         new_line = "".join(line_parts)
-        line_affected = True
 
-    return new_line, line_affected
-
-
-def replace_relational_lines(lines, cstyle):
-    """
-    format a list of lines - replaces scalar relational
-    operators in logical expressions to either Fortran or C-style
-    by calling original function for single line.
-    """
-
-    new_lines = []
-
-    for f_line in lines:
-        new_line, changed = replace_relational_single_fline(f_line, cstyle)
-        new_lines.append(new_line)
-
-    return new_lines
+    return new_line
 
 
 def replace_keywords_single_fline(f_line, case_dict):
@@ -2260,13 +2241,13 @@ def reformat_ffile_combined(
             f_line = f_line.strip(" ")
 
             if impose_replacements:
-                f_line, relation_found = replace_relational_single_fline(f_line, cstyle)
-                if relation_found:
-                    updated_lines = replace_relational_lines(lines, cstyle)
-                    linebreak_pos = get_linebreak_pos(updated_lines, filter_fypp=not indent_fypp)
+                f_line = replace_relational_single_fline(f_line, cstyle)
+                lines = [replace_relational_single_fline(l, cstyle) for l in lines]
 
             if impose_case:
                 f_line = replace_keywords_single_fline(f_line, case_dict)
+
+            linebreak_pos = get_linebreak_pos(lines, filter_fypp=not indent_fypp)
 
             if impose_whitespace:
                 lines = format_single_fline(
