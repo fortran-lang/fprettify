@@ -144,9 +144,13 @@ class FprettifyUnitTestCase(FprettifyTestCase):
         outstring_exp_strip = ("TYPE mytype\n!  c1\n   !c2\n   INTEGER :: a !  c3\n"
                                "   REAL :: b, & ! c4\n           ! c5\n           ! c6\n"
                                "           d ! c7\nEND TYPE ! c8")
+        outstring_exp_strip_spacing3 = ("TYPE mytype\n!  c1\n   !c2\n   INTEGER :: a   !  c3\n"
+                                         "   REAL :: b, &   ! c4\n           ! c5\n           ! c6\n"
+                                         "           d   ! c7\nEND TYPE   ! c8")
 
         self.assert_fprettify_result([], instring, outstring_exp_default)
         self.assert_fprettify_result(['--strip-comments'], instring, outstring_exp_strip)
+        self.assert_fprettify_result(['--strip-comments', '--comment-spacing', '3'], instring, outstring_exp_strip_spacing3)
 
     def test_directive(self):
         """

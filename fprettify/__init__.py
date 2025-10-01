@@ -1445,7 +1445,7 @@ def reformat_inplace(filename, stdout=False, diffonly=False, **kwargs):  # pragm
 def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_indent=False, impose_whitespace=True,
                    case_dict={},
                    impose_replacements=False, cstyle=False, whitespace=2, whitespace_dict={}, llength=132,
-                   strip_comments=False, format_decl=False, orig_filename=None, indent_fypp=True, indent_mod=True):
+                   strip_comments=False, comment_spacing=1, format_decl=False, orig_filename=None, indent_fypp=True, indent_mod=True):
     """main method to be invoked for formatting a Fortran file."""
 
     # note: whitespace formatting and indentation may require different parsing rules
@@ -1468,7 +1468,7 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
         reformat_ffile_combined(oldfile, newfile, _impose_indent, indent_size, strict_indent, impose_whitespace,
                                 case_dict,
                                 impose_replacements, cstyle, whitespace, whitespace_dict, llength,
-                                strip_comments, format_decl, orig_filename, indent_fypp, indent_mod)
+                                strip_comments, comment_spacing, format_decl, orig_filename, indent_fypp, indent_mod)
         oldfile = newfile
 
     # 2) indentation
@@ -1481,7 +1481,7 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
         reformat_ffile_combined(oldfile, newfile, impose_indent, indent_size, strict_indent, _impose_whitespace,
                                 case_dict,
                                 _impose_replacements, cstyle, whitespace, whitespace_dict, llength,
-                                strip_comments, format_decl, orig_filename, indent_fypp, indent_mod)
+                                strip_comments, comment_spacing, format_decl, orig_filename, indent_fypp, indent_mod)
 
 
     outfile.write(newfile.getvalue())
@@ -1490,7 +1490,7 @@ def reformat_ffile(infile, outfile, impose_indent=True, indent_size=3, strict_in
 def reformat_ffile_combined(infile, outfile, impose_indent=True, indent_size=3, strict_indent=False, impose_whitespace=True,
                             case_dict={},
                             impose_replacements=False, cstyle=False, whitespace=2, whitespace_dict={}, llength=132,
-                            strip_comments=False, format_decl=False, orig_filename=None, indent_fypp=True, indent_mod=True):
+                            strip_comments=False, comment_spacing=1, format_decl=False, orig_filename=None, indent_fypp=True, indent_mod=True):
 
     if not orig_filename:
         orig_filename = infile.name
@@ -1548,7 +1548,7 @@ def reformat_ffile_combined(infile, outfile, impose_indent=True, indent_size=3, 
         else:
             indent = [len(l) - len((l.lstrip(' ')).lstrip('&'))  for l in lines]
 
-        comment_lines = format_comments(lines, comments, strip_comments)
+        comment_lines = format_comments(lines, comments, strip_comments, comment_spacing)
 
         auto_align, auto_format, in_format_off_block = parse_fprettify_directives(
             lines, comment_lines, in_format_off_block, orig_filename, stream.line_nr)
@@ -1636,13 +1636,13 @@ def reformat_ffile_combined(infile, outfile, impose_indent=True, indent_size=3, 
             else:
                 indent_special = 1
 
-def format_comments(lines, comments, strip_comments):
+def format_comments(lines, comments, strip_comments, comment_spacing=1):
     comments_ftd = []
     for line, comment in zip(lines, comments):
         has_comment = bool(comment.strip())
         if has_comment:
             if strip_comments:
-                sep = not comment.strip() == line.strip()
+                sep = 0 if comment.strip() == line.strip() else comment_spacing
             else:
                 line_minus_comment = line.replace(comment,"")
                 sep = len(line_minus_comment.rstrip('\n')) - len(line_minus_comment.rstrip())
@@ -1976,6 +1976,7 @@ def process_args(args):
     args_out['whitespace'] = args.whitespace
     args_out['llength'] = 1024 if args.line_length == 0 else args.line_length
     args_out['strip_comments'] = args.strip_comments
+    args_out['comment_spacing'] = args.comment_spacing
     args_out['format_decl'] = args.enable_decl
     args_out['indent_fypp'] = not args.disable_fypp
     args_out['indent_mod'] = not args.disable_indent_mod
@@ -1994,6 +1995,16 @@ def get_arg_parser(args={}):
             return False
         else:
             return None
+
+    def non_negative_int(value):
+        """helper function to ensure a non-negative integer"""
+        try:
+            int_value = int(value)
+        except ValueError as exc:
+            raise argparse.ArgumentTypeError(str(exc))
+        if int_value < 0:
+            raise argparse.ArgumentTypeError("expected a non-negative integer")
+        return int_value
 
     parser = argparse.ArgumentParser(**args)
 
@@ -2041,6 +2052,8 @@ def get_arg_parser(args={}):
                         " | 2: uppercase")
 
     parser.add_argument("--strip-comments", action='store_true', default=False, help="strip whitespaces before comments")
+    parser.add_argument("--comment-spacing", type=non_negative_int, default=1,
+                        help="number of spaces between code and inline comments when '--strip-comments' is used")
     parser.add_argument('--disable-fypp', action='store_true', default=False,
                         help="Disables the indentation of fypp preprocessor blocks.")
     parser.add_argument('--disable-indent-mod', action='store_true', default=False,
