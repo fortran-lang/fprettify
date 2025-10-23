@@ -1806,13 +1806,15 @@ def remove_pre_ampersands(lines, is_special, filename, line_nr):
         match = re.search(SOL_STR + r'(&\s*)', line)
         if match:
             pre_ampersand.append(match.group(1))
-            # amount of whitespace before ampersand of previous line:
-            m = re.search(r'(\s*)&[\s]*(?:!.*)?$', lines[pos - 1])
-            if not m:
-                raise FprettifyParseException(
-                    "Bad continuation line format", filename, line_nr)
-            sep = len(m.group(1))
 
+            # find the previous non-comment line
+            _pos = pos - 1
+            while _pos >= 0 and lines[_pos].lstrip().startswith('!'):
+                _pos -= 1
+            _pos = max(_pos, 0)  # ensure non-negative index
+
+            m = re.search(r'(\s*)&[\s]*(?:!.*)?$', lines[_pos])
+            sep = len(m.group(1))
             ampersand_sep.append(sep)
         else:
             pre_ampersand.append('')
