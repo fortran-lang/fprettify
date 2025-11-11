@@ -159,7 +159,7 @@ unwanted side effects. It is expected that before merging a pull request:
 1. one or more unit tests are added which test formatting of small Fortran code
    snippets, covering all relevant aspects of the added features.
 2. if the changes lead to failures of existing tests, these test failures
-   should be carefully examinated. Only if the test failures are due to
+   should be carefully examined. Only if the test failures are due to
    intended changes of `fprettify` defaults, or because of bug fixes, the
    expected test results can be updated.
 
@@ -176,7 +176,7 @@ Can the new feature be reasonably covered by small code snippets (< 10 lines)?
         in = "Some Fortran code"
         out = "Same Fortran code after fprettify formatting"
 
-        # seleced fprettify command line arguments, as documented in "fprettify.py -h":
+        # selected fprettify command line arguments, as documented in "fprettify.py -h":
         opt = ["arg 1", "value for arg 1", "arg2", ...] 
 
         # helper function checking that fprettify output is equal to "out":
