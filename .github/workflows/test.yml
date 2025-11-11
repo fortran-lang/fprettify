@@ -31,7 +31,7 @@ jobs:
 
       - name: Run unit and short integration tests
         run: |
-          coverage run -p --source=fprettify run_tests.py -s unittests -s builtin -s regular
+          coverage run -p --source=fprettify run_tests.py -s unittests builtin regular
 
       - name: Run long integration tests
         if: ${{ github.event_name == 'schedule' }}

@@ -34,14 +34,15 @@ if __name__ == '__main__':
                         help="Reset test results to new results of failed tests")
     parser.add_argument("-n", "--name", type=str, help="select tests by name (sections in testsuites.config).")
 
-    suite_default = ["unittests", "builtin"]
-    parser.add_argument("-s", "--suite", type=str, default=suite_default, help="select suite.", choices=["unittests", "builtin", "regular", "cron", "custom"], action='append')
+    parser.add_argument(
+            "-s", "--suite",
+            nargs="+",
+            choices=["unittests", "builtin", "regular", "cron", "custom"],
+            default=["unittests", "builtin"],
+            help="select suite."
+    )
 
     args = parser.parse_args()
-
-    # remove defaults if user has specified anything
-    if args.suite[:2] == suite_default and len(args.suite) > 2:
-        args.suite = args.suite[2:]
 
     test_cases = []
 
