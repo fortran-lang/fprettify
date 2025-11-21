@@ -27,6 +27,7 @@ import re
 import os
 import difflib
 import configparser
+import shutil
 import shlex
 from datetime import datetime
 import fprettify
