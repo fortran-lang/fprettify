@@ -27,7 +27,6 @@ import re
 import os
 import difflib
 import configparser
-import shutil
 import shlex
 from datetime import datetime
 import fprettify
@@ -99,12 +98,12 @@ class FprettifyIntegrationTestCase(FprettifyTestCase):
         output.
         """
         if cls.n_parsefail + cls.n_internalfail > 0:
-            format = "{:<20}{:<6}"
+            format_str = "{:<20}{:<6}"
             FprettifyIntegrationTestCase.eprint('\n' + "=" * 70)
             FprettifyIntegrationTestCase.eprint("IGNORED errors: invalid or old Fortran")
             FprettifyIntegrationTestCase.eprint("-" * 70)
-            FprettifyIntegrationTestCase.eprint(format.format("parse errors: ", cls.n_parsefail))
-            FprettifyIntegrationTestCase.eprint(format.format("internal errors: ", cls.n_internalfail))
+            FprettifyIntegrationTestCase.eprint(format_str.format("parse errors: ", cls.n_parsefail))
+            FprettifyIntegrationTestCase.eprint(format_str.format("internal errors: ", cls.n_internalfail))
 
     @staticmethod
     def write_result(filename, content, sep_str):  # pragma: no cover
@@ -154,7 +153,7 @@ def generate_suite(suite=None, name=None):
             finally:
                 os.chdir(orig)
 
-            addtestcode(code['path'], code['options'])
+            add_test_code(code['path'], code['options'])
     return FprettifyIntegrationTestCase
 
 def normalize_line(line):
@@ -167,7 +166,7 @@ def normalize_line(line):
     line_out = re.sub("^&", '', line_out, flags=re.MULTILINE)
     return line_out
 
-def addtestcode(code_path, options):
+def add_test_code(code_path, options):
     print(f"creating test cases from {code_path} ...")
     # dynamically create test cases from fortran files in test directory
 
@@ -190,9 +189,9 @@ def addtestcode(code_path, options):
                             break
 
             if include_file:
-                addtestmethod(FprettifyIntegrationTestCase, rel_dirpath, example, fprettify_args)
+                add_test_method(FprettifyIntegrationTestCase, rel_dirpath, example, fprettify_args)
 
-def addtestmethod(testcase, fpath, ffile, args):
+def add_test_method(testcase, fpath, ffile, args):
     """add a test method for each example."""
 
     def testmethod(testcase):
