@@ -74,6 +74,23 @@ class FprettifyUnitTestCase(FprettifyTestCase):
 
         self.assert_fprettify_result(['-w 4'], instring, outstring_exp)
 
+    def test_concat(self):
+        """test for concat operator whitespace formatting"""
+        instring = "str=a//b//c"
+        outstring_w0 = "str=a//b//c"
+        outstring_w2 = "str = a//b//c"
+        outstring_w4 = "str = a // b // c"
+        outstring_explicit = "str = a // b // c"
+        instring_in_string = 'msg = "URL: http://example.com"'
+        instring_in_comment = 'a = b  ! http://example.com'
+
+        self.assert_fprettify_result(['-w', '0'], instring, outstring_w0)
+        self.assert_fprettify_result(['-w', '2'], instring, outstring_w2)
+        self.assert_fprettify_result(['-w', '4'], instring, outstring_w4)
+        self.assert_fprettify_result(['--whitespace-concat'], instring, outstring_explicit)
+        self.assert_fprettify_result([], instring_in_string, instring_in_string)
+        self.assert_fprettify_result([], instring_in_comment, instring_in_comment)
+
     def test_indent(self):
         """simple test for indent options -i in [0, 3, 4]"""
 

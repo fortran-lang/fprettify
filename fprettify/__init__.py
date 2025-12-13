@@ -1054,19 +1054,20 @@ def format_single_fline(f_line, whitespace, whitespace_dict, linebreak_pos,
             'print': 6,           # 6: print / read statements
             'type': 7,            # 7: select type components
             'intrinsics': 8,      # 8: intrinsics
-            'decl': 9             # 9: declarations
+            'decl': 9,            # 9: declarations
+            'concat': 10          # 10: string concatenation
             }
 
     if whitespace == 0:
-        spacey = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        spacey = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     elif whitespace == 1:
-        spacey = [1, 1, 1, 1, 0, 0, 1, 0, 1, 1]
+        spacey = [1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0]
     elif whitespace == 2:
-        spacey = [1, 1, 1, 1, 1, 0, 1, 0, 1, 1]
+        spacey = [1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0]
     elif whitespace == 3:
-        spacey = [1, 1, 1, 1, 1, 1, 1, 0, 1, 1]
+        spacey = [1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0]
     elif whitespace == 4:
-        spacey = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        spacey = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     else:
         raise NotImplementedError("unknown value for whitespace")
 
@@ -1219,6 +1220,17 @@ def add_whitespace_charwise(line, spacey, scope_parser, format_decl, filename, l
                     + ' ' * spacey[7] \
                     + rhs.lstrip(' ')
             line_ftd = line_ftd.rstrip(' ')
+
+        # format string concatenation operator '//'
+        if (char == '/' and line[pos:pos + 2] == "//" and (pos == 0 or line[pos - 1] != '/')
+                and level == 0 and pos > end_of_delim):
+            lhs = line_ftd[:pos + offset]
+            rhs = line_ftd[pos + 2 + offset:]
+            line_ftd = lhs.rstrip(' ') \
+                    + ' ' * spacey[10] \
+                    + '//' \
+                    + ' ' * spacey[10] \
+                    + rhs.lstrip(' ')
 
         # format '::'
         if format_decl and line[pos:pos+2] == "::":
@@ -1954,6 +1966,7 @@ def process_args(args):
         ws_dict['print'] = args.whitespace_print
         ws_dict['type'] = args.whitespace_type
         ws_dict['intrinsics'] = args.whitespace_intrinsics
+        ws_dict['concat'] = args.whitespace_concat
         return ws_dict
 
     args_out = {}
@@ -2028,6 +2041,8 @@ def get_arg_parser(args={}):
                         help="boolean, en-/disable whitespace for select type components")
     parser.add_argument("--whitespace-intrinsics", type=str2bool, nargs="?", default="None", const=True,
                         help="boolean, en-/disable whitespace for intrinsics like if/write/close")
+    parser.add_argument("--whitespace-concat", type=str2bool, nargs="?", default="None", const=True,
+                        help="boolean, en-/disable whitespace for string concatenation operator //")
     parser.add_argument("--strict-indent", action='store_true', default=False, help="strictly impose indentation even for nested loops")
     parser.add_argument("--enable-decl", action="store_true", default=False, help="enable whitespace formatting of declarations ('::' operator).")
     parser.add_argument("--disable-indent", action='store_true', default=False, help="don't impose indentation")
