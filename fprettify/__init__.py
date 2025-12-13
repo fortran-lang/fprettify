@@ -1621,8 +1621,10 @@ def reformat_ffile_combined(infile, outfile, impose_indent=True, indent_size=3, 
             if indent[0] < len(label):
                 indent = [ind + len(label) - indent[0] for ind in indent]
 
-        write_formatted_line(outfile, indent, lines, orig_lines, indent_special, llength,
-                             use_same_line, is_omp_conditional, label, orig_filename, stream.line_nr)
+        allow_auto_split = auto_format and (impose_whitespace or impose_indent)
+        write_formatted_line(outfile, indent, lines, orig_lines, indent_special, indent_size, llength,
+                             use_same_line, is_omp_conditional, label, orig_filename, stream.line_nr,
+                             allow_split=allow_auto_split)
 
         # rm subsequent blank lines
         skip_blank = EMPTY_RE.search(
@@ -1860,10 +1862,185 @@ def get_manual_alignment(lines):
     return manual_lines_indent
 
 
-def write_formatted_line(outfile, indent, lines, orig_lines, indent_special, llength, use_same_line, is_omp_conditional, label, filename, line_nr):
+def _find_split_position(text, max_width):
+    """
+    Locate a suitable breakpoint (prefer whitespace or comma) within max_width.
+    Returns None if no such breakpoint exists.
+    """
+    if max_width < 1:
+        return None
+    search_limit = min(len(text) - 1, max_width)
+    if search_limit < 0:
+        return None
+    
+    spaces = []
+    commas = []
+    
+    for pos, char in CharFilter(text):
+        if pos > search_limit:
+            break
+        if char == ' ':
+            spaces.append(pos)
+        elif char == ',':
+            commas.append(pos)
+    
+    for candidate in reversed(spaces):
+        if len(text) - candidate >= 12:
+            return candidate
+    
+    for candidate in reversed(commas):
+        if len(text) - candidate > 4:
+            return candidate + 1
+    
+    return None
+
+
+def _auto_split_line(line, ind_use, llength, indent_size):
+    """
+    Attempt to split a long logical line into continuation lines that
+    respect the configured line-length limit. Returns a list of new line
+    fragments when successful, otherwise None.
+    """
+    if llength < 40:
+        return None
+
+    stripped = line.lstrip(' ')
+    if not stripped:
+        return None
+    if stripped.startswith('&'):
+        return None
+    line_has_newline = stripped.endswith('\n')
+    if line_has_newline:
+        stripped = stripped[:-1]
+
+    has_comment = False
+    for _, char in CharFilter(stripped, filter_comments=False):
+        if char == '!':
+            has_comment = True
+            break
+    if has_comment:
+        return None
+
+    max_first = llength - ind_use - 2  # reserve for trailing ampersand
+    if max_first <= 0:
+        return None
+
+    break_pos = _find_split_position(stripped, max_first)
+    if break_pos is None or break_pos >= len(stripped):
+        return None
+
+    remainder = stripped[break_pos:].lstrip()
+    if not remainder:
+        return None
+
+    first_chunk = stripped[:break_pos].rstrip()
+    new_lines = [first_chunk + ' &']
+
+    current_indent = ind_use + indent_size
+    current = remainder
+
+    while current:
+        available = llength - current_indent
+        if available <= 0:
+            return None
+
+        # final chunk (fits without ampersand)
+        if len(current) + 2 <= available:
+            new_lines.append(current)
+            break
+
+        split_limit = available - 2  # account for ' &' suffix
+        if split_limit <= 0:
+            return None
+
+        cont_break = _find_split_position(current, split_limit)
+        if cont_break is None or cont_break >= len(current):
+            return None
+
+        chunk = current[:cont_break].rstrip()
+        if not chunk:
+            return None
+        new_lines.append(chunk + ' &')
+        current = current[cont_break:].lstrip()
+
+    if line_has_newline:
+        new_lines = [chunk.rstrip('\n') + '\n' for chunk in new_lines]
+
+    return new_lines
+
+
+def _insert_split_chunks(idx, split_lines, indent, indent_size, lines, orig_lines):
+    """Replace the original line at `idx` with its split chunks and matching indents."""
+    base_indent = indent[idx]
+    indent.pop(idx)
+    lines.pop(idx)
+    orig_lines.pop(idx)
+
+    follow_indent = base_indent + indent_size
+    new_indents = [base_indent] + [follow_indent] * (len(split_lines) - 1)
+
+    for new_line, new_indent in reversed(list(zip(split_lines, new_indents))):
+        lines.insert(idx, new_line)
+        indent.insert(idx, new_indent)
+        orig_lines.insert(idx, new_line)
+
+
+def _split_inline_comment(line):
+    """Return (code, comment) strings if line contains a detachable inline comment."""
+    if '!' not in line:
+        return None
+
+    has_newline = line.endswith('\n')
+    body = line[:-1] if has_newline else line
+
+    comment_pos = None
+    for pos, _ in CharFilter(body, filter_comments=False):
+        if body[pos] == '!':
+            comment_pos = pos
+            break
+    if comment_pos is None:
+        return None
+
+    code = body[:comment_pos].rstrip()
+    comment = body[comment_pos:].lstrip()
+
+    if not code or not comment:
+        return None
+
+    if has_newline:
+        code += '\n'
+        comment += '\n'
+
+    return code, comment
+
+
+def _detach_inline_comment(idx, indent, lines, orig_lines):
+    """Split an inline comment into its own line keeping indentation metadata."""
+    splitted = _split_inline_comment(lines[idx])
+    if not splitted:
+        return False
+
+    code_line, comment_line = splitted
+    base_indent = indent[idx]
+
+    lines[idx] = code_line
+    orig_lines[idx] = code_line
+
+    indent.insert(idx + 1, base_indent)
+    lines.insert(idx + 1, comment_line)
+    orig_lines.insert(idx + 1, comment_line)
+
+    return True
+
+
+def write_formatted_line(outfile, indent, lines, orig_lines, indent_special, indent_size, llength, use_same_line, is_omp_conditional, label, filename, line_nr, allow_split):
     """Write reformatted line to file"""
 
-    for ind, line, orig_line in zip(indent, lines, orig_lines):
+    idx = 0
+    while idx < len(lines):
+        ind = indent[idx]
+        line = lines[idx]
+        orig_line = orig_lines[idx]
 
         # get actual line length excluding comment:
         line_length = 0
@@ -1888,15 +2065,33 @@ def write_formatted_line(outfile, indent, lines, orig_lines, indent_special, lle
         else:
             label_use = ''
 
-        if ind_use + line_length <= (llength+1):  # llength (default 132) plus 1 newline char
+        padding = ind_use - 3 * is_omp_conditional - len(label_use) + \
+            len(line) - len(line.lstrip(' '))
+        padding = max(0, padding)
+
+        stripped_line = line.lstrip(' ')
+        rendered_length = len('!$ ' * is_omp_conditional + label_use + ' ' * padding +
+                              stripped_line.rstrip('\n'))
+
+        needs_split = allow_split and rendered_length > llength
+
+        if needs_split:
+            split_lines = _auto_split_line(line, ind_use, llength, indent_size)
+            if split_lines:
+                _insert_split_chunks(idx, split_lines, indent, indent_size, lines, orig_lines)
+                continue
+            if _detach_inline_comment(idx, indent, lines, orig_lines):
+                continue
+
+        if rendered_length <= llength:
             outfile.write('!$ ' * is_omp_conditional + label_use +
-                          ' ' * (ind_use - 3 * is_omp_conditional - len(label_use) +
-                                 len(line) - len(line.lstrip(' '))) +
-                          line.lstrip(' '))
+                          ' ' * padding + stripped_line)
         elif line_length <= (llength+1):
-            outfile.write('!$ ' * is_omp_conditional + label_use + ' ' *
-                          ((llength+1) - 3 * is_omp_conditional - len(label_use) -
-                           len(line.lstrip(' '))) + line.lstrip(' '))
+            # Recompute padding to right-align at the line length limit
+            padding_overflow = (llength + 1) - 3 * is_omp_conditional - len(label_use) - len(line.lstrip(' '))
+            padding_overflow = max(0, padding_overflow)
+            outfile.write('!$ ' * is_omp_conditional + label_use +
+                          ' ' * padding_overflow + line.lstrip(' '))
 
             log_message(LINESPLIT_MESSAGE+" (limit: "+str(llength)+")", "warning",
                         filename, line_nr)
@@ -1904,6 +2099,11 @@ def write_formatted_line(outfile, indent, lines, orig_lines, indent_special, lle
             outfile.write(orig_line)
             log_message(LINESPLIT_MESSAGE+" (limit: "+str(llength)+")", "warning",
                         filename, line_nr)
+
+        if label:
+            label = ''
+
+        idx += 1
 
 
 def get_curr_delim(line, pos):
