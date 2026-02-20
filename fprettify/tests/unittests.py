@@ -345,14 +345,20 @@ class FprettifyUnitTestCase(FprettifyTestCase):
         instring_ = "if( min == max.and.min .eq. thres ) one_really_long_function_call_to_hit_the_line_limit(parameter1, parameter2,parameter3,parameter4,parameter5,err) ! this line would be too long"
         outstring = [
             "REAL(KIND=4) :: r, f  !  some reals",
-            "REAL(KIND=4) :: r,f  !  some reals",
+            "REAL(KIND=4) :: r, f\n!  some reals",
             "if (min == max .and. min .eq. thres)",
             "if(   min == max.and.min .eq. thres  )",
             "INQUIRE (14)",
             "INQUIRE (14)",
         ]
         outstring_ = [
-            "if( min == max.and.min .eq. thres ) one_really_long_function_call_to_hit_the_line_limit(parameter1, parameter2,parameter3,parameter4,parameter5,err) ! this line would be too long",
+            "\n".join(
+                [
+                    "if (min == max .and. min .eq. thres) one_really_long_function_call_to_hit_the_line_limit(parameter1, parameter2, parameter3, &",
+                    "                                                                                         parameter4, parameter5, err)",
+                    "! this line would be too long",
+                ]
+            ),
             "if (min == max .and. min .eq. thres) one_really_long_function_call_to_hit_the_line_limit(parameter1, parameter2, parameter3, parameter4, parameter5, err) ! this line would be too long",
         ]
 
