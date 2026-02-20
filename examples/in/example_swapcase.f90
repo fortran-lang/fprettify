@@ -1,4 +1,4 @@
-
+! fprettify: --case 1 1 1 1
 MODULE exAmple
     IMPLICIT NONE
    PRIVATE

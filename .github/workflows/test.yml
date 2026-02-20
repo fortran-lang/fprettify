@@ -8,59 +8,38 @@ on:
   workflow_dispatch:
 
 jobs:
-  resources:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Create resource cache
-        id: cache
-        uses: actions/cache@v4
-        with:
-          path: ./fortran_tests/before/*/
-          key: resources-${{ github.event_name }}
-
-      - name: Prepare tests (default)
-        if: ${{ steps.cache.outputs.cache-hit != 'true' }}
-        run: |
-          .travis/prep_regular.sh
-
-      - name: Prepare tests (schedule)
-        if: ${{ steps.cache.outputs.cache-hit != 'true' && github.event_name == 'schedule' }}
-        run: |
-          .travis/prep_cron.sh
 
   pip:
-    needs:
-      - resources
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        python: ["3.7", "3.8", "3.9", "3.10", "3.11-dev"]
+        python: ["3.10", "3.11", "3.12"]
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Load resources
-        uses: actions/cache@v4
-        with:
-          path: ./fortran_tests/before/*/
-          key: resources-${{ github.event_name }}
-
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
+          cache: pip
 
       - name: Install project & dependencies
         run: pip install .[dev]
 
-      - name: Run tests
+      - name: Run unit and short integration tests
         run: |
-          coverage run --source=fprettify setup.py test
+          coverage run -p --source=fprettify run_tests.py -s unittests builtin regular
+
+      - name: Run long integration tests
+        if: ${{ github.event_name == 'schedule' }}
+        run: |
+          coverage run -p --source=fprettify run_tests.py -s cron
+
+      - name: Combine coverage files
+        run: coverage combine
 
       - name: Coverage upload
         run: coveralls --service=github
