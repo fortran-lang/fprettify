@@ -73,7 +73,7 @@ if __name__ == "__main__":
         test_loaded = unittest.TestLoader().loadTestsFromTestCase(test_case)
         test_suite.addTest(test_loaded)
 
-    unittest.TextTestRunner(verbosity=2).run(test_suite)
+    result = unittest.TextTestRunner(verbosity=2).run(test_suite)
 
     if args.reset and os.path.isfile(FAILED_FILE):
         sep_str = " : "
@@ -88,3 +88,5 @@ if __name__ == "__main__":
                         sys.stdout.write(result_line)
 
         os.remove(FAILED_FILE)
+
+    sys.exit(0 if result.wasSuccessful() else 1)
