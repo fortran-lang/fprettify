@@ -182,8 +182,9 @@ def normalize_line(line):
     """
     # fprettify might add missing ampersands when splitting string:
     line_out = re.sub("^\s*&", "", line.lower(), flags=re.MULTILINE)
+    line_out = re.sub("&\s*$", "", line_out, flags=re.MULTILINE)
     # remove all whitespace characters (including newline)
-    line_out = re.sub(r"\s", r"", line.lower())
+    line_out = re.sub(r"\s", r"", line_out)
     return line_out
 
 
