@@ -1394,7 +1394,7 @@ def inspect_ffile_format(
         # don't impose indentation for blocked do/if constructs:
         if IF_RE.search(f_line) or DO_RE.search(f_line):
             indent_misaligned = indent_size > 0 and offset % indent_size != 0
-            if prev_offset != offset or strict_indent or indent_misaligned:
+            if prev_offset != offset or strict_indent:  # or indent_misaligned:
                 indents[-1] = indent_size
         else:
             indents[-1] = indent_size
