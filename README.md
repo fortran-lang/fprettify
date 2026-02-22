@@ -8,8 +8,6 @@
 
 fprettify is an auto-formatter for modern Fortran code that imposes strict whitespace formatting, written in Python.
 
-**NOTE:** I'm looking for help to maintain this repository, see [#127](https://github.com/pseewald/fprettify/issues/127).
-
 ## Features
 
 - Auto-indentation.
