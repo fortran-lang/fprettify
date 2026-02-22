@@ -329,7 +329,7 @@ class plusminus_parser(parser_re):
 LR_OPS_RE = [REL_OP_RE, LOG_OP_RE, plusminus_parser(PLUSMINUS_RE), MULTDIV_RE, PRINT_RE]
 
 USE_RE = re.compile(
-    SOL_STR + "USE(\s+|(,.+?)?::\s*)\w+?((,.+?=>.+?)+|,\s*only\s*:.+?)?$" + EOL_STR,
+    SOL_STR + r"USE(\s+|(,.+?)?::\s*)\w+?((,.+?=>.+?)+|,\s*only\s*:.+?)?$" + EOL_STR,
     RE_FLAGS,
 )
 
@@ -2537,14 +2537,15 @@ def remove_pre_ampersands(lines, is_special, filename, line_nr):
         match = re.search(SOL_STR + r"(&\s*)", line)
         if match:
             pre_ampersand.append(match.group(1))
-            # amount of whitespace before ampersand of previous line:
-            m = re.search(r"(\s*)&[\s]*(?:!.*)?$", lines[pos - 1])
-            if not m:
-                raise FprettifyParseException(
-                    "Bad continuation line format", filename, line_nr
-                )
-            sep = len(m.group(1))
 
+            # find the previous non-comment line
+            _pos = pos - 1
+            while _pos >= 0 and lines[_pos].lstrip().startswith("!"):
+                _pos -= 1
+            _pos = max(_pos, 0)  # ensure non-negative index
+
+            m = re.search(r"(\s*)&[\s]*(?:!.*)?$", lines[_pos])
+            sep = len(m.group(1))
             ampersand_sep.append(sep)
         else:
             pre_ampersand.append("")
