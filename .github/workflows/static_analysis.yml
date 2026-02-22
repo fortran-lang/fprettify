@@ -1,0 +1,21 @@
+name: Static analysis
+
+on:
+  push:
+    branches:
+      - master
+      - devel
+  pull_request:
+    branches:
+      - master
+      - devel
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v3
+        with:
+          python-version: '3.x'
+      - uses: pre-commit/action@v3.0.1

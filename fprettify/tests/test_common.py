@@ -17,10 +17,26 @@
 #    You should have received a copy of the GNU General Public License
 #    along with fprettify. If not, see <http://www.gnu.org/licenses/>.
 ###############################################################################
+import inspect
+import io
+import os
+import sys
+import unittest
 
-"""wrapper script to run fprettify"""
+import fprettify
 
-from fprettify import run  # pragma: no cover
 
-if __name__ == "__main__":  # pragma: no cover
-    run()
+def joinpath(path1, path2):
+    return os.path.normpath(os.path.join(path1, path2))
+
+
+_MYPATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+
+# path to fprettify
+RUNSCRIPT = joinpath(_MYPATH, r"../../fprettify.py")
+
+
+class FprettifyTestCase(unittest.TestCase):
+    """
+    test class to be recognized by unittest, specialized for fprettify tests.
+    """

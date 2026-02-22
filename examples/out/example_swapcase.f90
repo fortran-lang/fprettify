@@ -1,4 +1,4 @@
-
+! fprettify: --case 1 1 1 1
 module exAmple
    implicit none
    private
@@ -33,17 +33,17 @@ module exAmple
    character(len=*), parameter :: c = 'INTEGER,   "PARAMETER"' !should not change case in string
    character(len=*), parameter :: d = "INTEGER,   'PARAMETER" !should not change case in string
 
-   integer(kind=INT64), parameter :: l64 = 2_INT64
-   real(kind=REAL64), parameter :: r64a = 2._REAL64
-   real(kind=REAL64), parameter :: r64b = 2.0_REAL64
-   real(kind=REAL64), parameter :: r64c = .0_REAL64
-   real(kind=REAL64), parameter :: r64a = 2.E3_REAL64
-   real(kind=REAL64), parameter :: r64b = 2.0E3_REAL64
-   real(kind=REAL64), parameter :: r64c = .0E3_REAL64
+   integer(kind=int64), parameter :: l64 = 2_int64
+   real(kind=real64), parameter :: r64a = 2._real64
+   real(kind=real64), parameter :: r64b = 2.0_real64
+   real(kind=real64), parameter :: r64c = .0_real64
+   real(kind=real64), parameter :: r64a = 2.e3_real64
+   real(kind=real64), parameter :: r64b = 2.0e3_real64
+   real(kind=real64), parameter :: r64c = .0e3_real64
 
    integer, parameter :: dp = selected_real_kind(15, 307)
    type test_type
-      real(kind=dp) :: r = 1.0D-3
+      real(kind=dp) :: r = 1.0d-3
       integer :: i
    end type test_type
 
@@ -51,17 +51,17 @@ contains
 
    subroutine test_routine( &
       r, i, j, k, l)
-      use ISO_FORTRAN_ENV, only: INT64
+      use iso_fortran_env, only: int64
       integer, intent(in)                                :: r, i, j, k
       integer, intent(out)                               :: l
 
-      integer(kind=INT64) :: l64
+      integer(kind=int64) :: l64
 
       l = test_function(r, i, j, k)
 
-      l64 = 2_INT64
-      if (l .eq. 2) l = max(l64, 2_INT64)
-      if (l .eq. 2) l = max(l64, 2_INT64)
+      l64 = 2_int64
+      if (l .eq. 2) l = max(l64, 2_int64)
+      if (l .eq. 2) l = max(l64, 2_int64)
       if (l .eq. 2) l = max
 
    end &
@@ -84,7 +84,7 @@ contains
          l = 0
       else
          l = 1
-      endif
+      end if
    end function
 
 end module
@@ -107,12 +107,12 @@ program example_prog
 !***************************!
 ! example 1.1
    r = 1; i = -2; j = 3; k = 4; l = 5
-   r2 = 0.0_DP; r3 = 1.0_DP; r4 = 2.0_DP; r5 = 3.0_DP; r6 = 4.0_DP
-   r1 = -(r2**i*(r3 + r5*(-r4) - r6)) - 2.E+2
+   r2 = 0.0_dp; r3 = 1.0_dp; r4 = 2.0_dp; r5 = 3.0_dp; r6 = 4.0_dp
+   r1 = -(r2**i*(r3 + r5*(-r4) - r6)) - 2.e+2
    if (r .eq. 2 .and. r <= 5) i = 3
    write (*, *) (merge(3, 1, i <= 2))
    write (*, *) test_function(r, i, j, k)
-   t%r = 4.0_DP
+   t%r = 4.0_dp
    t%i = str_function("t  % i   =  ")
 
 ! example 1.2
@@ -164,13 +164,13 @@ program example_prog
                   do k = 1, 3
                      if (k == 1) l = l + 1
                   end do
-               enddo
-            endif
-         enddo do_label
+               end do
+            end if
+         end do do_label
       case (2)
          l = i + j + k
       end select
-   enddo
+   end do
 
 ! example 2.2
    do m = 1, 2
@@ -182,13 +182,13 @@ program example_prog
             do my_integer = 1, 1
             do j = 1, 2
                write (*, *) test_function(m, r, k, l) + i
-            enddo
-            enddo
-         enddo
-         enddo
-         enddo
-      enddo
-   enddo
+            end do
+            end do
+         end do
+         end do
+         end do
+      end do
+   end do
 
 ! 3) auto alignment for linebreaks   !
 !************************************!
@@ -249,17 +249,17 @@ program example_prog
                      l = l + 1
 ! unindented comment
                      ! indented comment
-                  end do; enddo
+                  end do; end do
             elseif (.not. j == 4) then
                my_integer = 4
             else
                write (*, *) " hello"
-            endif
-         enddo
+            end if
+         end do
       case (2)
          l = i + j + k
       end select
-   enddo
+   end do
 
 ! example 4.2
    if ( &
@@ -279,7 +279,7 @@ program example_prog
       end & ! comment
          ! comment
          do
-   endif
+   end if
 
 ! example 4.3
    arr = [1, (/3, 4, &
@@ -294,11 +294,11 @@ program example_prog
       endif = 5
    else if (endif == 3) then
       write (*, *) endif
-   endif
+   end if
 
 ! example 4.5
    do i = 1, 2; if (.true.) then
          write (*, *) "hello"
-      endif; enddo
+      end if; end do
 
 end program
