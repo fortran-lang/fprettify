@@ -164,6 +164,8 @@ def generate_suite(suite=None, name=None):
                 os.chdir(TEST_EXT_DIR)
 
                 if not os.path.isdir(code["path"]):
+                    # code is reinitialized only if path doesn't exist
+                    # this allows iterative debugging to compare changes between different versions of fprettify
                     print(f"obtaining {key} ...")
                     exec(code["obtain"])
             finally:

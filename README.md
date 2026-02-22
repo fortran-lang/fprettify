@@ -243,7 +243,7 @@ For `suite`, you should pick one of the following test suites:
       `./run_tests.py -n ...`
       
 
-### How to deal with test failures
+### How to debug and fix test failures
 
 Test failures are always due to fprettify-formatted code being different than
 expected. To examine what has changed, proceed as follows:
