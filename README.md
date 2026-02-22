@@ -212,12 +212,12 @@ integration test suite, add a new section to
 [testsuites.config](fortran_tests/testsuites.config), adhering to the following
 format:
 
-``INI
+```INI
 [...]        # arbitrary unique section name identifying test code
 obtain: ...  # Python command to obtain test code base
 path: ...    # relative path pointing to test code location
 suite: ...   # which suite this test code should belong to
-`` 
+```
 
 For `suite`, you should pick one of the following test suites:
 - `regular`: for small code bases (executed for every pull request)
