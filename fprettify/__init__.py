@@ -329,7 +329,9 @@ class plusminus_parser(parser_re):
 LR_OPS_RE = [REL_OP_RE, LOG_OP_RE, plusminus_parser(PLUSMINUS_RE), MULTDIV_RE, PRINT_RE]
 
 USE_RE = re.compile(
-    SOL_STR + r"USE(\s+|(,.+?)?::\s*)\w+?((,.+?=>.+?)+|,\s*only\s*:.+?)?$" + EOL_STR, RE_FLAGS)
+    SOL_STR + r"USE(\s+|(,.+?)?::\s*)\w+?((,.+?=>.+?)+|,\s*only\s*:.+?)?$" + EOL_STR,
+    RE_FLAGS,
+)
 
 # markups to deactivate formatter
 NO_ALIGN_RE = re.compile(SOL_STR + r"&\s*[^\s*]+")
@@ -2538,11 +2540,11 @@ def remove_pre_ampersands(lines, is_special, filename, line_nr):
 
             # find the previous non-comment line
             _pos = pos - 1
-            while _pos >= 0 and lines[_pos].lstrip().startswith('!'):
+            while _pos >= 0 and lines[_pos].lstrip().startswith("!"):
                 _pos -= 1
             _pos = max(_pos, 0)  # ensure non-negative index
 
-            m = re.search(r'(\s*)&[\s]*(?:!.*)?$', lines[_pos])
+            m = re.search(r"(\s*)&[\s]*(?:!.*)?$", lines[_pos])
             sep = len(m.group(1))
             ampersand_sep.append(sep)
         else:
