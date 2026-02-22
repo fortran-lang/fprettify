@@ -180,11 +180,10 @@ def normalize_line(line):
     Normalize fortran line in a way that resulting string should be the same
     whether fprettify has been applied or not.
     """
-    line_out = re.sub(
-        r"\n{3,}", r"\n\n", line.lower().replace(" ", "").replace("\t", "")
-    )
-    # fprettify might add missing ampersands when splitting string
-    line_out = re.sub("^&", "", line_out, flags=re.MULTILINE)
+    # fprettify might add missing ampersands when splitting string:
+    line_out = re.sub("^\s*&", "", line.lower(), flags=re.MULTILINE)
+    # remove all whitespace characters (including newline)
+    line_out = re.sub(r"\s", r"", line.lower())
     return line_out
 
 
@@ -280,7 +279,7 @@ def add_test_method(testcase, fpath, ffile, args):
         orig_stripped = normalize_line(instring)
         new_stripped = normalize_line(outstring)
 
-        testcase.assertMultiLineEqual(
+        testcase.assertEqual(
             orig_stripped,
             new_stripped,
             "fprettify caused changes other than whitespace or lower/upper case",
