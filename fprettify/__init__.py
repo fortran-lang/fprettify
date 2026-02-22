@@ -2047,6 +2047,7 @@ def reformat_ffile(
     orig_filename=None,
     indent_fypp=True,
     indent_mod=True,
+    max_consecutive_empty_lines=1,
 ):
     """main method to be invoked for formatting a Fortran file."""
 
@@ -2086,6 +2087,7 @@ def reformat_ffile(
             orig_filename,
             indent_fypp,
             indent_mod,
+            max_consecutive_empty_lines,
         )
         oldfile = newfile
 
@@ -2115,6 +2117,7 @@ def reformat_ffile(
             orig_filename,
             indent_fypp,
             indent_mod,
+            max_consecutive_empty_lines,
         )
 
     outfile.write(newfile.getvalue())
@@ -2139,6 +2142,7 @@ def reformat_ffile_combined(
     orig_filename=None,
     indent_fypp=True,
     indent_mod=True,
+    max_consecutive_empty_lines=1,
 ):
 
     if not orig_filename:
@@ -2177,7 +2181,7 @@ def reformat_ffile_combined(
     nfl = 0  # fortran line counter
     use_same_line = False
     stream = InputStream(infile, not indent_fypp, orig_filename=orig_filename)
-    skip_blank = False
+    number_empty_lines = 0
     in_format_off_block = False
 
     while 1:
@@ -2215,7 +2219,12 @@ def reformat_ffile_combined(
         if prev_indent and indent_special == 0:
             indent_special = 2
 
-        if is_blank and skip_blank:
+        # Find empty line
+        found_empty_line = EMPTY_RE.search(f_line) and not any(comments) and not is_omp_conditional and not label
+        if found_empty_line: number_empty_lines += 1
+        else: number_empty_lines = 0
+
+        if is_blank and number_empty_lines > max_consecutive_empty_lines:
             continue
         if not do_format:
             if indent_special == 2:
@@ -2307,15 +2316,6 @@ def reformat_ffile_combined(
             orig_filename,
             stream.line_nr,
             allow_split=allow_auto_split,
-        )
-
-        # rm subsequent blank lines
-        skip_blank = (
-            EMPTY_RE.search(f_line)
-            and not any(comments)
-            and not is_omp_conditional
-            and not label
-            and not use_same_line
         )
 
         do_indent, use_same_line = pass_defaults_to_next_line(f_line)
@@ -2923,6 +2923,7 @@ def process_args(args):
     args_out["llength"] = 1024 if args.line_length == 0 else args.line_length
     args_out["strip_comments"] = args.strip_comments
     args_out["comment_spacing"] = args.comment_spacing
+    args_out["max_consecutive_empty_lines"] = args.max_consecutive_empty_lines
     args_out["format_decl"] = args.enable_decl
     args_out["indent_fypp"] = not args.disable_fypp
     args_out["indent_mod"] = not args.disable_indent_mod
@@ -3088,6 +3089,12 @@ def get_arg_parser(args={}):
         action="store_true",
         default=False,
         help="don't impose whitespace formatting",
+    )
+    parser.add_argument(
+        "--max-consecutive-empty-lines",
+        type=non_negative_int,
+        default=1,
+        help="set maximum number of consecutive empty lines",
     )
     parser.add_argument(
         "--enable-replacements",

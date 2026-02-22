@@ -214,6 +214,61 @@ class FprettifyUnitTestCase(FprettifyTestCase):
             outstring_exp_strip_spacing3,
         )
 
+    def test_max_consecutive_empty_lines(self):
+        """test limiting consecutive empty lines"""
+        instring = (
+            "program demo\n"
+            "\n"
+            "\n"
+            "\n"
+            "   a = 1\n"
+            "\n"
+            "\n"
+            "\n"
+            "   b = 2\n"
+            "\n"
+            "\n"
+            "end program demo\n"
+        )
+
+        outstring_exp_default = (
+            "program demo\n"
+            "\n"
+            "   a = 1\n"
+            "\n"
+            "   b = 2\n"
+            "\n"
+            "end program demo\n"
+        )
+
+        outstring_exp_zero = (
+            "program demo\n"
+            "   a = 1\n"
+            "   b = 2\n"
+            "end program demo\n"
+        )
+
+        outstring_exp_two = (
+            "program demo\n"
+            "\n"
+            "\n"
+            "   a = 1\n"
+            "\n"
+            "\n"
+            "   b = 2\n"
+            "\n"
+            "\n"
+            "end program demo\n"
+        )
+
+        self.assert_fprettify_result([], instring, outstring_exp_default)
+        self.assert_fprettify_result(
+            ["--max-consecutive-empty-lines", "0"], instring, outstring_exp_zero
+        )
+        self.assert_fprettify_result(
+            ["--max-consecutive-empty-lines", "2"], instring, outstring_exp_two
+        )
+
     def test_directive(self):
         """
         test deactivate directives '!&' (inline) and '!&<', '!&>' (block)
