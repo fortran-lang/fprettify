@@ -2962,7 +2962,7 @@ def get_arg_parser(args={}):
         "--line-length",
         type=int,
         default=132,
-        help="column after which a line should end, viz. -ffree-line-length-n for GCC",
+        help="column after which a line should end, viz. -ffree-line-length-n for GCC. Set to 0 to disable breaking of long lines.",
     )
     parser.add_argument(
         "-w",
