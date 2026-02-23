@@ -2808,7 +2808,9 @@ def write_formatted_line(
                 label = label_use  # restore label for first split line
                 continue
             comment_ind = max(0, padding - len(label_use)) if label_use else None
-            if _detach_inline_comment(idx, indent, lines, orig_lines, comment_indent=comment_ind):
+            if _detach_inline_comment(
+                idx, indent, lines, orig_lines, comment_indent=comment_ind
+            ):
                 label = label_use  # restore label for detached line
                 continue
 
@@ -2841,7 +2843,10 @@ def write_formatted_line(
         else:
             if label_use and not orig_line.lstrip().startswith(label_use.strip()):
                 outfile.write(
-                    "!$ " * is_omp_conditional + label_use + " " * padding + stripped_line
+                    "!$ " * is_omp_conditional
+                    + label_use
+                    + " " * padding
+                    + stripped_line
                 )
             else:
                 outfile.write(orig_line)
