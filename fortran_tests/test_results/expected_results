@@ -79,7 +79,7 @@ RosettaCodeData/Task/Averages-Pythagorean-means/Fortran/averages-pythagorean-mea
 RosettaCodeData/Task/Averages-Root-mean-square/Fortran/averages-root-mean-square.f : c91a4cd3ce7dbb9ce8fa753f767a4ccd3fbe17435415839d44338248d2fb14ff
 RosettaCodeData/Task/Averages-Simple-moving-average/Fortran/averages-simple-moving-average.f : 0d491d70d629b0cf7388399eafc6d795eeba199efd6faf0a408e219273bde08d
 RosettaCodeData/Task/Balanced-brackets/Fortran/balanced-brackets.f : 4f6a094ddd888d2c43075746eae3aa02ca8fe6deba0d9f52079d72d692cf2303
-RosettaCodeData/Task/Benfords-law/Fortran/benfords-law-1.f : 56df989a6423e8f846fb3227638fb1117288d47834c62d87feab7a18614a44f4
+RosettaCodeData/Task/Benfords-law/Fortran/benfords-law-1.f : 909c263798e15267b457121b35f8f2def746e01203712f4d4bc0dfe58954741d
 RosettaCodeData/Task/Benfords-law/Fortran/benfords-law-2.f : 0a346752595aa255330184b62aa26a966110e7470640e02097a8da7df42fec4c
 RosettaCodeData/Task/Binary-digits/Fortran/binary-digits.f : 72dbcf0cfd0964746bcf1b0336a864655d925c979e3def6ce3d30855d2b63f4b
 RosettaCodeData/Task/Binary-search/Fortran/binary-search-1.f : 55673449fc1f7030c16bdb8fb4e235c5bb73d8785a31e5150ae224b10ae3a368
@@ -165,7 +165,7 @@ RosettaCodeData/Task/Count-in-octal/Fortran/count-in-octal.f : a8595f6a19be39db1
 RosettaCodeData/Task/Count-occurrences-of-a-substring/Fortran/count-occurrences-of-a-substring.f : cbb0c146faad9720a4e98e0488f9030d4e437e59753a6222fd29ea0f317a34d4
 RosettaCodeData/Task/Create-a-file/Fortran/create-a-file.f : bee7659309b238dd6229d97b5e76b6ae87cc960b282c083c1295364d88d471aa
 RosettaCodeData/Task/Create-a-two-dimensional-array-at-runtime/Fortran/create-a-two-dimensional-array-at-runtime.f : 8581051c5fffeffc4a719c2db968b3588a6143488b435381556f2da1c9099378
-RosettaCodeData/Task/Create-an-HTML-table/Fortran/create-an-html-table.f : c5997233bd75146e2fe0dbc14ec8cae6cb76fff02f4734b35257c0182c5b7e4c
+RosettaCodeData/Task/Create-an-HTML-table/Fortran/create-an-html-table.f : 05f6745526dc1863a0c6a958052dda68b1a3a8360e69457cfb23bc1c0342eed9
 RosettaCodeData/Task/Date-format/Fortran/date-format.f : df4ee40265e75000904e7b3cf27be9c32784d219fbf0d55e1fed6a31d1957667
 RosettaCodeData/Task/Day-of-the-week/Fortran/day-of-the-week.f : 06ed8363f12c7640a59606824a09167bd2cded19e4fa8b1fb67b655553ead132
 RosettaCodeData/Task/Deal-cards-for-FreeCell/Fortran/deal-cards-for-freecell.f : 4ae9b244cc53377dd5f1899691cfee0782d55a7f904ec0a8742aa7b5dc544fea
@@ -550,12 +550,12 @@ RosettaCodeData/Task/SHA-1/Fortran/sha-1.f : 307c0084edfd5bbd04871951fc2f18adb09
 RosettaCodeData/Task/SHA-256/Fortran/sha-256.f : 68e578a715fac0d3a6cbfbbde37986aa07eeea75f9c9de60f47bda20c9015bbe
 RosettaCodeData/Task/Search-a-list/Fortran/search-a-list.f : 54cae29de889febf2f65d182c756bfcb96196d36543c43be2b1b9ffa4ff587fe
 RosettaCodeData/Task/Secure-temporary-file/Fortran/secure-temporary-file.f : 82aab5f017200c04ec6f345b8f6cd9f3290b1057964afb651677b88b36b8f21e
-RosettaCodeData/Task/Semordnilap/Fortran/semordnilap.f : 8f6453f0e197cbb0f6af28e6d2984344d5c71b7061181fb5be5d806ed28a8a92
+RosettaCodeData/Task/Semordnilap/Fortran/semordnilap.f : 7801053824c099d8d81b82f021f2cc61338418b0f39e712f1aad757278df0e72
 RosettaCodeData/Task/Send-email/Fortran/send-email.f : 2db8cfd487ba4099dc245da401fb75ea2cca794e73422c4e220af6a3d973e581
 RosettaCodeData/Task/Sequence-of-non-squares/Fortran/sequence-of-non-squares.f : c1a4894f49b4257ea98b3756691870c73992193309215f36f1fed9a634c9efbc
 RosettaCodeData/Task/Sequence-of-primes-by-Trial-Division/Fortran/sequence-of-primes-by-trial-division.f : d64aea9a2b395d43485ebecab00a0c9ff1d7a68eb54477d9a2c1f3f7984f49e8
 RosettaCodeData/Task/Seven-sided-dice-from-five-sided-dice/Fortran/seven-sided-dice-from-five-sided-dice.f : 0ded21ffb0a10d2bc0e5c9be671389b9babe46a563efffcb1714c4dc889b08d9
-RosettaCodeData/Task/Shell-one-liner/Fortran/shell-one-liner.f : 591a447fb1a50c94eb7f6bcc2f11586ae5eb11300f6a67a5ea2e7c3b5e58042d
+RosettaCodeData/Task/Shell-one-liner/Fortran/shell-one-liner.f : 8f97718493b9620b2f42f416114cb1aa09e58da3ee47fc79a35b560405b27ef4
 RosettaCodeData/Task/Short-circuit-evaluation/Fortran/short-circuit-evaluation.f : 46a20c9ff3c5aacd8bcf53d272ec5e953a2634970fdb780b127da794f333f355
 RosettaCodeData/Task/Sierpinski-carpet/Fortran/sierpinski-carpet.f : db6779f9dde643c9aa799c06b0b113a97837734e72f79607409e5b62c6a3d684
 RosettaCodeData/Task/Sierpinski-triangle/Fortran/sierpinski-triangle.f : db6ef7e8e9191a702164fc8632f072b1d619991b4ab763f0102f2cd8cd9535a7
@@ -670,7 +670,7 @@ RosettaCodeData/Task/Verify-distribution-uniformity-Naive/Fortran/verify-distrib
 RosettaCodeData/Task/Vigen-re-cipher/Fortran/vigen-re-cipher.f : 7c222cec24cf4cf492a7c9c1445e86e3cff268015b5e633da90c50c37a7b80fe
 RosettaCodeData/Task/Wireworld/Fortran/wireworld.f : 566ee0ab64ccf61dccdbda26a9197bfe786af608c3bf02c6a7c32e8ec1eb99ef
 RosettaCodeData/Task/Word-wrap/Fortran/word-wrap-1.f : 95097b84353ef86eb93e9380683a8ff02fefab40fd3f396e3bc2c570c9d73297
-RosettaCodeData/Task/Word-wrap/Fortran/word-wrap-2.f : b5bde57f1b190ffd1db476dcb702fde536751f8ad9e63de4804bdabf38d96e89
+RosettaCodeData/Task/Word-wrap/Fortran/word-wrap-2.f : 6b0030a769ae936aa7bf8af875e242ccf7393790bda321e09b855c39440c85cd
 RosettaCodeData/Task/Write-float-arrays-to-a-text-file/Fortran/write-float-arrays-to-a-text-file-1.f : 14568d07952459593d44455e40f2c5a962ec7d8075401619d8a7aa7982cd4ba8
 RosettaCodeData/Task/Write-float-arrays-to-a-text-file/Fortran/write-float-arrays-to-a-text-file-2.f : 8ebf143220a80aba88806c9a27d33da6d2fa7963be28bb88e43d4a78cbf62b3b
 RosettaCodeData/Task/XML-Input/Fortran/xml-input-1.f : 83cda0a973af665b3d07813b91a2899fad23b5aff5d3203e73904af8104bd4bc
@@ -1902,7 +1902,7 @@ RosettaCodeData/Task/Integer-comparison/Fortran/integer-comparison-2.f : c2e1064
 RosettaCodeData/Task/Integer-comparison/Fortran/integer-comparison-3.f : 6aa50936f2b0de791b9e386de3fc495d818bbe7a7e0adfb0877f77cb70d936ef
 RosettaCodeData/Task/Jensens-Device/Fortran/jensens-device-1.f : d380054d18b2eb9de4570e8dee6d47cf37bbaf9fce462ce623a17140ffd0d89a
 RosettaCodeData/Task/Jensens-Device/Fortran/jensens-device-2.f : 371900846e5bf7e68e3a8d32f9cb7dc2d13f0b063888f38c082f2d64c26ab312
-RosettaCodeData/Task/Logical-operations/Fortran/logical-operations.f : d731cd99840890fe14ffc098a1910ac53163d54d34298c34e5c004eac0310af9
+RosettaCodeData/Task/Logical-operations/Fortran/logical-operations.f : 96f48aad080872749237b2df433007c7d8ad517d7758d358309d8705436fc5dc
 RosettaCodeData/Task/Rename-a-file/Fortran/rename-a-file.f : b1282772aa55739b8442a9e8ee04e9a6c89408f8394ea55b8d6f5a32a4c997f2
 RosettaCodeData/Task/Reverse-words-in-a-string/Fortran/reverse-words-in-a-string.f : 01164158932afdc592f84c439916dcc9ab53689f8a1835f309dcead0f035d37f
 RosettaCodeData/Task/String-case/Fortran/string-case-2.f : 5501427b902a18caeccf8e8b1ffed96545ab0e89487c63e6172e391b3a2d9ec3
@@ -2131,7 +2131,7 @@ RosettaCodeData/Task/Rate-counter/Fortran/rate-counter.f : fd6b448a7a2f53b1de97e
 RosettaCodeData/Task/Remove-duplicate-elements/Fortran/remove-duplicate-elements-1.f : 9282a4400871bd66a6073d310bf6b1ee4c0f2df1a41ad1fa78d5a62d0b70b346
 RosettaCodeData/Task/Remove-duplicate-elements/Fortran/remove-duplicate-elements-2.f : 9734960a3fa2d403e71be11d58dd03eb055f00d629d07f24bdbaf0c2e2a3e820
 RosettaCodeData/Task/Reverse-a-string/Fortran/reverse-a-string-3.f : abf477bfec3f7d53d1c9b607918dd61d2bed0984b9c2f7e2c754dc0fbeb062b2
-RosettaCodeData/Task/Sorting-algorithms-Radix-sort/Fortran/sorting-algorithms-radix-sort.f : 8275b8fdaac3c16ac6500516ff4ac53b670b8fdc07f7a19b6601dfd1927921eb
+RosettaCodeData/Task/Sorting-algorithms-Radix-sort/Fortran/sorting-algorithms-radix-sort.f : 20994aa1011486605996881ad58ec200a1df6b9ed51aafb5ebe798b11770e403
 RosettaCodeData/Task/Sorting-algorithms-Sleep-sort/Fortran/sorting-algorithms-sleep-sort.f : 583ee495dc60dd32c6c0f20ea5caeb6142e6a59ce2c8c8cadd5753418b9462ba
 RosettaCodeData/Task/Special-variables/Fortran/special-variables.f : 73ced0b19ddb14d73878b52775af8a3164724efbc5904a7f2653c7cd192f9df0
 RosettaCodeData/Task/String-case/Fortran/string-case-3.f : 55863eebdcb910e3c489f9e487b8beb21176d58e04bffa017baa38e6d5ffcdc5
@@ -2144,7 +2144,7 @@ RosettaCodeData/Task/Top-rank-per-group/Fortran/top-rank-per-group-1.f : 33bb562
 RosettaCodeData/Task/Top-rank-per-group/Fortran/top-rank-per-group-2.f : 409516fc2ea412eac9fa802e0653f863e869a5428334714f9c81131155766b24
 RosettaCodeData/Task/Van-der-Corput-sequence/Fortran/van-der-corput-sequence.f : f65263a05ae20e53a42b292c6b535cf58fa75f36427214b3041e1210748a6f2f
 RosettaCodeData/Task/Zeckendorf-number-representation/Fortran/zeckendorf-number-representation-1.f : 3953b25eab653b3a37f7192acb6295596ebc61306750b16d5b7d13b4f0489a09
-RosettaCodeData/Task/Zeckendorf-number-representation/Fortran/zeckendorf-number-representation-2.f : 9bb641b7b1cfdf2b29d5c99060b63b58eba66654a27dbddd440e0193745b3b3c
+RosettaCodeData/Task/Zeckendorf-number-representation/Fortran/zeckendorf-number-representation-2.f : c39e5e0395f7df8e6ac2bc4d3688ab5a65a715a83d7974dfe0a7fe0c412cab69
 RosettaCodeData/Task/Zhang-Suen-thinning-algorithm/Fortran/zhang-suen-thinning-algorithm-1.f : 02bcc8a23a4802f6c3461a0c11159fcf7d97cf3ea8b9f997da51df8e3b0ec18e
 RosettaCodeData/Task/Zhang-Suen-thinning-algorithm/Fortran/zhang-suen-thinning-algorithm-2.f : f8ec981ca6c6cab2c08688aafee0120ee680dbeae4564cfceaf91a5d6f780697
 RosettaCodeData/Task/Zhang-Suen-thinning-algorithm/Fortran/zhang-suen-thinning-algorithm-3.f : 10fb85c1921f8d07667ae62a94b5988532c8e8181f99bd3c99f15d9b2ca304ad
@@ -2279,7 +2279,7 @@ RosettaCodeData/Task/100-prisoners/Fortran/100-prisoners.f : 983e232c54fcd8d9799
 RosettaCodeData/Task/15-puzzle-game/Fortran/15-puzzle-game-1.f : c8d1fd9cb9d080ff21dbb698e99949b7f4d9b6da53d493f5ccb58f4f7c184ebe
 RosettaCodeData/Task/15-puzzle-game/Fortran/15-puzzle-game-2.f : f04157c7c4cb0be3b21249577e084be723e730ec38f4785dfed64bedd1d289ec
 RosettaCodeData/Task/15-puzzle-solver/Fortran/15-puzzle-solver-1.f : e272edc58f1ab7818acb4ca0cde6b7938351a8fd8b824fca48c0de5ef8335191
-RosettaCodeData/Task/15-puzzle-solver/Fortran/15-puzzle-solver-2.f : 509a49018cad9c1f191197afeb3833ea7dc02431d7e009afe525c43e32427747
+RosettaCodeData/Task/15-puzzle-solver/Fortran/15-puzzle-solver-2.f : 1cc3768214a0e1072e266bebe3489152f48a4cbf202bf2bd2a41e71dc74190f0
 RosettaCodeData/Task/2048/Fortran/2048-1.f : 16ea6fbcb14ebb2930ba66cd7a5339cb298fd05a120f347ec56fadd45f2af355
 RosettaCodeData/Task/2048/Fortran/2048-2.f : parse error
 RosettaCodeData/Task/21-game/Fortran/21-game-1.f : 5f14c8f47fb0ffcce0e9fa9c0d771dc41a218006faaf153cdedaf3c9fa2b8f84
@@ -2293,7 +2293,7 @@ RosettaCodeData/Task/99-bottles-of-beer/Fortran/99-bottles-of-beer-3.f : dab960e
 RosettaCodeData/Task/A+B/Fortran/a+b-1.f : efa4a3a04b7c89f980398e3312cac13d7260a10d5a58f38af9356028b4dc2a54
 RosettaCodeData/Task/A+B/Fortran/a+b-2.f : 5aca73de2bda25c56404ecd4f443880de517aa39bfe858c7764cd38d5b20a8f5
 RosettaCodeData/Task/ABC-problem/Fortran/abc-problem-1.f : 9729c2df9028f998a7fa68cd4e5604c90ba0783010a257cf61e6f20a501a1c81
-RosettaCodeData/Task/ABC-problem/Fortran/abc-problem-2.f : 7b72cc9206a3252c68e8ee6d1482003d2154f2fb076c99afd723e9ac2eae231a
+RosettaCodeData/Task/ABC-problem/Fortran/abc-problem-2.f : c7d49801d722cab3087709ef5371ee7a829bb018449a6c98e86dbe9bde06a017
 RosettaCodeData/Task/AVL-tree/Fortran/avl-tree.f : b06350bbd936caec813af403a3b03bf416618b928e0d68f3e8aaf0746b5fa85b
 RosettaCodeData/Task/Abelian-sandpile-model/Fortran/abelian-sandpile-model-1.f : b402f36ba106f00732e42043e3c27f6b8d25eaaa43c881eb57742436ecb72cb2
 RosettaCodeData/Task/Abelian-sandpile-model/Fortran/abelian-sandpile-model-2.f : 2152feee11e8e218e053b30447a230b54ba84330e1ce227c84ba9176fce4c872
@@ -2316,11 +2316,11 @@ RosettaCodeData/Task/Biorhythms/Fortran/biorhythms.f : 4f0ebaf47a903deb462272bef
 RosettaCodeData/Task/Boyer-Moore-string-search/Fortran/boyer-moore-string-search.f : 804faaf66d9b49496d7c080499f13ed8799d44bb5d6e562959519e7e92baed0f
 RosettaCodeData/Task/Brazilian-numbers/Fortran/brazilian-numbers.f : e514b0c782dc294d5e9ef8382451115278cfa6c52a3848bab528c74dc45be1bb
 RosettaCodeData/Task/CUSIP/Fortran/cusip.f : 7b92e68ff1762bc1b0c5fdb6dbcc6a959e513b27fe61d4d03676dcaa14c4a30c
-RosettaCodeData/Task/Calculating-the-value-of-e/Fortran/calculating-the-value-of-e.f : 6b400441114621aa6d32130f9f182cd634f0ccf155012ebcd1ddbd57815ccce3
+RosettaCodeData/Task/Calculating-the-value-of-e/Fortran/calculating-the-value-of-e.f : fe01eff5d273b9de763e02fce07ca7d0c7f7181904c79647a21055d00c34e81b
 RosettaCodeData/Task/Cartesian-product-of-two-or-more-lists/Fortran/cartesian-product-of-two-or-more-lists.f : cd6b69c40076b85814b26edcb33f77efaf784321f299fb4964f8c9a2f1e96c80
 RosettaCodeData/Task/Chaos-game/Fortran/chaos-game-1.f : d35adb372bc41fafd520a27038965fba9de59f18dbd22dbb85e4a24563394887
 RosettaCodeData/Task/Chaos-game/Fortran/chaos-game-2.f : 17d39771057f76c5d9046740bb5078e89364e15fff1a55dd565b1b3e7b02db5c
-RosettaCodeData/Task/Cheryls-birthday/Fortran/cheryls-birthday.f : 0d2ad8729f4ffca1d8f63245a03e781b9984b87e1acdcd839577cd61941de4e1
+RosettaCodeData/Task/Cheryls-birthday/Fortran/cheryls-birthday.f : 5bd3de8109063101a97526e0f417bc6fe6ee14554263d067a24ca7119cff16c6
 RosettaCodeData/Task/Chinese-remainder-theorem/Fortran/chinese-remainder-theorem.f : internal error
 RosettaCodeData/Task/Chowla-numbers/Fortran/chowla-numbers.f : 528b17d86909f28e5a8c17483cba4bf855797a6eeb8518f9393dba5e49fc7808
 RosettaCodeData/Task/Compare-a-list-of-strings/Fortran/compare-a-list-of-strings-1.f : e4e79c331bc15ddc49b1af0caca7a7138bef5f98bd50e493659bc40e23492f5f
@@ -2350,7 +2350,7 @@ RosettaCodeData/Task/Determine-if-a-string-has-all-unique-characters/Fortran/det
 RosettaCodeData/Task/Determine-if-a-string-is-squeezable/Fortran/determine-if-a-string-is-squeezable.f : 9bab7d0c744a373eeb1c1a35ecb41005860cc1f601b7cccb72cfc7b78350276a
 RosettaCodeData/Task/Dijkstras-algorithm/Fortran/dijkstras-algorithm.f : e90340059e233e0d7ed746496dc2746340b8eef9b13fa32d0362429afd689622
 RosettaCodeData/Task/Discordian-date/Fortran/discordian-date.f : 6f0d8ee7596e0102ff152e47fcee2437e361cf7412df0bd624bbb01dbbd01103
-RosettaCodeData/Task/Distance-and-Bearing/Fortran/distance-and-bearing.f : bf8a968b0ffdfce0c7ccc2ba5a1daf92901a01d032628af8f09f847bacbb4347
+RosettaCodeData/Task/Distance-and-Bearing/Fortran/distance-and-bearing.f : 7d7829886b2ae46ea14ba8e26493fe9fc385a023d1130eb342319501622ef51a
 RosettaCodeData/Task/Doomsday-rule/Fortran/doomsday-rule.f : 5148ef42c7a86139a591b3b1db840671118b86385fe32a8417b910526abbd6dd
 RosettaCodeData/Task/Emirp-primes/Fortran/emirp-primes.f : parse error
 RosettaCodeData/Task/Eulers-identity/Fortran/eulers-identity.f : b3cf6d7e96d3b452a37d9d8c585620d02b1ca14e88f21e7e7b87258801f94c09
@@ -2358,7 +2358,7 @@ RosettaCodeData/Task/Eulers-sum-of-powers-conjecture/Fortran/eulers-sum-of-power
 RosettaCodeData/Task/Eulers-sum-of-powers-conjecture/Fortran/eulers-sum-of-powers-conjecture-2.f : ebb2d9cb11d8625291b969b7803ebd8d851ca7d6e6516156ea9a19d02130318d
 RosettaCodeData/Task/Execute-Brain-/Fortran/execute-brain--1.f : 008147b30c6b7d8a5f990c9d80efe7c39d845f048941f32fd8aaed46797bc2e5
 RosettaCodeData/Task/Execute-Brain-/Fortran/execute-brain--2.f : 0521bf5368ba92ee0d9528f5a521be25e53e4519f1bc12e95c81f0216404ea3a
-RosettaCodeData/Task/Execute-Brain-/Fortran/execute-brain--3.f : b44a35f600cc8af2d6dbde35de789003665a3fe17a6b9ee1468b18cdb065cc93
+RosettaCodeData/Task/Execute-Brain-/Fortran/execute-brain--3.f : b224f5be361d1f594c7f550062d6f5260d6110d3fdcdba392736c7c07ee28ae5
 RosettaCodeData/Task/Execute-Brain-/Fortran/execute-brain--4.f : 41f50aa8d284d881b0326d682d77fde33f41a5ba6929fb8a1b24dcba61772c52
 RosettaCodeData/Task/Exponentiation-order/Fortran/exponentiation-order.f : 90ff596e832dd827d899d29ed3ec5ecc3d2a7b4e820c691cec1fa3afb00b991d
 RosettaCodeData/Task/Extensible-prime-generator/Fortran/extensible-prime-generator-5.f : parse error
@@ -2366,7 +2366,7 @@ RosettaCodeData/Task/Extensible-prime-generator/Fortran/extensible-prime-generat
 RosettaCodeData/Task/Factorial/Fortran/factorial-3.f : 692b07073d71ab2def3ed1d9e376bf60c12f978bc47d6ae4d72c2b181620f3b6
 RosettaCodeData/Task/Feigenbaum-constant-calculation/Fortran/feigenbaum-constant-calculation.f : 259bcd151204e4a68b9a0d11293349d5a993ee07bf1ab0f8243bf78e606684de
 RosettaCodeData/Task/File-extension-is-in-extensions-list/Fortran/file-extension-is-in-extensions-list-1.f : 2b5c819be194c67a176a76709d2756a81689ffdfc3d3d350be5213f57e15e52f
-RosettaCodeData/Task/File-extension-is-in-extensions-list/Fortran/file-extension-is-in-extensions-list-2.f : b4b2b1377eea43c90a52a0de1a89e6566c6b2e52b6c3d2f73e441879b63d5450
+RosettaCodeData/Task/File-extension-is-in-extensions-list/Fortran/file-extension-is-in-extensions-list-2.f : 09d3bd72fc4b94070a68869592cad3934936560ec01b85041b5d7db33f98dc01
 RosettaCodeData/Task/Find-if-a-point-is-within-a-triangle/Fortran/find-if-a-point-is-within-a-triangle.f : 5317e498983fd298f865d22482a62dfabf3b291634d6c40b16581c30484d2514
 RosettaCodeData/Task/Find-the-intersection-of-two-lines/Fortran/find-the-intersection-of-two-lines.f : c422d84394b91ef5cf8358c0ff1069068eab0de5aafc9c3b4fbf231a8ca6a314
 RosettaCodeData/Task/Floyd-Warshall-algorithm/Fortran/floyd-warshall-algorithm.f : baf60055aa75b1ae2110174a67a137774b0bb876067a64999283256ea95c8c94
@@ -2386,10 +2386,10 @@ RosettaCodeData/Task/Hunt-the-Wumpus/Fortran/hunt-the-wumpus-2.f : 98921cd6288bd
 RosettaCodeData/Task/ISBN13-check-digit/Fortran/isbn13-check-digit.f : c5f45d7f928034ad42f07088f86a116675aa9b04d614ad0703ae119a9a92f94b
 RosettaCodeData/Task/Increasing-gaps-between-consecutive-Niven-numbers/Fortran/increasing-gaps-between-consecutive-niven-numbers.f : d2e7b0fd4c5886dd2df8ed8e5d7cbce4409a9e6b5d4789a599b8d8b88ffb1c01
 RosettaCodeData/Task/Isqrt-integer-square-root-of-X/Fortran/isqrt-integer-square-root-of-x.f : 4540ce0681d4ade5b0c7a4504b1d0fdfe4aeaaa554028a1cb64609952682a25f
-RosettaCodeData/Task/Julia-set/Fortran/julia-set-1.f : 4215ae1889994ee5617a796923c810d4ad3222e29fb3d759eb01d5d9ff612d16
+RosettaCodeData/Task/Julia-set/Fortran/julia-set-1.f : 04ac02a15f9eec466610500198edd412e7a14691712fd667d2640417e4be3e18
 RosettaCodeData/Task/Julia-set/Fortran/julia-set-2.f : 4a5ce09ec6a58592c122aa5993d840dc4283b4f9fd3dff8bf49d8edb559cb192
 RosettaCodeData/Task/Knapsack-problem-0-1/Fortran/knapsack-problem-0-1-1.f : 082a56839ffccd359d32d18f349c475f81b79f453bc982a51961057b096f87b8
-RosettaCodeData/Task/Knapsack-problem-0-1/Fortran/knapsack-problem-0-1-2.f : 6a1df9f3a3de791431b8cfed26c64003a7f928d8840991da4551c2637db0e9d5
+RosettaCodeData/Task/Knapsack-problem-0-1/Fortran/knapsack-problem-0-1-2.f : f028322c83781543930effc44f1bbfe18407719fa1f752516e271f25be64a369
 RosettaCodeData/Task/Knights-tour/Fortran/knights-tour-1.f : 6fb0bd788c151f94b718e3f7680cd84e2500806afd3c01e74b5ca00c839cca5d
 RosettaCodeData/Task/Knights-tour/Fortran/knights-tour-2.f : ec5ca517e10d81685435384853682864e79042026dbb111d7f15e6b9e578005b
 RosettaCodeData/Task/Knights-tour/Fortran/knights-tour-3.f : 16e521b6de25e229df5f2886574e94d6d3a4f7ac0179269e783ba093a8d3d809
@@ -2412,7 +2412,7 @@ RosettaCodeData/Task/Lychrel-numbers/Fortran/lychrel-numbers.f : internal error
 RosettaCodeData/Task/M-bius-function/Fortran/m-bius-function.f : 212a95bf9be8867bd44c96955e10f15393d32943185280e1072125b03a9ca735
 RosettaCodeData/Task/Magic-8-ball/Fortran/magic-8-ball.f : abb8ae94261f7598c827cd2ff88b52d6b3342cc3fed27536eb8a56b16d8542e3
 RosettaCodeData/Task/Matrix-chain-multiplication/Fortran/matrix-chain-multiplication.f : 91817fa14074c857131c54299a6585726d09dfb6946b4e5ca08f4c718a234bbf
-RosettaCodeData/Task/Mayan-calendar/Fortran/mayan-calendar.f : a42bbf5ef4e5cb1596f3be582f8a16c493285ba0a6001af0e412dfc343760983
+RosettaCodeData/Task/Mayan-calendar/Fortran/mayan-calendar.f : 2e38104011fad01c961bb0a89d5b38abb24deb17968a71bdbfe7f2cf6e996c2d
 RosettaCodeData/Task/Mertens-function/Fortran/mertens-function.f : 4811840c0cbb4013378c344cc5eaf7d78b86f621d5cb46be47a7594e033baa9b
 RosettaCodeData/Task/Miller-Rabin-primality-test/Fortran/miller-rabin-primality-test-3.f : 04ced536626dfc510361fc557f21e6806a688eeec2c49fd0a81c3d13134556a0
 RosettaCodeData/Task/Modular-arithmetic/Fortran/modular-arithmetic-1.f : d05c914cdb0eafe533d7dfd94e267735c35673d0bc59cb99f7866c6cc49c89bc
@@ -2434,7 +2434,7 @@ RosettaCodeData/Task/Nested-function/Fortran/nested-function-3.f : ec0cf8fe06c2d
 RosettaCodeData/Task/Numbers-with-equal-rises-and-falls/Fortran/numbers-with-equal-rises-and-falls.f : c0bde305cfab2feaafdabc8ee320dabc7cda3c5c7db7341a87170c5192781168
 RosettaCodeData/Task/Old-Russian-measure-of-length/Fortran/old-russian-measure-of-length.f : 8515b1b8b605be3d32b3757d99ccb3120c7fb6e2984d4d02bc69423ac92deba9
 RosettaCodeData/Task/One-of-n-lines-in-a-file/Fortran/one-of-n-lines-in-a-file.f : 05aa8d237e76b92412820defa409e1ead615d3f97dc80c74e2626cfbe5dbfb66
-RosettaCodeData/Task/Partition-an-integer-x-into-n-primes/Fortran/partition-an-integer-x-into-n-primes.f : 775b5d77c21431b7445b621d916f49e058b5ed15a51fd83b589da77a46225054
+RosettaCodeData/Task/Partition-an-integer-x-into-n-primes/Fortran/partition-an-integer-x-into-n-primes.f : 10da579be2b59d6f1ef59beaaf7c2f92de0fdd5fb3e38cb4692ef40cd74e168c
 RosettaCodeData/Task/Pascal-matrix-generation/Fortran/pascal-matrix-generation-1.f : aaa14761d7c08a0ad5d006b42bf426307062eef93d552c9135fd81696e3de65c
 RosettaCodeData/Task/Pascal-matrix-generation/Fortran/pascal-matrix-generation-2.f : 930277f63f5e0728182047733212f96d9778a9c66cc9957e557b432dee044d3f
 RosettaCodeData/Task/Pathological-floating-point-problems/Fortran/pathological-floating-point-problems-1.f : 302e5e9d1a4dc8e719ff84c874a9ae49292cdeca26b23c8f1bdd3f0c542ea11f
@@ -2443,7 +2443,7 @@ RosettaCodeData/Task/Peaceful-chess-queen-armies/Fortran/peaceful-chess-queen-ar
 RosettaCodeData/Task/Peaceful-chess-queen-armies/Fortran/peaceful-chess-queen-armies-2.f : f95a8a7e2a8f0aaf93ccf1c15b6a73e6d3db01272c0a2d59609674c7698cb437
 RosettaCodeData/Task/Peaceful-chess-queen-armies/Fortran/peaceful-chess-queen-armies-3.f : parse error
 RosettaCodeData/Task/Perfect-shuffle/Fortran/perfect-shuffle.f : b952bd40e0660a31649626e4963b4ea956a1d8bee4a7f5c438e244fcb89a7fed
-RosettaCodeData/Task/Perlin-noise/Fortran/perlin-noise.f : a77231dda02d3b63499c5cb9c32522ab4fea78dffb1548b108d9acd8f205766f
+RosettaCodeData/Task/Perlin-noise/Fortran/perlin-noise.f : e01a39031c7d024d41faf569f2f4a4a04a10f4f8ea9c14d2414ce64b7f5ea9cc
 RosettaCodeData/Task/Polynomial-long-division/Fortran/polynomial-long-division-3.f : 4b8a2ce25f6eafb40536adfacfbc4ebafe9170551e6f6974ffcea4c981ed1b59
 RosettaCodeData/Task/Population-count/Fortran/population-count.f : cea6be52247f4504fca2ab75698413b100349c80424c9f34982e236627e50624
 RosettaCodeData/Task/Prime-conspiracy/Fortran/prime-conspiracy.f : 6580c8d9b52901d31631e60a6b3b71f74c86aa63ba4487009c526eecaf2fa8a4
