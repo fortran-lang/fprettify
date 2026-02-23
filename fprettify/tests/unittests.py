@@ -768,6 +768,11 @@ ${worktype}$, &
         outstring = "print *, 'hello'\n1003 FORMAT(2(1x, i4), 5x, '-', 5x, '-', 3x, '-', 5x, '-', 5x, '-', 8x, '-', 3x, &\n            1p, 2(1x, d10.3))"
         self.assert_fprettify_result([], instring, outstring)
 
+    def test_statement_label_auto_break(self):
+        instring = "1003  FORMAT(2(1x, i4), 5x, '-', 5x, '-', 3x, '-', 5x, '-', 5x, '-', 8x, '-', 3x, 1p, 2(1x, d10.3)) ! comment"
+        outstring = "1003  FORMAT(2(1x, i4), 5x, '-', 5x, '-', 3x, '-', 5x, '-', 5x, '-', 8x, '-', 3x, 1p, 2(1x, d10.3))\n! comment"
+        self.assert_fprettify_result(["--line-length=10"], instring, outstring)
+
     def test_multiline_str(self):
 
         instring = []
