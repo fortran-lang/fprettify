@@ -2715,14 +2715,14 @@ def _split_inline_comment(line):
     return code, comment
 
 
-def _detach_inline_comment(idx, indent, lines, orig_lines):
+def _detach_inline_comment(idx, indent, lines, orig_lines, comment_indent=None):
     """Split an inline comment into its own line keeping indentation metadata."""
     splitted = _split_inline_comment(lines[idx])
     if not splitted:
         return False
 
     code_line, comment_line = splitted
-    base_indent = indent[idx]
+    base_indent = indent[idx] if comment_indent is None else comment_indent
 
     lines[idx] = code_line
     orig_lines[idx] = code_line
@@ -2805,8 +2805,11 @@ def write_formatted_line(
                 _insert_split_chunks(
                     idx, split_lines, indent, indent_size, lines, orig_lines
                 )
+                label = label_use  # restore label for first split line
                 continue
-            if _detach_inline_comment(idx, indent, lines, orig_lines):
+            comment_ind = max(0, padding - len(label_use)) if label_use else None
+            if _detach_inline_comment(idx, indent, lines, orig_lines, comment_indent=comment_ind):
+                label = label_use  # restore label for detached line
                 continue
 
         if rendered_length <= llength:
@@ -2836,7 +2839,12 @@ def write_formatted_line(
                 line_nr,
             )
         else:
-            outfile.write(orig_line)
+            if label_use and not orig_line.lstrip().startswith(label_use.strip()):
+                outfile.write(
+                    "!$ " * is_omp_conditional + label_use + " " * padding + stripped_line
+                )
+            else:
+                outfile.write(orig_line)
             log_message(
                 LINESPLIT_MESSAGE + " (limit: " + str(llength) + ")",
                 "warning",
