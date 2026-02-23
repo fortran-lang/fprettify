@@ -14,7 +14,7 @@ RosettaCodeData/Task/Abundant,-deficient-and-perfect-number-classifications/Fort
 RosettaCodeData/Task/Ackermann-function/Fortran/ackermann-function.f : 599ed2ad43b48a4fb57831029e4a122a45e380685438bc7a7abead154cfa12f0
 RosettaCodeData/Task/Address-of-a-variable/Fortran/address-of-a-variable.f : 05c4d4bb1358e35769b1adc3362e64dc1011d5a6e4f779289f43bb59f6c11434
 RosettaCodeData/Task/Align-columns/Fortran/align-columns.f : f0cc8c9353edcf6cc9702fe071ef5c7bea77dfe509d239ceda8c782a9ace1206
-RosettaCodeData/Task/Aliquot-sequence-classifications/Fortran/aliquot-sequence-classifications.f : e35ca3f1d7209a33057ad74d782185a68b1dcfb0494dc822ea774c4f878e729a
+RosettaCodeData/Task/Aliquot-sequence-classifications/Fortran/aliquot-sequence-classifications.f : c3dc29164751830ba2ae7314632415f6469d524bffbe74b8441c85ccbcd75bbe
 RosettaCodeData/Task/Amicable-pairs/Fortran/amicable-pairs.f : bca56273936968930bb44f97e1a8f4583d2e2d842ffb9f94c3efc6e9244be7f1
 RosettaCodeData/Task/Animate-a-pendulum/Fortran/animate-a-pendulum.f : 7f59c04d9a1fa07d587609bd45267b915468548e5973dac4e4403ffe1fbb53f2
 RosettaCodeData/Task/Anonymous-recursion/Fortran/anonymous-recursion.f : f9dea9c0fe125cf24b5f28a5f1c1db93193307d4a246caa272802c979e6c1ab7
@@ -412,7 +412,7 @@ RosettaCodeData/Task/Multiple-distinct-objects/Fortran/multiple-distinct-objects
 RosettaCodeData/Task/Multiplication-tables/Fortran/multiplication-tables-1.f : 635b26fabaaf0d1e311a9659e6bcf8c966141d27eb24918ffc16735174651d6b
 RosettaCodeData/Task/Multiplication-tables/Fortran/multiplication-tables-2.f : 3e29dd14a1d171a46749e1c2554b8250e7ef945a396bb97ce1dc2b8403b39df6
 RosettaCodeData/Task/Multiplication-tables/Fortran/multiplication-tables-3.f : 1476bdcb7aa9d50074a583830022740a2fe8951e367d4a03ef67ae24b29db7b4
-RosettaCodeData/Task/Multiplication-tables/Fortran/multiplication-tables-4.f : 4ba6f310b0c8fe99e00507fa0308f172b9faf8a9735fa769029259e3444dbc0b
+RosettaCodeData/Task/Multiplication-tables/Fortran/multiplication-tables-4.f : c7dab4a9cf0f3a1b9c23097ab015b13a67f215a455ad87c8509eea7c69d4b37c
 RosettaCodeData/Task/Multiplication-tables/Fortran/multiplication-tables-5.f : ca83004d898315c8aeca2eb415dcfc2ddf9631401ba93c251cd818b5350741ef
 RosettaCodeData/Task/Multiplication-tables/Fortran/multiplication-tables-6.f : parse error
 RosettaCodeData/Task/Multiplication-tables/Fortran/multiplication-tables-7.f : 42f97f96bccce569c8dd2467a7c905a40e7831ac6a90f7d317490d5c0c62a07b
@@ -527,7 +527,7 @@ RosettaCodeData/Task/Reduced-row-echelon-form/Fortran/reduced-row-echelon-form-1
 RosettaCodeData/Task/Reduced-row-echelon-form/Fortran/reduced-row-echelon-form-2.f : 835ce851ca0ff41d345f754621a70918ce822bccfdb8ee8fb387e6d458ef1017
 RosettaCodeData/Task/Remove-duplicate-elements/Fortran/remove-duplicate-elements.f : 9282a4400871bd66a6073d310bf6b1ee4c0f2df1a41ad1fa78d5a62d0b70b346
 RosettaCodeData/Task/Remove-lines-from-a-file/Fortran/remove-lines-from-a-file-1.f : b977f27a15c367d71070989c9b0dea9d00e952f79491f0d9c555c29afeb6d9c0
-RosettaCodeData/Task/Remove-lines-from-a-file/Fortran/remove-lines-from-a-file-2.f : 82ad6c60028e2c0180768822fd20ded03150119809dee627a7ded6569d17645e
+RosettaCodeData/Task/Remove-lines-from-a-file/Fortran/remove-lines-from-a-file-2.f : 90e2161ec41bc42cf8cfe6ab7a0c50f7475c35161700ec91ff90ccfcd6d8ea2c
 RosettaCodeData/Task/Repeat-a-string/Fortran/repeat-a-string.f : 4d97e4b1da0e2f984ab8011cb7b69366f0b2ae12c270081ccb0808f4167b39fc
 RosettaCodeData/Task/Return-multiple-values/Fortran/return-multiple-values.f : 82dff0d69b2f5c98eabcabc305646335a2c78b419355f30a92fa58553ea11a50
 RosettaCodeData/Task/Reverse-a-string/Fortran/reverse-a-string-1.f : 066ed2e8bd2a95b4f3858490544b0b3c6a7e8dca4aa9798768898d4d911cbc53
@@ -2486,7 +2486,7 @@ RosettaCodeData/Task/Stream-merge/Fortran/stream-merge.f : 3b195c4b4eddc03a48ddb
 RosettaCodeData/Task/String-append/Fortran/string-append-1.f : 056a01c77971f05c7509ea89e70334cc896b853a1500d9c2cefb98ee5928f50c
 RosettaCodeData/Task/String-append/Fortran/string-append-2.f : 48fe63a11f7cb32dd82040cd2d0b8904a35eb78d3d1f90cab5adc7dcca72a69b
 RosettaCodeData/Task/String-interpolation-included-/Fortran/string-interpolation-included-.f : ece1e7f9f43607f9cd763e76a0591c609ea962d818eb241af947662bf5fd0e00
-RosettaCodeData/Task/Subleq/Fortran/subleq.f : 1274bd27e6fb4c6d1bfc272f29ee2d5128463a9917bb17b68f16be959007c6e4
+RosettaCodeData/Task/Subleq/Fortran/subleq.f : 74b6ab790056d5c68e562bdaf0374526dc4e4ad1e48302e200436a32f973c93c
 RosettaCodeData/Task/Substitution-cipher/Fortran/substitution-cipher.f : 00ea6cd0a03b0d50b2538bcf8b08beeb927dd9d21e1e96eb0d442637c40c4fd6
 RosettaCodeData/Task/Sum-to-100/Fortran/sum-to-100-1.f : 0baa956ffce5b75f6c74daa6ba7e3f59f937e512b988869943c2bdcbb3be11f7
 RosettaCodeData/Task/Sum-to-100/Fortran/sum-to-100-2.f : 61b72c885ba7c53e0b499ec7d966b6c50ccad2a737c81eb74ca86b3d9e4c1beb
