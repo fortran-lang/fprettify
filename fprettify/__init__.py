@@ -2234,17 +2234,18 @@ def reformat_ffile_combined(
                 lines, is_special, orig_filename, stream.line_nr
             )
 
-            linebreak_pos = get_linebreak_pos(
-                lines, not indent_fypp, orig_filename, stream.line_nr
-            )
-
             f_line = f_line.strip(" ")
 
             if impose_replacements:
                 f_line = replace_relational_single_fline(f_line, cstyle)
+                lines = [replace_relational_single_fline(l, cstyle) for l in lines]
 
             if impose_case:
                 f_line = replace_keywords_single_fline(f_line, case_dict)
+
+            linebreak_pos = get_linebreak_pos(
+                lines, not indent_fypp, orig_filename, stream.line_nr
+            )
 
             if impose_whitespace:
                 lines = format_single_fline(
