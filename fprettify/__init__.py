@@ -1573,21 +1573,22 @@ def format_single_fline(
         "multdiv": 5,  # 5: arithm. operators multiply and divide
         "print": 6,  # 6: print / read statements
         "type": 7,  # 7: select type components
-        "intrinsics": 8,  # 8: intrinsics
+        "intrinsics": 8,  # 8: intrinsics (control-flow keywords: if, do while, case, …)
         "decl": 9,  # 9: declarations
         "concat": 10,  # 10: string concatenation
+        "intrinsic_stmts": 11,  # 11: intrinsic statements (allocate, open, close, …)
     }
 
     if whitespace == 0:
-        spacey = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        spacey = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     elif whitespace == 1:
-        spacey = [1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0]
+        spacey = [1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 1]
     elif whitespace == 2:
-        spacey = [1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0]
+        spacey = [1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1]
     elif whitespace == 3:
-        spacey = [1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0]
+        spacey = [1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1]
     elif whitespace == 4:
-        spacey = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        spacey = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     else:
         raise NotImplementedError("unknown value for whitespace")
 
@@ -1711,11 +1712,12 @@ def add_whitespace_charwise(line, spacey, scope_parser, format_decl, filename, l
                     or re.search(
                         SOL_STR + r"(TYPE|CLASS)\s+IS\s*$", line[:pos], RE_FLAGS
                     )
-                    or re.search(
-                        r"(?<!%)\b" + INTR_STMTS_PAR + r"\s*$", line[:pos], RE_FLAGS
-                    )
                 ):
                     sep1 = 1 * spacey[8]
+                elif re.search(
+                    r"(?<!%)\b" + INTR_STMTS_PAR + r"\s*$", line[:pos], RE_FLAGS
+                ):
+                    sep1 = 1 * spacey[11]
 
             # format closing delimiters
             else:
@@ -2900,6 +2902,7 @@ def process_args(args):
         ws_dict["type"] = args.whitespace_type
         ws_dict["intrinsics"] = args.whitespace_intrinsics
         ws_dict["concat"] = args.whitespace_concat
+        ws_dict["intrinsic_stmts"] = args.whitespace_intrinsic_stmts
         return ws_dict
 
     args_out = {}
@@ -3055,7 +3058,15 @@ def get_arg_parser(args={}):
         nargs="?",
         default="None",
         const=True,
-        help="boolean, en-/disable whitespace for intrinsics like if/write/close",
+        help="boolean, en-/disable whitespace for intrinsic keywords like if/do while/case",
+    )
+    parser.add_argument(
+        "--whitespace-intrinsic-stmts",
+        type=str2bool,
+        nargs="?",
+        default="None",
+        const=True,
+        help="boolean, en-/disable whitespace between intrinsic statements (allocate, open, close, …) and opening '('",
     )
     parser.add_argument(
         "--whitespace-concat",
