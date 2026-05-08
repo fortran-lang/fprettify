@@ -225,7 +225,7 @@ FYPP_ENDMUTE_RE = re.compile(SOL_STR + r"#:ENDMUTE", RE_FLAGS)
 PRIVATE_RE = re.compile(SOL_STR + r"PRIVATE\s*::", RE_FLAGS)
 PUBLIC_RE = re.compile(SOL_STR + r"PUBLIC\s*::", RE_FLAGS)
 
-ATTR_RE = re.compile(SOL_STR + r"(ALLOCATABLE|DIMENSION|EXTERNAL|INTENT|INTRINSIC|OPTIONAL|PARAMETER|POINTER|PRIVATE|PUBLIC|SAVE|TARGET)(\s+|\(|::)", RE_FLAGS)
+ATTR_RE = re.compile(SOL_STR + r"(ALLOCATABLE|DIMENSION|EXTERNAL|IMPORT|INTENT|INTRINSIC|OPTIONAL|PARAMETER|POINTER|PRIVATE|PUBLIC|SAVE|TARGET)(\s+|\(|::)", RE_FLAGS)
 PROC_RE = re.compile(SOL_STR + r"(MODULE\s+)?(PROCEDURE)(\s+|\(|::)", RE_FLAGS)
 
 END_RE = re.compile(
@@ -1038,7 +1038,7 @@ class F90Indenter(object):
                               indents for continuations
         """
 
-        if self._initial and (PROG_RE.match(f_line) or MOD_RE.match(f_line)) or (self._reset_indent and (SMOD_RE.match(f_line) or SUBR_RE.match(f_line) or FCT_RE.match(f_line))):
+        if self._initial and ((PROG_RE.match(f_line) or MOD_RE.match(f_line)) or (self._reset_indent and (SMOD_RE.match(f_line) or SUBR_RE.match(f_line) or FCT_RE.match(f_line)))):
             self._indent_storage = [0]
 
         self._line_indents = [0] * len(lines)
