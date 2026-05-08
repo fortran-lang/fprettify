@@ -388,7 +388,7 @@ def build_scope_parser(fypp=True, mod=True, select=False):
         forall_parser(FORALL_RE),
     ]
 
-    parser['double'] = [
+    parser["double"] = [
          False,
          False,
          select,
@@ -451,7 +451,7 @@ def build_scope_parser(fypp=True, mod=True, select=False):
 
     if fypp:
         parser["new"].extend(PREPRO_NEW_SCOPE)
-        parser["double"].extend(False)
+        parser["double"].extend([False]*len(PREPRO_NEW_SCOPE))
         parser["continue"].extend(PREPRO_CONTINUE_SCOPE)
         parser["end"].extend(PREPRO_END_SCOPE)
 
@@ -466,7 +466,7 @@ DATA_STMT_RE = re.compile(SOL_STR + r"DATA\s+\w", RE_FLAGS)
 # find CUDA chevrons
 CUDA_CHEVRONS_RE = re.compile(r"<<<.*>>>", RE_FLAGS)
 
-## Regexp for f90 keywords'
+## Regexp for f90 keywords
 F90_KEYWORDS_RE = re.compile(
     r"\b("
     + "|".join(
@@ -982,13 +982,15 @@ class F90Indenter(object):
     and updates the indentation.
     """
 
-    def __init__(self, scope_parser, first_indent, rel_indent, filename):
+    def __init__(self, scope_parser, first_indent, rel_indent, reset_indent, filename):
         # scopes / subunits:
         self._scope_storage = []
         # indents for all fortran lines:
         self._indent_storage = []
         # indents of actual lines of current fortran line
         self._line_indents = []
+
+        self._reset_indent = reset_indent
 
         self._parser = scope_parser
 
@@ -1036,7 +1038,7 @@ class F90Indenter(object):
                               indents for continuations
         """
 
-        if self._initial and (PROG_RE.match(f_line) or MOD_RE.match(f_line)) or SUBR_RE.match(f_line) or FCT_RE.match(f_line):
+        if self._initial and (PROG_RE.match(f_line) or MOD_RE.match(f_line)) or (self._reset_indent and (SMOD_RE.match(f_line) or SUBR_RE.match(f_line) or FCT_RE.match(f_line))):
             self._indent_storage = [0]
 
         self._line_indents = [0] * len(lines)
@@ -1065,7 +1067,7 @@ class F90Indenter(object):
                 what_new = new_n
                 is_new = True
                 valid_new = True
-                is_double = self._parser['double'][new_n]
+                is_double = self._parser["double"][new_n]
                 scopes.append(what_new)
                 log_message(
                     "{}: {}".format(what_new, f_line), "debug", filename, line_nr
@@ -1078,7 +1080,7 @@ class F90Indenter(object):
             if conre and conre.search(f_line_filtered):
                 what_con = con_n
                 is_con = True
-                is_double = self._parser['double'][con_n]
+                is_double = self._parser["double"][con_n]
                 log_message(
                     "{}: {}".format(what_con, f_line), "debug", filename, line_nr
                 )
@@ -1558,7 +1560,7 @@ def replace_keywords_single_fline(f_line, case_dict):
                 part = swapcase(part, case_dict["constants"])
             elif F90_NUMBER_ALL_REC.match(part):
                 end = F90_NUMBER_ALL_REC.match(part).end()
-                part = swapcase(part[:end], case_dict['constants']) + part[end:]
+                part = swapcase(part[:end], case_dict["constants"]) + part[end:]
 
             line_parts[pos] = part
 
@@ -2084,6 +2086,7 @@ def reformat_ffile(
     outfile,
     impose_indent=True,
     indent_size=3,
+    reset_indent=False,
     strict_indent=False,
     impose_whitespace=True,
     case_dict={},
@@ -2125,6 +2128,7 @@ def reformat_ffile(
             newfile,
             _impose_indent,
             indent_size,
+            reset_indent,
             strict_indent,
             impose_whitespace,
             case_dict,
@@ -2156,6 +2160,7 @@ def reformat_ffile(
             newfile,
             impose_indent,
             indent_size,
+            reset_indent,
             strict_indent,
             _impose_whitespace,
             case_dict,
@@ -2177,7 +2182,8 @@ def reformat_ffile(
     # none
     if not (impose_whitespace or impose_replacements or impose_indent):
 
-        newfile.getvalue = newfile.read
+        if not (hasattr(newfile, "getvalue")):
+            newfile.getvalue = newfile.read
 
     outfile.write(newfile.getvalue())
 
@@ -2187,6 +2193,7 @@ def reformat_ffile_combined(
     outfile,
     impose_indent=True,
     indent_size=3,
+    reset_indent=False,
     strict_indent=False,
     impose_whitespace=True,
     case_dict={},
@@ -2232,7 +2239,7 @@ def reformat_ffile_combined(
     indent_special = 0
 
     if impose_indent:
-        indenter = F90Indenter(scope_parser, first_indent, indent_size, orig_filename)
+        indenter = F90Indenter(scope_parser, first_indent, indent_size, reset_indent, orig_filename)
     else:
         indent_special = 3
 
@@ -2990,6 +2997,7 @@ def process_args(args):
 
     args_out["impose_indent"] = not args.disable_indent
     args_out["indent_size"] = args.indent
+    args_out["reset_indent"] = args.reset_indent
     args_out["strict_indent"] = args.strict_indent
     args_out["impose_whitespace"] = not args.disable_whitespace
     args_out["impose_replacements"] = args.enable_replacements
@@ -3181,6 +3189,12 @@ def get_arg_parser(args={}):
         default="None",
         const=True,
         help="boolean, en-/disable whitespace for commas in lists (declarations and use)",
+    )
+    parser.add_argument(
+        "--reset-indent",
+        action="store_true",
+        default=False,
+        help="Reset indent to 0 at the begining of a file if match program/module/sub/func",
     )
     parser.add_argument(
         "--strict-indent",
