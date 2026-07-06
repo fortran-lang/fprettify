@@ -1557,7 +1557,7 @@ def format_single_fline(
     separating whitespace characters before ampersand (`ampersand_sep`).
     `filename` and `line_nr` just for error messages.
     The higher `whitespace`, the more white space characters inserted -
-    whitespace = 0, 1, 2, 3 are currently supported.
+    whitespace = 0, 1, 2, 3, 4, 5 are currently supported.
     whitespace formatting can additionally controlled more fine-grained
     via a dictionary of bools (whitespace_dict)
     auto formatting can be turned off by setting `auto_format` to False.
@@ -1573,21 +1573,24 @@ def format_single_fline(
         "multdiv": 5,  # 5: arithm. operators multiply and divide
         "print": 6,  # 6: print / read statements
         "type": 7,  # 7: select type components
-        "intrinsics": 8,  # 8: intrinsics
-        "decl": 9,  # 9: declarations
-        "concat": 10,  # 10: string concatenation
+        "control": 8,  # 8: intrinsic control keywards
+        "callstmts": 9,  # 9: intrinsic call statements
+        "decl": 10,  # 9: declarations
+        "concat": 11,  # 10: string concatenation
     }
-
     if whitespace == 0:
-        spacey = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    #             0  1  2  3  4  5  6  7  8  9 10 11
+        spacey = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     elif whitespace == 1:
-        spacey = [1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0]
+        spacey = [1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0]
     elif whitespace == 2:
-        spacey = [1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0]
+        spacey = [1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0]
     elif whitespace == 3:
-        spacey = [1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0]
+        spacey = [1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0]
     elif whitespace == 4:
-        spacey = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        spacey = [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1]
+    elif whitespace == 5:
+        spacey = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     else:
         raise NotImplementedError("unknown value for whitespace")
 
@@ -1711,11 +1714,15 @@ def add_whitespace_charwise(line, spacey, scope_parser, format_decl, filename, l
                     or re.search(
                         SOL_STR + r"(TYPE|CLASS)\s+IS\s*$", line[:pos], RE_FLAGS
                     )
-                    or re.search(
+                ):
+                    sep1 = 1 * spacey[8]
+
+                elif (
+                    re.search(
                         r"(?<!%)\b" + INTR_STMTS_PAR + r"\s*$", line[:pos], RE_FLAGS
                     )
                 ):
-                    sep1 = 1 * spacey[8]
+                    sep1 = 1 * spacey[9]
 
             # format closing delimiters
             else:
@@ -2898,7 +2905,8 @@ def process_args(args):
         ws_dict["multdiv"] = args.whitespace_multdiv
         ws_dict["print"] = args.whitespace_print
         ws_dict["type"] = args.whitespace_type
-        ws_dict["intrinsics"] = args.whitespace_intrinsics
+        ws_dict["control"] = args.whitespace_control_keywords
+        ws_dict["callstmts"] = args.whitespace_call_statements
         ws_dict["concat"] = args.whitespace_concat
         return ws_dict
 
@@ -3050,12 +3058,20 @@ def get_arg_parser(args={}):
         help="boolean, en-/disable whitespace for select type components",
     )
     parser.add_argument(
-        "--whitespace-intrinsics",
+        "--whitespace-control-keywords",
         type=str2bool,
         nargs="?",
         default="None",
         const=True,
-        help="boolean, en-/disable whitespace for intrinsics like if/write/close",
+        help="boolean, en-/disable whitespace for intrinsics like end/if/case/where",
+    )
+    parser.add_argument(
+        "--whitespace-call-statements",
+        type=str2bool,
+        nargs="?",
+        default="None",
+        const=True,
+        help="boolean, en-/disable whitespace for intrinsics like allocate/write/close",
     )
     parser.add_argument(
         "--whitespace-concat",
