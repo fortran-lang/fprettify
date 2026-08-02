@@ -266,6 +266,115 @@ class FprettifyUnitTestCase(FprettifyTestCase):
             ["--max-consecutive-empty-lines", "2"], instring, outstring_exp_two
         )
 
+    def test_max_consecutive_empty_lines_comment_resets(self):
+        """test that a comment line resets the consecutive empty line count"""
+        instring = (
+            "program demo\n"
+            "\n"
+            "\n"
+            "! comment\n"
+            "\n"
+            "\n"
+            "\n"
+            "   a = 1\n"
+            "end program demo\n"
+        )
+
+        outstring_exp_default = (
+            "program demo\n" "\n" "! comment\n" "\n" "   a = 1\n" "end program demo\n"
+        )
+
+        outstring_exp_two = (
+            "program demo\n"
+            "\n"
+            "\n"
+            "! comment\n"
+            "\n"
+            "\n"
+            "   a = 1\n"
+            "end program demo\n"
+        )
+
+        self.assert_fprettify_result([], instring, outstring_exp_default)
+        self.assert_fprettify_result(
+            ["--max-consecutive-empty-lines", "2"], instring, outstring_exp_two
+        )
+
+    def test_max_consecutive_empty_lines_whitespace_only(self):
+        """test that lines containing only whitespace count as empty lines"""
+        instring = (
+            "program demo\n" "   \n" "\t\n" "  \n" "   a = 1\n" "end program demo\n"
+        )
+
+        outstring_exp_default = "program demo\n" "\n" "   a = 1\n" "end program demo\n"
+
+        outstring_exp_two = "program demo\n" "\n" "\n" "   a = 1\n" "end program demo\n"
+
+        self.assert_fprettify_result([], instring, outstring_exp_default)
+        self.assert_fprettify_result(
+            ["--max-consecutive-empty-lines", "2"], instring, outstring_exp_two
+        )
+
+    def test_max_consecutive_empty_lines_leading(self):
+        """test that empty lines at the start of a file follow the limit"""
+        instring = (
+            "\n" "\n" "\n" "\n" "program demo\n" "   a = 1\n" "end program demo\n"
+        )
+
+        outstring_exp_default = "\n" "program demo\n" "   a = 1\n" "end program demo\n"
+
+        outstring_exp_zero = "program demo\n" "   a = 1\n" "end program demo\n"
+
+        outstring_exp_two = "\n" "\n" "program demo\n" "   a = 1\n" "end program demo\n"
+
+        self.assert_fprettify_result([], instring, outstring_exp_default)
+        self.assert_fprettify_result(
+            ["--max-consecutive-empty-lines", "0"], instring, outstring_exp_zero
+        )
+        self.assert_fprettify_result(
+            ["--max-consecutive-empty-lines", "2"], instring, outstring_exp_two
+        )
+
+    def test_max_consecutive_empty_lines_format_off(self):
+        """test that the limit also applies inside format-off blocks"""
+        instring = (
+            "program demo\n"
+            "!&<\n"
+            "   a  =  1\n"
+            "\n"
+            "\n"
+            "\n"
+            "   b  =  2\n"
+            "!&>\n"
+            "end program demo\n"
+        )
+
+        outstring_exp_default = (
+            "program demo\n"
+            "!&<\n"
+            "   a  =  1\n"
+            "\n"
+            "   b  =  2\n"
+            "!&>\n"
+            "end program demo\n"
+        )
+
+        outstring_exp_two = (
+            "program demo\n"
+            "!&<\n"
+            "   a  =  1\n"
+            "\n"
+            "\n"
+            "   b  =  2\n"
+            "!&>\n"
+            "end program demo\n"
+        )
+
+        self.assert_fprettify_result([], instring, outstring_exp_default)
+        self.assert_fprettify_result(
+            ["--max-consecutive-empty-lines", "2"], instring, outstring_exp_two
+        )
+
     def test_directive(self):
         """
         test deactivate directives '!&' (inline) and '!&<', '!&>' (block)
