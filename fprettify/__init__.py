@@ -2219,7 +2219,8 @@ def reformat_ffile_combined(
         if prev_indent and indent_special == 0:
             indent_special = 2
 
-        # Find empty line
+        # Find empty line. use_same_line excludes the empty statement
+        # produced by a trailing semicolon.
         found_empty_line = (
             EMPTY_RE.search(f_line)
             and not any(comments)
