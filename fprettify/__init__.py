@@ -231,6 +231,8 @@ END_RE = re.compile(
     RE_FLAGS,
 )
 
+ELSEIF_SPLIT_RE = re.compile(SOL_STR + r"(ELSE)\s*(IF)\s*\(", RE_FLAGS)
+
 # intrinsic statements with parenthesis notation that are not functions
 INTR_STMTS_PAR = (
     r"(ALLOCATE|DEALLOCATE|"
@@ -1839,6 +1841,12 @@ def add_whitespace_charwise(line, spacey, scope_parser, format_decl, filename, l
                 is_end = True
     if is_end:
         line_ftd = END_RE.sub(r"\1" + " " * spacey[8] + r"\2", line_ftd)
+
+    # split 'elseif' into 'else if', consistent with 'endif' -> 'end if'
+    if ELSE_RE.search(line_ftd):
+        line_ftd = ELSEIF_SPLIT_RE.sub(
+            r"\1" + " " * spacey[8] + r"\2" + " " * spacey[8] + "(", line_ftd
+        )
 
     if level != 0:
         log_message("unpaired bracket delimiters", "info", filename, line_nr)

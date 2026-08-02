@@ -69,6 +69,25 @@ class FprettifyUnitTestCase(FprettifyTestCase):
             args = ["-w", str(w)]
             self.assert_fprettify_result(args, instring, out)
 
+    def test_elseif_split(self):
+        """test splitting of 'elseif' into 'else if', as done for 'endif'"""
+        instring = (
+            "if (i == 3) then\nprint *, 'a'\nelseif (i == 4) then\n"
+            "print *, 'b'\nendif"
+        )
+        outstring_exp = (
+            "if (i == 3) then\n   print *, 'a'\nelse if (i == 4) then\n"
+            "   print *, 'b'\nend if"
+        )
+        # with whitespace formatting disabled, 'elseif' is kept as is,
+        # consistent with 'endif'
+        outstring_exp_w0 = (
+            "if(i==3) then\n   print*,'a'\nelseif(i==4) then\n" "   print*,'b'\nendif"
+        )
+
+        self.assert_fprettify_result([], instring, outstring_exp)
+        self.assert_fprettify_result(["-w", "0"], instring, outstring_exp_w0)
+
     def test_type_selector(self):
         """test for whitespace formatting option -w 4"""
         instring = "A%component=func(mytype%a,mytype%abc+mytype%abcd)"
