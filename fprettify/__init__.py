@@ -2225,6 +2225,7 @@ def reformat_ffile_combined(
             and not any(comments)
             and not is_omp_conditional
             and not label
+            and not use_same_line
         )
         if found_empty_line:
             number_empty_lines += 1

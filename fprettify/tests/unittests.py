@@ -335,6 +335,22 @@ class FprettifyUnitTestCase(FprettifyTestCase):
             ["--max-consecutive-empty-lines", "2"], instring, outstring_exp_two
         )
 
+    def test_max_consecutive_empty_lines_after_semicolon(self):
+        """test that the empty statement of a trailing semicolon does not
+        count towards the consecutive empty line limit"""
+        instring = "program demo\n" "a = 1;\n" "\n" "b = 2\n" "end program demo\n"
+
+        instring_two_blanks = (
+            "program demo\n" "a = 1;\n" "\n" "\n" "b = 2\n" "end program demo\n"
+        )
+
+        outstring_exp = (
+            "program demo\n" "   a = 1; \n" "\n" "   b = 2\n" "end program demo\n"
+        )
+
+        self.assert_fprettify_result([], instring, outstring_exp)
+        self.assert_fprettify_result([], instring_two_blanks, outstring_exp)
+
     def test_max_consecutive_empty_lines_format_off(self):
         """test that the limit also applies inside format-off blocks"""
         instring = (
