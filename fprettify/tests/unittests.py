@@ -300,6 +300,38 @@ class FprettifyUnitTestCase(FprettifyTestCase):
         self.assert_fprettify_result([], instring1, outstring1)
         self.assert_fprettify_result([], instring2, outstring2)
 
+    def test_indent_use_entities(self):
+        """test for indentation options of continued use statement entities"""
+        instring = "use A,only:B,C,&\nD,E"
+        outstring_exp = [
+            "use A, only: B, C, &\n    D, E",
+            "use A, only: B, C, &\n             D, E",
+            "use A, only: B, C, &\n   D, E",
+        ]
+
+        for n, out in enumerate(outstring_exp, start=1):
+            self.assert_fprettify_result(
+                ["--indent-use-entities", str(n)], instring, out
+            )
+
+        # option 2 is the default
+        self.assert_fprettify_result([], instring, outstring_exp[1])
+
+        # renamed entities are aligned the same way
+        self.assert_fprettify_result(
+            ["--indent-use-entities", "1"],
+            "use A,only:B=>C,&\nD=>E",
+            "use A, only: B => C, &\n    D => E",
+        )
+
+        # a line break directly after ':' is unaffected by the option
+        instring_break = "use A,only:&\nB,C,D,E"
+        outstring_break = "use A, only: &\n   B, C, D, E"
+        for n in range(1, 4):
+            self.assert_fprettify_result(
+                ["--indent-use-entities", str(n)], instring_break, outstring_break
+            )
+
     def test_wrongkind(self):
         """test whitespacing of deprecated kind definition"""
         instring = [
