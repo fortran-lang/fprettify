@@ -242,10 +242,7 @@ class FprettifyUnitTestCase(FprettifyTestCase):
         )
 
         outstring_exp_zero = (
-            "program demo\n"
-            "   a = 1\n"
-            "   b = 2\n"
-            "end program demo\n"
+            "program demo\n" "   a = 1\n" "   b = 2\n" "end program demo\n"
         )
 
         outstring_exp_two = (

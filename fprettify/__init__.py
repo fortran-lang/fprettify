@@ -2220,9 +2220,16 @@ def reformat_ffile_combined(
             indent_special = 2
 
         # Find empty line
-        found_empty_line = EMPTY_RE.search(f_line) and not any(comments) and not is_omp_conditional and not label
-        if found_empty_line: number_empty_lines += 1
-        else: number_empty_lines = 0
+        found_empty_line = (
+            EMPTY_RE.search(f_line)
+            and not any(comments)
+            and not is_omp_conditional
+            and not label
+        )
+        if found_empty_line:
+            number_empty_lines += 1
+        else:
+            number_empty_lines = 0
 
         if is_blank and number_empty_lines > max_consecutive_empty_lines:
             continue
