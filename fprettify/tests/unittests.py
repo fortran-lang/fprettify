@@ -384,7 +384,7 @@ class FprettifyUnitTestCase(FprettifyTestCase):
             "'==== heading",
             "if (vtk%my_rank .eq. 0) write (vtk%filehandle_par, '(\"<DataArray",
             '\'("</Collection>",',
-            "if (abc(1) .lt. -bca .or. &\n qwe .gt. ewq) then",
+            "if (abc(1)<=-bca .or. &\n qwe .gt. ewq) then",
         ]
         f_outstring = [
             "if (min .lt. max .and. min .lt. thres)",
@@ -396,7 +396,7 @@ class FprettifyUnitTestCase(FprettifyTestCase):
             "'==== heading",
             "if (vtk%my_rank .eq. 0) write (vtk%filehandle_par, '(\"<DataArray",
             '\'("</Collection>",',
-            "if (abc(1) .lt. -bca .or. &\n    qwe .gt. ewq) then",
+            "if (abc(1) .le. -bca .or. &\n    qwe .gt. ewq) then",
         ]
         c_outstring = [
             "if (min < max .and. min < thres)",
@@ -408,7 +408,7 @@ class FprettifyUnitTestCase(FprettifyTestCase):
             "'==== heading",
             "if (vtk%my_rank == 0) write (vtk%filehandle_par, '(\"<DataArray",
             '\'("</Collection>",',
-            "if (abc(1) < -bca .or. &\n    qwe > ewq) then",
+            "if (abc(1) <= -bca .or. &\n    qwe > ewq) then",
         ]
         for i in range(0, len(instring)):
             self.assert_fprettify_result(
