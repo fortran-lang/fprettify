@@ -95,6 +95,28 @@ class FprettifyUnitTestCase(FprettifyTestCase):
         self.assert_fprettify_result([], instring_in_string, instring_in_string)
         self.assert_fprettify_result([], instring_in_comment, instring_in_comment)
 
+    def test_whitespace_intrinsic_stmts(self):
+        """test --whitespace-intrinsic-stmts: controls space before ( for allocate/open/close etc.,
+        independently of control-flow keywords like if/do while/case"""
+
+        # default (-w 2): both keywords and intrinsic stmts get a space
+        instring = "if(x)then\nallocate(a(10))\nopen(unit=1,file='f')\nclose(1)\nend if"
+        outstring_default = "if (x) then\n   allocate (a(10))\n   open (unit=1, file='f')\n   close (1)\nend if"
+        self.assert_fprettify_result([], instring, outstring_default)
+
+        # disable only intrinsic stmts: allocate/open/close lose space, if keeps it
+        outstring_no_stmts = "if (x) then\n   allocate(a(10))\n   open(unit=1, file='f')\n   close(1)\nend if"
+        self.assert_fprettify_result(
+            ["--whitespace-intrinsic-stmts", "false"], instring, outstring_no_stmts
+        )
+
+        # disable only keywords: if loses space, allocate/open/close keep it
+        # (end if also loses its space since spacey[8] also controls END <keyword> spacing)
+        outstring_no_kw = "if(x) then\n   allocate (a(10))\n   open (unit=1, file='f')\n   close (1)\nendif"
+        self.assert_fprettify_result(
+            ["--whitespace-intrinsics", "false"], instring, outstring_no_kw
+        )
+
     def test_indent(self):
         """simple test for indent options -i in [0, 3, 4]"""
 
