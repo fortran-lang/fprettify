@@ -285,7 +285,7 @@ PREPRO_END_SCOPE = [
 ]
 
 # line annotating fprettify options
-FPRETTIY_ANNOTATION_RE = re.compile("^\s*!\s*fprettify:\s*(.*)\s*$", RE_FLAGS)
+FPRETTIY_ANNOTATION_RE = re.compile(r"^\s*!\s*fprettify:\s*(.*)\s*$", RE_FLAGS)
 
 
 class plusminus_parser(parser_re):
@@ -329,7 +329,7 @@ class plusminus_parser(parser_re):
 LR_OPS_RE = [REL_OP_RE, LOG_OP_RE, plusminus_parser(PLUSMINUS_RE), MULTDIV_RE, PRINT_RE]
 
 USE_RE = re.compile(
-    SOL_STR + "USE(\s+|(,.+?)?::\s*)\w+?((,.+?=>.+?)+|,\s*only\s*:.+?)?$" + EOL_STR,
+    SOL_STR + r"USE(\s+|(,.+?)?::\s*)\w+?((,.+?=>.+?)+|,\s*only\s*:.+?)?$" + EOL_STR,
     RE_FLAGS,
 )
 
