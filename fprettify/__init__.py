@@ -77,6 +77,20 @@ from typing import Callable
 
 try:
     import configargparse as argparse
+
+    # Check that a TOML-parsing library is importable.
+
+    # ConfigArgParse will fail quietly while parsing a TOML file if it is not, 
+    # so we check explicitly.
+    try:
+        import tomllib
+        _is_toml_importable = True
+    except ImportError:
+        import toml
+        _is_toml_importable = True
+    except ImportError:
+        _is_toml_importable = False
+
 except ImportError:
     import argparse
 
@@ -84,7 +98,6 @@ sys.stdin = io.TextIOWrapper(sys.stdin.detach(), encoding="UTF-8", line_bufferin
 sys.stdout = io.TextIOWrapper(
     sys.stdout.detach(), encoding="UTF-8", line_buffering=True
 )
-
 
 from .fparse_utils import (
     CPP_RE,
@@ -3270,7 +3283,6 @@ def _get_composite_parser():
         ]
     )
 
-
 def run(argv=sys.argv):  # pragma: no cover
     """Command line interface"""
 
@@ -3385,6 +3397,11 @@ def run(argv=sys.argv):  # pragma: no cover
                 ] + get_config_file_list(
                     os.path.abspath(filename) if filename != "-" else os.getcwd()
                 )
+                if any(file.endswith(".toml") for file in filearguments['default_config_files']):
+                    if not _is_toml_importable:
+                        msg = "Using TOML files as configuration for fprettify requires either 'tomllib' (ships with Python 3.11+)"
+                        msg += " or 'toml', separately installed, but neither could be found. Please install 'toml' using pip."
+                        raise ImportError(msg)
                 filearguments["config_file_parser_class"] = _get_composite_parser()
             file_argparser = get_arg_parser(filearguments)
 
