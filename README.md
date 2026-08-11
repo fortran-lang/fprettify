@@ -107,6 +107,15 @@ For more options, read
 fprettify -h
 ```
 
+If [ConfigArgParse](https://github.com/bw2/ConfigArgParse) is installed, options can also be given in a `fpm.toml`, `.fprettify.rc`,
+`pyproject.toml`, `fprettify.toml`, or `.fprettify.toml` file. For example, the fprettify section of `pyproject.toml` might look like:
+
+```toml
+[tool.fprettify]
+indent = 4
+line-length = 150
+```
+
 When cleaning up inline comments, `--strip-comments` removes superfluous whitespace in front of comment markers. Combine it with `--comment-spacing N` to specify how many spaces should remain between code and the trailing comment (default: 1).
 
 ## Editor integration

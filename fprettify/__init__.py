@@ -72,9 +72,25 @@ import os
 import re
 import shlex
 import sys
+from functools import cache
+from typing import Callable
 
 try:
     import configargparse as argparse
+
+    # Check that a TOML-parsing library is importable.
+
+    # ConfigArgParse will fail quietly while parsing a TOML file if it is not, 
+    # so we check explicitly.
+    try:
+        import tomllib
+        _is_toml_importable = True
+    except ImportError:
+        import toml
+        _is_toml_importable = True
+    except ImportError:
+        _is_toml_importable = False
+
 except ImportError:
     import argparse
 
@@ -82,7 +98,6 @@ sys.stdin = io.TextIOWrapper(sys.stdin.detach(), encoding="UTF-8", line_bufferin
 sys.stdout = io.TextIOWrapper(
     sys.stdout.detach(), encoding="UTF-8", line_buffering=True
 )
-
 
 from .fparse_utils import (
     CPP_RE,
@@ -109,11 +124,9 @@ FORTRAN_EXTENSIONS += [_.upper() for _ in FORTRAN_EXTENSIONS]
 
 # constants, mostly regular expressions:
 FORMATTER_ERROR_MESSAGE = (
-    " Wrong usage of formatting-specific directives" " '&', '!&', '!&<' or '!&>'."
+    " Wrong usage of formatting-specific directives '&', '!&', '!&<' or '!&>'."
 )
-LINESPLIT_MESSAGE = (
-    "auto indentation failed due to chars limit, " "line should be split"
-)
+LINESPLIT_MESSAGE = "auto indentation failed due to chars limit, line should be split"
 
 EOL_STR = r"\s*;?\s*$"  # end of fortran line
 EOL_SC = r"\s*;\s*$"  # whether line is ended with semicolon
@@ -1093,7 +1106,6 @@ class F90Indenter(object):
 
         # fypp preprocessor scopes may be within continuation lines
         if indent_fypp and len(lines) > 1 and not FYPP_LINE_RE.search(f_line_filtered):
-
             for new_n, newre in enumerate(PREPRO_NEW_SCOPE):
                 for l in lines:
                     if newre and newre.search(l):
@@ -1252,7 +1264,6 @@ class F90Aligner(object):
         end_of_delim = -1
 
         for pos, char in CharFilter(line):
-
             what_del_open = None
             what_del_close = None
             if pos > end_of_delim:
@@ -1603,7 +1614,6 @@ def format_single_fline(
     line_orig = line
 
     if auto_format:
-
         line = rm_extra_whitespace(line, format_decl)
         line = add_whitespace_charwise(
             line, spacey, scope_parser, format_decl, filename, line_nr
@@ -1917,7 +1927,6 @@ def split_reformatted_line(
     linebreak_pos_orig.sort(reverse=True)
     linebreak_pos_ftd = []
     while 1:
-
         if pos_new == len(line) or pos_old == len(line_orig):
             break
 
@@ -2006,7 +2015,6 @@ def reformat_inplace(
         diff_contents = diff(infile.read(), newfile.read(), filename, filename)
         sys.stdout.write(diff_contents)
     else:
-
         if stdout:
             sys.stdout.write(newfile.getvalue())
         else:
@@ -2091,7 +2099,6 @@ def reformat_ffile(
 
     # 2) indentation
     if impose_indent:
-
         _impose_whitespace = False
         _impose_replacements = False
 
@@ -2224,7 +2231,6 @@ def reformat_ffile_combined(
             elif indent_special == 0:
                 indent_special = 1
         else:
-
             if not auto_align:
                 manual_lines_indent = get_manual_alignment(lines)
             else:
@@ -3254,6 +3260,29 @@ def get_arg_parser(args={}):
     return parser
 
 
+POSSIBLE_CONFIG_FILES = frozenset(
+    [".fprettify.rc", "pyproject.toml", "fprettify.toml", ".fprettify.toml", "fpm.toml"]
+)
+POSSIBLE_SECTIONS = frozenset(["tool.fprettify", "fprettify", "extra.fprettify"])
+
+
+@cache
+def _get_composite_parser():
+    """Get the composite parser that will try different types of parsers."""
+    if argparse.__name__ == "argparse":
+        msg = "Trying to create CompositeConfigParser, but ConfigArgParse was not installed."
+        msg += " Install ConfigArgParse or input the options in the command line."
+        raise RuntimeError(msg)
+    return argparse.CompositeConfigParser(
+        [
+            lambda: argparse.TomlConfigParser(POSSIBLE_SECTIONS),
+            lambda: argparse.IniConfigParser(
+                POSSIBLE_SECTIONS, split_ml_text_to_list=True
+            ),
+            lambda: argparse.DefaultConfigFileParser(),
+        ]
+    )
+
 def run(argv=sys.argv):  # pragma: no cover
     """Command line interface"""
 
@@ -3262,9 +3291,10 @@ def run(argv=sys.argv):  # pragma: no cover
         config_file_list = []
         dir = os.path.dirname(filename)
         while True:
-            config_file = os.path.join(dir, ".fprettify.rc")
-            if os.path.isfile(config_file):
-                config_file_list.insert(0, config_file)
+            for file in POSSIBLE_CONFIG_FILES:
+                config_file = os.path.join(dir, file)
+                if os.path.isfile(config_file):
+                    config_file_list.insert(0, config_file)
             parent = os.path.dirname(dir)
             if parent == dir:
                 break
@@ -3281,7 +3311,7 @@ def run(argv=sys.argv):  # pragma: no cover
         arguments["args_for_setting_config_path"] = ["-c", "--config-file"]
         arguments["description"] = (
             arguments["description"]
-            + " Config files ('.fprettify.rc') in the home (~) directory and any such files located in parent directories of the input file will be used. When the standard input is used, the search is started from the current directory."
+            + " Config files ('.fprettify.rc', 'pyproject.toml', 'fprettify.toml', '.fprettify.toml') in the home (~) directory and any such files located in parent directories of the input file will be used. When the standard input is used, the search is started from the current directory."
         )
 
     parser = get_arg_parser(arguments)
@@ -3321,7 +3351,6 @@ def run(argv=sys.argv):  # pragma: no cover
             from fnmatch import fnmatch
 
             for dirpath, dirnames, files in os.walk(directory, topdown=True):
-
                 # Prune excluded patterns from list of child directories
                 dirnames[:] = [
                     dirname
@@ -3346,7 +3375,6 @@ def run(argv=sys.argv):  # pragma: no cover
                         ]
                     )
                 ]:
-
                     include_file = True
                     if args.exclude_max_lines is not None:
                         line_count = 0
@@ -3361,7 +3389,6 @@ def run(argv=sys.argv):  # pragma: no cover
                         filenames.append(ffile)
 
         for filename in filenames:
-
             # reparse arguments using the file's list of config files
             filearguments = arguments
             if argparse.__name__ == "configargparse":
@@ -3370,6 +3397,12 @@ def run(argv=sys.argv):  # pragma: no cover
                 ] + get_config_file_list(
                     os.path.abspath(filename) if filename != "-" else os.getcwd()
                 )
+                if any(file.endswith(".toml") for file in filearguments['default_config_files']):
+                    if not _is_toml_importable:
+                        msg = "Using TOML files as configuration for fprettify requires either 'tomllib' (ships with Python 3.11+)"
+                        msg += " or 'toml', separately installed, but neither could be found. Please install 'toml' using pip."
+                        raise ImportError(msg)
+                filearguments["config_file_parser_class"] = _get_composite_parser()
             file_argparser = get_arg_parser(filearguments)
 
             args_tmp = file_argparser.parse_args(argv[1:])
