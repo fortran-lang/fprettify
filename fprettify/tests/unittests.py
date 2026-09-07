@@ -418,6 +418,38 @@ class FprettifyUnitTestCase(FprettifyTestCase):
                 ["--enable-replacements"], instring[i], f_outstring[i]
             )
 
+    def test_operator_named_variable(self):
+        """
+        Fortran has no reserved words, so a variable may be named after an
+        operator. A dot operator must not be matched starting on the closing
+        dot of the operator before it, which used to rewrite these lines into
+        code that no longer compiles. Refs #114, #155, #181.
+        """
+        instring = [
+            "if (skipreference .and.  ne .gt. 0) then",
+            "if ( a .gt. b .and. ne .lt. c) then",
+            "if (g .and. eq.ne.'') then",
+            "if (a.and.eq.ne.b) then",
+            "if (g .or. ne.gt.2) then",
+            "if (g .and. lt.le.2) then",
+            "if (a.or.and.eq.b) then",
+            "if (.not.eq.ne.b) then",
+            "if (a.eqv.eq.eq.b) then",
+        ]
+        outstring_exp = [
+            "if (skipreference .and. ne .gt. 0) then",
+            "if (a .gt. b .and. ne .lt. c) then",
+            "if (g .and. eq .ne. '') then",
+            "if (a .and. eq .ne. b) then",
+            "if (g .or. ne .gt. 2) then",
+            "if (g .and. lt .le. 2) then",
+            "if (a .or. and .eq. b) then",
+            "if (.not. eq .ne. b) then",
+            "if (a .eqv. eq .eq. b) then",
+        ]
+        for i in range(0, len(instring)):
+            self.assert_fprettify_result([], instring[i], outstring_exp[i])
+
     def test_swap_case(self):
         """test replacement of keyword character case"""
         instring = (

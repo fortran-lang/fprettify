@@ -255,6 +255,17 @@ REL_OP_RE = re.compile(
     RE_FLAGS,
 )
 LOG_OP_RE = re.compile(r"\s*(\.(?:AND|OR|EQV|NEQV)\.)\s*", RE_FLAGS)
+# Fortran has no reserved words, so a variable may be named after an operator
+# ('eq', 'ne', 'and', ...). Whitespace is stripped before operators are spaced
+# out, so 'a .and. eq .ne. b' reaches that stage as 'a.and.eq.ne.b', where
+# REL_OP_RE matches '.eq.' starting on the closing dot of '.and.' and rewrites
+# the line into code that no longer compiles. Matching every dot operator in a
+# single left-to-right pass first removes the ambiguity, because each one
+# consumes its own closing dot. '.NOT.' is matched only so that it is consumed;
+# it is spaced by its own rule and must not gain a leading space here.
+# Refs #114, #155, #181.
+DOT_OP_RE = re.compile(r"\.(?:AND|OR|EQV|NEQV|NOT|EQ|NE|LT|LE|GT|GE)\.", RE_FLAGS)
+NOT_OP_RE = re.compile(r"\.NOT\.", RE_FLAGS)
 PRINT_RE = re.compile(r"(?:(?<=\bPRINT)|(?<=\bREAD))\s*(\*,?)\s*", RE_FLAGS)
 
 # regular expressions for parsing delimiters
@@ -1874,6 +1885,27 @@ def add_whitespace_context(line, spacey):
             if not STR_OPEN_RE.match(part):
                 partsplit = NML_RE.split(part)
                 line_parts[pos] = " ".join(partsplit)
+
+    # Separate the dot operators before the passes below, so that none of them
+    # can match starting on the closing dot of the operator before it. The
+    # spaces added here are absorbed by the surrounding '\s*' of those passes
+    # and so do not override the whitespace settings. Refs #114, #155, #181.
+    for pos, part in enumerate(line_parts):
+        # exclude comments, strings:
+        if not STR_OPEN_RE.match(part):
+            if not (
+                NML_STMT_RE.match(line)
+                or DATA_STMT_RE.match(line)
+                or CUDA_CHEVRONS_RE.search(line)
+            ):
+                line_parts[pos] = DOT_OP_RE.sub(
+                    lambda m: (
+                        m.group(0)
+                        if NOT_OP_RE.fullmatch(m.group(0))
+                        else " " + m.group(0) + " "
+                    ),
+                    part,
+                )
 
     # Two-sided operators
     for n_op, lr_re in enumerate(LR_OPS_RE):
