@@ -18,12 +18,9 @@
 #    along with fprettify. If not, see <http://www.gnu.org/licenses/>.
 ###############################################################################
 import inspect
-import io
 import os
 import sys
 import unittest
-
-import fprettify
 
 
 def joinpath(path1, path2):
@@ -33,7 +30,7 @@ def joinpath(path1, path2):
 _MYPATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
 # path to fprettify
-RUNSCRIPT = joinpath(_MYPATH, r"../../fprettify.py")
+RUNSCRIPT = [sys.executable, joinpath(_MYPATH, r"../../fprettify.py")]
 
 
 class FprettifyTestCase(unittest.TestCase):

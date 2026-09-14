@@ -109,11 +109,9 @@ FORTRAN_EXTENSIONS += [_.upper() for _ in FORTRAN_EXTENSIONS]
 
 # constants, mostly regular expressions:
 FORMATTER_ERROR_MESSAGE = (
-    " Wrong usage of formatting-specific directives" " '&', '!&', '!&<' or '!&>'."
+    " Wrong usage of formatting-specific directives '&', '!&', '!&<' or '!&>'."
 )
-LINESPLIT_MESSAGE = (
-    "auto indentation failed due to chars limit, " "line should be split"
-)
+LINESPLIT_MESSAGE = "auto indentation failed due to chars limit, line should be split"
 
 EOL_STR = r"\s*;?\s*$"  # end of fortran line
 EOL_SC = r"\s*;\s*$"  # whether line is ended with semicolon
@@ -285,7 +283,7 @@ PREPRO_END_SCOPE = [
 ]
 
 # line annotating fprettify options
-FPRETTIY_ANNOTATION_RE = re.compile("^\s*!\s*fprettify:\s*(.*)\s*$", RE_FLAGS)
+FPRETTIY_ANNOTATION_RE = re.compile(r"^\s*!\s*fprettify:\s*(.*)\s*$", RE_FLAGS)
 
 
 class plusminus_parser(parser_re):
@@ -329,7 +327,7 @@ class plusminus_parser(parser_re):
 LR_OPS_RE = [REL_OP_RE, LOG_OP_RE, plusminus_parser(PLUSMINUS_RE), MULTDIV_RE, PRINT_RE]
 
 USE_RE = re.compile(
-    SOL_STR + "USE(\s+|(,.+?)?::\s*)\w+?((,.+?=>.+?)+|,\s*only\s*:.+?)?$" + EOL_STR,
+    SOL_STR + r"USE(\s+|(,.+?)?::\s*)\w+?((,.+?=>.+?)+|,\s*only\s*:.+?)?$" + EOL_STR,
     RE_FLAGS,
 )
 
@@ -1093,7 +1091,6 @@ class F90Indenter(object):
 
         # fypp preprocessor scopes may be within continuation lines
         if indent_fypp and len(lines) > 1 and not FYPP_LINE_RE.search(f_line_filtered):
-
             for new_n, newre in enumerate(PREPRO_NEW_SCOPE):
                 for l in lines:
                     if newre and newre.search(l):
@@ -1252,7 +1249,6 @@ class F90Aligner(object):
         end_of_delim = -1
 
         for pos, char in CharFilter(line):
-
             what_del_open = None
             what_del_close = None
             if pos > end_of_delim:
@@ -1603,7 +1599,6 @@ def format_single_fline(
     line_orig = line
 
     if auto_format:
-
         line = rm_extra_whitespace(line, format_decl)
         line = add_whitespace_charwise(
             line, spacey, scope_parser, format_decl, filename, line_nr
@@ -1917,7 +1912,6 @@ def split_reformatted_line(
     linebreak_pos_orig.sort(reverse=True)
     linebreak_pos_ftd = []
     while 1:
-
         if pos_new == len(line) or pos_old == len(line_orig):
             break
 
@@ -2006,7 +2000,6 @@ def reformat_inplace(
         diff_contents = diff(infile.read(), newfile.read(), filename, filename)
         sys.stdout.write(diff_contents)
     else:
-
         if stdout:
             sys.stdout.write(newfile.getvalue())
         else:
@@ -2091,7 +2084,6 @@ def reformat_ffile(
 
     # 2) indentation
     if impose_indent:
-
         _impose_whitespace = False
         _impose_replacements = False
 
@@ -2224,7 +2216,6 @@ def reformat_ffile_combined(
             elif indent_special == 0:
                 indent_special = 1
         else:
-
             if not auto_align:
                 manual_lines_indent = get_manual_alignment(lines)
             else:
@@ -3321,7 +3312,6 @@ def run(argv=sys.argv):  # pragma: no cover
             from fnmatch import fnmatch
 
             for dirpath, dirnames, files in os.walk(directory, topdown=True):
-
                 # Prune excluded patterns from list of child directories
                 dirnames[:] = [
                     dirname
@@ -3346,7 +3336,6 @@ def run(argv=sys.argv):  # pragma: no cover
                         ]
                     )
                 ]:
-
                     include_file = True
                     if args.exclude_max_lines is not None:
                         line_count = 0
@@ -3361,7 +3350,6 @@ def run(argv=sys.argv):  # pragma: no cover
                         filenames.append(ffile)
 
         for filename in filenames:
-
             # reparse arguments using the file's list of config files
             filearguments = arguments
             if argparse.__name__ == "configargparse":

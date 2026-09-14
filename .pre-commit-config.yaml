@@ -1,15 +1,12 @@
 repos:
-  # https://pycqa.github.io/isort/docs/configuration/pre-commit.html
-  - repo: https://github.com/PyCQA/isort
-    rev: 7.0.0
+  # https://github.com/astral-sh/ruff-pre-commit
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.16.2
     hooks:
-      - id: isort
+      # Run the linter.
+      - id: ruff-check
         files: \.py$
-        args: [--profile=black]
-
-  # https://black.readthedocs.io/en/stable/integrations/source_version_control.html#
-  - repo: https://github.com/psf/black-pre-commit-mirror
-    rev: 26.1.0
-    hooks:
-      - id: black
+        args: [ --fix, --show-fixes ]
+      # Run the formatter.
         files: \.py$
+      - id: ruff-format

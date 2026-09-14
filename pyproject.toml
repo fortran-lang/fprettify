@@ -1,14 +1,89 @@
 [build-system]
 requires = [
-    "setuptools >= 45",
-    "wheel",
-    "setuptools_scm[toml] >= 6.2",
-    "setuptools_scm_git_archive",
+  "setuptools>=64",
+  "setuptools_scm[toml]>=8",
+  "setuptools_scm_git_archive"
 ]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "fprettify"
+dynamic = ["version"]
+requires-python = ">=3.10"  # https://devguide.python.org/versions/
+authors = [
+  { name = "Patrick Seewald", email = "patrick.seewald@gmail.com" },
+]
+description = "auto-formatter for modern fortran source code"
+readme = "README.md"
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE"]
+keywords = [
+  "fortran",
+  "formatter"
+]
+
+# https://pypi.org/classifiers/
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Natural Language :: English",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Software Development :: Quality Assurance",
+]
+
+dependencies = [
+  "configargparse>=1.7.5"
+]
+
+[project.optional-dependencies]  # elder syntax, e.g. for pip < 25.1
+dev = [
+  "ruff>=0.16.1",
+  "pre-commit>=4.6.1",
+  "coveralls>=4.1.0",
+  "GitPython>=3.1.58",
+]
+
+[dependency-groups]  # newer syntax, e.g. for uv
+dev = [
+  "ruff>=0.16.1",
+  "pre-commit>=4.6.1",
+  "coveralls>=4.1.0",
+  "GitPython>=3.1.58",
+]
+
+[project.urls]
+Homepage = "https://github.com/fortran-lang/fprettify"
+Tracker = "https://github.com/fortran-lang/fprettify/issues"
+
+[project.scripts]
+fprettify = "fprettify.__init__:run"
+
+[tool.setuptools.packages.find]
+include = ["fprettify*"]
 
 [tool.setuptools_scm]
 write_to = "fprettify/_version.py"
 
-[tool.isort]
-profile = "black"
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+select = [
+  "E",  # pycode style, errors
+  "W",  # pycode style, warnings
+  "F",  # pyflakes
+  "I",  # isort
+]
+
+ignore = [
+  "E203",  # whitespace-before-punctuation
+  "E722",  # bare except
+]

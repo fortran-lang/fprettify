@@ -31,6 +31,8 @@ import shutil
 import sys
 from datetime import datetime
 
+import git
+
 import fprettify
 from fprettify.tests.test_common import _MYPATH, FprettifyTestCase, joinpath
 
@@ -60,6 +62,11 @@ FAILED_FILE = joinpath(RESULT_DIR, r"failed_results")
 
 fprettify.set_fprettify_logger(logging.ERROR)
 
+# preseve imports indirectly used via fortran_tests/testsuites.config:
+assert bool(shutil.disk_usage(".")) == True
+
+# thirdparty gitpython's `import git`:
+assert str(git.__version__)[0] == "3"
 
 class FprettifyIntegrationTestCase(FprettifyTestCase):
     def shortDescription(self):
@@ -148,7 +155,6 @@ def generate_suite(suite=None, name=None):
         # erase failures from previous testers
         io.open(FAILED_FILE, "w", encoding="utf-8").close()
 
-    import git
 
     config = configparser.ConfigParser()
     config.read(joinpath(TEST_MAIN_DIR, "testsuites.config"))
@@ -181,8 +187,8 @@ def normalize_line(line):
     whether fprettify has been applied or not.
     """
     # fprettify might add missing ampersands when splitting string:
-    line_out = re.sub("^\s*&", "", line.lower(), flags=re.MULTILINE)
-    line_out = re.sub("&\s*$", "", line_out, flags=re.MULTILINE)
+    line_out = re.sub(r"^\s*&", "", line.lower(), flags=re.MULTILINE)
+    line_out = re.sub(r"&\s*$", "", line_out, flags=re.MULTILINE)
     # remove all whitespace characters (including newline)
     line_out = re.sub(r"\s", r"", line_out)
     return line_out
