@@ -13,7 +13,7 @@ fprettify is an auto-formatter for modern Fortran code that imposes strict white
 - Auto-indentation.
 - Line continuations are aligned with the previous opening delimiter `(`, `[` or `(/` or with an assignment operator `=` or `=>`. If none of the above is present, a default hanging indent is applied.
 - Consistent amount of whitespace around operators and delimiters.
-- Removal of extraneous whitespace and consecutive blank lines.
+- Removal of extraneous whitespace and, by default, consecutive blank lines.
 - Change letter case (upper case / lower case conventions) of intrinsics
 - Tested for editor integration.
 - By default, fprettify causes whitespace changes only and thus preserves revision history.
@@ -98,6 +98,10 @@ fprettify file1, file2, ...
 ```
 
 The default indent is 3. If you prefer something else, use `--indent n` argument.
+
+Use `--preserve-blank-lines` to retain consecutive blank lines between
+statements instead of collapsing them. For indentation without changing
+statement whitespace, combine it with `--disable-whitespace`.
 
 In order to apply fprettify recursively to an entire Fortran project instead of a single file, use the `-r` option.
 
