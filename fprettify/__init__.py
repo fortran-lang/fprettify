@@ -2047,6 +2047,7 @@ def reformat_ffile(
     orig_filename=None,
     indent_fypp=True,
     indent_mod=True,
+    preserve_blank_lines=False,
 ):
     """main method to be invoked for formatting a Fortran file."""
 
@@ -2086,6 +2087,7 @@ def reformat_ffile(
             orig_filename,
             indent_fypp,
             indent_mod,
+            preserve_blank_lines,
         )
         oldfile = newfile
 
@@ -2115,6 +2117,7 @@ def reformat_ffile(
             orig_filename,
             indent_fypp,
             indent_mod,
+            preserve_blank_lines,
         )
 
     outfile.write(newfile.getvalue())
@@ -2139,6 +2142,7 @@ def reformat_ffile_combined(
     orig_filename=None,
     indent_fypp=True,
     indent_mod=True,
+    preserve_blank_lines=False,
 ):
 
     if not orig_filename:
@@ -2215,7 +2219,7 @@ def reformat_ffile_combined(
         if prev_indent and indent_special == 0:
             indent_special = 2
 
-        if is_blank and skip_blank:
+        if is_blank and skip_blank and not preserve_blank_lines:
             continue
         if not do_format:
             if indent_special == 2:
@@ -2972,6 +2976,7 @@ def process_args(args):
     args_out["format_decl"] = args.enable_decl
     args_out["indent_fypp"] = not args.disable_fypp
     args_out["indent_mod"] = not args.disable_indent_mod
+    args_out["preserve_blank_lines"] = args.preserve_blank_lines
 
     return args_out
 
@@ -3134,6 +3139,12 @@ def get_arg_parser(args={}):
         action="store_true",
         default=False,
         help="don't impose whitespace formatting",
+    )
+    parser.add_argument(
+        "--preserve-blank-lines",
+        action="store_true",
+        default=False,
+        help="preserve consecutive blank lines",
     )
     parser.add_argument(
         "--enable-replacements",

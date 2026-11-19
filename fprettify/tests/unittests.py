@@ -181,6 +181,53 @@ class FprettifyUnitTestCase(FprettifyTestCase):
             ["--disable-indent", "--disable-whitespace"], instring, instring
         )
 
+    def test_preserve_blank_lines(self):
+        instring = (
+            "subroutine example()\nimplicit none\n\n\n\n"
+            "if (.true.) then\nprint *, 1\nendif\nend subroutine example\n"
+        )
+        outstring = (
+            "subroutine example()\n  implicit none\n\n\n\n"
+            "  if (.true.) then\n    print *, 1\n  endif\n"
+            "end subroutine example\n"
+        )
+        whitespace_formatted = outstring.replace("  endif", "  end if")
+        collapsed = whitespace_formatted.replace("\n\n\n\n", "\n\n")
+
+        self.assert_fprettify_result(["-i", "2"], instring, collapsed)
+        self.assert_fprettify_result(
+            ["-i", "2", "--preserve-blank-lines"], instring, whitespace_formatted
+        )
+        self.assert_fprettify_result(
+            ["-i", "2", "--disable-whitespace", "--preserve-blank-lines"],
+            instring,
+            outstring,
+        )
+        self.assert_fprettify_result(
+            ["-i", "2", "--disable-indent", "--preserve-blank-lines"],
+            instring,
+            instring.replace("endif", "end if"),
+        )
+
+    def test_preserve_blank_lines_cli(self):
+        instring = "\n\nsubroutine x()\n!&<\n\n\n!&>\nend subroutine x\n\n\n"
+        result = subprocess.run(
+            [
+                sys.executable,
+                RUNSCRIPT,
+                "--indent",
+                "2",
+                "--disable-whitespace",
+                "--preserve-blank-lines",
+            ],
+            input=instring,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            universal_newlines=True,
+            check=True,
+        )
+        self.assertEqual(instring, result.stdout)
+
     def test_comments(self):
         """test options related to comments"""
         instring = (
